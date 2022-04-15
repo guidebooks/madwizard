@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-import frontmatter from 'front-matter'
+import frontmatter from "front-matter"
 
 export function tryFrontmatter(
   value: string
-): Pick<import('front-matter').FrontMatterResult<any>, 'body' | 'attributes' | 'bodyBegin'> {
+): Pick<import("front-matter").FrontMatterResult<any>, "body" | "attributes" | "bodyBegin"> {
   try {
     return frontmatter(value)
   } catch (err) {
-    console.error('Error parsing frontmatter', err)
+    console.error("Error parsing frontmatter", err)
     return {
       body: value,
       bodyBegin: 0,
-      attributes: {}
+      attributes: {},
     }
   }
 }

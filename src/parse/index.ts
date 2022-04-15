@@ -14,50 +14,50 @@
  * limitations under the License.
  */
 
-import { VFile } from 'vfile'
-import { v4 } from 'uuid'
-import {unified, PluggableList} from 'unified'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
+import { VFile } from "vfile"
+import { v4 } from "uuid"
+import { unified, PluggableList } from "unified"
+import remarkParse from "remark-parse"
+import remarkRehype from "remark-rehype"
 
-import CodeBlockProps from '../codeblock/CodeBlockProps'
+import CodeBlockProps from "../codeblock/CodeBlockProps"
 
-import hackSource from './hack'
+import hackSource from "./hack"
 
 // GitHub Flavored Markdown plugin; see https://github.com/IBM/kui/issues/6563
-import gfm from 'remark-gfm'
+import gfm from "remark-gfm"
 
 // parses out ::import{filepath} as node.type === 'leafDirective', but
 // does not create any DOM elements
-import remarkDirective from 'remark-directive'
+import remarkDirective from "remark-directive"
 
 // import inlineSnippets from '../../../controller/snippets'
 
-import emojis from 'remark-emoji'
-import frontmatter from 'remark-frontmatter'
+import emojis from "remark-emoji"
+import frontmatter from "remark-frontmatter"
 
-import tip from './rehype-tip'
-import tabbed from './rehype-tabbed'
+import tip from "./rehype-tip"
+import tabbed from "./rehype-tabbed"
 
-import wizard from './rehype-wizard'
-import rehypeImports, { remarkImports } from './remark-import'
+import wizard from "./rehype-wizard"
+import rehypeImports, { remarkImports } from "./remark-import"
 
-import codeIndexer from './rehype-code-indexer'
+import codeIndexer from "./rehype-code-indexer"
 
 // react-markdown v6+ now require use of these to support html
-import rehypeRaw from 'rehype-raw'
-import rehypeSlug from 'rehype-slug'
+import rehypeRaw from "rehype-raw"
+import rehypeSlug from "rehype-slug"
 
-import icons from './rehype-icons'
-import { kuiFrontmatter } from './frontmatter'
+import icons from "./rehype-icons"
+import { kuiFrontmatter } from "./frontmatter"
 
 const remarkPlugins = (): PluggableList => [
   gfm,
   remarkDirective,
   remarkImports,
-  [frontmatter, ['yaml', 'toml']],
+  [frontmatter, ["yaml", "toml"]],
   [kuiFrontmatter],
-  emojis
+  emojis,
 ]
 
 const rehypePlugins = (uuid: string, codeblocks: CodeBlockProps[]): PluggableList => [
@@ -68,7 +68,7 @@ const rehypePlugins = (uuid: string, codeblocks: CodeBlockProps[]): PluggableLis
   rehypeImports,
   icons,
   rehypeRaw,
-  rehypeSlug
+  rehypeSlug,
 ]
 
 export default function parse(input: VFile, uuid = v4()) {

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { inspect } from 'util'
+import { inspect } from "util"
 
-import { VFile } from 'vfile'
-import { read } from 'to-vfile'
+import { VFile } from "vfile"
+import { read } from "to-vfile"
 
-import parse from './parse'
+import parse from "./parse"
 
 export async function mdwiz(input: VFile, uuid?: string) {
   const ast = await parse(input, uuid)
@@ -33,6 +33,6 @@ export default async function main(argv = process.argv) {
 }
 
 //if (import.meta.url.startsWith(pathToFileURL(process.argv[1]).href)) {
-if (import.meta.url.startsWith('file:')) {
+if (import.meta.url.startsWith("file:")) {
   main(process.argv)
 }

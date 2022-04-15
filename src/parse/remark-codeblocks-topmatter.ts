@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
-import { Node } from 'hast'
-import { Code } from 'mdast'
-import { visitParents } from 'unist-util-visit-parents'
+import { Node } from "hast"
+import { Code } from "mdast"
+import { visitParents } from "unist-util-visit-parents"
 
-import dump from './rehype-code-indexer/dump'
-import { tryFrontmatter } from './frontmatter'
-import { isOnAnImportChain, visitImportContainers } from './remark-import'
-import KuiFrontmatter, { hasCodeBlocks } from './frontmatter/KuiFrontmatter'
+import dump from "./rehype-code-indexer/dump"
+import { tryFrontmatter } from "./frontmatter"
+import { isOnAnImportChain, visitImportContainers } from "./remark-import"
+import KuiFrontmatter, { hasCodeBlocks } from "./frontmatter/KuiFrontmatter"
 
 function isCode(node: Node): node is Code {
-  return node.type === 'code' && typeof (node as Code).value === 'string'
+  return node.type === "code" && typeof (node as Code).value === "string"
 }
 
 /** Scan and process the `codeblocks` schema of the given `frontmatter` */
 export function preprocessCodeBlocksInContent(tree /*: Root */, frontmatter: KuiFrontmatter, ignoreImports = true) {
   if (hasCodeBlocks(frontmatter)) {
-    const codeblocks = frontmatter.codeblocks.map(_ =>
-      Object.assign({}, _, { match: new RegExp(_.match.replace(/\./g, '\\.')) })
+    const codeblocks = frontmatter.codeblocks.map((_) =>
+      Object.assign({}, _, { match: new RegExp(_.match.replace(/\./g, "\\.")) })
     )
 
-    visitParents(tree, 'code', (node, ancestors) => {
+    visitParents(tree, "code", (node, ancestors) => {
       if (isCode(node)) {
         if (ignoreImports && isOnAnImportChain(ancestors)) {
           return
         }
 
-        const matched = codeblocks.find(_ => _.match.test(node.value))
+        const matched = codeblocks.find((_) => _.match.test(node.value))
 
         if (matched) {
           if (matched.language) {

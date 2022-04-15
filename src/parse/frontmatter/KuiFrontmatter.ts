@@ -21,7 +21,7 @@ export interface WizardSteps {
     description?: string
 
     /** Show progress UI that tracks execution of code blocks [default: 'bar'] */
-    progress?: 'bar' | 'none'
+    progress?: "bar" | "none"
 
     /**
      * Specification of the steps, each of which is the name of a
@@ -78,9 +78,9 @@ interface Imports {
 export function hasImports(attributes: any): attributes is Imports {
   return (
     attributes &&
-    typeof attributes === 'object' &&
+    typeof attributes === "object" &&
     Array.isArray(attributes.imports) &&
-    attributes.imports.every(_ => typeof _ === 'string')
+    attributes.imports.every((_) => typeof _ === "string")
   )
 }
 
@@ -95,7 +95,7 @@ type KuiFrontmatter = Partial<WizardSteps> &
     /**
      * A mapping that indicates which section (the `number` values) should be rendered in a given split position.
      */
-    layout?: 'wizard' | Record<number | 'default', SplitPositionSpec>
+    layout?: "wizard" | Record<number | "default", SplitPositionSpec>
   }
 
 export function hasWizardSteps(frontmatter: KuiFrontmatter): frontmatter is KuiFrontmatter & Required<WizardSteps> {
@@ -111,32 +111,37 @@ export function hasCodeBlocks(frontmatter: KuiFrontmatter): frontmatter is KuiFr
   return frontmatter.codeblocks && Array.isArray(frontmatter.codeblocks) && frontmatter.codeblocks.length > 0
 }
 
-type SplitPosition = 'left' | 'right' | 'default' | 'wizard' | 'terminal'
-type SplitPositionObj = { position: SplitPosition; placeholder?: string; maximized?: boolean; inverseColors?: boolean }
+type SplitPosition = "left" | "right" | "default" | "wizard" | "terminal"
+type SplitPositionObj = {
+  position: SplitPosition
+  placeholder?: string
+  maximized?: boolean
+  inverseColors?: boolean
+}
 type SplitPositionSpec = SplitPosition | SplitPositionObj
 
 export type PositionProps = {
-  'data-kui-split': SplitPosition
+  "data-kui-split": SplitPosition
 }
 
 export function isValidPosition(position: SplitPositionSpec): position is SplitPosition {
   return (
-    typeof position === 'string' &&
-    (position === 'default' ||
-      position === 'left' ||
-      position === 'right' ||
-      position === 'wizard' ||
-      position === 'terminal')
+    typeof position === "string" &&
+    (position === "default" ||
+      position === "left" ||
+      position === "right" ||
+      position === "wizard" ||
+      position === "terminal")
   )
 }
 
 export function isNormalSplit(position: SplitPosition) {
-  return position === 'default' || position === 'terminal'
+  return position === "default" || position === "terminal"
 }
 
 export function isValidPositionObj(position: SplitPositionSpec): position is SplitPositionObj {
   const pos = position as SplitPositionObj
-  return typeof pos === 'object' && isValidPosition(pos.position)
+  return typeof pos === "object" && isValidPosition(pos.position)
 }
 
 export default KuiFrontmatter

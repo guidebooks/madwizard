@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { Transformer } from 'unified'
-import { Element, ElementContent } from 'hast'
+import { Transformer } from "unified"
+import { Element, ElementContent } from "hast"
 
-import isElementWithProperties from '../util/isElement'
+import isElementWithProperties from "../util/isElement"
 
 // import { ChoiceState } from '..'
-import populateTabs from './populate'
+import populateTabs from "./populate"
 // import identifyRecognizableTabGroups from './groups'
 
 export const START_OF_TAB = `<!-- ____KUI_START_OF_TAB____ -->`
@@ -29,12 +29,12 @@ export const END_OF_TAB = `<!-- ____KUI_END_OF_TAB____ -->`
 
 export interface TabProps {
   depth: string
-  'data-kui-choice-group': string
+  "data-kui-choice-group": string
   children: any
 }
 
 export function getTabsDepth(props: TabProps) {
-  return typeof props.depth === 'number' ? props.depth : parseInt(props.depth.toString(), 10)
+  return typeof props.depth === "number" ? props.depth : parseInt(props.depth.toString(), 10)
 }
 
 /*export function getTabTitle(child: TabProps['children'][number]) {
@@ -42,11 +42,11 @@ export function getTabsDepth(props: TabProps) {
 }*/
 
 export function isTabs(props: Partial<TabProps>): props is Required<TabProps> {
-  return typeof props['data-kui-choice-group'] === 'string'
+  return typeof props["data-kui-choice-group"] === "string"
 }
 
 export function isTab(elt: ElementContent): boolean {
-  return isElementWithProperties(elt) && elt.properties['data-kui-tab-index'] !== undefined
+  return isElementWithProperties(elt) && elt.properties["data-kui-tab-index"] !== undefined
 }
 
 export function isTabWithProperties(elt: ElementContent): elt is Element {
@@ -54,11 +54,11 @@ export function isTabWithProperties(elt: ElementContent): elt is Element {
 }
 
 export function isTabGroup(elt: Element): boolean {
-  return elt.properties['data-kui-choice-group'] !== undefined
+  return elt.properties["data-kui-choice-group"] !== undefined
 }
 
 export function setTabGroup(elt: Element, group: string) {
-  elt.properties['data-kui-choice-group'] = group
+  elt.properties["data-kui-choice-group"] = group
 }
 
 export function getTabTitle(elt: Element): string {
@@ -80,7 +80,7 @@ export default function plugin(uuid: string /*, choices: ChoiceState*/) {
     //   - span with properties {data-kui-tab-index=2}
     //       children: content of third tab
     //
-    const { tree: treeWithTabs /*, tabgroupIdx */} = populateTabs(uuid, tree)
+    const { tree: treeWithTabs /*, tabgroupIdx */ } = populateTabs(uuid, tree)
 
     // second, analyze the tabs to see if we can identify recognizable
     // tab groups, e.g. "choose your platform"

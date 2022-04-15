@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import { Element } from 'hast'
-import { Parent } from 'unist'
-import { Transformer } from 'unified'
-import { toString } from 'hast-util-to-string'
-import { visitParents } from 'unist-util-visit-parents'
+import { Element } from "hast"
+import { Parent } from "unist"
+import { Transformer } from "unified"
+import { toString } from "hast-util-to-string"
+import { visitParents } from "unist-util-visit-parents"
 
-import dump from './dump'
-import isExecutable from '../../codeblock/isCodeBlock'
-import { isTab } from '../rehype-tabbed'
-import isElementWithProperties from '../util/isElement'
-import toMarkdownString, { Node } from '../util/toMarkdownString'
-import { getTipTitle, isTipWithFullTitle, isTipWithoutFullTitle } from '../rehype-tip'
+import dump from "./dump"
+import isExecutable from "../../codeblock/isCodeBlock"
+import { isTab } from "../rehype-tabbed"
+import isElementWithProperties from "../util/isElement"
+import toMarkdownString, { Node } from "../util/toMarkdownString"
+import { getTipTitle, isTipWithFullTitle, isTipWithoutFullTitle } from "../rehype-tip"
 
 import {
   isHeading,
@@ -35,25 +35,25 @@ import {
   getWizardGroup,
   getWizardStepMember,
   getTitle,
-  getDescription
-} from '../rehype-wizard'
+  getDescription,
+} from "../rehype-wizard"
 
-import { tryFrontmatter } from '../frontmatter'
-import { isImports, getImportKey, getImportFilepath, getImportTitle } from '../remark-import'
-import CodeBlockProps, { addNesting as addCodeBlockNesting } from '../../codeblock/CodeBlockProps'
+import { tryFrontmatter } from "../frontmatter"
+import { isImports, getImportKey, getImportFilepath, getImportTitle } from "../remark-import"
+import CodeBlockProps, { addNesting as addCodeBlockNesting } from "../../codeblock/CodeBlockProps"
 
 /**
  * Heuristic: Code Blocks inside of closed "tips" (i.e. default-closed
  * expandable sections) are optional in terms of ultimate success of
  * the enclosing guidebook */
 function isImplicitlyOptional(_: Parent): _ is Element {
-  return isElementWithProperties(_) && _.tagName === 'tip' && _.properties.open === false
+  return isElementWithProperties(_) && _.tagName === "tip" && _.properties.open === false
 }
 
 /** @return the first child, if it is a paragraph  */
 function extractFirstParagraph(parent: Parent) {
   const firstChild = parent.children[0]
-  if (firstChild && isElementWithProperties(firstChild) && firstChild.tagName === 'p') {
+  if (firstChild && isElementWithProperties(firstChild) && firstChild.tagName === "p") {
     return toMarkdownString(firstChild)
   }
 }
@@ -65,25 +65,25 @@ function extractFirstParagraph(parent: Parent) {
  * inclusive.
  */
 function findNearestEnclosingTitle(grandparent: Parent, parent: Node) {
-  const parentIdx = !grandparent ? -1 : grandparent.children.findIndex(child => child === parent)
+  const parentIdx = !grandparent ? -1 : grandparent.children.findIndex((child) => child === parent)
 
   if (grandparent && parentIdx >= 0 && isElementWithProperties(grandparent)) {
     for (let idx = parentIdx - 1; idx >= 0; idx--) {
       const child = grandparent.children[idx]
       if (isHeadingOrRemovedHeading(child) || isTipWithFullTitle(child)) {
         return {
-          title: isHeading(child) ? toString(child) : isTipWithFullTitle(child) ? getTipTitle(child) : '',
+          title: isHeading(child) ? toString(child) : isTipWithFullTitle(child) ? getTipTitle(child) : "",
           source: grandparent.children
             .slice(idx, parentIdx + 1)
             .map(toMarkdownString)
-            .join('\n')
+            .join("\n"),
         }
       }
     }
   }
 
   return {
-    source: toMarkdownString(parent)
+    source: toMarkdownString(parent),
   }
 }
 
@@ -96,32 +96,32 @@ export default function plugin(uuid: string, codeblocks: CodeBlockProps[]) {
     let codeIdx = 0
     const allocCodeBlockId = (myCodeIdx: number) => `${uuid}-${myCodeIdx}`
 
-    visitParents(/* <Element> */ ast, 'element', function visitor(node, ancestors) {
-      if (node.tagName === 'code') {
+    visitParents(/* <Element> */ ast, "element", function visitor(node, ancestors) {
+      if (node.tagName === "code") {
         // react-markdown v6+ places the language in the className
-        const match = node.properties.className ? /language-([\w{.]+)/.exec(node.properties.className.toString()) : ''
-        const language = match ? match[1].replace(/[{.]/g, '') : undefined
+        const match = node.properties.className ? /language-([\w{.]+)/.exec(node.properties.className.toString()) : ""
+        const language = match ? match[1].replace(/[{.]/g, "") : undefined
         // re: the replace: this is a bit of a hack to support {.bash .no-copy} style languages from pymdown
 
         if (isExecutable(language)) {
           const myCodeIdx = codeIdx++
           node.properties.codeIdx = myCodeIdx
 
-          if (node.children.length === 1 && node.children[0].type === 'text') {
+          if (node.children.length === 1 && node.children[0].type === "text") {
             // the AST node that houses this code block's string content
             const codeValueElement = node.children[0]
 
             const code = String(codeValueElement.value).trim()
             const { body, attributes } = tryFrontmatter(code)
 
-            if (typeof attributes === 'object') {
+            if (typeof attributes === "object") {
               if (!attributes.id) {
                 // assign a codeBlockId if the author did not specify one
                 attributes.id = allocCodeBlockId(myCodeIdx)
               }
 
               const dumpCodeBlockProps = () =>
-                Buffer.from(JSON.stringify(Object.assign({ body, language }, attributes))).toString('base64')
+                Buffer.from(JSON.stringify(Object.assign({ body, language }, attributes))).toString("base64")
 
               let codeBlockProps = dumpCodeBlockProps()
 
@@ -136,7 +136,7 @@ export default function plugin(uuid: string, codeblocks: CodeBlockProps[]) {
                 reserialize()
               }
 
-              if (attributes.validate === '$body') {
+              if (attributes.validate === "$body") {
                 attributes.validate = body
                 reserialize()
               }
@@ -169,21 +169,21 @@ export default function plugin(uuid: string, codeblocks: CodeBlockProps[]) {
                         const title = _.properties.title.toString()
 
                         // identifier for this choice's group of choices
-                        const group = parent.properties['data-kui-choice-group'].toString()
+                        const group = parent.properties["data-kui-choice-group"].toString()
 
                         // identifier for this member of that group
-                        const member = parseInt(_.properties['data-kui-tab-index'].toString(), 0)
+                        const member = parseInt(_.properties["data-kui-tab-index"].toString(), 0)
                         // const nestingDepth = parseInt(parent.properties['data-kui-choice-nesting-depth'].toString(), 0)
 
                         const grandparent = ancestors[idx - 2]
                         addNesting(attributes, {
-                          kind: 'Choice',
+                          kind: "Choice",
                           source: toMarkdownString(_),
                           group,
                           title,
                           description: extractFirstParagraph(_),
                           member,
-                          groupDetail: findNearestEnclosingTitle(grandparent, parent)
+                          groupDetail: findNearestEnclosingTitle(grandparent, parent),
                         })
                       }
                     }
@@ -191,7 +191,7 @@ export default function plugin(uuid: string, codeblocks: CodeBlockProps[]) {
                     const parent = ancestors[idx - 1]
                     if (parent && isElementWithProperties(parent) && isWizard(parent.properties)) {
                       addNesting(attributes, {
-                        kind: 'WizardStep',
+                        kind: "WizardStep",
                         source: toMarkdownString(_),
                         group: getWizardGroup(_.properties),
                         member: getWizardStepMember(_.properties),
@@ -200,17 +200,17 @@ export default function plugin(uuid: string, codeblocks: CodeBlockProps[]) {
                         wizard: {
                           source: toMarkdownString(parent),
                           title: getTitle(parent.properties),
-                          description: parent.children[0] ? toMarkdownString(parent.children[0]) : undefined
-                        }
+                          description: parent.children[0] ? toMarkdownString(parent.children[0]) : undefined,
+                        },
                       })
                     }
                   } else if (isImports(_.properties)) {
                     addNesting(attributes, {
-                      kind: 'Import',
+                      kind: "Import",
                       source: toMarkdownString(_),
                       key: getImportKey(_.properties),
                       title: getImportTitle(_.properties),
-                      filepath: getImportFilepath(_.properties)
+                      filepath: getImportFilepath(_.properties),
                     })
                   }
                 }
@@ -237,11 +237,11 @@ export default function plugin(uuid: string, codeblocks: CodeBlockProps[]) {
                   if (parentHeading && parentHeading.title) {
                     const { title, source } = parentHeading
                     addNesting(attributes, {
-                      kind: 'Import',
+                      kind: "Import",
                       source,
                       title,
                       key: title,
-                      filepath: ''
+                      filepath: "",
                     })
                   }
                 }
@@ -280,12 +280,12 @@ export default function plugin(uuid: string, codeblocks: CodeBlockProps[]) {
 
                 properties.containedCodeBlocks.push(codeBlockProps)
                 }*/
-              codeblocks.push(JSON.parse(Buffer.from(codeBlockProps, 'base64').toString()))
+              codeblocks.push(JSON.parse(Buffer.from(codeBlockProps, "base64").toString()))
             }
           }
         }
       }
     })
-    }
-    return transformer
+  }
+  return transformer
 }

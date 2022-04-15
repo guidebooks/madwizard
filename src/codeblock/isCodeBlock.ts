@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { Element } from 'hast'
+import { Element } from "hast"
 
 export default function isExecutable(language: string) {
   return /^(bash|sh|shell)$/.test(language)
 }
 
 export function isExecutableCodeBlock(node: Element) {
-  if (node.tagName === 'code') {
+  if (node.tagName === "code") {
     // react-markdown v6+ places the language in the className
-    const match = node.properties.className ? /language-(\w+)/.exec(node.properties.className.toString()) : ''
+    const match = node.properties.className ? /language-(\w+)/.exec(node.properties.className.toString()) : ""
     const language = match ? match[1] : undefined
 
     return isExecutable(language)

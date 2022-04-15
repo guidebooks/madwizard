@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-import Debug from 'debug'
-import { Element } from 'hast'
-import { sync as which } from 'which'
+import Debug from "debug"
+import { Element } from "hast"
+import { sync as which } from "which"
 
-import { ChoiceState } from '../../../choices'
-import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from '..'
+import { ChoiceState } from "../../../choices"
+import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
-const debug = Debug('rehype-tabbed/gruops/homebrew')
+const debug = Debug("rehype-tabbed/gruops/homebrew")
 
 class Homebrew {
   /** the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = 'org.kubernetes-sigs.kui/choice/mac-installer'
+  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/mac-installer"
 
   /** this helps with processing and optimizing based on the existence of homebrew on the user's system */
-  private readonly canonicalName = 'Homebrew'
+  private readonly canonicalName = "Homebrew"
 
   /** tabs whose title matches this pattern will be treated as being a Homebrew choice */
   private readonly RE_HOMEBREW = /homebrew/i
@@ -42,11 +42,11 @@ class Homebrew {
     return node.children
       .filter(isTabWithProperties)
       .map(getTabTitle)
-      .find(title => this.RE_HOMEBREW.test(title))
+      .find((title) => this.RE_HOMEBREW.test(title))
   }
 
   private rewriteTabsToUseCanonicalNames(node: Element) {
-    node.children.forEach(tab => {
+    node.children.forEach((tab) => {
       if (isTabWithProperties(tab)) {
         const title = getTabTitle(tab)
         if (this.RE_HOMEBREW.test(title) && title !== this.canonicalName) {
@@ -61,11 +61,11 @@ class Homebrew {
     // which('brew').then(() => choices.set(this.choiceGroup, this.canonicalName))
     // .catch(err => debug('Homebrew probably not found', err))
     try {
-      if (which('brew')) {
+      if (which("brew")) {
         choices.set(this.choiceGroup, this.canonicalName, false)
       }
     } catch (err) {
-      debug('Homebrew probably not found', err)
+      debug("Homebrew probably not found", err)
     }
   }
 

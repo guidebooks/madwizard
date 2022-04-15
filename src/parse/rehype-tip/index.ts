@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { Node, Element } from 'hast'
+import { Node, Element } from "hast"
 
-import isElementWithProperties from '../util/isElement'
+import isElementWithProperties from "../util/isElement"
 
-const RE_TIP = /^([?!][?!][?!])(\+?)\s+(tip|todo|bug|info|note|warning|caution|success|question)(\s+"(.+)"\s*)?(\s+inline)?(\s+inline\s+end)?(\n(.|[\n\r])*)?$/i
+const RE_TIP =
+  /^([?!][?!][?!])(\+?)\s+(tip|todo|bug|info|note|warning|caution|success|question)(\s+"(.+)"\s*)?(\s+inline)?(\s+inline\s+end)?(\n(.|[\n\r])*)?$/i
 const RE_TIP_START = /^([?!][?!][?!])(\+?)\s+(tip|todo|bug|info|note|warning|caution|success|question)(\s+"(.+))?$/i
 const RE_TIP_END = /^(.*)"\s*(\n(.|[\n\r])*)?$/
 
@@ -26,7 +27,7 @@ export const START_OF_TIP = `<!-- ____KUI_START_OF_TIP____ -->`
 export const END_OF_TIP = `<!-- ____KUI_END_OF_TIP____ -->`
 
 export function isTip(node: Node): node is Element {
-  return isElementWithProperties(node) && node.tagName === 'tip'
+  return isElementWithProperties(node) && node.tagName === "tip"
 }
 
 export function getTipTitle(elt: Element) {
@@ -54,7 +55,7 @@ export default function plugin(/* options */) {
 
     const process = (children: any[], level: number) =>
       children.reduce((newChildren, child) => {
-        const addToTip = child => {
+        const addToTip = (child) => {
           currentTip.children.push(child)
           if (child.position) {
             currentTip.position.end = child.position.end
@@ -62,16 +63,16 @@ export default function plugin(/* options */) {
           return newChildren
         }
 
-        if (child.type === 'raw' && child.value === END_OF_TIP) {
+        if (child.type === "raw" && child.value === END_OF_TIP) {
           flushTip()
           return newChildren
-        } else if (child.type === 'raw' && child.value === START_OF_TIP) {
+        } else if (child.type === "raw" && child.value === START_OF_TIP) {
           // we process this in the RE_TIP matches below; this is for
           // now only a breadcrumb to help with debugging
           return newChildren
         } else if (
-          child.type === 'element' &&
-          (child.tagName === 'div' || (child.tagName === 'span' && child.properties.className !== 'paragraph'))
+          child.type === "element" &&
+          (child.tagName === "div" || (child.tagName === "span" && child.properties.className !== "paragraph"))
         ) {
           const newChild = Object.assign({}, child, { children: [] })
           const children = currentTipLevel === level ? currentTip.children : newChildren
@@ -79,13 +80,13 @@ export default function plugin(/* options */) {
           newChild.children = process(child.children, level + 1)
           return newChildren
         } else if (
-          child.type === 'element' &&
-          (child.tagName === 'p' || (child.tagName === 'span' && child.properties.className === 'paragraph')) // e.g. see rehype-wizard
+          child.type === "element" &&
+          (child.tagName === "p" || (child.tagName === "span" && child.properties.className === "paragraph")) // e.g. see rehype-wizard
         ) {
           if (child.children.length > 0) {
             if (
               currentTipLevel === level &&
-              (child.children[0].type !== 'text' || !RE_TIP_START.test(child.children[0].value))
+              (child.children[0].type !== "text" || !RE_TIP_START.test(child.children[0].value))
             ) {
               // a new paragraph that doesn't start a new tip; add to current tip
               return addToTip(child)
@@ -93,7 +94,7 @@ export default function plugin(/* options */) {
 
             child.children = child.children.reduce((pnewChildren, pchild) => {
               if (currentTipLevel === level && currentTip.properties.partial) {
-                if (pchild.type === 'text') {
+                if (pchild.type === "text") {
                   const endMatch = pchild.value.match(RE_TIP_END)
                   if (endMatch) {
                     delete currentTip.properties.partial
@@ -101,35 +102,38 @@ export default function plugin(/* options */) {
                       currentTip.properties.title += endMatch[1]
                     }
                     if (endMatch[2]) {
-                      currentTip.children.push({ type: 'text', value: endMatch[2] })
+                      currentTip.children.push({
+                        type: "text",
+                        value: endMatch[2],
+                      })
                     }
                   }
                 } else {
                   // PatternFly's ExpandableSection currently only supports `string` for the title text :(
                   // hacks for now
                   currentTip.properties.title += pchild.children
-                    .filter(_ => _.type === 'text')
-                    .map(_ => _.value)
-                    .join(' ')
+                    .filter((_) => _.type === "text")
+                    .map((_) => _.value)
+                    .join(" ")
                 }
-              } else if (pchild.type === 'text') {
+              } else if (pchild.type === "text") {
                 const startMatch = pchild.value.match(RE_TIP)
                 if (startMatch) {
                   flushTip()
 
                   currentTipLevel = level
                   currentTip = {
-                    type: 'element',
-                    tagName: 'tip',
+                    type: "element",
+                    tagName: "tip",
                     properties: {
                       className: startMatch[3].toLowerCase(), // e.g. tip, todo, bug, warning, ...
-                      float: startMatch[6] ? 'left' : startMatch[7] ? 'right' : undefined,
+                      float: startMatch[6] ? "left" : startMatch[7] ? "right" : undefined,
                       hasFullTitle: !!startMatch[5],
                       title: startMatch[5] || startMatch[3],
-                      open: !!startMatch[2] || startMatch[1] === '!!!'
+                      open: !!startMatch[2] || startMatch[1] === "!!!",
                     },
-                    children: startMatch[8] ? [{ type: 'text', value: startMatch[8] }] : [],
-                    position: child.position
+                    children: startMatch[8] ? [{ type: "text", value: startMatch[8] }] : [],
+                    position: child.position,
                   }
                   newChildren.push(currentTip)
                   return pnewChildren
@@ -140,17 +144,17 @@ export default function plugin(/* options */) {
 
                     currentTipLevel = level
                     currentTip = {
-                      type: 'element',
-                      tagName: 'tip',
+                      type: "element",
+                      tagName: "tip",
                       properties: {
                         className: startMatch[3].toLowerCase(), // e.g. tip, todo, bug, warning, ...
                         hasFullTitle: !!startMatch[5],
                         title: startMatch[5] || startMatch[3],
-                        open: !!startMatch[2] || startMatch[1] === '!!!',
-                        partial: true
+                        open: !!startMatch[2] || startMatch[1] === "!!!",
+                        partial: true,
                       },
                       children: [],
-                      position: child.position
+                      position: child.position,
                     }
                     newChildren.push(currentTip)
                     return pnewChildren
@@ -162,7 +166,7 @@ export default function plugin(/* options */) {
                 return addToTip(pchild)
               }
 
-              if (pchild.type === 'element' && pchild.tagName === 'div') {
+              if (pchild.type === "element" && pchild.tagName === "div") {
                 pchild.children = process(pchild.children, level)
               }
               pnewChildren.push(pchild)

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Choice as CodeBlockChoice } from '../codeblock/CodeBlockProps'
+import { Choice as CodeBlockChoice } from "../codeblock/CodeBlockProps"
 
 /* map from choice group to selected choice member */
-export type ChoicesMap = Record<CodeBlockChoice['group'], CodeBlockChoice['title']>
+export type ChoicesMap = Record<CodeBlockChoice["group"], CodeBlockChoice["title"]>
 
 export interface ChoiceState {
   keys: () => ReturnType<typeof Object.keys>

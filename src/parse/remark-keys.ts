@@ -21,16 +21,16 @@ const RE_KEY = /\+\+([^+]+)(\+([^+]+))*\+\+/g
  * transform to HTML5 <kbd>...</kbd>.
  */
 export default function plugin(markdownText: string) {
-  return markdownText.replace(RE_KEY, match => {
+  return markdownText.replace(RE_KEY, (match) => {
     return (
       '<span class="kui--markdown-keys">' +
       match
         .split(/\+/)
         .filter(Boolean)
-        .map(_ => _.replace(/^"(.+)"$/, '$1'))
-        .map(_ => `<kbd class="kui--markdown-key--${_}">${_}</kbd>`)
-        .join('<span>+</span>') +
-      '</span>'
+        .map((_) => _.replace(/^"(.+)"$/, "$1"))
+        .map((_) => `<kbd class="kui--markdown-key--${_}">${_}</kbd>`)
+        .join("<span>+</span>") +
+      "</span>"
     )
   })
 }

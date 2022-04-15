@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { START_OF_TIP, END_OF_TIP } from '../rehype-tip'
-import { START_OF_TAB, END_OF_TAB, PUSH_TABS } from '.'
+import { START_OF_TIP, END_OF_TIP } from "../rehype-tip"
+import { START_OF_TAB, END_OF_TAB, PUSH_TABS } from "."
 
 /** A placeholder marker to indicate markdown that uses indentation not to mean Tab or Tip content */
-const FAKE_END_MARKER = ''
+const FAKE_END_MARKER = ""
 
 /**
  * pymdown uses indentation to define tab content; remark-parse seems
@@ -36,10 +36,10 @@ export default function hackIndentation(source: string): string {
 
   const unindent = (line: string) => {
     if (!inBlockquote && !inCodeBlock) {
-      return line.replace(/^\s*/, '')
+      return line.replace(/^\s*/, "")
     } else {
       if (blockquoteOrCodeBlockIndent > 0) {
-        return line.replace(new RegExp(`^\\s{${blockquoteOrCodeBlockIndent}}`), '')
+        return line.replace(new RegExp(`^\\s{${blockquoteOrCodeBlockIndent}}`), "")
       } else {
         return line
       }
@@ -51,7 +51,7 @@ export default function hackIndentation(source: string): string {
     const curIndentDepth = indentDepthOfContent[indentDepthOfContent.length - 1]
     const thisIndentDepth = !indentMatch ? 0 : ~~(indentMatch[0].length / 4)
 
-    let pop = ''
+    let pop = ""
     for (let idx = curIndentDepth; idx > thisIndentDepth + delta; idx--) {
       indentDepthOfContent.pop()
       const endMarker = endMarkers.pop()
@@ -66,17 +66,17 @@ export default function hackIndentation(source: string): string {
       } else {
         const indentDepth = indentDepthOfContent[indentDepthOfContent.length - 1]
         inTab = new RegExp(
-          '^' +
+          "^" +
             Array(indentDepth * 4)
-              .fill(' ')
-              .join('')
+              .fill(" ")
+              .join("")
         )
       }
     }
     return pop
   }
 
-  const rewrite = source.split(/\n/).map(line => {
+  const rewrite = source.split(/\n/).map((line) => {
     const tabStartMatch = line.match(/^(\s*)===\s+".*"/)
     const tipStartMatch = line.match(
       /^(\s*)[?!][?!][?!](\+?)\s+(tip|todo|bug|info|note|warning|caution|success|question)/i
@@ -84,7 +84,7 @@ export default function hackIndentation(source: string): string {
     const startMatch = tabStartMatch || tipStartMatch
 
     if (!inBlockquote && startMatch) {
-      const thisIndentation = startMatch[1] || ''
+      const thisIndentation = startMatch[1] || ""
       const indentDepth = indentDepthOfContent[indentDepthOfContent.length - 1] || 0
       const thisIndentDepth = !thisIndentation ? 1 : ~~(thisIndentation.length / 4) + 1
 
@@ -95,16 +95,16 @@ export default function hackIndentation(source: string): string {
         (indentDepth === thisIndentDepth && currentEndMarker === END_OF_TIP) || endMarker === END_OF_TIP
           ? pop(line, 0)
           : !(inTab && indentDepth > thisIndentDepth)
-          ? ''
+          ? ""
           : pop(line, 1)
 
       const possibleNesting = !(
         inTab &&
         tabStartMatch &&
         indentDepth < thisIndentDepth &&
-        endMarkers.find(_ => _ === END_OF_TAB)
+        endMarkers.find((_) => _ === END_OF_TAB)
       )
-        ? ''
+        ? ""
         : `\n\n${PUSH_TABS}\n\n`
 
       const startMarker = tabStartMatch ? START_OF_TAB : START_OF_TIP
@@ -123,15 +123,15 @@ export default function hackIndentation(source: string): string {
       }
 
       inTab = new RegExp(
-        '^' +
+        "^" +
           Array(thisIndentDepth * 4)
-            .fill(' ')
-            .join('')
+            .fill(" ")
+            .join("")
       )
 
       return `\n\n${possibleEndTab}${possibleNesting}${startMarker}\n\n` + unindent(line)
     } else if (/^\s*```/.test(line)) {
-      const possibleEndOfTab = !inTab || inTab.test(line) ? '' : pop(line)
+      const possibleEndOfTab = !inTab || inTab.test(line) ? "" : pop(line)
 
       if (/(bash|sh|shell)/.test(line)) {
         blockquoteOrCodeBlockIndent = line.search(/\S/)
@@ -169,5 +169,5 @@ export default function hackIndentation(source: string): string {
     }
   }
 
-  return rewrite.join('\n')
+  return rewrite.join("\n")
 }

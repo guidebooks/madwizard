@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import { u } from 'unist-builder'
-import { Parent, Text } from 'hast'
-import { Transformer } from 'unified'
-import { visit } from 'unist-util-visit'
+import { u } from "unist-builder"
+import { Parent, Text } from "hast"
+import { Transformer } from "unified"
+import { visit } from "unist-util-visit"
 
 //import '@mdi/font/css/materialdesignicons.min.css'
 //import '@fortawesome/fontawesome-free/css/all.min.css'
 
 function load(provider: string) {
-  if (provider === 'fontawesome') {
-    import('@fortawesome/fontawesome-free')
+  if (provider === "fontawesome") {
+    import("@fortawesome/fontawesome-free")
   }
 }
 
@@ -33,13 +33,13 @@ function load(provider: string) {
 //}
 
 export default function plugin() {
-  const transformer: Transformer<Text> = ast => {
+  const transformer: Transformer<Text> = (ast) => {
     // match[1]: provider (material, fontawesome, ...)
     // match[2]: variant (e.g. -solid for fontawesome solid)
     // match[3]: icon name
     const RE_ICON = /:(badge|material|fontawesome)(-solid|-ok|-warning|-error)?-([^:]+):/g
 
-    visit(ast, 'text', function(node: Text, childIdx: number, parent: Parent) {
+    visit(ast, "text", function (node: Text, childIdx: number, parent: Parent) {
       const children = []
       let curIndex = 0
       for (const match of node.value.matchAll(RE_ICON)) {
@@ -47,25 +47,25 @@ export default function plugin() {
         load(provider)
 
         if (match.index > curIndex) {
-          children.push(u('text', node.value.slice(curIndex, match.index)))
+          children.push(u("text", node.value.slice(curIndex, match.index)))
         }
 
         children.push(
           u(
-            'element',
+            "element",
             {
-              tagName: provider === 'badge' ? 'tag' : provider === 'fontawesome' ? 'i' : 'span',
+              tagName: provider === "badge" ? "tag" : provider === "fontawesome" ? "i" : "span",
               properties: {
                 variant: variant ? variant.slice(1) : undefined,
                 className:
-                  provider === 'material'
+                  provider === "material"
                     ? `kui--markdown-icon mdi mdi-${icon}`
-                    : provider === 'fontawesome'
-                    ? `kui--markdown-icon fa${variant ? variant[1] : 's'} fa-${icon}`
-                    : undefined
-              }
+                    : provider === "fontawesome"
+                    ? `kui--markdown-icon fa${variant ? variant[1] : "s"} fa-${icon}`
+                    : undefined,
+              },
             },
-            provider === 'badge' ? [u('text', icon)] : undefined
+            provider === "badge" ? [u("text", icon)] : undefined
           )
         )
 
@@ -74,7 +74,7 @@ export default function plugin() {
 
       if (children.length > 0) {
         if (curIndex < node.value.length) {
-          children.push(u('text', node.value.slice(curIndex)))
+          children.push(u("text", node.value.slice(curIndex)))
         }
 
         parent.children.splice(childIdx, 1, ...children)

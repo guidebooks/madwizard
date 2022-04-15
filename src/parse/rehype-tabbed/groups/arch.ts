@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-import { Element } from 'hast'
+import { Element } from "hast"
 
-import { ChoiceState } from '../../../choices'
-import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from '..'
+import { ChoiceState } from "../../../choices"
+import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
 class Arch {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = 'org.kubernetes-sigs.kui/choice/arch'
+  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/arch"
 
-  private readonly archs: Record<string, typeof process['arch']> = {
-    intel: 'x64',
-    x86: 'x64',
+  private readonly archs: Record<string, typeof process["arch"]> = {
+    intel: "x64",
+    x86: "x64",
 
-    arm: 'arm64',
-    arm64: 'arm64',
-    'apple silicon': 'arm64',
-    m1: 'arm64',
-    m2: 'arm64'
+    arm: "arm64",
+    arm64: "arm64",
+    "apple silicon": "arm64",
+    m1: "arm64",
+    m2: "arm64",
   }
 
   private readonly findArch = (str: string) => this.archs[str.toLowerCase()]
@@ -42,10 +42,7 @@ class Arch {
    * @return whether or not this tab group represents a "what architecture are you on" choice group.
    */
   private isMatchingTabGroup(node: Element) {
-    return node.children
-      .filter(isTabWithProperties)
-      .map(getTabTitle)
-      .every(this.findArch)
+    return node.children.filter(isTabWithProperties).map(getTabTitle).every(this.findArch)
   }
 
   private capitalize(str: string) {
@@ -53,7 +50,7 @@ class Arch {
   }
 
   private rewriteTabsToUseCanonicalNames(node: Element) {
-    node.children.forEach(tab => {
+    node.children.forEach((tab) => {
       if (isTabWithProperties(tab)) {
         setTabTitle(tab, this.capitalize(this.findArch(getTabTitle(tab))))
       }

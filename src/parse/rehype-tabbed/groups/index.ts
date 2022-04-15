@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { Node } from 'hast'
-import { visit } from 'unist-util-visit'
+import { Node } from "hast"
+import { visit } from "unist-util-visit"
 
-import { isTabGroup } from '..'
-import { ChoiceState } from '../../../choices'
+import { isTabGroup } from ".."
+import { ChoiceState } from "../../../choices"
 
-import arch from './arch'
-import platform from './platform'
-import homebrew from './homebrew'
+import arch from "./arch"
+import platform from "./platform"
+import homebrew from "./homebrew"
 
 const providers = [arch, platform, homebrew]
 
@@ -39,10 +39,10 @@ export default function identifyRecognizableTabGroups(tree: Node, choices: Choic
   } */
 
   providers
-    .filter(_ => !choices.contains(_.choiceGroup)) // already set?
-    .forEach(_ => _.populateChoice(choices))
+    .filter((_) => !choices.contains(_.choiceGroup)) // already set?
+    .forEach((_) => _.populateChoice(choices))
 
-  visit(tree, 'element', node => {
+  visit(tree, "element", (node) => {
     if (isTabGroup(node)) {
       for (let idx = 0; idx < providers.length; idx++) {
         if (providers[idx].checkAndSet(node)) {

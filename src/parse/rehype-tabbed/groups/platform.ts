@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-import { Element } from 'hast'
+import { Element } from "hast"
 
-import { ChoiceState } from '../../../choices'
-import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from '..'
+import { ChoiceState } from "../../../choices"
+import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
 class Platform {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = 'org.kubernetes-sigs.kui/choice/platform'
+  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/platform"
 
-  private readonly platforms: Record<string, typeof process['platform']> = {
-    mac: 'darwin',
-    macos: 'darwin',
-    darwin: 'darwin',
+  private readonly platforms: Record<string, typeof process["platform"]> = {
+    mac: "darwin",
+    macos: "darwin",
+    darwin: "darwin",
 
-    linux: 'linux',
+    linux: "linux",
 
-    win: 'win32',
-    win32: 'win32',
-    windows: 'win32'
+    win: "win32",
+    win32: "win32",
+    windows: "win32",
   }
 
   private readonly findPlatform = (str: string) => this.platforms[str.toLowerCase()]
@@ -43,10 +43,7 @@ class Platform {
    * @return whether or not this tab group represents a "what platform are you on" choice group.
    */
   private isMatchingTabGroup(node: Element) {
-    return node.children
-      .filter(isTabWithProperties)
-      .map(getTabTitle)
-      .every(this.findPlatform)
+    return node.children.filter(isTabWithProperties).map(getTabTitle).every(this.findPlatform)
   }
 
   private capitalize(str: string) {
@@ -54,7 +51,7 @@ class Platform {
   }
 
   private rewriteTabsToUseCanonicalNames(node: Element) {
-    node.children.forEach(tab => {
+    node.children.forEach((tab) => {
       if (isTabWithProperties(tab)) {
         setTabTitle(tab, this.capitalize(this.findPlatform(getTabTitle(tab))))
       }

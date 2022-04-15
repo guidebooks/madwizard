@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { v5 } from 'uuid'
-import { Node } from 'hast'
+import { v5 } from "uuid"
+import { Node } from "hast"
 
-import { isParent } from '../util/isElement'
-import { isImports } from '../remark-import'
+import { isParent } from "../util/isElement"
+import { isImports } from "../remark-import"
 
 // const RE_TAB = /^(.|[\n\r])*===\s+"(.+)"\s*(\n(.|[\n\r])*)?$/
 const RE_TAB = /^===\s+"([^"]+)"/
 
-import { START_OF_TAB, END_OF_TAB, PUSH_TABS } from '.'
+import { START_OF_TAB, END_OF_TAB, PUSH_TABS } from "."
 
 export default function populateTabs(
   uuid: string,
@@ -34,17 +34,17 @@ export default function populateTabs(
 
   const tabStack = []
   let currentTabs = []
-  const _flushTabs = children => {
+  const _flushTabs = (children) => {
     if (currentTabs.length > 0) {
       children.push({
-        type: 'element',
-        tagName: 'div',
+        type: "element",
+        tagName: "div",
         children: currentTabs,
         properties: {
           depth: tabStack.length,
-          'data-kui-choice-group': v5((++tabgroupIdx).toString() + '.' + recursiveDepth.toString(), uuid),
-          'data-kui-choice-nesting-depth': tabStack.length
-        }
+          "data-kui-choice-group": v5((++tabgroupIdx).toString() + "." + recursiveDepth.toString(), uuid),
+          "data-kui-choice-nesting-depth": tabStack.length,
+        },
       })
     }
 
@@ -55,7 +55,7 @@ export default function populateTabs(
     }
   }
 
-  const flushTabs = children => {
+  const flushTabs = (children) => {
     if (tabStack.length > 0) {
       const parentTabs = tabStack[tabStack.length - 1]
       const lastParentTab = parentTabs[parentTabs.length - 1]
@@ -65,9 +65,9 @@ export default function populateTabs(
     }
   }
 
-  const process = children =>
+  const process = (children) =>
     children.reduce((newChildren, child) => {
-      const addToTab = child => {
+      const addToTab = (child) => {
         const cur = currentTabs[currentTabs.length - 1]
         cur.children.push(child)
         if (cur.position && child.position) {
@@ -76,67 +76,70 @@ export default function populateTabs(
         return newChildren
       }
 
-      if (child.type === 'raw' && child.value === END_OF_TAB) {
+      if (child.type === "raw" && child.value === END_OF_TAB) {
         flushTabs(newChildren)
         return newChildren
-      } else if (child.type === 'raw' && child.value === START_OF_TAB) {
+      } else if (child.type === "raw" && child.value === START_OF_TAB) {
         // we process this in the RE_TAB match below; this is for
         // now only a breadcrumb to help with debugging
         return newChildren
-      } else if (child.type === 'raw' && child.value === PUSH_TABS) {
+      } else if (child.type === "raw" && child.value === PUSH_TABS) {
         if (currentTabs.length > 0) {
           tabStack.push(currentTabs)
           currentTabs = []
         }
-      } else if (child.type === 'element' && child.tagName === 'div') {
+      } else if (child.type === "element" && child.tagName === "div") {
         if (currentTabs.length > 0 && isImports(child.properties)) {
           const sub = populateTabs(uuid, child, recursiveDepth + 1).tree
           return addToTab(sub)
         } else {
           child.children = process(child.children)
         }
-      } else if (child.type === 'element' && child.tagName === 'p') {
+      } else if (child.type === "element" && child.tagName === "p") {
         if (child.children.length > 0) {
           if (
             currentTabs.length > 0 &&
-            (child.type === 'raw' || child.children[0].type !== 'text' || !RE_TAB.test(child.children[0].value))
+            (child.type === "raw" || child.children[0].type !== "text" || !RE_TAB.test(child.children[0].value))
           ) {
             // a new paragraph that doesn't start a new tab; add to current tab
             return addToTab(child)
           }
 
           child.children = child.children.reduce((newChildren, pchild) => {
-            if (pchild.type === 'text') {
+            if (pchild.type === "text") {
               const startMatch = pchild.value.match(RE_TAB)
               if (startMatch) {
                 if (startMatch.index !== 0) {
                   // then we need to splice out some prefix text
-                  newChildren.push({ type: 'text', value: pchild.value.slice(0, startMatch.index) })
+                  newChildren.push({
+                    type: "text",
+                    value: pchild.value.slice(0, startMatch.index),
+                  })
                 }
 
                 const rest = pchild.value.slice(startMatch.index + startMatch[0].length)
 
                 const position = {
                   start: {
-                    offset: child.position.start.offset + startMatch.index
+                    offset: child.position.start.offset + startMatch.index,
                   },
                   end: {
-                    offset: child.position.end.offset + startMatch.index
-                  }
+                    offset: child.position.end.offset + startMatch.index,
+                  },
                 }
 
                 currentTabs.push({
-                  type: 'element',
-                  tagName: 'span', // do not use 'li'
+                  type: "element",
+                  tagName: "span", // do not use 'li'
                   // here. something after us seems
                   // to join nested tabs together
                   properties: {
                     title: startMatch[1],
                     depth: tabStack.length,
-                    'data-kui-tab-index': currentTabs.length
+                    "data-kui-tab-index": currentTabs.length,
                   },
-                  children: rest ? [{ type: 'text', value: rest }] : [],
-                  position
+                  children: rest ? [{ type: "text", value: rest }] : [],
+                  position,
                 })
                 return newChildren
               }

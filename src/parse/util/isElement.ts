@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { Node, Parent } from 'unist'
-import { Element, ElementContent } from 'hast'
+import { Node, Parent } from "unist"
+import { Element, ElementContent } from "hast"
 
 export function isParent(node: Node): node is Parent {
   return Array.isArray((node as Parent).children)
@@ -23,7 +23,7 @@ export function isParent(node: Node): node is Parent {
 
 export function isElement(_: Node | Parent | ElementContent): _ is Element {
   const elt = _ as Element
-  return elt && typeof elt.tagName === 'string'
+  return elt && typeof elt.tagName === "string"
 }
 
 export default function isElementWithProperties(_: Element | ElementContent | Parent | Node): _ is Element {

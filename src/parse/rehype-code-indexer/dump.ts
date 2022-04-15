@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { dump } from 'js-yaml'
+import { dump } from "js-yaml"
 
 /** Re-serialize the given attributes and code block body */
 export default function dumpCodeBlock(attrs: Record<string, any>, body: string) {

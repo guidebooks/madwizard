@@ -15,17 +15,17 @@
  */
 
 function indentArray(strings: string[], indentation: string) {
-  return (indentation.length === 0 ? strings : strings.map(_ => `${indentation}${_}`)).join('\n')
+  return (indentation.length === 0 ? strings : strings.map((_) => `${indentation}${_}`)).join("\n")
 }
 
-export default function indent(str: string, indentation = '    ') {
+export default function indent(str: string, indentation = "    ") {
   return indentArray(str.split(/\n/), indentation)
 }
 
 export function indentAll(strings: string[], indentation: string) {
   if (indentation.length === 0) {
-    return strings.join('\n')
+    return strings.join("\n")
   } else {
-    return strings.map(_ => indent(_, indentation)).join('\n')
+    return strings.map((_) => indent(_, indentation)).join("\n")
   }
 }

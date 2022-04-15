@@ -14,72 +14,76 @@
  * limitations under the License.
  */
 
-import { v4 } from 'uuid'
-import { u } from 'unist-builder'
-import { visit } from 'unist-util-visit'
-import { Content, Element, Parent, Root } from 'hast'
-import { visitParents } from 'unist-util-visit-parents'
+import { v4 } from "uuid"
+import { u } from "unist-builder"
+import { visit } from "unist-util-visit"
+import { Content, Element, Parent, Root } from "hast"
+import { visitParents } from "unist-util-visit-parents"
 
-import isElementWithProperties from './util/isElement'
-import { WizardSteps, PositionProps } from './frontmatter/KuiFrontmatter'
-import { GroupMember as CodeBlockGroupMember } from '../codeblock/CodeBlockProps'
-import { isImports, visitImportContainers } from './remark-import'
+import isElementWithProperties from "./util/isElement"
+import { WizardSteps, PositionProps } from "./frontmatter/KuiFrontmatter"
+import { GroupMember as CodeBlockGroupMember } from "../codeblock/CodeBlockProps"
+import { isImports, visitImportContainers } from "./remark-import"
 
-type Primordial = Pick<CodeBlockGroupMember, 'group'> & {
+type Primordial = Pick<CodeBlockGroupMember, "group"> & {
   title: string
   description: Element
   steps: Element[]
-  progress: Required<WizardSteps['wizard']['progress']>
+  progress: Required<WizardSteps["wizard"]["progress"]>
   splitCount: number
   isOnAnImportChain: boolean
 }
 
 interface GroupMember {
-  'data-kui-group': CodeBlockGroupMember['group']
-  'data-kui-member': CodeBlockGroupMember['member']
+  "data-kui-group": CodeBlockGroupMember["group"]
+  "data-kui-member": CodeBlockGroupMember["member"]
 }
 
 interface Title {
-  'data-kui-title': string
+  "data-kui-title": string
 }
 
 interface Description {
-  'data-kui-description': string
+  "data-kui-description": string
 }
 
 export type WizardProps = Title &
   Partial<Description> & {
     children: {
-      props: Title & Partial<Description> & { containedCodeBlocks?: string; children?: /*React.ReactNode*/any[] }
+      props: Title &
+        Partial<Description> & {
+          containedCodeBlocks?: string
+          children?: /*React.ReactNode*/ any[]
+        }
     }[]
   }
 
 type WizardStepProps = GroupMember &
   Title &
   Partial<Description> & {
-    'data-kui-split-count': number
+    "data-kui-split-count": number
   }
 
 export function getTitle(props: Partial<Title>) {
-  return props['data-kui-title']
+  return props["data-kui-title"]
 }
 
 export function getDescription(props: Partial<Description>) {
-  return props['data-kui-description']
+  return props["data-kui-description"]
 }
 
 export function getWizardGroup(props: WizardStepProps) {
-  return props['data-kui-wizard-group']
+  return props["data-kui-wizard-group"]
 }
 
 export function getWizardStepMember(props: WizardStepProps) {
-  return props['data-kui-wizard-member']
+  return props["data-kui-wizard-member"]
 }
 
-const REMOVED_HEADING_PLACEHOLDER_TEXT = '<!-- removed heading -->'
+const REMOVED_HEADING_PLACEHOLDER_TEXT = "<!-- removed heading -->"
 
 function removedHeading() {
-  return u('raw', REMOVED_HEADING_PLACEHOLDER_TEXT)
+  return u("raw", REMOVED_HEADING_PLACEHOLDER_TEXT)
 }
 
 export function isHeading(node: Content) {
@@ -90,7 +94,7 @@ export function isHeadingOrRemovedHeading(node: Content) {
   if (isHeading(node)) {
     // normal heading
     return true
-  } else if (node.type === 'raw' && node.value === REMOVED_HEADING_PLACEHOLDER_TEXT) {
+  } else if (node.type === "raw" && node.value === REMOVED_HEADING_PLACEHOLDER_TEXT) {
     // removed heading
     return true
   }
@@ -108,19 +112,19 @@ function transformer(ast: Root) {
 
     if (/^h\d+/.test(node.tagName) && parent) {
       if (
-        parent.tagName === 'div' &&
-        parent.properties['data-kui-split'] === 'wizard' &&
+        parent.tagName === "div" &&
+        parent.properties["data-kui-split"] === "wizard" &&
         node.children.length > 0 &&
-        node.children[0].type === 'text'
+        node.children[0].type === "text"
       ) {
         const firstNonCommentIdx = parent.children.findIndex(
-          _ => _.type !== 'raw' && (!isElementWithProperties(_) || !isImports(_.properties))
+          (_) => _.type !== "raw" && (!isElementWithProperties(_) || !isImports(_.properties))
         )
 
         if (idx === firstNonCommentIdx) {
           const [title, description] = node.children[0].value.split(/\s*::\s*/)
-          parent.properties['data-kui-title'] = title
-          parent.properties['data-kui-description'] = description
+          parent.properties["data-kui-title"] = title
+          parent.properties["data-kui-description"] = description
 
           // remove it from the AST, since we've folded it in as a step title
           parent.children[idx] = removedHeading()
@@ -136,53 +140,53 @@ function transformer(ast: Root) {
     const wizard: Primordial = {
       group: v4(),
       splitCount: 0,
-      title: '',
+      title: "",
       description: undefined,
-      progress: 'bar',
+      progress: "bar",
       steps: [],
-      isOnAnImportChain: false
+      isOnAnImportChain: false,
     }
 
     function extractStepsFromDivsVisitor(node: Element, ancestors: Parent[]) {
-      if (node.tagName === 'div' && node.properties['data-kui-split'] === 'wizard' && parent) {
-        delete node.properties['data-kui-split']
+      if (node.tagName === "div" && node.properties["data-kui-split"] === "wizard" && parent) {
+        delete node.properties["data-kui-split"]
 
         if (wizard.steps.length === 0) {
-          if (ancestors.find(_ => isElementWithProperties(_) && isImports(_.properties))) {
+          if (ancestors.find((_) => isElementWithProperties(_) && isImports(_.properties))) {
             wizard.isOnAnImportChain = true
           }
 
-          if (node.properties['data-kui-wizard-progress']) {
-            wizard.progress = node.properties['data-kui-wizard-progress'].toString() as 'bar' | 'none'
+          if (node.properties["data-kui-wizard-progress"]) {
+            wizard.progress = node.properties["data-kui-wizard-progress"].toString() as "bar" | "none"
           }
 
-          const splitCount = node.properties['data-kui-split-count']
-          if (!wizard.title && typeof splitCount !== 'undefined') {
-            wizard.splitCount = typeof splitCount === 'number' ? splitCount : parseInt(splitCount.toString(), 10)
+          const splitCount = node.properties["data-kui-split-count"]
+          if (!wizard.title && typeof splitCount !== "undefined") {
+            wizard.splitCount = typeof splitCount === "number" ? splitCount : parseInt(splitCount.toString(), 10)
           }
         }
 
-        if (!node.properties['data-kui-title']) {
+        if (!node.properties["data-kui-title"]) {
           // spurious case, problem some blank newlines
           return
         } else if (wizard.steps.length === 0 && !wizard.title) {
           wizard.title =
-            (node.properties['data-kui-title'] || ' ') +
-            (node.properties['data-kui-description'] ? ': ' + node.properties['data-kui-description'] : '')
+            (node.properties["data-kui-title"] || " ") +
+            (node.properties["data-kui-description"] ? ": " + node.properties["data-kui-description"] : "")
 
           wizard.description = node
         } else {
           node.properties.containedCodeBlocks = []
-          node.properties['data-kui-wizard-group'] = wizard.group
-          node.properties['data-kui-wizard-member'] = wizard.steps.length
+          node.properties["data-kui-wizard-group"] = wizard.group
+          node.properties["data-kui-wizard-member"] = wizard.steps.length
           wizard.steps.push(node)
         }
 
         const parent = ancestors[ancestors.length - 1]
         if (parent) {
-          const idx = parent.children.findIndex(child => child === node)
+          const idx = parent.children.findIndex((child) => child === node)
           if (idx >= 0) {
-            parent.children[idx] = u('raw', '<!-- removed step source -->')
+            parent.children[idx] = u("raw", "<!-- removed step source -->")
 
             // DO NOT DO THIS! the `visit` logic will skip over the next child :(
             // parent.children.splice(idx, 1)
@@ -191,22 +195,22 @@ function transformer(ast: Root) {
       }
     }
 
-    visitParents(ast, 'element', extractStepsFromDivsVisitor)
+    visitParents(ast, "element", extractStepsFromDivsVisitor)
 
     if (wizard.steps.length > 0 || wizard.title.trim() || wizard.description) {
       ast.children.push(
         u(
-          'element',
+          "element",
           {
-            tagName: 'div',
+            tagName: "div",
             properties: {
-              'data-kui-split': 'wizard',
-              'data-kui-title': wizard.title,
-              'data-kui-split-count': wizard.splitCount,
-              'data-kui-wizard-progress': wizard.progress,
-              'data-kui-is-from-import': wizard.isOnAnImportChain.toString(),
-              'data-kui-code-blocks': [] // rehype-imports will populate this
-            }
+              "data-kui-split": "wizard",
+              "data-kui-title": wizard.title,
+              "data-kui-split-count": wizard.splitCount,
+              "data-kui-wizard-progress": wizard.progress,
+              "data-kui-is-from-import": wizard.isOnAnImportChain.toString(),
+              "data-kui-code-blocks": [], // rehype-imports will populate this
+            },
           },
           [wizard.description, ...wizard.steps]
         )
@@ -214,22 +218,22 @@ function transformer(ast: Root) {
     }
   }
 
-  visit(ast, 'element', extractStepTitlesFromHeadingsVisitor)
+  visit(ast, "element", extractStepTitlesFromHeadingsVisitor)
   processWizards(ast)
   visitImportContainers(ast, ({ node }) => processWizards(node))
 }
 
 export function isWizard(props: Partial<PositionProps> | WizardProps): props is WizardProps {
-  return props['data-kui-split'] === 'wizard'
+  return props["data-kui-split"] === "wizard"
 }
 
 export function isWizardFromImports(props: Partial<PositionProps> | WizardProps): props is WizardProps {
-  return isWizard(props) && props['data-kui-is-from-import'] === 'true'
+  return isWizard(props) && props["data-kui-is-from-import"] === "true"
 }
 
 export function isWizardStep(props: Partial<WizardStepProps>): props is WizardStepProps {
   const stepProps = props as WizardStepProps
-  return typeof stepProps['data-kui-title'] === 'string' && typeof stepProps['data-kui-split-count'] === 'number'
+  return typeof stepProps["data-kui-title"] === "string" && typeof stepProps["data-kui-split-count"] === "number"
 }
 
 export default function wizard() {
