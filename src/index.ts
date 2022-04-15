@@ -16,7 +16,6 @@
 
 import { inspect } from 'util'
 
-import url from 'url'
 import { VFile } from 'vfile'
 import { read } from 'to-vfile'
 
@@ -33,6 +32,7 @@ export default async function main(argv = process.argv) {
   await mdwiz(await read(input))
 }
 
-if (import.meta.url.startsWith(url.pathToFileURL(process.argv[1]).href)) {
+//if (import.meta.url.startsWith(pathToFileURL(process.argv[1]).href)) {
+if (import.meta.url.startsWith('file:')) {
   main(process.argv)
 }

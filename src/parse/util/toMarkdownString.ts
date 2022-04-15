@@ -18,7 +18,6 @@ import { u } from 'unist-builder'
 import { Raw } from 'hast-util-raw'
 import { Element, Parent } from 'hast'
 import { toMdast } from 'hast-util-to-mdast'
-import { Node } from 'hast-util-to-mdast/lib'
 import { visit, CONTINUE, SKIP } from 'unist-util-visit'
 import { toMarkdown } from 'mdast-util-to-markdown'
 
@@ -28,6 +27,7 @@ import indent, { indentAll } from './indent'
 import isElementWithProperties from './isElement'
 import { isTabs, isTabWithProperties, getTabTitle, getTabsDepth } from '../rehype-tabbed'
 
+type Node = Parameters<typeof toMdast>[0]
 export { Node }
 
 /**
