@@ -17,7 +17,7 @@
 import { u } from 'unist-builder'
 import { Parent, Text } from 'hast'
 import { Transformer } from 'unified'
-import { Node, visit } from 'unist-util-visit'
+import { visit } from 'unist-util-visit'
 
 //import '@mdi/font/css/materialdesignicons.min.css'
 //import '@fortawesome/fontawesome-free/css/all.min.css'

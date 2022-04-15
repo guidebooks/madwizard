@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { VFile } from 'vfile'
-
 // ==foo== -> <mark>foo</mark>
 import hackMarks from './remark-mark'
 

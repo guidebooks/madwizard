@@ -49,7 +49,7 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 
 import icons from './rehype-icons'
-import { kuiFrontmatter, tryFrontmatter } from './frontmatter'
+import { kuiFrontmatter } from './frontmatter'
 
 const remarkPlugins = (): PluggableList => [
   gfm,

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { load } from 'js-yaml'
 import { u } from 'unist-builder'
 import { visit } from 'unist-util-visit'
 import { Literal, Node, Root, Text } from 'hast'
@@ -56,7 +57,6 @@ function extractKuiFrontmatter(tree): KuiFrontmatter {
   visit(tree, 'yaml', node => {
     if (isLiteral(node) && node.value) {
       try {
-        const { load } = require('js-yaml')
         frontmatter = load(node.value)
 
         return false // stop traversing immediately

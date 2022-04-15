@@ -21,7 +21,7 @@ import isElementWithProperties from '../util/isElement'
 
 // import { ChoiceState } from '..'
 import populateTabs from './populate'
-import identifyRecognizableTabGroups from './groups'
+// import identifyRecognizableTabGroups from './groups'
 
 export const START_OF_TAB = `<!-- ____KUI_START_OF_TAB____ -->`
 export const PUSH_TABS = `<!-- ____KUI_NESTED_TABS____ -->`
@@ -80,7 +80,7 @@ export default function plugin(uuid: string /*, choices: ChoiceState*/) {
     //   - span with properties {data-kui-tab-index=2}
     //       children: content of third tab
     //
-    const { tree: treeWithTabs, tabgroupIdx } = populateTabs(uuid, tree)
+    const { tree: treeWithTabs /*, tabgroupIdx */} = populateTabs(uuid, tree)
 
     // second, analyze the tabs to see if we can identify recognizable
     // tab groups, e.g. "choose your platform"

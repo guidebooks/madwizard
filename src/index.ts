@@ -23,7 +23,7 @@ import { read } from 'to-vfile'
 import parse from './parse'
 
 export async function mdwiz(input: VFile, uuid?: string) {
-  const ast = await parse(input)
+  const ast = await parse(input, uuid)
 
   console.log(inspect(ast, { colors: true, depth: null }))
 }
