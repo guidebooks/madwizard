@@ -1,0 +1,60 @@
+{
+  "name": "madwizard",
+  "version": "1.0.0",
+  "description": "Turn Markdown into Wizards",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "watch": "tsc --build . --watch",
+    "mdwiz": "node --experimental-specifier-resolution=node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "lint-staged": {
+    "**/*.{scss,css,html,js,json,md,ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ],
+    "**/*.{js,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.24",
+    "@typescript-eslint/eslint-plugin": "^5.19.0",
+    "@typescript-eslint/parser": "^5.19.0",
+    "eslint": "^8.13.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.8",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.1.1",
+    "@mdi/font": "^6.6.96",
+    "@types/unist": "^2.0.6",
+    "debug": "^4.3.4",
+    "front-matter": "^4.0.2",
+    "hast": "^1.0.0",
+    "hast-util-raw": "^7.2.1",
+    "hast-util-to-mdast": "^8.3.1",
+    "hast-util-to-string": "^2.0.0",
+    "mdast-util-to-markdown": "^1.3.0",
+    "rehype-raw": "^6.1.1",
+    "rehype-slug": "^5.0.1",
+    "remark-directive": "^2.0.1",
+    "remark-emoji": "^3.0.2",
+    "remark-frontmatter": "^4.0.1",
+    "remark-gfm": "^3.0.1",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
+    "to-vfile": "^7.2.3",
+    "unified": "^10.1.2",
+    "unist-util-visit": "^4.1.0",
+    "unist-util-visit-parents": "^5.1.0",
+    "uuid": "^8.3.2"
+  }
+}
