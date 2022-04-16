@@ -8,9 +8,9 @@
   "types": "dist/types.d.ts",
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "watch": "concurrently -n PARCEL,TYPES 'parcel watch' 'tsc --noEmit --watch'",
+    "watch": "concurrently -n PARCEL,TYPES,TEST 'parcel watch' 'tsc --noEmit --watch' 'cd test && tsc --build . --watch'",
     "build": "parcel build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --experimental-specifier-resolution=node ./test/dist",
     "format": "prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",
     "prepare": "husky install"
   },
@@ -28,22 +28,24 @@
     ]
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
     "@types/node": "^17.0.24",
+    "@types/unist": "^2.0.6",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
     "concurrently": "^7.1.0",
     "eslint": "^8.13.0",
     "husky": "^7.0.4",
+    "json-diff": "^0.7.4",
     "lint-staged": "^12.3.8",
     "parcel": "^2.4.1",
     "prettier": "^2.6.2",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "uvu": "^0.5.3"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.1.1",
     "@mdi/font": "^6.6.96",
-    "@types/js-yaml": "^4.0.5",
-    "@types/unist": "^2.0.6",
     "debug": "^4.3.4",
     "front-matter": "^4.0.2",
     "hast": "^1.0.0",

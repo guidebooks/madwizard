@@ -85,7 +85,10 @@ function wizardStepForChoiceOnFrontier(graph: Choice, isFirstChoice: boolean): W
   }
 }
 
-export function wizardify(dag: Graph, choices: ChoiceState) {
+type Wizard = WizardStepWithGraph[]
+export { Wizard }
+
+export function wizardify(dag: Graph, choices: ChoiceState): Wizard {
   const frontier = findChoiceFrontier(dag, choices)
 
   // the steps will be the interleaved ((...prereqs, choice), ...)

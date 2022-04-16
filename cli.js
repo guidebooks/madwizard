@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-import { read } from "to-vfile"
+/* eslint-disable no-undef */
 
-import ChoiceState from "./choices/impl"
+import { inspect } from "util"
+import main from "./dist/main.mjs"
 
-import * as ParserApi from "./parser"
-export { ParserApi }
-
-import * as DagApi from "./dag"
-export { DagApi }
-
-import * as WizardApi from "./wizard"
-export { WizardApi }
-
-export default async function main(input: string, choices = new ChoiceState()) {
-  const blocks = ParserApi.blockify(await read(input))
-  const dag = DagApi.daggify(blocks, choices)
-  const wizard = WizardApi.wizardify(dag, choices)
-
-  return { blocks, dag, wizard }
+async function cli(input) {
+  const { wizard } = await main(input)
+  console.log(inspect(wizard, { colors: true, depth: null }))
 }
+
+cli(process.argv[2])
