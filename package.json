@@ -6,6 +6,9 @@
   "main": "dist/main.mjs",
   "type": "module",
   "types": "dist/types.d.ts",
+  "bin": {
+    "madwizard": "./cli.js"
+  },
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "watch": "concurrently -n PARCEL,TYPES,TEST 'parcel watch' 'tsc --noEmit --watch' 'cd test && tsc --build . --watch'",
