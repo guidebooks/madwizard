@@ -10,7 +10,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "watch": "concurrently -n PARCEL,TYPES,TEST 'parcel watch' 'tsc --noEmit --watch' 'cd test && tsc --build . --watch'",
     "build": "parcel build",
-    "test": "node --experimental-specifier-resolution=node ./test/dist",
+    "build:test": "cd test && tsc --build .",
+    "test": "concurrently -n TYPES,TESTS 'tsc --noEmit' 'node --experimental-specifier-resolution=node ./test/dist'",
     "format": "prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",
     "prepare": "husky install"
   },
