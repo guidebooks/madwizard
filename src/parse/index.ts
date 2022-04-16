@@ -71,7 +71,7 @@ const rehypePlugins = (uuid: string, codeblocks: CodeBlockProps[]): PluggableLis
   rehypeSlug,
 ]
 
-export default function parse(input: VFile, uuid = v4()) {
+export function parse(input: VFile, uuid = v4()) {
   const codeblocks: CodeBlockProps[] = []
 
   const processor = unified()
@@ -84,4 +84,8 @@ export default function parse(input: VFile, uuid = v4()) {
     codeblocks,
     ast: processor.run(processor.parse(hackSource(input.value.toString()))),
   }
+}
+
+export function blockify(input: VFile, uuid?: string) {
+  return parse(input, uuid).codeblocks
 }

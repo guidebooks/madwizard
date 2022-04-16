@@ -18,7 +18,7 @@ import Debug from "debug"
 import { Element } from "hast"
 import { sync as which } from "which"
 
-import { ChoiceState } from "../../../choices"
+import ChoiceState from "../../../choices"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
 const debug = Debug("rehype-tabbed/gruops/homebrew")

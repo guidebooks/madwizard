@@ -15,21 +15,28 @@
  */
 
 import { inspect } from "util"
-
-import { VFile } from "vfile"
 import { read } from "to-vfile"
 
-import parse from "./parse"
+import ChoiceState from "./choices/impl"
 
-export async function mdwiz(input: VFile, uuid?: string) {
-  const ast = await parse(input, uuid)
+import * as Parser from "./parse"
+export { Parser }
 
-  console.log(inspect(ast, { colors: true, depth: null }))
-}
+import * as Dag from "./dag"
+export { Dag }
 
-export default async function main(argv = process.argv) {
+import * as Wizard from "./wizard"
+export { Wizard }
+
+export default async function main(argv = process.argv, choices = new ChoiceState()) {
   const input = argv[2]
-  await mdwiz(await read(input))
+  const blocks = Parser.blockify(await read(input))
+  const dag = Dag.daggify(blocks, choices)
+  const wizard = Wizard.wizardify(dag, choices)
+
+  console.log(inspect(wizard, { colors: true, depth: null }))
+
+  return { blocks, dag, wizard }
 }
 
 //if (import.meta.url.startsWith(pathToFileURL(process.argv[1]).href)) {

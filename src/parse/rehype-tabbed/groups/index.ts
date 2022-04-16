@@ -18,7 +18,7 @@ import { Node } from "hast"
 import { visit } from "unist-util-visit"
 
 import { isTabGroup } from ".."
-import { ChoiceState } from "../../../choices"
+import ChoiceState from "../../../choices"
 
 import arch from "./arch"
 import platform from "./platform"

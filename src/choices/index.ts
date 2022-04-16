@@ -19,7 +19,7 @@ import { Choice as CodeBlockChoice } from "../codeblock/CodeBlockProps"
 /* map from choice group to selected choice member */
 export type ChoicesMap = Record<CodeBlockChoice["group"], CodeBlockChoice["title"]>
 
-export interface ChoiceState {
+export default interface ChoiceState {
   keys: () => ReturnType<typeof Object.keys>
   entries: () => ReturnType<typeof Object.entries>
   contains: <K extends keyof ChoicesMap>(key: K) => boolean
