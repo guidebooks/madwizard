@@ -19,7 +19,7 @@ import { read } from "to-vfile"
 
 import ChoiceState from "./choices/impl"
 
-import * as Parser from "./parse"
+import * as Parser from "./parser"
 export { Parser }
 
 import * as Dag from "./dag"
