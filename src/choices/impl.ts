@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import ChoiceState, { ChoicesMap } from "."
-import { notifyOfChoice } from "./events"
+import { ChoiceState, ChoicesMap } from "."
+import ChoiceEventManager from "./events"
 
-export default class ChoiceStateImpl implements ChoiceState {
+export default class ChoiceStateImpl extends ChoiceEventManager implements ChoiceState {
   /** Choices made, e.g. "i want to install using homebrew" */
   private readonly _choices: ChoicesMap = {}
 
@@ -44,7 +44,7 @@ export default class ChoiceStateImpl implements ChoiceState {
     if (key in this._choices) {
       delete this._choices[key]
       this.rejectedChoices[key] = true
-      notifyOfChoice(this)
+      this.notifyOfChoice(this)
       return true
     } else {
       return false
@@ -59,7 +59,7 @@ export default class ChoiceStateImpl implements ChoiceState {
     if (overrideRejections || !(key in this.rejectedChoices)) {
       delete this.rejectedChoices[key]
       this._choices[key] = value
-      notifyOfChoice(this)
+      this.notifyOfChoice(this)
       return true
     } else {
       return false

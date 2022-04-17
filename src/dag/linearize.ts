@@ -27,7 +27,7 @@
 
 import { Ordered, Unordered, Graph, choose, isSequence, isParallel, isSubTask, isTitledSteps, isChoice } from "."
 
-import ChoiceState from "../choices"
+import { ChoiceState } from "../choices"
 import CodeBlockProps from "../codeblock/CodeBlockProps"
 
 /** @return A linearized set of code blocks in the given `graph` */

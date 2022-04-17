@@ -16,7 +16,7 @@
 
 import { Element } from "hast"
 
-import ChoiceState from "../../../choices"
+import { ChoiceState } from "../../../choices"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
 class Arch {

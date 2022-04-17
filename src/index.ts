@@ -14,24 +14,23 @@
  * limitations under the License.
  */
 
-import { read } from "to-vfile"
-import expandHomeDir from "expand-home-dir"
-
-import ChoiceState from "./choices/impl"
-
-import * as ParserApi from "./parser"
-export { ParserApi }
-
+import * as ChoiceApi from "./choices"
 import * as DagApi from "./dag"
-export { DagApi }
-
+import * as ParserApi from "./parser"
 import * as WizardApi from "./wizard"
-export { WizardApi }
 
-export default async function main(input: string, choices = new ChoiceState()) {
-  const blocks = await ParserApi.blockify(await read(expandHomeDir(input)))
+async function main(input: string, choices = ChoiceApi.newChoiceState()) {
+  const blocks = await ParserApi.blockify(input)
   const dag = DagApi.daggify(blocks, choices)
   const wizard = WizardApi.wizardify(dag, choices)
 
-  return { blocks, dag, wizard }
+  return { blocks, dag, wizard, choices }
+}
+
+export default {
+  ChoiceApi,
+  ParserApi,
+  DagApi,
+  WizardApi,
+  main,
 }

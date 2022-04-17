@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-import { VFile } from "vfile"
 import { v4 } from "uuid"
-import { unified, PluggableList } from "unified"
+import { VFile } from "vfile"
+import { read } from "to-vfile"
+import expandHomeDir from "expand-home-dir"
+
 import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
+import { unified, PluggableList } from "unified"
 
 import CodeBlockProps from "../codeblock/CodeBlockProps"
 
@@ -89,6 +92,6 @@ export async function parse(input: VFile, uuid = v4()) {
   }
 }
 
-export async function blockify(input: VFile, uuid?: string) {
-  return (await parse(input, uuid)).codeblocks
+export async function blockify(input: string, uuid?: string) {
+  return (await parse(await read(expandHomeDir(input)), uuid)).codeblocks
 }

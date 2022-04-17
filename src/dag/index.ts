@@ -28,7 +28,7 @@
 import { v4 } from "uuid"
 import { basename } from "path"
 
-import ChoiceState from "../choices"
+import { ChoiceState } from "../choices"
 import CodeBlockProps, { Source, Choice as CodeBlockChoice, Title, Description } from "../codeblock/CodeBlockProps"
 
 export { default as daggify } from "./compile"

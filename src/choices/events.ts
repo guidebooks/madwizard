@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-import ChoiceState from "."
+import { ChoiceState } from "."
 import { EventEmitter } from "events"
 
-const eventBus = new EventEmitter()
-
 type Choices = { choices: ChoiceState }
+type ChoiceHandler = (choices: Choices) => void
+export type ChoiceHandlerRegistration = (handler: (choices: Choices) => void) => void
 
-export function notifyOfChoice(choices: ChoiceState) {
-  eventBus.emit("/choice/update", { choices })
-}
+export default class ChoiceEventsManager extends EventEmitter {
+  protected notifyOfChoice(choices: ChoiceState) {
+    this.emit("/choice/update", { choices })
+  }
 
-export function onChoice(handler: (choices: Choices) => void) {
-  eventBus.on("/choice/update", handler)
-}
+  public onChoice(handler: ChoiceHandler) {
+    this.on("/choice/update", handler)
+  }
 
-export function offChoice(handler: (choices: Choices) => void) {
-  eventBus.off("/choice/update", handler)
+  public offChoice(handler: ChoiceHandler) {
+    this.off("/choice/update", handler)
+  }
 }

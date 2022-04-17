@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
+import ChoiceStateImpl from "./impl"
 import { Choice as CodeBlockChoice } from "../codeblock/CodeBlockProps"
+import { ChoiceHandlerRegistration } from "./events"
 
 /* map from choice group to selected choice member */
 export type ChoicesMap = Record<CodeBlockChoice["group"], CodeBlockChoice["title"]>
 
-export default interface ChoiceState {
+export interface ChoiceState {
+  onChoice: ChoiceHandlerRegistration
+  offChoice: ChoiceHandlerRegistration
+
   keys: () => ReturnType<typeof Object.keys>
   entries: () => ReturnType<typeof Object.entries>
   contains: <K extends keyof ChoicesMap>(key: K) => boolean
   get: <K extends keyof ChoicesMap>(key: K) => ChoicesMap[K]
   set: <K extends keyof ChoicesMap>(key: K, value: ChoicesMap[K], overrideRejections?: boolean) => boolean
   remove: <K extends keyof ChoicesMap>(key: K) => boolean
+}
+
+export function newChoiceState() {
+  return new ChoiceStateImpl()
 }

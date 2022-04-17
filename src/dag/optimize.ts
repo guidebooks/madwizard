@@ -15,7 +15,7 @@
  */
 
 import { Graph } from "."
-import ChoiceState from "../choices"
+import { ChoiceState } from "../choices"
 
 import hoistSubTasks from "./hoistSubTasks"
 import propagateTitles from "./propagateTitles"
