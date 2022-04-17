@@ -5,3 +5,4 @@ tsconfig.json
 *~
 .*
 dist/types.d.ts.map
+*.tgz
