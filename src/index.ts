@@ -15,6 +15,7 @@
  */
 
 import { read } from "to-vfile"
+import expandHomeDir from "expand-home-dir"
 
 import ChoiceState from "./choices/impl"
 
@@ -28,7 +29,7 @@ import * as WizardApi from "./wizard"
 export { WizardApi }
 
 export default async function main(input: string, choices = new ChoiceState()) {
-  const blocks = await ParserApi.blockify(await read(input))
+  const blocks = await ParserApi.blockify(await read(expandHomeDir(input)))
   const dag = DagApi.daggify(blocks, choices)
   const wizard = WizardApi.wizardify(dag, choices)
 
