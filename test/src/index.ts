@@ -33,7 +33,7 @@ function munge(wizard: Awaited<ReturnType<typeof madWizard>>["wizard"]) {
       if (key === "group" || key === "id" || key === "key") {
         return "fakeid"
       } else if (key === "source") {
-        return value.replace(/id: [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g, "")
+        return value.replace(/(id): [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g, "$1: fakeid")
       } else {
         return value
       }
