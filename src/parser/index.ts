@@ -48,7 +48,7 @@ import codeIndexer from "./rehype-code-indexer"
 import rehypeRaw from "rehype-raw"
 import rehypeSlug from "rehype-slug"
 
-import icons from "./rehype-icons"
+// import icons from "./rehype-icons"
 import { kuiFrontmatter } from "./frontmatter"
 
 const remarkPlugins = (): PluggableList => [
@@ -66,7 +66,7 @@ const rehypePlugins = (uuid: string, codeblocks: CodeBlockProps[]): PluggableLis
   tip,
   [codeIndexer, uuid, codeblocks],
   rehypeImports,
-  icons,
+  // icons,
   rehypeRaw,
   rehypeSlug,
 ]

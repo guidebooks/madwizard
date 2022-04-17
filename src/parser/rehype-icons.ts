@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { u } from "unist-builder"
+/* import { u } from "unist-builder"
 import { Parent, Text } from "hast"
 import { Transformer } from "unified"
 import { visit } from "unist-util-visit"
@@ -84,3 +84,4 @@ export default function plugin() {
 
   return transformer
 }
+*/
