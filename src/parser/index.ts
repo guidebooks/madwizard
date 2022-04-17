@@ -31,7 +31,7 @@ import gfm from "remark-gfm"
 // does not create any DOM elements
 import remarkDirective from "remark-directive"
 
-// import inlineSnippets from '../../../controller/snippets'
+import inlineSnippets from "../snippets"
 
 import emojis from "remark-emoji"
 import frontmatter from "remark-frontmatter"
@@ -71,7 +71,7 @@ const rehypePlugins = (uuid: string, codeblocks: CodeBlockProps[]): PluggableLis
   rehypeSlug,
 ]
 
-export function parse(input: VFile, uuid = v4()) {
+export async function parse(input: VFile, uuid = v4()) {
   const codeblocks: CodeBlockProps[] = []
 
   const processor = unified()
@@ -80,12 +80,15 @@ export function parse(input: VFile, uuid = v4()) {
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypePlugins(uuid, codeblocks))
 
+  const sourcePriorToInlining = input.value.toString()
+  const source = await inlineSnippets()(sourcePriorToInlining, input.path)
+
   return {
     codeblocks,
-    ast: processor.run(processor.parse(hackSource(input.value.toString()))),
+    ast: processor.run(processor.parse(hackSource(source))),
   }
 }
 
-export function blockify(input: VFile, uuid?: string) {
-  return parse(input, uuid).codeblocks
+export async function blockify(input: VFile, uuid?: string) {
+  return (await parse(input, uuid)).codeblocks
 }
