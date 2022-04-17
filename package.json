@@ -51,7 +51,6 @@
     "uvu": "^0.5.3"
   },
   "dependencies": {
-    "@mdi/font": "^6.6.96",
     "debug": "^4.3.4",
     "expand-home-dir": "^0.0.3",
     "front-matter": "^4.0.2",
