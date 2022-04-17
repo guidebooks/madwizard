@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import ChoiceState from "../choices"
+import { ChoiceState } from "../choices"
 import CodeBlockProps from "../codeblock/CodeBlockProps"
 import { Choice, Graph, SubTask, emptySequence, TitledSteps, parallel, seq, sequence, subtask } from "."
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import ChoiceState from "../choices"
+import { ChoiceState } from "../choices"
 import { findChoiceFrontier } from "../dag/choice-frontier"
 import { Graph, Choice, bodySource, extractDescription, extractTitle, hasSource, isLeafNode } from "../dag"
 

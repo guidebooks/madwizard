@@ -32,7 +32,7 @@ import {
   subtask,
 } from "."
 
-import ChoiceState from "../choices"
+import { ChoiceState } from "../choices"
 
 function key(graph: Graph) {
   if (hasKey(graph)) {

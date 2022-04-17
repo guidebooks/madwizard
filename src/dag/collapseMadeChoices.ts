@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import ChoiceState from "../choices"
+import { ChoiceState } from "../choices"
 import { Graph, isChoice, isSequence, isParallel, isSubTask, isTitledSteps, emptySequence } from "."
 
 function collapse(graph: Graph, choices: ChoiceState): Graph {

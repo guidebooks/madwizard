@@ -34,7 +34,7 @@ import {
   subtask,
 } from "."
 
-import ChoiceState from "../choices"
+import { ChoiceState } from "../choices"
 import findChoiceFrontier from "./choice-frontier"
 
 type LookupTable = Record<SubTask["key"], SubTask>
