@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { VFileCompatible } from "vfile"
+
 import { compile } from "./graph"
 import { blockify } from "./parser"
 import { wizardify } from "./wizard"
@@ -24,7 +26,7 @@ export * from "./parser"
 export * from "./choices"
 export * from "./wizard"
 
-export default async function main(input: string, choices = newChoiceState()) {
+export default async function main(input: VFileCompatible, choices = newChoiceState()) {
   const { blocks } = await blockify(input, choices)
   const dag = compile(blocks, choices)
   const wizard = wizardify(dag, choices)
