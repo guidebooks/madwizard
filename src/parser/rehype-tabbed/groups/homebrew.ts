@@ -16,7 +16,7 @@
 
 import Debug from "debug"
 import { Element } from "hast"
-import { sync as which } from "which"
+import which from "which"
 
 import { ChoiceState } from "../../../choices"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
@@ -61,7 +61,7 @@ class Homebrew {
     // which('brew').then(() => choices.set(this.choiceGroup, this.canonicalName))
     // .catch(err => debug('Homebrew probably not found', err))
     try {
-      if (which("brew")) {
+      if (which.sync("brew")) {
         choices.set(this.choiceGroup, this.canonicalName, false)
       }
     } catch (err) {

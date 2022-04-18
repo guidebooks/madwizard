@@ -23,6 +23,7 @@ import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
 import { unified, PluggableList } from "unified"
 
+import { ChoiceState, newChoiceState } from "../choices"
 import CodeBlockProps from "../codeblock/CodeBlockProps"
 
 import hackSource from "./hack"
@@ -63,9 +64,9 @@ const remarkPlugins = (): PluggableList => [
   emojis,
 ]
 
-const rehypePlugins = (uuid: string, codeblocks: CodeBlockProps[]): PluggableList => [
+const rehypePlugins = (uuid: string, choices: ChoiceState, codeblocks: CodeBlockProps[]): PluggableList => [
   wizard,
-  [tabbed, uuid],
+  [tabbed, uuid, choices],
   tip,
   [codeIndexer, uuid, codeblocks],
   rehypeImports,
@@ -74,24 +75,25 @@ const rehypePlugins = (uuid: string, codeblocks: CodeBlockProps[]): PluggableLis
   rehypeSlug,
 ]
 
-export async function parse(input: VFile, uuid = v4()) {
-  const codeblocks: CodeBlockProps[] = []
+export async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid = v4()) {
+  const blocks: CodeBlockProps[] = []
 
   const processor = unified()
     .use(remarkParse)
     .use(remarkPlugins())
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypePlugins(uuid, codeblocks))
+    .use(rehypePlugins(uuid, choices, blocks))
 
   const sourcePriorToInlining = input.value.toString()
   const source = await inlineSnippets()(sourcePriorToInlining, input.path)
 
   return {
-    codeblocks,
+    choices,
+    blocks,
     ast: processor.run(processor.parse(hackSource(source))),
   }
 }
 
-export async function blockify(input: string, uuid?: string) {
-  return (await parse(await read(expandHomeDir(input)), uuid)).codeblocks
+export async function blockify(input: string, choices?: ChoiceState, uuid?: string) {
+  return parse(await read(expandHomeDir(input)), choices, uuid)
 }

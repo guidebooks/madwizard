@@ -20,7 +20,7 @@ import * as ParserApi from "./parser"
 import * as WizardApi from "./wizard"
 
 async function main(input: string, choices = ChoiceApi.newChoiceState()) {
-  const blocks = await ParserApi.blockify(input)
+  const { blocks } = await ParserApi.blockify(input, choices)
   const dag = DagApi.daggify(blocks, choices)
   const wizard = WizardApi.wizardify(dag, choices)
 
