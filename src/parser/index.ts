@@ -28,16 +28,12 @@ import { ChoiceState, newChoiceState } from "../choices"
 
 import { hackMarkdownSource } from "./hack"
 
-// GitHub Flavored Markdown plugin; see https://github.com/IBM/kui/issues/6563
-import gfm from "remark-gfm"
-
 // parses out ::import{filepath} as node.type === 'leafDirective', but
 // does not create any DOM elements
 import remarkDirective from "remark-directive"
 
 import inlineSnippets from "../snippets"
 
-import emojis from "remark-emoji"
 import frontmatter from "remark-frontmatter"
 
 import { rehypeTip } from "./rehype-tip"
@@ -61,12 +57,10 @@ export * from "./rehype-tabbed"
 export * from "./rehype-code-indexer"
 
 const remarkPlugins = (): PluggableList => [
-  gfm,
   remarkDirective,
   remarkImports,
   [frontmatter, ["yaml", "toml"]],
   [kuiFrontmatter],
-  emojis,
 ]
 
 const rehypePlugins = (uuid: string, choices: ChoiceState, codeblocks: CodeBlockProps[]): PluggableList => [
