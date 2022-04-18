@@ -19,9 +19,10 @@ import { Element, ElementContent } from "hast"
 
 import isElementWithProperties from "../util/isElement"
 
-// import { ChoiceState } from '..'
 import populateTabs from "./populate"
-// import identifyRecognizableTabGroups from './groups'
+
+import { ChoiceState } from "../../choices"
+import identifyRecognizableTabGroups from "./groups"
 
 export const START_OF_TAB = `<!-- ____KUI_START_OF_TAB____ -->`
 export const PUSH_TABS = `<!-- ____KUI_NESTED_TABS____ -->`
@@ -69,7 +70,7 @@ export function setTabTitle(elt: Element, title: string): string {
   return (elt.properties.title = title)
 }
 
-export default function plugin(uuid: string /*, choices: ChoiceState*/) {
+export default function plugin(uuid: string, choices: ChoiceState) {
   return function rehypeTabbed(tree: Parameters<Transformer>[0]): ReturnType<Transformer> {
     // first, assemble the tabs into this tree structure, one of these per tab group:
     // - div with properties {data-kui-choice-group, data-kui-choice-nesting-depth}
@@ -80,12 +81,12 @@ export default function plugin(uuid: string /*, choices: ChoiceState*/) {
     //   - span with properties {data-kui-tab-index=2}
     //       children: content of third tab
     //
-    const { tree: treeWithTabs /*, tabgroupIdx */ } = populateTabs(uuid, tree)
+    const { tree: treeWithTabs, tabgroupIdx } = populateTabs(uuid, tree)
 
     // second, analyze the tabs to see if we can identify recognizable
     // tab groups, e.g. "choose your platform"
-    const treeWithTabsInRecognizableGroups = treeWithTabs
-    //  tabgroupIdx < 0 ? treeWithTabs : identifyRecognizableTabGroups(treeWithTabs, choices)
+    const treeWithTabsInRecognizableGroups =
+      tabgroupIdx < 0 ? treeWithTabs : identifyRecognizableTabGroups(treeWithTabs, choices)
 
     return treeWithTabsInRecognizableGroups
   }

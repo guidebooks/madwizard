@@ -36,7 +36,11 @@ export default function identifyRecognizableTabGroups(tree: Node, choices: Choic
     // I don't think this is a meaningful thing to do whilst running
     // in browser? TODO: maybe we should allow the providers a say?
     return
-  } */
+    } */
+
+  if (!choices) {
+    return
+  }
 
   providers
     .filter((_) => !choices.contains(_.choiceGroup)) // already set?
