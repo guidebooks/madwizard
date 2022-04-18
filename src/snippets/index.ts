@@ -15,7 +15,6 @@
  */
 
 import Debug from "debug"
-import { read } from "to-vfile"
 import expandHomeDir from "expand-home-dir"
 import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin } from "path"
 
@@ -42,7 +41,7 @@ const RE_SNIPPET = /^(\s*)--(-*)8<--(-*)\s+"([^"]+)"(\s+"([^"]+)")?\s*$/
 //                                                        \- [6] deprecated
 
 function isError(x: string | Error) {
-  return x.constructor === Error
+  return x && x.constructor === Error
 }
 
 function isUrl(a: string) {
@@ -108,7 +107,7 @@ function colonColonColon(nestingDepth: number) {
  * https://facelessuser.github.io/pymdown-extensions/extensions/snippets/.
  */
 export default function inlineSnippets(
-  fetcher: (filepath: string) => Promise<string | Error> = (filepath) => read(filepath).then((_) => _.value.toString()),
+  fetcher: (filepath: string) => Promise<string | Error>,
   snippetBasePath?: string,
   includeFrontmatter = true,
   nestingDepth = 0,

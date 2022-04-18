@@ -74,7 +74,7 @@ const rehypePlugins = (uuid: string, choices: ChoiceState, codeblocks: CodeBlock
   rehypeSlug,
 ]
 
-export async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid = v4()) {
+export async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid = v4(), reader = read) {
   const blocks: CodeBlockProps[] = []
 
   const processor = unified()
@@ -83,8 +83,10 @@ export async function parse(input: VFile, choices: ChoiceState = newChoiceState(
     .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypePlugins(uuid, choices, blocks))
 
+  const fetcher = (filepath: string) => reader(new VFile({ path: filepath })).then((_) => _.value.toString())
+
   const sourcePriorToInlining = input.value.toString()
-  const source = await inlineSnippets()(sourcePriorToInlining, input.path)
+  const source = await inlineSnippets(fetcher)(sourcePriorToInlining, input.path)
 
   return {
     choices,
@@ -93,7 +95,7 @@ export async function parse(input: VFile, choices: ChoiceState = newChoiceState(
   }
 }
 
-export async function blockify(input: VFileCompatible, choices?: ChoiceState, uuid?: string) {
-  const file = typeof input === "string" ? await read(expandHomeDir(input)) : new VFile(input)
-  return parse(file, choices, uuid)
+export async function blockify(input: VFileCompatible, choices?: ChoiceState, uuid?: string, reader = read) {
+  const file = typeof input === "string" ? await reader(expandHomeDir(input)) : new VFile(input)
+  return parse(file, choices, uuid, reader)
 }
