@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
+import * as GraphApi from "./graph"
 import * as ChoiceApi from "./choices"
-import * as DagApi from "./dag"
 import * as ParserApi from "./parser"
 import * as WizardApi from "./wizard"
 
 async function main(input: string, choices = ChoiceApi.newChoiceState()) {
   const { blocks } = await ParserApi.blockify(input, choices)
-  const dag = DagApi.daggify(blocks, choices)
+  const dag = GraphApi.daggify(blocks, choices)
   const wizard = WizardApi.wizardify(dag, choices)
 
   return { blocks, dag, wizard, choices }
 }
 
+export { GraphApi }
+
 export default {
   ChoiceApi,
   ParserApi,
-  DagApi,
+  GraphApi,
   WizardApi,
   main,
 }
