@@ -16,7 +16,7 @@
 
 import { ChoiceState } from "../choices"
 import { CodeBlockProps } from "../codeblock"
-import { Choice, Graph, SubTask, emptySequence, TitledSteps, parallel, seq, sequence, subtask } from "."
+import { Choice, Graph, SubTask, TitledSteps, emptySequence, extractTitle, parallel, seq, sequence, subtask } from "."
 
 import {
   Import as CodeBlockImport,
@@ -54,7 +54,9 @@ function isWizardStepNesting(nesting: Nesting): nesting is WizardStepNesting {
 export function compile(
   blocks: CodeBlockProps[],
   choices: ChoiceState,
-  ordering: "sequence" | "parallel" = "sequence"
+  ordering: "sequence" | "parallel" = "sequence",
+  title?: string,
+  description?: string
 ): Graph {
   if (!blocks) {
     return undefined
@@ -252,14 +254,17 @@ export function compile(
     }
   })
 
-  return optimize(
+  const unoptimized =
     parts.length === 0
       ? undefined
       : parts.length === 1
       ? parts[0]
       : ordering === "parallel"
       ? parallel(parts)
-      : sequence(parts),
+      : sequence(parts)
+
+  return optimize(
+    title && !extractTitle(unoptimized) ? subtask(title, title, description, "", sequence([unoptimized])) : unoptimized,
     choices
   )
 }
