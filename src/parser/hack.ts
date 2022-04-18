@@ -23,7 +23,7 @@ import hackKeys from "./remark-keys"
 // support pymdown's indentation-based tab and tip blocking
 import hackIndentation from "./rehype-tabbed/hack"
 
-export default function hackSource(source: string) {
+export function hackMarkdownSource(source: string) {
   return hackKeys(hackMarks(hackIndentation(source)))
     .trim()
     .replace(/\){target=[^}]+}/g, ")")

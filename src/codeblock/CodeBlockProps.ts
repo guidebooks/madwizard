@@ -99,7 +99,7 @@ export function isWizardStep(part: CodeBlockNestingParent): part is WizardStep {
   return hasKind(part, "WizardStep")
 }
 
-export default interface CodeBlockProps {
+export interface CodeBlockProps {
   id: string
   body: string
   language: string

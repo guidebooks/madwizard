@@ -14,20 +14,29 @@
  * limitations under the License.
  */
 
-import { Element } from "hast"
+export type Status =
+  | "blank"
+  | "info"
+  | "minor"
+  | "current"
+  | "pending"
+  | "in-progress"
+  | "success"
+  | "warning"
+  | "error"
+  | "unknown"
 
-export function isExecutable(language: string) {
-  return /^(bash|sh|shell)$/.test(language)
-}
-
-export function isExecutableCodeBlock(node: Element) {
-  if (node.tagName === "code") {
-    // react-markdown v6+ places the language in the className
-    const match = node.properties.className ? /language-(\w+)/.exec(node.properties.className.toString()) : ""
-    const language = match ? match[1] : undefined
-
-    return isExecutable(language)
-  } else {
-    return false
-  }
+export function isStatus(status: string): status is Status {
+  return (
+    status === "blank" ||
+    status === "info" ||
+    status === "minor" ||
+    status === "current" ||
+    status === "pending" ||
+    status === "in-progress" ||
+    status === "success" ||
+    status === "warning" ||
+    status === "error" ||
+    status === "unknown"
+  )
 }

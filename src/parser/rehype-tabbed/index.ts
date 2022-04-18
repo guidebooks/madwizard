@@ -70,8 +70,8 @@ export function setTabTitle(elt: Element, title: string): string {
   return (elt.properties.title = title)
 }
 
-export default function plugin(uuid: string, choices: ChoiceState) {
-  return function rehypeTabbed(tree: Parameters<Transformer>[0]): ReturnType<Transformer> {
+export function rehypeTabbed(uuid: string, choices: ChoiceState) {
+  return function rehypeTabbedTransformer(tree: Parameters<Transformer>[0]): ReturnType<Transformer> {
     // first, assemble the tabs into this tree structure, one of these per tab group:
     // - div with properties {data-kui-choice-group, data-kui-choice-nesting-depth}
     //   - span with properties {data-kui-tab-index=0}

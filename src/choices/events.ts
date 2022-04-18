@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { ChoiceState } from "."
 import { EventEmitter } from "events"
+
+const debug = Debug("madwizard/ChoiceState")
 
 type Choices = { choices: ChoiceState }
 type ChoiceHandler = (choices: Choices) => void
@@ -23,6 +26,7 @@ export type ChoiceHandlerRegistration = (handler: (choices: Choices) => void) =>
 
 export default class ChoiceEventsManager extends EventEmitter {
   protected notifyOfChoice(choices: ChoiceState) {
+    debug("update", choices)
     this.emit("/choice/update", { choices })
   }
 

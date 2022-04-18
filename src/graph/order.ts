@@ -33,7 +33,7 @@ import {
   isTitledSteps,
 } from "."
 
-import CodeBlockProps from "../codeblock/CodeBlockProps"
+import { CodeBlockProps } from "../codeblock"
 
 function orderSequence(graph: Sequence = emptySequence(), ordinal = 0): Sequence<Ordered> {
   const { postorder, sequence } = graph.sequence.reduce(
@@ -105,7 +105,7 @@ function orderCodeBlock(graph: CodeBlockProps, ordinal: number): CodeBlockProps 
 }
 
 // T extends Sequence ? Sequence<Ordered> : T extends Parallel ? Parallel<Ordered> : T extends Choice ? Choice<Ordered> : (CodeBlockProps & Ordered)
-export default function order(graph: Graph, ordinal = 0): Graph<Ordered> {
+export function order(graph: Graph, ordinal = 0): Graph<Ordered> {
   if (isSequence(graph)) {
     return orderSequence(graph, ordinal)
   } else if (isParallel(graph)) {

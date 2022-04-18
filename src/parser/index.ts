@@ -23,10 +23,10 @@ import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
 import { unified, PluggableList } from "unified"
 
+import { CodeBlockProps } from "../codeblock"
 import { ChoiceState, newChoiceState } from "../choices"
-import CodeBlockProps from "../codeblock/CodeBlockProps"
 
-import hackSource from "./hack"
+import { hackMarkdownSource } from "./hack"
 
 // GitHub Flavored Markdown plugin; see https://github.com/IBM/kui/issues/6563
 import gfm from "remark-gfm"
@@ -40,13 +40,13 @@ import inlineSnippets from "../snippets"
 import emojis from "remark-emoji"
 import frontmatter from "remark-frontmatter"
 
-import tip from "./rehype-tip"
-import tabbed from "./rehype-tabbed"
+import { rehypeTip } from "./rehype-tip"
+import { rehypeTabbed } from "./rehype-tabbed"
 
 import wizard from "./rehype-wizard"
 import rehypeImports, { remarkImports } from "./remark-import"
 
-import codeIndexer from "./rehype-code-indexer"
+import { rehypeCodeIndexer } from "./rehype-code-indexer"
 
 // react-markdown v6+ now require use of these to support html
 import rehypeRaw from "rehype-raw"
@@ -54,6 +54,11 @@ import rehypeSlug from "rehype-slug"
 
 // import icons from "./rehype-icons"
 import { kuiFrontmatter } from "./frontmatter"
+
+export * from "./hack"
+export * from "./rehype-tip"
+export * from "./rehype-tabbed"
+export * from "./rehype-code-indexer"
 
 const remarkPlugins = (): PluggableList => [
   gfm,
@@ -66,9 +71,9 @@ const remarkPlugins = (): PluggableList => [
 
 const rehypePlugins = (uuid: string, choices: ChoiceState, codeblocks: CodeBlockProps[]): PluggableList => [
   wizard,
-  [tabbed, uuid, choices],
-  tip,
-  [codeIndexer, uuid, codeblocks],
+  [rehypeTabbed, uuid, choices],
+  rehypeTip,
+  [rehypeCodeIndexer, uuid, codeblocks],
   rehypeImports,
   // icons,
   rehypeRaw,
@@ -90,7 +95,7 @@ export async function parse(input: VFile, choices: ChoiceState = newChoiceState(
   return {
     choices,
     blocks,
-    ast: processor.run(processor.parse(hackSource(source))),
+    ast: processor.run(processor.parse(hackMarkdownSource(source))),
   }
 }
 

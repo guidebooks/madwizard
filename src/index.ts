@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-import * as GraphApi from "./graph"
-import * as ChoiceApi from "./choices"
-import * as ParserApi from "./parser"
-import * as WizardApi from "./wizard"
+import { compile } from "./graph"
+import { blockify } from "./parser"
+import { wizardify } from "./wizard"
+import { newChoiceState } from "./choices"
 
-async function main(input: string, choices = ChoiceApi.newChoiceState()) {
-  const { blocks } = await ParserApi.blockify(input, choices)
-  const dag = GraphApi.daggify(blocks, choices)
-  const wizard = WizardApi.wizardify(dag, choices)
+export * from "./graph"
+export * from "./parser"
+export * from "./choices"
+export * from "./wizard"
+
+export default async function main(input: string, choices = newChoiceState()) {
+  const { blocks } = await blockify(input, choices)
+  const dag = compile(blocks, choices)
+  const wizard = wizardify(dag, choices)
 
   return { blocks, dag, wizard, choices }
-}
-
-export { GraphApi }
-
-export default {
-  ChoiceApi,
-  ParserApi,
-  GraphApi,
-  WizardApi,
-  main,
 }
