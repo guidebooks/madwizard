@@ -15,8 +15,8 @@
  */
 
 import { ChoiceState } from "../choices"
-import { findChoiceFrontier } from "../dag/choice-frontier"
-import { Graph, Choice, bodySource, extractDescription, extractTitle, hasSource, isLeafNode } from "../dag"
+import { findChoiceFrontier } from "../graph/choice-frontier"
+import { Graph, Choice, bodySource, extractDescription, extractTitle, hasSource, isLeafNode } from "../graph"
 
 type Markdown = string
 
