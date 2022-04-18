@@ -15,9 +15,9 @@
  */
 
 import { v4 } from "uuid"
-import { VFile } from "vfile"
 import { read } from "to-vfile"
 import expandHomeDir from "expand-home-dir"
+import { VFile, VFileCompatible } from "vfile"
 
 import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
@@ -93,6 +93,7 @@ export async function parse(input: VFile, choices: ChoiceState = newChoiceState(
   }
 }
 
-export async function blockify(input: string, choices?: ChoiceState, uuid?: string) {
-  return parse(await read(expandHomeDir(input)), choices, uuid)
+export async function blockify(input: VFileCompatible, choices?: ChoiceState, uuid?: string) {
+  const file = typeof input === "string" ? await read(expandHomeDir(input)) : new VFile(input)
+  return parse(file, choices, uuid)
 }
