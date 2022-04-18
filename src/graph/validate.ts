@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+import { exec } from "child_process"
 import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask } from "."
 
 export type ValidationExecutor = (cmdline: string) => "success" | Promise<"success">
 
 async function shellExec(cmdline: string): Promise<"success"> {
-  const { exec } = await import("child_process")
   return new Promise((resolve, reject) =>
     exec(cmdline, (err) => {
       if (err) {
