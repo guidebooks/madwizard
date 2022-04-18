@@ -263,8 +263,11 @@ export function compile(
       ? parallel(parts)
       : sequence(parts)
 
-  return optimize(
-    title && !extractTitle(unoptimized) ? subtask(title, title, description, "", sequence([unoptimized])) : unoptimized,
-    choices
-  )
+  const optimized = optimize(unoptimized, choices)
+
+  if (title && !extractTitle(optimized)) {
+    return subtask(title, title, description, "", sequence([optimized]))
+  } else {
+    return optimized
+  }
 }
