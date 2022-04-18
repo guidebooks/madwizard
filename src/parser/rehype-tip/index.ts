@@ -42,7 +42,7 @@ export function isTipWithoutFullTitle(node: Node): node is Element {
   return isTip(node) && !node.properties.fullTitle
 }
 
-export default function plugin(/* options */) {
+export function rehypeTip(/* options */) {
   return function transformer(tree) {
     let currentTip
     let currentTipLevel = -1

@@ -27,7 +27,7 @@ import madWizard from "../.."
 const require = createRequire(import.meta.url)
 const inputDir = join(dirname(require.resolve(".")), "../inputs")
 
-function munge(wizard: Awaited<ReturnType<typeof madWizard.main>>["wizard"]) {
+function munge(wizard: Awaited<ReturnType<typeof madWizard>>["wizard"]) {
   return JSON.parse(
     JSON.stringify(wizard, (key, value) => {
       if (key === "group" || key === "id" || key === "key") {
@@ -45,7 +45,7 @@ readdirSync(inputDir)
   .map((_) => join(inputDir, _))
   .forEach((input) =>
     test(input, async () => {
-      const { wizard } = await madWizard.main(join(input, "in.md"))
+      const { wizard } = await madWizard(join(input, "in.md"))
       const expectedWizard = JSON.parse(readFileSync(join(input, "wizard.json")).toString())
       const diff = diffString(munge(wizard), munge(expectedWizard), { color: false })
       assert.is(diff, "", "wizard should match")

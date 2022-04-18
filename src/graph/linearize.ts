@@ -28,10 +28,10 @@
 import { Ordered, Unordered, Graph, choose, isSequence, isParallel, isSubTask, isTitledSteps, isChoice } from "."
 
 import { ChoiceState } from "../choices"
-import CodeBlockProps from "../codeblock/CodeBlockProps"
+import { CodeBlockProps } from "../codeblock"
 
 /** @return A linearized set of code blocks in the given `graph` */
-export default function blocks<T extends Unordered | Ordered = Unordered>(
+export function blocks<T extends Unordered | Ordered = Unordered>(
   graph: Graph<T>,
   choices: "all" | "default-path" | ChoiceState = "default-path"
 ): (CodeBlockProps & T)[] {

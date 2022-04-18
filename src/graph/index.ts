@@ -29,12 +29,15 @@ import { v4 } from "uuid"
 import { basename } from "path"
 
 import { ChoiceState } from "../choices"
-import CodeBlockProps, { Source, Choice as CodeBlockChoice, Title, Description } from "../codeblock/CodeBlockProps"
+import { CodeBlockProps, Source, Title, Description } from "../codeblock/CodeBlockProps"
 
-export { default as daggify } from "./compile"
-
-/* map from choice group to selected choice member */
-export type ChoicesMap = Record<CodeBlockChoice["group"], CodeBlockChoice["title"]>
+export * from "./order"
+export * from "./Status"
+export * from "./compile"
+export * from "./progress"
+export * from "./validate"
+export * from "./linearize"
+export * from "./choice-frontier"
 
 type Key = {
   key: string

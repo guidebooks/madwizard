@@ -22,6 +22,7 @@ import { ChoiceHandlerRegistration } from "./events"
 export type ChoicesMap = Record<CodeBlockChoice["group"], CodeBlockChoice["title"]>
 
 export interface ChoiceState {
+  clone: () => ChoiceState
   onChoice: ChoiceHandlerRegistration
   offChoice: ChoiceHandlerRegistration
 
@@ -33,6 +34,10 @@ export interface ChoiceState {
   remove: <K extends keyof ChoicesMap>(key: K) => boolean
 }
 
-export function newChoiceState() {
+export type Choices = {
+  choices: ChoiceState
+}
+
+export function newChoiceState(): ChoiceState {
   return new ChoiceStateImpl()
 }

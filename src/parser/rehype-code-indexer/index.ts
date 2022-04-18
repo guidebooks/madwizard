@@ -21,9 +21,9 @@ import { toString } from "hast-util-to-string"
 import { visitParents } from "unist-util-visit-parents"
 
 import dump from "./dump"
-import isExecutable from "../../codeblock/isCodeBlock"
 import { isTab } from "../rehype-tabbed"
 import isElementWithProperties from "../util/isElement"
+import { isExecutable } from "../../codeblock/isCodeBlock"
 import toMarkdownString, { Node } from "../util/toMarkdownString"
 import { getTipTitle, isTipWithFullTitle, isTipWithoutFullTitle } from "../rehype-tip"
 
@@ -40,7 +40,7 @@ import {
 
 import { tryFrontmatter } from "../frontmatter"
 import { isImports, getImportKey, getImportFilepath, getImportTitle } from "../remark-import"
-import CodeBlockProps, { addNesting as addCodeBlockNesting } from "../../codeblock/CodeBlockProps"
+import { CodeBlockProps, addNesting as addCodeBlockNesting } from "../../codeblock/CodeBlockProps"
 
 /**
  * Heuristic: Code Blocks inside of closed "tips" (i.e. default-closed
@@ -91,7 +91,7 @@ function findNearestEnclosingTitle(grandparent: Parent, parent: Node) {
  * This rehype plugin adds a unique codeIdx ordinal property to each
  * executable code block.
  */
-export default function plugin(uuid: string, codeblocks: CodeBlockProps[]) {
+export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
   const transformer: Transformer<Element> = (ast /*: Root */) => {
     let codeIdx = 0
     const allocCodeBlockId = (myCodeIdx: number) => `${uuid}-${myCodeIdx}`
@@ -280,7 +280,9 @@ export default function plugin(uuid: string, codeblocks: CodeBlockProps[]) {
 
                 properties.containedCodeBlocks.push(codeBlockProps)
                 }*/
-              codeblocks.push(JSON.parse(Buffer.from(codeBlockProps, "base64").toString()))
+              if (codeblocks) {
+                codeblocks.push(JSON.parse(Buffer.from(codeBlockProps, "base64").toString()))
+              }
             }
           }
         }

@@ -15,7 +15,7 @@
  */
 
 import { ChoiceState } from "../choices"
-import CodeBlockProps from "../codeblock/CodeBlockProps"
+import { CodeBlockProps } from "../codeblock"
 import { Choice, Graph, SubTask, emptySequence, TitledSteps, parallel, seq, sequence, subtask } from "."
 
 import {
@@ -51,7 +51,7 @@ function isWizardStepNesting(nesting: Nesting): nesting is WizardStepNesting {
 }
 
 /** Take a list of code blocks and arrange them into a control flow dag */
-export default function compile(
+export function compile(
   blocks: CodeBlockProps[],
   choices: ChoiceState,
   ordering: "sequence" | "parallel" = "sequence"

@@ -18,11 +18,19 @@ import { ChoiceState, ChoicesMap } from "."
 import ChoiceEventManager from "./events"
 
 export default class ChoiceStateImpl extends ChoiceEventManager implements ChoiceState {
-  /** Choices made, e.g. "i want to install using homebrew" */
-  private readonly _choices: ChoicesMap = {}
+  public constructor(
+    /** Choices made, e.g. "i want to install using homebrew" */
+    private readonly _choices: ChoicesMap = {},
 
-  /** Choices rejected, e.g. "i really don't want to install using curl" */
-  private readonly rejectedChoices: Record<keyof ChoicesMap, boolean> = {}
+    /** Choices rejected, e.g. "i really don't want to install using curl" */
+    private readonly rejectedChoices: Record<keyof ChoicesMap, boolean> = {}
+  ) {
+    super()
+  }
+
+  public clone() {
+    return new ChoiceStateImpl(this._choices, this.rejectedChoices)
+  }
 
   public keys() {
     return Object.keys(this._choices)
