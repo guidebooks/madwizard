@@ -19,9 +19,21 @@
     "format": "cross-env prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",
     "prepare": "cross-env husky install"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "markdown",
+    "wizard",
+    "task graph"
+  ],
+  "author": "@starpit",
   "license": "Apache-2.0",
+  "homepage": "https://github.com/guidebooks/madwizard#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guidebooks/madwizard"
+  },
+  "bugs": {
+    "url": "https://github.com/guidebooks/madwizard/issues"
+  },
   "lint-staged": {
     "**/*.{scss,css,html,js,json,md,ts,tsx}": [
       "prettier --write",
