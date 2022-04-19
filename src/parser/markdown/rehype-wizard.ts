@@ -148,6 +148,8 @@ function transformer(ast: Root) {
     }
 
     function extractStepsFromDivsVisitor(node: Element, ancestors: Parent[]) {
+      const parent = ancestors[ancestors.length - 1]
+
       if (node.tagName === "div" && node.properties["data-kui-split"] === "wizard" && parent) {
         delete node.properties["data-kui-split"]
 
@@ -182,7 +184,6 @@ function transformer(ast: Root) {
           wizard.steps.push(node)
         }
 
-        const parent = ancestors[ancestors.length - 1]
         if (parent) {
           const idx = parent.children.findIndex((child) => child === node)
           if (idx >= 0) {
