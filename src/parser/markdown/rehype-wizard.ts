@@ -22,7 +22,7 @@ import { visitParents } from "unist-util-visit-parents"
 
 import isElementWithProperties from "./util/isElement"
 import { WizardSteps, PositionProps } from "./frontmatter/KuiFrontmatter"
-import { GroupMember as CodeBlockGroupMember } from "../codeblock/CodeBlockProps"
+import { GroupMember as CodeBlockGroupMember } from "../../codeblock/CodeBlockProps"
 import { isImports, visitImportContainers } from "./remark-import"
 
 type Primordial = Pick<CodeBlockGroupMember, "group"> & {

@@ -21,7 +21,7 @@ import isElementWithProperties from "../util/isElement"
 
 import populateTabs from "./populate"
 
-import { ChoiceState } from "../../choices"
+import { ChoiceState } from "../../../choices"
 import identifyRecognizableTabGroups from "./groups"
 
 export const START_OF_TAB = `<!-- ____KUI_START_OF_TAB____ -->`
