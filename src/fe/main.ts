@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-// CLI
-export * from "./fe/cli"
+import { VFileCompatible } from "vfile"
 
-// An entrypoint useful for tests
-export * from "./fe/main"
+import { compile } from "../graph"
+import { blockify } from "../parser"
+import { wizardify } from "../wizard"
+import { newChoiceState } from "../choices"
 
-// APIs
-export * from "./graph"
-export * from "./parser"
-export * from "./choices"
-export * from "./wizard"
+/**
+ * This is mostly a demonstration front-end. Most users should invoke
+ * the underlying APIs directly.
+ */
+export async function main(input: VFileCompatible, choices = newChoiceState()) {
+  const { blocks } = await blockify(input, choices)
+  const dag = compile(blocks, choices)
+  const wizard = wizardify(dag, choices)
+
+  return { blocks, dag, wizard, choices }
+}

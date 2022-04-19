@@ -11,8 +11,9 @@
     "madwizard": "./cli.js"
   },
   "scripts": {
+    "madwizard": "node -e 'import(\"./dist/main.mjs\").then(_ => _.cli(process.argv[1]))'",
     "lint": "cross-env eslint . --ext .js,.jsx,.ts,.tsx",
-    "watch": "cross-env concurrently -n PARCEL,TYPES,TEST 'parcel watch' 'tsc --noEmit --watch' 'cd test && tsc --build . --watch'",
+    "watch": "cross-env concurrently -n CORE,CLI,TYPES 'parcel watch' 'tsc --noEmit --watch' 'cd test && tsc --build . --watch'",
     "build": "cross-env parcel build",
     "build:test": "cross-env-shell tsc --project test",
     "test": "cross-env concurrently -n TYPES,TESTS 'tsc --noEmit' 'node --experimental-specifier-resolution=node test/dist'",
@@ -89,6 +90,7 @@
     "uvu": "^0.5.3"
   },
   "dependencies": {
+    "chalk": "^5.0.1",
     "debug": "^4.3.4",
     "expand-home-dir": "^0.0.3",
     "front-matter": "^4.0.2",
