@@ -23,7 +23,7 @@ import { visitParents } from "unist-util-visit-parents"
 import dump from "./dump"
 import { isTab } from "../rehype-tabbed"
 import isElementWithProperties from "../util/isElement"
-import { isExecutable } from "../../codeblock/isCodeBlock"
+import { isExecutable } from "../../../codeblock/isCodeBlock"
 import toMarkdownString, { Node } from "../util/toMarkdownString"
 import { getTipTitle, isTipWithFullTitle, isTipWithoutFullTitle } from "../rehype-tip"
 
@@ -40,7 +40,7 @@ import {
 
 import { tryFrontmatter } from "../frontmatter"
 import { isImports, getImportKey, getImportFilepath, getImportTitle } from "../remark-import"
-import { CodeBlockProps, addNesting as addCodeBlockNesting } from "../../codeblock/CodeBlockProps"
+import { CodeBlockProps, addNesting as addCodeBlockNesting } from "../../../codeblock/CodeBlockProps"
 
 /**
  * Heuristic: Code Blocks inside of closed "tips" (i.e. default-closed

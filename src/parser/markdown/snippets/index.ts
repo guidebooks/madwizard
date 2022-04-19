@@ -18,9 +18,9 @@ import Debug from "debug"
 import expandHomeDir from "expand-home-dir"
 import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin } from "path"
 
-import indent from "../parser/util/indent"
-import { hasImports } from "../parser/frontmatter/KuiFrontmatter"
-import { tryFrontmatter } from "../parser/frontmatter/frontmatter-parser"
+import indent from "../util/indent"
+import { hasImports } from "../frontmatter/KuiFrontmatter"
+import { tryFrontmatter } from "../frontmatter/frontmatter-parser"
 
 const debug = Debug("madwizard/snippets")
 

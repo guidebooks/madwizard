@@ -18,10 +18,10 @@ import Debug from "debug"
 import { Element } from "hast"
 import which from "which"
 
-import { ChoiceState } from "../../../choices"
+import { ChoiceState } from "../../../../choices"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
-const debug = Debug("rehype-tabbed/gruops/homebrew")
+const debug = Debug("rehype-tabbed/groups/homebrew")
 
 class Homebrew {
   /** the value should be namespaced and unique, but the particulars don't matter */
