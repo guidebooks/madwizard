@@ -22,12 +22,12 @@ import { diffString } from "json-diff"
 import { createRequire } from "module"
 import { readdirSync, readFileSync } from "fs"
 
-import madWizard from "../.."
+import { main } from "../.."
 
 const require = createRequire(import.meta.url)
 const inputDir = join(dirname(require.resolve(".")), "../inputs")
 
-function munge(wizard: Awaited<ReturnType<typeof madWizard>>["wizard"]) {
+function munge(wizard: Awaited<ReturnType<typeof main>>["wizard"]) {
   return JSON.parse(
     JSON.stringify(wizard, (key, value) => {
       if (key === "group" || key === "id" || key === "key") {
@@ -45,7 +45,7 @@ readdirSync(inputDir)
   .map((_) => join(inputDir, _))
   .forEach((input) =>
     test(input, async () => {
-      const { wizard } = await madWizard(join(input, "in.md"))
+      const { wizard } = await main(join(input, "in.md"))
       const expectedWizard = JSON.parse(readFileSync(join(input, "wizard.json")).toString())
       const diff = diffString(munge(wizard), munge(expectedWizard), { color: false })
       assert.is(diff, "", "wizard should match")

@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /*
  * Copyright 2022 The Kubernetes Authors
  *
@@ -18,12 +16,17 @@
 
 /* eslint-disable no-undef */
 
+import chalk from "chalk"
 import { inspect } from "util"
-import main from "./dist/main.mjs"
 
-async function cli(input) {
+import { main } from "./main"
+
+export async function cli(input: string) {
+  if (!input) {
+    console.error(chalk.red("Please provide an input filepath or URI"))
+    process.exit(1)
+  }
+
   const { wizard } = await main(input)
   console.log(inspect(wizard, { colors: true, depth: null }))
 }
-
-cli(process.argv[2])
