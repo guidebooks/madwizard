@@ -332,7 +332,7 @@ export function hasFilepath(graph: Graph): graph is Graph & Filepath {
 }
 
 export function hasTitleProperty(graph: Graph): graph is Graph & Title & Partial<Description> {
-  return isTitledSteps(graph) || isSubTask(graph)
+  return isTitledSteps(graph) || isSubTask(graph) || isChoice(graph)
 }
 
 export function hasTitle(graph: Graph): graph is Graph & Title & Partial<Description> {
