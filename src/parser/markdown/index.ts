@@ -75,7 +75,7 @@ const rehypePlugins = (uuid: string, choices: ChoiceState, codeblocks: CodeBlock
 ]
 
 /** Parse the given `input` into a `Graph` syntax tree. */
-export async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid = v4(), reader = read) {
+async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid = v4(), reader = read) {
   const blocks: CodeBlockProps[] = []
 
   const processor = unified()

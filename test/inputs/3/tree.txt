@@ -1,20 +1,17 @@
 snippets-in-tab3.md
-├── Missing Title
+├── importa.md
 │   └── echo AAA
-├── ┐
-│   └── EEE
-│       └── Option 1: TabE1
-│           └── echo EEE
-├── ┐
-│   └── DDD
-│       ├── Option 1: SubTab1
-│       │   ├── echo AAA
-│       │   ├── echo AAA
-│       │   └── echo AAA
-│       └── Option 2: SubTab2
-│           └── echo BBB
-└── Missing Title
-    └── snippets-in-tab3.md
-        └── Option 1: Tab2
-            └── Missing Title
-                └── echo CCC
+├── EEE
+│   └── Option 1 TabE1
+│       └── echo EEE
+├── DDD
+│   ├── Option 1 SubTab1
+│   │   ├── echo AAA
+│   │   ├── echo AAA
+│   │   └── echo AAA
+│   └── Option 2 SubTab2
+│       └── echo BBB
+└── snippets-in-tab3.md
+    └── Option 2 Tab2
+        └── importc.md
+            └── echo CCC

@@ -20,6 +20,8 @@ import { extname as pathExtname } from "path"
 
 import { ChoiceState } from "../choices"
 
+export * from "./markdown"
+
 /** @return the file extension for the given `input` */
 function extname(input: VFileCompatible) {
   if (typeof input === "string") {
@@ -34,7 +36,7 @@ function extname(input: VFileCompatible) {
 }
 
 /** Parse the given `input` into a `Graph` syntax tree. */
-export async function blockify(input: VFileCompatible, choices?: ChoiceState, uuid?: string, reader?: typeof read) {
+export async function parse(input: VFileCompatible, choices?: ChoiceState, uuid?: string, reader?: typeof read) {
   const ext = extname(input)
   if (ext === ".md") {
     return import("./markdown").then((_) => _.blockify(input, choices, uuid, reader))
