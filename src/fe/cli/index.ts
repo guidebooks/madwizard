@@ -17,7 +17,7 @@
 import chalk from "chalk"
 
 import { prettyPrintUITree, Treeifier, AnsiUI } from "../tree"
-import { blockify, wizardify, compile, order } from "../.."
+import { parse, wizardify, compile, order } from "../.."
 
 export async function cli(argv: string[], write = process.stdout.write.bind(process.stdout)) {
   const task = argv[1]
@@ -36,7 +36,7 @@ export async function cli(argv: string[], write = process.stdout.write.bind(proc
     process.exit(1)
   }
 
-  const { blocks, choices } = await blockify(input)
+  const { blocks, choices } = await parse(input)
   const graph = compile(blocks, choices)
 
   if (task === "tree") {

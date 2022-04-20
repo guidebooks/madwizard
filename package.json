@@ -13,7 +13,7 @@
   "scripts": {
     "lint": "cross-env eslint . --ext .js,.jsx,.ts,.tsx",
     "watch": "cross-env concurrently -n CORE,TYPES,TEST 'parcel watch' 'tsc --noEmit --watch' 'cd test && tsc --build . --watch'",
-    "build": "cross-env parcel build",
+    "build": "cross-env parcel build --no-content-hash",
     "build:test": "cross-env-shell tsc --project test",
     "test": "cross-env npm run build:test && cross-env concurrently -n TYPES,TESTS 'tsc --noEmit' 'node --experimental-specifier-resolution=node test/dist'",
     "format": "cross-env prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",

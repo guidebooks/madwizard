@@ -22,8 +22,10 @@ export type Decoration = Modifiers | Color
 export interface UI<Content> {
   span(body: string, ...decorations: Decoration[]): Content
   code(body: string): Content
-  icon(status: Status): Content
+  icon(cls: string): Content
+  statusToIcon(status: Status): Content
   title(title: Content | string | (Content | string)[], status?: Status): Content
+  open?(filepath: string): Content | void
 }
 
 export class AnsiUI implements UI<string> {
@@ -39,7 +41,16 @@ export class AnsiUI implements UI<string> {
     return chalk.magenta.dim(body)
   }
 
-  public icon(status: Status) {
+  public icon(cls: string) {
+    switch (cls) {
+      case "Guidebook":
+        return "\u1F56E"
+      case "GuidebookOpen":
+        return "\u1F4D6"
+    }
+  }
+
+  public statusToIcon(status: Status) {
     switch (status) {
       case "success":
         return chalk.green("\u2713")

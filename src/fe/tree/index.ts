@@ -24,6 +24,7 @@ import {
   OrderedSequence,
   OrderedParallel,
   OrderedLeafNode,
+  LeafNode,
   StatusMap,
   isEmpty,
   isSubTask,
@@ -45,7 +46,11 @@ export * from "./pretty-print"
 type Progress = { nDone: number; nError: number; nTotal: number }
 
 export class Treeifier<Content> {
-  public constructor(private readonly ui: UI<Content>) {}
+  public constructor(
+    private readonly ui: UI<Content>,
+    private readonly status: StatusMap = {},
+    private readonly validator?: (graph: LeafNode) => void | Promise<void>
+  ) {}
 
   private isDone({ nDone, nTotal }: Progress) {
     return nDone === nTotal
@@ -69,7 +74,7 @@ export class Treeifier<Content> {
           hasBadge: true,
           badgeProps: { isRead: !isTotallyDone },
           customBadgeContent: isTotallyDone
-            ? this.ui.icon("success")
+            ? this.ui.statusToIcon("success")
             : /*<span className="nowrap">{*/ `${rollupStatus.nDone} of ${rollupStatus.nTotal}` /*}</span>*/,
         }
 
@@ -83,18 +88,12 @@ export class Treeifier<Content> {
     })
   }
 
-  private treeModelForSubTask(
-    origin: OrderedSubTask,
-    status: StatusMap,
-    doValidate: boolean,
-    depth: number,
-    metFirstChoice = false
-  ): UITree<Content> {
+  private treeModelForSubTask(origin: OrderedSubTask, depth: number, metFirstChoice = false): UITree<Content> {
     const { key, title, filepath, graph } = origin
-    const rollupStatus = progress(graph, status)
+    const rollupStatus = progress(graph, this.status)
     const children = new TreeTransformer<Content>().foldChoices(
       graph.sequence
-        .map((_) => this.toTree(_, status, doValidate, key, depth + 1, metFirstChoice))
+        .map((_) => this.toTree(_, key, depth + 1, metFirstChoice))
         .filter(Boolean)
         .flatMap((_) => _)
     )
@@ -105,7 +104,7 @@ export class Treeifier<Content> {
 
     const hasAction = !!filepath
     const hasBadge = hasAction && rollupStatus.nDone > 0
-    // const hasIcon = hasAction
+    const hasIcon = hasAction
 
     const data = this.withIcons(
       rollupStatus,
@@ -115,19 +114,9 @@ export class Treeifier<Content> {
         name: this.ui.title(title || basename(filepath)),
         defaultExpanded: !this.isDone(rollupStatus) && depth < 2,
         children: children.length === 0 ? undefined : children,
-        // icon: hasIcon && <Icons className="kui--dependence-tree-subtask--icon" icon="Guidebook" />,
-        // expandedIcon: hasIcon && <Icons className="kui--dependence-tree-subtask--icon" icon="GuidebookOpen" />,
-        /* action: hasAction && (
-          <button
-            className="kui--tree-action pf-c-button pf-m-plain"
-            onClick={() => {
-              debug('drilling down to notebook', filepath)
-              pexecInCurrentTab(`replay ${encodeComponent(filepath)}`, undefined, true, true)
-            }}
-          >
-            <Icons icon="Info" />
-          </button>
-        ) */
+        icon: hasIcon && this.ui.icon("Guidebook"),
+        expandedIcon: hasIcon && this.ui.icon("GuidebookOpen"),
+        action: hasAction && this.ui.open && this.ui.open(filepath),
       },
       hasBadge
     )
@@ -137,37 +126,18 @@ export class Treeifier<Content> {
 
   private treeModelForTitledStep(
     graph: OrderedTitledSteps["steps"][number],
-    status: StatusMap,
-    doValidate: boolean,
     idPrefix = "",
     depth = 0,
     metFirstChoice = false
   ) {
-    return this.treeModelForSequence(
-      graph.graph,
-      status,
-      doValidate,
-      idPrefix,
-      depth,
-      metFirstChoice,
-      this.ui.title(graph.title)
-    )
+    return this.treeModelForSequence(graph.graph, idPrefix, depth, metFirstChoice, this.ui.title(graph.title))
   }
 
-  private treeModelForTitledSteps(
-    graph: OrderedTitledSteps,
-    status: StatusMap,
-    doValidate: boolean,
-    idPrefix = "",
-    depth = 0,
-    metFirstChoice = false
-  ) {
+  private treeModelForTitledSteps(graph: OrderedTitledSteps, idPrefix = "", depth = 0, metFirstChoice = false) {
     const _children = graph.steps
-      .map((_, childIdx) =>
-        this.treeModelForTitledStep(_, status, doValidate, `${idPrefix}-s${childIdx}`, depth + 1, metFirstChoice)
-      )
+      .map((_, childIdx) => this.treeModelForTitledStep(_, `${idPrefix}-s${childIdx}`, depth + 1, metFirstChoice))
       .filter(Boolean)
-    const rollupStatus = progress(graph, status)
+    const rollupStatus = progress(graph, this.status)
     const children = _children.flatMap((_) => _)
 
     return [
@@ -181,19 +151,15 @@ export class Treeifier<Content> {
 
   private treeModelForSequence(
     graph: OrderedSequence,
-    status: StatusMap,
-    doValidate: boolean,
     idPrefix = "",
     depth = 0,
     metFirstChoice = false,
     name?: Content
   ) {
     const _children = graph.sequence
-      .map((_, childIdx) =>
-        this.toTree(_, status, doValidate, `${idPrefix}-s${childIdx}`, depth + 1, metFirstChoice, name)
-      )
+      .map((_, childIdx) => this.toTree(_, `${idPrefix}-s${childIdx}`, depth + 1, metFirstChoice, name))
       .filter(Boolean)
-    const rollupStatus = progress(graph, status)
+    const rollupStatus = progress(graph, this.status)
     const children = new TreeTransformer<Content>().optimize(
       _children.flatMap((_) => _),
       depth
@@ -220,19 +186,15 @@ export class Treeifier<Content> {
 
   private treeModelForParallel(
     graph: OrderedParallel,
-    status: StatusMap,
-    doValidate: boolean,
     idPrefix = "",
     depth = 0,
     metFirstChoice = false,
     name?: Content
   ): UITree<Content> {
     const _children = graph.parallel
-      .map((_, childIdx) =>
-        this.toTree(_, status, doValidate, `${idPrefix}-p${childIdx}`, depth + 1, metFirstChoice, name)
-      )
+      .map((_, childIdx) => this.toTree(_, `${idPrefix}-p${childIdx}`, depth + 1, metFirstChoice, name))
       .filter(Boolean)
-    const rollupStatus = progress(graph, status)
+    const rollupStatus = progress(graph, this.status)
     const children = _children.flatMap((_) => _)
 
     const data =
@@ -248,20 +210,12 @@ export class Treeifier<Content> {
     return data
   }
 
-  private treeModelForChoice(
-    graph: OrderedChoice,
-    status: StatusMap,
-    doValidate: boolean,
-    idPrefix = "",
-    depth = 0
-  ): UITree<Content> {
+  private treeModelForChoice(graph: OrderedChoice, idPrefix = "", depth = 0): UITree<Content> {
     const _children = graph.choices
       .filter((_) => !isEmpty(_.graph))
       .map((_) =>
         this.toTree(
           _.graph,
-          status,
-          doValidate,
           `${idPrefix}-g${graph.group}-m${_.member}`,
           depth + 1,
           true,
@@ -269,7 +223,7 @@ export class Treeifier<Content> {
         )
       )
       .filter(Boolean)
-    const rollupStatus = progress(graph, status)
+    const rollupStatus = progress(graph, this.status)
     const children = _children.flatMap((_) => _)
 
     const data = [
@@ -282,9 +236,9 @@ export class Treeifier<Content> {
     return data
   }
 
-  private treeModelForLeafNode(graph: OrderedLeafNode, status: StatusMap, doValidate: boolean): UITree<Content> {
-    if (doValidate) {
-      // setTimeout(() => this.validate(graph))
+  private treeModelForLeafNode(graph: OrderedLeafNode): UITree<Content> {
+    if (this.validator) {
+      setTimeout(() => this.validator(graph))
     }
 
     try {
@@ -314,25 +268,23 @@ export class Treeifier<Content> {
 
   public toTree(
     graph: OrderedGraph,
-    status: StatusMap = {},
-    doValidate = false,
     idPrefix = "",
     depth = 0,
     metFirstChoice = false,
     name?: Content
   ): UITree<Content> {
     if (isSequence(graph)) {
-      return this.treeModelForSequence(graph, status, doValidate, idPrefix, depth, metFirstChoice, name)
+      return this.treeModelForSequence(graph, idPrefix, depth, metFirstChoice, name)
     } else if (isTitledSteps(graph)) {
-      return this.treeModelForTitledSteps(graph, status, doValidate, idPrefix, depth, metFirstChoice)
+      return this.treeModelForTitledSteps(graph, idPrefix, depth, metFirstChoice)
     } else if (isParallel(graph)) {
-      return this.treeModelForParallel(graph, status, doValidate, idPrefix, depth, metFirstChoice, name)
+      return this.treeModelForParallel(graph, idPrefix, depth, metFirstChoice, name)
     } else if (isChoice(graph)) {
-      return this.treeModelForChoice(graph, status, doValidate, idPrefix, depth)
+      return this.treeModelForChoice(graph, idPrefix, depth)
     } else if (isSubTask(graph)) {
-      return this.treeModelForSubTask(graph, status, doValidate, depth, metFirstChoice)
+      return this.treeModelForSubTask(graph, depth, metFirstChoice)
     } else if (!graph.optional) {
-      return this.treeModelForLeafNode(graph, status, doValidate)
+      return this.treeModelForLeafNode(graph)
     }
   }
 }
