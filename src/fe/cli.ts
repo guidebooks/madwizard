@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-/* eslint-disable no-undef */
-
 import chalk from "chalk"
-// import { inspect } from "util"
 
 import {
   blockify,
+  wizardify,
   compile,
   subtask,
   hasTitle,
@@ -139,9 +137,11 @@ export async function cli(argv: string[]) {
 
   if (task === "tree") {
     prettyPrint(graph)
+  } else if (task === "wizard-raw") {
+    const wizard = wizardify(graph, choices)
+    console.log(JSON.stringify(wizard, undefined, 2))
   } else {
     console.error(chalk.red(`Invalid task: ${task}`))
     process.exit(1)
   }
-  //console.log(inspect(graph, { colors: true, depth: null }))
 }

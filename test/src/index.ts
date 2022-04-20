@@ -30,10 +30,10 @@ const inputDir = join(dirname(require.resolve(".")), "../inputs")
 function munge(wizard: Awaited<ReturnType<typeof main>>["wizard"]) {
   return JSON.parse(
     JSON.stringify(wizard, (key, value) => {
-      if (key === "group" || key === "id" || key === "key") {
-        return "fakeid"
-      } else if (key === "source") {
-        return value.replace(/(id): [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g, "$1: fakeid")
+      if (key === "group" || key === "id" || key === "key" || key === "filepath") {
+        return "fakeit"
+      } else if (key === "source" || (key === "content" && typeof value === "string")) {
+        return value.replace(/(id): [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(-\d+)?/g, "$1: fakeid")
       } else {
         return value
       }
@@ -41,12 +41,41 @@ function munge(wizard: Awaited<ReturnType<typeof main>>["wizard"]) {
   )
 }
 
+function loadExpectedWizard(input: string) {
+  try {
+    return JSON.parse(readFileSync(join(input, "wizard.json")).toString())
+  } catch (err) {
+    const originalErr = err
+    try {
+      // in case we have platform-specific expected wizard
+      return JSON.parse(readFileSync(join(input, `wizard-${process.platform}.json`)).toString())
+    } catch (err) {
+      throw originalErr
+    }
+  }
+}
+
+function tryParseInt(str: string) {
+  try {
+    return parseInt(str, 10)
+  } catch (err) {
+    return undefined
+  }
+}
+
+/**
+ * Assumption: test inputs are numbered directories. All other
+ * directories are ignored.
+ */
 readdirSync(inputDir)
-  .map((_) => join(inputDir, _))
+  .map(tryParseInt)
+  .filter((_) => _ !== undefined && !isNaN(_))
+  .sort((a, b) => a - b)
+  .map((_) => join(inputDir, String(_)))
   .forEach((input) =>
     test(input, async () => {
       const { wizard } = await main(join(input, "in.md"))
-      const expectedWizard = JSON.parse(readFileSync(join(input, "wizard.json")).toString())
+      const expectedWizard = loadExpectedWizard(input)
       const diff = diffString(munge(wizard), munge(expectedWizard), { color: false })
       assert.is(diff, "", "wizard should match")
     })
