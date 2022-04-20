@@ -1,0 +1,20 @@
+snippets-in-tab4.md
+├── Missing Title
+│   └── echo AAA
+├── ┐
+│   └── EEE
+│       └── Option 1: TabE1
+│           └── echo EEE
+└── Missing Title
+    └── snippets-in-tab4.md
+        ├── Option 1: Tab1
+        │   └── ┐
+        │       └── DDD
+        │           ├── Option 1: SubTab1
+        │           │   ├── echo AAA
+        │           │   ├── echo AAA
+        │           │   └── echo AAA
+        │           └── Option 2: SubTab2
+        │               └── echo BBB
+        └── Option 2: Tab2
+            └── echo XXX
