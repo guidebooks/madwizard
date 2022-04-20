@@ -45,32 +45,36 @@ const Symbols = {
 }
 
 function dress(str: string) {
-  return str === "Prerequisites" || str === "Main Tasks" ? chalk.yellow(str) : chalk.blue(str)
+  return !str
+    ? chalk.red("Missing Title")
+    : str === "Prerequisites" || str === "Main Tasks"
+    ? chalk.yellow(str)
+    : chalk.blue(str)
 }
 
 function prettyPrint(
   graph: Graph,
   symbols = Symbols.ansi,
-  out = process.stdout,
+  write = process.stdout.write.bind(process.stdout),
   prefix = "",
   depth = 0,
   isLast = false
 ) {
-  out.write(prefix)
+  write(prefix)
 
   if (depth >= 1) {
-    out.write(isLast ? symbols.LAST_BRANCH : symbols.BRANCH)
+    write(isLast ? symbols.LAST_BRANCH : symbols.BRANCH)
   }
 
   const nextPrefix = depth >= 1 ? (isLast ? symbols.INDENT : symbols.VERTICAL) : symbols.EMPTY
 
   if (isSequence(graph)) {
     graph.sequence.forEach((_, idx, A) => {
-      prettyPrint(_, symbols, out, nextPrefix, depth, idx === A.length - 1)
+      prettyPrint(_, symbols, write, nextPrefix, depth, idx === A.length - 1)
     })
   } else if (isParallel(graph)) {
     graph.parallel.forEach((_, idx, A) => {
-      prettyPrint(_, symbols, out, nextPrefix, depth + 1, idx === A.length - 1)
+      prettyPrint(_, symbols, write, nextPrefix, depth + 1, idx === A.length - 1)
     })
   } else if (isSubTask(graph)) {
     const title =
@@ -79,20 +83,20 @@ function prettyPrint(
         : depth === 0
         ? chalk.bold(graph.title)
         : dress(graph.title)
-    out.write(title + "\n")
+    write(title + "\n")
     graph.graph.sequence.forEach((_, idx, A) => {
-      prettyPrint(_, symbols, out, prefix + nextPrefix, depth + 1, idx === A.length - 1)
+      prettyPrint(_, symbols, write, prefix + nextPrefix, depth + 1, idx === A.length - 1)
     })
   } else if (isTitledSteps(graph)) {
-    out.write(dress(graph.title) + "\n")
+    write(dress(graph.title) + "\n")
     graph.steps.forEach((_, idx, A) => {
       if (hasTitle(_.graph)) {
-        prettyPrint(_.graph, symbols, out, prefix + nextPrefix, depth + 1, idx === A.length - 1)
+        prettyPrint(_.graph, symbols, write, prefix + nextPrefix, depth + 1, idx === A.length - 1)
       } else {
         prettyPrint(
           subtask(_.title, _.title, "", "", _.graph),
           symbols,
-          out,
+          write,
           prefix + nextPrefix,
           depth + 1,
           idx === A.length - 1
@@ -100,25 +104,25 @@ function prettyPrint(
       }
     })
   } else if (isChoice(graph)) {
-    out.write(graph.title + "\n")
+    write(dress(graph.title) + "\n")
 
     graph.choices.forEach((_, idx, A) => {
       const option = chalk.cyan(`Option ${idx + 1}`) + `: ${_.title}`
       prettyPrint(
         subtask(option, option, "", "", _.graph),
         symbols,
-        out,
+        write,
         prefix + nextPrefix,
         depth + 1,
         idx === A.length - 1
       )
     })
   } else {
-    out.write(chalk.magenta.dim(graph.body.slice(0, Math.min(40, MAX_LINE_WIDTH - nextPrefix.length))) + "\n")
+    write(chalk.magenta.dim(graph.body.slice(0, Math.min(40, MAX_LINE_WIDTH - nextPrefix.length))) + "\n")
   }
 }
 
-export async function cli(argv: string[]) {
+export async function cli(argv: string[], write = process.stdout.write.bind(process.stdout)) {
   const task = argv[1]
   const input = argv[2]
 
@@ -136,7 +140,7 @@ export async function cli(argv: string[]) {
   const graph = compile(blocks, choices)
 
   if (task === "tree") {
-    prettyPrint(graph)
+    prettyPrint(graph, undefined, write)
   } else if (task === "wizard-raw") {
     const wizard = wizardify(graph, choices)
     console.log(JSON.stringify(wizard, undefined, 2))

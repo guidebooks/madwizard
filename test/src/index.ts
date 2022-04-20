@@ -17,12 +17,13 @@
 import { test } from "uvu"
 import * as assert from "uvu/assert"
 
+import stripAnsi from "strip-ansi"
 import { dirname, join } from "path"
 import { diffString } from "json-diff"
 import { createRequire } from "module"
 import { readdirSync, readFileSync } from "fs"
 
-import { main } from "../.."
+import { cli, main } from "../.."
 
 const require = createRequire(import.meta.url)
 const inputDir = join(dirname(require.resolve(".")), "../inputs")
@@ -41,14 +42,16 @@ function munge(wizard: Awaited<ReturnType<typeof main>>["wizard"]) {
   )
 }
 
-function loadExpectedWizard(input: string) {
+function loadExpected(input: string, file: "wizard" | "tree") {
+  const ext = file === "wizard" ? ".json" : ".txt"
+
   try {
-    return JSON.parse(readFileSync(join(input, "wizard.json")).toString())
+    return readFileSync(join(input, file + ext)).toString()
   } catch (err) {
     const originalErr = err
     try {
       // in case we have platform-specific expected wizard
-      return JSON.parse(readFileSync(join(input, `wizard-${process.platform}.json`)).toString())
+      return readFileSync(join(input, `${file}-${process.platform}${ext}`)).toString()
     } catch (err) {
       throw originalErr
     }
@@ -72,13 +75,22 @@ readdirSync(inputDir)
   .filter((_) => _ !== undefined && !isNaN(_))
   .sort((a, b) => a - b)
   .map((_) => join(inputDir, String(_)))
-  .forEach((input) =>
-    test(input, async () => {
+  .forEach((input) => {
+    test(`tree for input ${input}`, async () => {
+      let actualTree = ""
+      const write = (msg: string) => (actualTree += msg)
+
+      await cli(["test", "tree", join(input, "in.md")], write)
+      const expectedTree = loadExpected(input, "tree")
+      assert.equal(stripAnsi(actualTree.trim()), stripAnsi(expectedTree.trim()), "tree should match")
+    })
+
+    test(`wizards for input ${input}`, async () => {
       const { wizard } = await main(join(input, "in.md"))
-      const expectedWizard = loadExpectedWizard(input)
+      const expectedWizard = JSON.parse(loadExpected(input, "wizard"))
       const diff = diffString(munge(wizard), munge(expectedWizard), { color: false })
       assert.is(diff, "", "wizard should match")
     })
-  )
+  })
 
 test.run()
