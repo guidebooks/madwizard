@@ -8,11 +8,9 @@
   "types": "dist/types.d.ts",
   "sideEffects": false,
   "bin": {
-    "madwizard": "./cli.js"
+    "madwizard": "./bin/madwizard.js"
   },
   "scripts": {
-    "madwizard": "node -e 'import(\"./dist/main.mjs\").then(_ => _.cli(process.argv))'",
-    "tree": "node -e 'import(\"./dist/main.mjs\").then(_ => _.cli([process.argv[0], \"tree\", ...process.argv.slice(1)]))'",
     "lint": "cross-env eslint . --ext .js,.jsx,.ts,.tsx",
     "watch": "cross-env concurrently -n CORE,CLI,TYPES 'parcel watch' 'tsc --noEmit --watch' 'cd test && tsc --build . --watch'",
     "build": "cross-env parcel build",
