@@ -1,17 +1,18 @@
 snippets-in-tab3.md
-├── importa.md
-│   └── echo AAA
-├── EEE
-│   └── Option 1 TabE1
-│       └── echo EEE
-├── DDD
-│   ├── Option 1 SubTab1
-│   │   ├── echo AAA
-│   │   ├── echo AAA
+├── Prerequisites
+│   ├── importa.md
 │   │   └── echo AAA
-│   └── Option 2 SubTab2
-│       └── echo BBB
-└── snippets-in-tab3.md
-    └── Option 2 Tab2
+│   ├── EEE
+│   │   └── Option 1: TabE1
+│   │       └── echo EEE
+│   └── DDD
+│       ├── Option 1: SubTab1
+│       │   ├── echo AAA
+│       │   ├── echo AAA
+│       │   └── echo AAA
+│       └── Option 2: SubTab2
+│           └── echo BBB
+└── Main Tasks
+    └── Option 2: Tab2
         └── importc.md
             └── echo CCC

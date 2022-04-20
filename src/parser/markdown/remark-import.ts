@@ -15,6 +15,7 @@
  */
 
 import Debug from "debug"
+import { basename } from "path"
 import { Element, Node } from "hast"
 import { visit } from "unist-util-visit"
 import { Node as Node2, toString } from "hast-util-to-string"
@@ -118,7 +119,9 @@ export function remarkImports() {
           "data-kui-filepath": filepath,
           "data-kui-provenance": provenance,
           "data-kui-import-title":
-            title || (children[0] && isHeading(children[0]) ? toString(children[0]).replace(/\s*\(\)\s*/g, "") : ""),
+            title ||
+            (children[0] && isHeading(children[0]) ? toString(children[0]).replace(/\s*\(\)\s*/g, "") : "") ||
+            basename(filepath),
         },
       }
     })

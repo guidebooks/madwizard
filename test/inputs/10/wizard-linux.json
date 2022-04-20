@@ -2,22 +2,22 @@
   {
     "graph": {
       "key": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importgg.md",
-      "title": "",
+      "title": "importgg.md",
       "description": "",
       "filepath": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importgg.md",
       "graph": {
-        "key": "bd29b9ee-a6ce-4e72-a718-d603ee2813ad",
+        "key": "ca685098-3f2a-49fe-8eb6-105f9c31e5d4",
         "sequence": [
           {
             "body": "echo LLL",
             "language": "bash",
-            "id": "2258eadf-2ef9-4f59-9ae5-f06b41749ad3-1",
+            "id": "a7b5eaa0-2157-47cc-b55d-d9609391de03-1",
             "nesting": [
               {
                 "kind": "Import",
-                "source": "=== \"Darwin\"\n\n    ```bash\n    \n    ---\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-0\n    \n    ---\n    echo MMM\n    ```\n    \n\n=== \"Linux\"\n\n    ```bash\n    \n    ---\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-1\n    \n    ---\n    echo LLL\n    ```\n    \n\n=== \"Win32\"\n\n    ```bash\n    echo WWW\n    ```\n    \n",
+                "source": "=== \"Darwin\"\n\n    ```bash\n    \n    ---\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-0\n    \n    ---\n    echo MMM\n    ```\n    \n\n=== \"Linux\"\n\n    ```bash\n    \n    ---\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-1\n    \n    ---\n    echo LLL\n    ```\n    \n\n=== \"Win32\"\n\n    ```bash\n    echo WWW\n    ```\n    \n",
                 "key": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importgg.md",
-                "title": "",
+                "title": "importgg.md",
                 "filepath": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importgg.md"
               },
               {
@@ -27,41 +27,41 @@
                 "title": "Linux",
                 "member": 1,
                 "groupDetail": {
-                  "source": "=== \"Darwin\"\n\n    ```bash\n    \n    ---\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-0\n    \n    ---\n    echo MMM\n    ```\n    \n\n=== \"Linux\"\n\n    ```bash\n    echo LLL\n    ```\n    \n\n=== \"Win32\"\n\n    ```bash\n    echo WWW\n    ```\n    \n"
+                  "source": "=== \"Darwin\"\n\n    ```bash\n    \n    ---\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-0\n    \n    ---\n    echo MMM\n    ```\n    \n\n=== \"Linux\"\n\n    ```bash\n    echo LLL\n    ```\n    \n\n=== \"Win32\"\n\n    ```bash\n    echo WWW\n    ```\n    \n"
                 }
               }
             ]
           }
         ]
       },
-      "source": "=== \"Darwin\"\n\n    ```bash\n    \n    ---\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-0\n    \n    ---\n    echo MMM\n    ```\n    \n\n=== \"Linux\"\n\n    ```bash\n    echo LLL\n    ```\n    \n\n=== \"Win32\"\n\n    ```bash\n    echo WWW\n    ```\n    \n"
+      "source": "=== \"Darwin\"\n\n    ```bash\n    \n    ---\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-0\n    \n    ---\n    echo MMM\n    ```\n    \n\n=== \"Linux\"\n\n    ```bash\n    echo LLL\n    ```\n    \n\n=== \"Win32\"\n\n    ```bash\n    echo WWW\n    ```\n    \n"
     },
     "step": {
       "name": "importgg.md",
       "description": "",
-      "content": "=== \"Darwin\"\n\n    ```bash\n    \n    ---\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-0\n    \n    ---\n    echo MMM\n    ```\n    \n\n=== \"Linux\"\n\n    ```bash\n    echo LLL\n    ```\n    \n\n=== \"Win32\"\n\n    ```bash\n    echo WWW\n    ```\n    \n"
+      "content": "=== \"Darwin\"\n\n    ```bash\n    \n    ---\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-0\n    \n    ---\n    echo MMM\n    ```\n    \n\n=== \"Linux\"\n\n    ```bash\n    echo LLL\n    ```\n    \n\n=== \"Win32\"\n\n    ```bash\n    echo WWW\n    ```\n    \n"
     }
   },
   {
     "graph": {
       "key": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importaa.md",
-      "title": "",
+      "title": "importaa.md",
       "description": "",
       "filepath": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importaa.md",
       "graph": {
-        "key": "f04470d3-0f1b-48c4-a490-1a1b9851fb26",
+        "key": "6c8ddda2-1563-414b-b080-cbc3dde4d5bc",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "2258eadf-2ef9-4f59-9ae5-f06b41749ad3-3",
+            "id": "a7b5eaa0-2157-47cc-b55d-d9609391de03-3",
             "nesting": [
               {
                 "kind": "Import",
                 "source": "```bash\n---\nvalidate: true\n---\necho AAA\n```\n",
                 "key": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importaa.md",
-                "title": "",
+                "title": "importaa.md",
                 "filepath": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importaa.md"
               }
             ]
@@ -78,24 +78,24 @@
   },
   {
     "graph": {
-      "group": "f7b09405-9a3d-5b73-b653-27e362f0cf15",
+      "group": "da686de2-6e52-55a2-96c4-fca8c9f30703",
       "title": "DDD",
       "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "f6f38d4f-6818-48f0-ad14-1f1a8a539d77",
+            "key": "6c8f8d5d-ed06-421c-b0fd-56169c641a3a",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "2258eadf-2ef9-4f59-9ae5-f06b41749ad3-4",
+                "id": "a7b5eaa0-2157-47cc-b55d-d9609391de03-4",
                 "nesting": [
                   {
                     "kind": "Import",
-                    "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n",
+                    "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n",
                     "key": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importdd.md",
                     "title": "DDD",
                     "filepath": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importdd.md"
@@ -103,7 +103,7 @@
                   {
                     "kind": "Choice",
                     "source": "```bash\n---\nvalidate: true\n---\necho AAA\n```\n\n```bash\n---\nvalidate: true\n---\necho AAA\n```\n\n```bash\n---\nvalidate: true\n---\necho AAA\n```\n",
-                    "group": "f7b09405-9a3d-5b73-b653-27e362f0cf15",
+                    "group": "da686de2-6e52-55a2-96c4-fca8c9f30703",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
@@ -117,24 +117,24 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "2258eadf-2ef9-4f59-9ae5-f06b41749ad3-5",
+                "id": "a7b5eaa0-2157-47cc-b55d-d9609391de03-5",
                 "nesting": [
                   {
                     "kind": "Import",
-                    "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-5\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n",
+                    "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-5\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n",
                     "key": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importdd.md",
                     "title": "DDD",
                     "filepath": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importdd.md"
                   },
                   {
                     "kind": "Choice",
-                    "source": "```bash\n\n---\nvalidate: true\nid: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-4\n\n---\necho AAA\n```\n\n```bash\n---\nvalidate: true\n---\necho AAA\n```\n\n```bash\n---\nvalidate: true\n---\necho AAA\n```\n",
-                    "group": "f7b09405-9a3d-5b73-b653-27e362f0cf15",
+                    "source": "```bash\n\n---\nvalidate: true\nid: a7b5eaa0-2157-47cc-b55d-d9609391de03-4\n\n---\necho AAA\n```\n\n```bash\n---\nvalidate: true\n---\necho AAA\n```\n\n```bash\n---\nvalidate: true\n---\necho AAA\n```\n",
+                    "group": "da686de2-6e52-55a2-96c4-fca8c9f30703",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
                       "title": "DDD",
-                      "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n"
+                      "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n"
                     }
                   }
                 ]
@@ -143,24 +143,24 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "2258eadf-2ef9-4f59-9ae5-f06b41749ad3-6",
+                "id": "a7b5eaa0-2157-47cc-b55d-d9609391de03-6",
                 "nesting": [
                   {
                     "kind": "Import",
-                    "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-5\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-6\n    \n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n",
+                    "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-5\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-6\n    \n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n",
                     "key": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importdd.md",
                     "title": "DDD",
                     "filepath": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importdd.md"
                   },
                   {
                     "kind": "Choice",
-                    "source": "```bash\n\n---\nvalidate: true\nid: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-4\n\n---\necho AAA\n```\n\n```bash\n\n---\nvalidate: true\nid: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-5\n\n---\necho AAA\n```\n\n```bash\n---\nvalidate: true\n---\necho AAA\n```\n",
-                    "group": "f7b09405-9a3d-5b73-b653-27e362f0cf15",
+                    "source": "```bash\n\n---\nvalidate: true\nid: a7b5eaa0-2157-47cc-b55d-d9609391de03-4\n\n---\necho AAA\n```\n\n```bash\n\n---\nvalidate: true\nid: a7b5eaa0-2157-47cc-b55d-d9609391de03-5\n\n---\necho AAA\n```\n\n```bash\n---\nvalidate: true\n---\necho AAA\n```\n",
+                    "group": "da686de2-6e52-55a2-96c4-fca8c9f30703",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
                       "title": "DDD",
-                      "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-5\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n"
+                      "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-5\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    ---\n    validate: true\n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n"
                     }
                   }
                 ]
@@ -172,17 +172,17 @@
         {
           "member": 1,
           "graph": {
-            "key": "7dcc1a4c-c9b4-48e4-a312-76fd4361232d",
+            "key": "332cb0f4-315a-4c4a-82b9-9a04f038d232",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "2258eadf-2ef9-4f59-9ae5-f06b41749ad3-7",
+                "id": "a7b5eaa0-2157-47cc-b55d-d9609391de03-7",
                 "nesting": [
                   {
                     "kind": "Import",
-                    "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-5\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-6\n    \n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    \n    ---\n    validate: false\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-7\n    \n    ---\n    echo BBB\n    ```\n    \n",
+                    "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-5\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-6\n    \n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    \n    ---\n    validate: false\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-7\n    \n    ---\n    echo BBB\n    ```\n    \n",
                     "key": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importdd.md",
                     "title": "DDD",
                     "filepath": "/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importdd.md"
@@ -190,12 +190,12 @@
                   {
                     "kind": "Choice",
                     "source": "```bash\n---\nvalidate: false\n---\necho BBB\n```\n",
-                    "group": "f7b09405-9a3d-5b73-b653-27e362f0cf15",
+                    "group": "da686de2-6e52-55a2-96c4-fca8c9f30703",
                     "title": "SubTab2",
                     "member": 1,
                     "groupDetail": {
                       "title": "DDD",
-                      "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-5\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: 2258eadf-2ef9-4f59-9ae5-f06b41749ad3-6\n    \n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n"
+                      "source": "# DDD\n\n=== \"SubTab1\"\n\n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-4\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-5\n    \n    ---\n    echo AAA\n    ```\n    \n    ```bash\n    \n    ---\n    validate: true\n    id: a7b5eaa0-2157-47cc-b55d-d9609391de03-6\n    \n    ---\n    echo AAA\n    ```\n    \n\n=== \"SubTab2\"\n\n    ```bash\n    ---\n    validate: false\n    ---\n    echo BBB\n    ```\n    \n"
                     }
                   }
                 ]
@@ -212,13 +212,13 @@
       "content": [
         {
           "title": "SubTab1",
-          "group": "f7b09405-9a3d-5b73-b653-27e362f0cf15",
+          "group": "da686de2-6e52-55a2-96c4-fca8c9f30703",
           "member": 0,
           "isFirstChoice": true
         },
         {
           "title": "SubTab2",
-          "group": "f7b09405-9a3d-5b73-b653-27e362f0cf15",
+          "group": "da686de2-6e52-55a2-96c4-fca8c9f30703",
           "member": 1,
           "isFirstChoice": true
         }
