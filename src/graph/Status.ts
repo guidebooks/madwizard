@@ -40,3 +40,5 @@ export function isStatus(status: string): status is Status {
     status === "unknown"
   )
 }
+
+export type StatusMap = Record<string, Status>

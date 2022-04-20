@@ -16,14 +16,25 @@
 
 import { ChoiceState } from "../choices"
 import { CodeBlockProps } from "../codeblock"
-import { Status, Graph, Ordered, isSubTask, choose, isChoice, isSequence, isParallel, isTitledSteps } from "."
+import {
+  Status,
+  StatusMap,
+  Graph,
+  Ordered,
+  isSubTask,
+  choose,
+  isChoice,
+  isSequence,
+  isParallel,
+  isTitledSteps,
+} from "."
 
 type Progress = { nDone: number; nError: number; nTotal: number; nextOrdinals: number[] }
 
 /** @return progress towards success of the given `graph` */
 export function progress(
   graph: Graph<Ordered>,
-  statusMap?: Record<string, Status> /* map key is code block id */,
+  statusMap?: StatusMap /* map key is code block id */,
   choices?: ChoiceState,
   filterOut?: (props: CodeBlockProps) => boolean
 ): Progress {

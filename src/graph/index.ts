@@ -216,7 +216,8 @@ type InteriorNode<T extends Unordered | Ordered = Unordered> =
   | SubTask<T>
   | TitledSteps<T>
 
-type LeafNode<T extends Unordered | Ordered = Unordered> = CodeBlockProps & T
+export type LeafNode<T extends Unordered | Ordered = Unordered> = CodeBlockProps & T
+export type OrderedLeafNode = LeafNode & Ordered
 
 export function isLeafNode<T extends Unordered | Ordered = Unordered>(graph: Graph<T>): graph is LeafNode<T> {
   return typeof (graph as LeafNode<T>).body === "string"

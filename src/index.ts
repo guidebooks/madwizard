@@ -17,6 +17,9 @@
 // CLI
 export * from "./fe/cli"
 
+// UI support
+export * from "./fe/tree"
+
 // An entrypoint useful for tests
 export * from "./fe/main"
 
