@@ -25,7 +25,7 @@ export interface UI<Content> {
   icon(cls: string): Content
   statusToIcon(status: Status): Content
   title(title: Content | string | (Content | string)[], status?: Status): Content
-  open?(filepath: string): Content | void
+  open?(filepath: string): Content
 }
 
 export class AnsiUI implements UI<string> {
