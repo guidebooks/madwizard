@@ -40,7 +40,7 @@ export interface UINode<Content> {
   /** Additional properties of the tree view item badge */
   badgeProps?: any
   /** Action of a tree view item, can be a Button or Dropdown */
-  action?: Content | void
+  action?: Content
 }
 
 export type UITree<Content> = UINode<Content>[]
