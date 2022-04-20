@@ -1,16 +1,16 @@
 Sequence
 ├── DDD
-│   ├── Option 1 SubTab1
+│   ├── Option 1: SubTab1
 │   │   ├── echo AAA
 │   │   ├── echo AAA
 │   │   └── echo AAA
-│   └── Option 2 SubTab2
+│   └── Option 2: SubTab2
 │       └── echo BBB
 ├── importa.md
 │   └── echo AAA
 ├── EEE
-│   └── Option 1 TabE1
+│   └── Option 1: TabE1
 │       └── echo EEE
 └── snippets-in-tab5.md
-    └── Option 2 Tab2
+    └── Option 2: Tab2
         └── echo XXX

@@ -1,23 +1,23 @@
 [
   {
     "graph": {
-      "group": "ffd90395-4481-5ade-8890-724b5b666bb5",
+      "group": "c06fe391-d966-5797-b9d0-3aebb3ba6c0f",
       "source": "=== \"Tab1Title\"\n\n    Tab1Content\n    \n    ```bash\n    echo 111\n    ```\n    \n\n=== \"Tab2Title\"\n\n    Tab2Content\n    \n    ```bash\n    echo 222\n    ```\n    \n",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "e8e3d64c-9811-4285-816c-136e9d46976f",
+            "key": "cbadaa4e-cd7d-4e0a-bd8b-9dc3d93d4fc4",
             "sequence": [
               {
                 "body": "echo 111",
                 "language": "bash",
-                "id": "db216b0e-9bf6-4da5-accf-a39bcdeb2ecd-0",
+                "id": "73b257ec-d2e4-49a8-aacc-3af1385ab52d-0",
                 "nesting": [
                   {
                     "kind": "Choice",
                     "source": "Tab1Content\n\n```bash\necho 111\n```\n",
-                    "group": "ffd90395-4481-5ade-8890-724b5b666bb5",
+                    "group": "c06fe391-d966-5797-b9d0-3aebb3ba6c0f",
                     "title": "Tab1Title",
                     "member": 0,
                     "groupDetail": {
@@ -33,21 +33,21 @@
         {
           "member": 1,
           "graph": {
-            "key": "ce4216a9-0ac7-4689-b431-c96ebcf72eff",
+            "key": "66224ff8-e7da-4ece-bba9-dec52b7b5b39",
             "sequence": [
               {
                 "body": "echo 222",
                 "language": "bash",
-                "id": "db216b0e-9bf6-4da5-accf-a39bcdeb2ecd-1",
+                "id": "73b257ec-d2e4-49a8-aacc-3af1385ab52d-1",
                 "nesting": [
                   {
                     "kind": "Choice",
                     "source": "Tab2Content\n\n```bash\necho 222\n```\n",
-                    "group": "ffd90395-4481-5ade-8890-724b5b666bb5",
+                    "group": "c06fe391-d966-5797-b9d0-3aebb3ba6c0f",
                     "title": "Tab2Title",
                     "member": 1,
                     "groupDetail": {
-                      "source": "=== \"Tab1Title\"\n\n    Tab1Content\n    \n    ```bash\n    \n    ---\n    id: db216b0e-9bf6-4da5-accf-a39bcdeb2ecd-0\n    \n    ---\n    echo 111\n    ```\n    \n\n=== \"Tab2Title\"\n\n    Tab2Content\n    \n    ```bash\n    echo 222\n    ```\n    \n"
+                      "source": "=== \"Tab1Title\"\n\n    Tab1Content\n    \n    ```bash\n    \n    ---\n    id: 73b257ec-d2e4-49a8-aacc-3af1385ab52d-0\n    \n    ---\n    echo 111\n    ```\n    \n\n=== \"Tab2Title\"\n\n    Tab2Content\n    \n    ```bash\n    echo 222\n    ```\n    \n"
                     }
                   }
                 ]
@@ -63,13 +63,13 @@
       "content": [
         {
           "title": "Tab1Title",
-          "group": "ffd90395-4481-5ade-8890-724b5b666bb5",
+          "group": "c06fe391-d966-5797-b9d0-3aebb3ba6c0f",
           "member": 0,
           "isFirstChoice": true
         },
         {
           "title": "Tab2Title",
-          "group": "ffd90395-4481-5ade-8890-724b5b666bb5",
+          "group": "c06fe391-d966-5797-b9d0-3aebb3ba6c0f",
           "member": 1,
           "isFirstChoice": true
         }

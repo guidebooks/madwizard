@@ -219,7 +219,7 @@ export class Treeifier<Content> {
           `${idPrefix}-g${graph.group}-m${_.member}`,
           depth + 1,
           true,
-          this.ui.title([this.ui.span(`Option ${_.member + 1}`, "bold", "blue"), _.title])
+          this.ui.title([this.ui.span(`Option ${_.member + 1}:`, "bold", "blue"), _.title])
         )
       )
       .filter(Boolean)
