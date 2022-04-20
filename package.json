@@ -15,8 +15,9 @@
     "watch": "cross-env concurrently -n CORE,CLI,TYPES 'parcel watch' 'tsc --noEmit --watch' 'cd test && tsc --build . --watch'",
     "build": "cross-env parcel build",
     "build:test": "cross-env-shell tsc --project test",
-    "test": "cross-env concurrently -n TYPES,TESTS 'tsc --noEmit' 'node --experimental-specifier-resolution=node test/dist'",
+    "test": "cross-env npm run build:test && cross-env concurrently -n TYPES,TESTS 'tsc --noEmit' 'node --experimental-specifier-resolution=node test/dist'",
     "format": "cross-env prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",
+    "prepack": "npm test && npm run build",
     "prepare": "cross-env husky install"
   },
   "keywords": [
