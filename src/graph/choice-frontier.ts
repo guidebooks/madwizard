@@ -230,6 +230,34 @@ export function findChoiceFrontier(
   }
 }
 
-export default function findChoicesOnFrontier(graph: Graph, choices: ChoiceState): Choice[] {
+export function isValidFrontier(frontier: ReturnType<typeof findChoiceFrontier>): boolean {
+  return frontier.length > 0 && frontier.every((_) => _.prereqs.length > 0 || !!_.choice)
+}
+
+export function findChoiceFrontierWithFallbacks(graph: Graph, choices: ChoiceState) {
+  const frontier1 = findChoiceFrontier(graph, choices)
+
+  const frontier2 = isValidFrontier(frontier1)
+    ? frontier1
+    : [
+        {
+          prereqs: findPrereqsAndMainTasks(graph),
+          choice: undefined,
+        },
+      ]
+
+  const frontier = isValidFrontier(frontier2)
+    ? frontier2
+    : [
+        {
+          prereqs: findCodeBlockFrontier(graph, choices),
+          choice: undefined,
+        },
+      ]
+
+  return frontier
+}
+
+export function findChoicesOnFrontier(graph: Graph, choices: ChoiceState): Choice[] {
   return findChoiceFrontier(graph, choices).map((_) => _.choice)
 }

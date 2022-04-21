@@ -16,34 +16,63 @@
 
 import chalk from "chalk"
 
-import { prettyPrintUITree, Treeifier, AnsiUI } from "../tree"
+import { Guide } from "../guide"
 import { parse, wizardify, compile, order } from "../.."
+import { prettyPrintUITree, Treeifier, AnsiUI } from "../tree"
 
-export async function cli(argv: string[], write = process.stdout.write.bind(process.stdout)) {
+export { Guide }
+
+type Task = "tree" | "json" | "guide"
+
+function isValidTask(task: string): task is Task {
+  return task === "tree" || task === "json" || task === "guide"
+}
+
+function assertExhaustive(value: never, message = "Reached unexpected case in exhaustive switch"): never {
+  throw new Error(message)
+}
+
+export async function cli<Writer extends (msg: string) => void>(argv: string[], write?: Writer) {
   const task = argv[1]
   const input = argv[2]
-
-  if (!task) {
-    console.error(chalk.red("Please provide a task"))
-    process.exit(1)
-  } else if (task !== "tree" && task !== "wizard-raw") {
-    console.error(chalk.red(`Invalid task: ${task}`))
-    process.exit(1)
-  }
 
   if (!input) {
     console.error(chalk.red("Please provide an input filepath or URI"))
     process.exit(1)
   }
 
-  const { blocks, choices } = await parse(input)
-  const graph = compile(blocks, choices)
+  if (!task) {
+    console.error(chalk.red("Please provide a task"))
+    process.exit(1)
+  } else if (!isValidTask(task)) {
+    console.error(chalk.red(`Invalid task: ${task}`))
+    process.exit(1)
+  }
 
-  if (task === "tree") {
-    const tree = new Treeifier(new AnsiUI()).toTree(order(graph))
-    prettyPrintUITree(tree, undefined, write)
-  } else if (task === "wizard-raw") {
-    const wizard = wizardify(graph, choices)
-    console.log(JSON.stringify(wizard, undefined, 2))
+  const { blocks, choices } = await parse(input)
+
+  switch (task) {
+    case "tree": {
+      const graph = compile(blocks, choices)
+      const tree = new Treeifier(new AnsiUI()).toTree(order(graph))
+      prettyPrintUITree(tree, write)
+      break
+    }
+
+    case "json": {
+      const graph = compile(blocks, choices)
+      const wizard = wizardify(graph, choices)
+      console.log(JSON.stringify(wizard, undefined, 2))
+      break
+    }
+
+    case "guide":
+      await new Guide(blocks, choices).run()
+      break
+
+    default:
+      // if our switch isn't exhaustive, you will see this typescript error:
+      // Argument of type 'string' is not assignable to parameter of type 'never'.
+      assertExhaustive(task)
   }
 }

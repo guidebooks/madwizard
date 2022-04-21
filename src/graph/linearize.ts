@@ -33,7 +33,8 @@ import { CodeBlockProps } from "../codeblock"
 /** @return A linearized set of code blocks in the given `graph` */
 export function blocks<T extends Unordered | Ordered = Unordered>(
   graph: Graph<T>,
-  choices: "all" | "default-path" | ChoiceState = "default-path"
+  choices: "all" | "default-path" | ChoiceState = "default-path",
+  includeOptional = false
 ): (CodeBlockProps & T)[] {
   const subblocks = (subgraph: Graph<T>) => blocks(subgraph, choices)
 
@@ -55,9 +56,9 @@ export function blocks<T extends Unordered | Ordered = Unordered>(
       // return the current/default selection
       return subblocks(choose(graph, choices))
     }
-    // } else if (graph.optional) { <-- if you want to exclude optional blocks from the MiniProgressStep UI
-    // return []
-  } else {
+  } else if (!graph.optional || includeOptional) {
     return [graph]
+  } else {
+    return []
   }
 }
