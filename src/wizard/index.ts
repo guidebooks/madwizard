@@ -15,8 +15,16 @@
  */
 
 import { ChoiceState } from "../choices"
-import { findChoiceFrontier } from "../graph/choice-frontier"
-import { Graph, Choice, bodySource, extractDescription, extractTitle, hasSource, isLeafNode } from "../graph"
+import {
+  Graph,
+  Choice,
+  bodySource,
+  extractDescription,
+  extractTitle,
+  hasSource,
+  isLeafNode,
+  findChoiceFrontierWithFallbacks,
+} from "../graph"
 
 type Markdown = string
 
@@ -32,6 +40,7 @@ type StepContent = Tile[] | Markdown
 export interface WizardStep<C extends StepContent> {
   name: string
   description: string
+  introduction?: string
   content: C
 }
 
@@ -40,11 +49,14 @@ type WizardStepWithGraph<G extends Graph = Graph, C extends StepContent = StepCo
   step: WizardStep<C>
 }
 
-export function isChoiceStep(step: WizardStepWithGraph): step is WizardStepWithGraph<Choice, Tile[]> {
+export type TaskStep = WizardStepWithGraph<Graph, Markdown>
+export type ChoiceStep = WizardStepWithGraph<Choice, Tile[]>
+
+export function isChoiceStep(step: WizardStepWithGraph): step is ChoiceStep {
   return Array.isArray(step.step.content)
 }
 
-export function isMarkdownStep(step: WizardStepWithGraph): step is WizardStepWithGraph<Graph, Markdown> {
+export function isTaskStep(step: WizardStepWithGraph): step is TaskStep {
   return !isChoiceStep(step)
 }
 
@@ -73,6 +85,7 @@ function wizardStepForChoiceOnFrontier(graph: Choice, isFirstChoice: boolean): W
       step: {
         name: graph.title,
         description: "This step requires you to choose how to proceed",
+        // TODO: introduction: graph.description,
         content: graph.choices.map((_) => ({
           title: _.title,
           group: graph.group,
@@ -88,8 +101,8 @@ function wizardStepForChoiceOnFrontier(graph: Choice, isFirstChoice: boolean): W
 type Wizard = WizardStepWithGraph[]
 export { Wizard }
 
-export function wizardify(dag: Graph, choices: ChoiceState): Wizard {
-  const frontier = findChoiceFrontier(dag, choices)
+export function wizardify(graph: Graph, choices: ChoiceState): Wizard {
+  const frontier = findChoiceFrontierWithFallbacks(graph, choices)
 
   // the steps will be the interleaved ((...prereqs, choice), ...)
   // dictated by the this.state.frontier model, which comes from
@@ -97,7 +110,7 @@ export function wizardify(dag: Graph, choices: ChoiceState): Wizard {
   // this nested interleaving down to a linear set of WizardSteps
   const idxOfFirstChoice = frontier.findIndex((_) => _.choice)
 
-  return findChoiceFrontier(dag, choices).flatMap(({ prereqs, choice }, idx): WizardStepWithGraph[] =>
+  return frontier.flatMap(({ prereqs, choice }, idx): WizardStepWithGraph[] =>
     [
       ...prereqs.map((_) => wizardStepForPrereq(_)),
       wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice),

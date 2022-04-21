@@ -19,7 +19,7 @@ import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTa
 
 export type ValidationExecutor = (cmdline: string) => "success" | Promise<"success">
 
-async function shellExec(cmdline: string): Promise<"success"> {
+export async function shellExec(cmdline: string): Promise<"success"> {
   return new Promise((resolve, reject) =>
     exec(cmdline, (err) => {
       if (err) {

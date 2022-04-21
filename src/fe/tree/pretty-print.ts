@@ -28,8 +28,8 @@ const Symbols = {
 
 export function prettyPrintUITree(
   graph: UITree<string>,
-  symbols = Symbols.ansi,
   write = process.stdout.write.bind(process.stdout),
+  symbols = Symbols.ansi,
   prefix = "",
   depth = 0,
   isLast = false
@@ -47,7 +47,7 @@ export function prettyPrintUITree(
 
     if (node.children) {
       node.children.forEach((child, idx, A) =>
-        prettyPrintUITree([child], symbols, write, prefix + nextPrefix, depth + 1, idx === A.length - 1)
+        prettyPrintUITree([child], write, symbols, prefix + nextPrefix, depth + 1, idx === A.length - 1)
       )
     }
   })
