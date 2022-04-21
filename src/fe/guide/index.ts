@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import chalk from "chalk"
 import wrap from "wrap-ansi"
 import { Listr } from "listr2"
 import inquirer, { Question, Answers } from "inquirer"
 
 import { ChoiceState } from "../../choices"
-import { blocks, compile /*, shellExec */ } from "../../graph"
 import { CodeBlockProps } from "../../codeblock"
 import indent from "../../parser/markdown/util/indent"
+import { blocks, compile, /* shellExec, */ validate } from "../../graph"
 import { wizardify, ChoiceStep, TaskStep, isChoiceStep, isTaskStep } from "../../wizard"
 
 export class Guide {
+  private readonly debug = Debug("madwizard/fe/guide")
+
   public constructor(
     private readonly blocks: CodeBlockProps[],
     private readonly choices: ChoiceState,
@@ -108,9 +111,20 @@ export class Guide {
         task: (ctx, task) =>
           task.newListr(
             blocks(graph).map((block) => ({
-              title: chalk.magenta(block.body),
+              title: block.validate
+                ? chalk.yellow("checking to see if this task has already been done\u2026")
+                : chalk.magenta(block.body),
               task: async () => {
-                await new Promise((resolve) => setTimeout(resolve, 2000))
+                if (block.validate) {
+                  try {
+                    await validate(block)
+                    task.skip()
+                    return
+                  } catch (err) {
+                    this.debug("Validation error", err)
+                  }
+                }
+
                 // await shellExec(block.body)
               },
             }))
