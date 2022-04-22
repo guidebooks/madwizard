@@ -18,7 +18,7 @@ import { v4 } from "uuid"
 import { u } from "unist-builder"
 import { visit } from "unist-util-visit"
 import { Content, Element, Parent, Root } from "hast"
-import { visitParents } from "unist-util-visit-parents"
+import { visitParents, SKIP } from "unist-util-visit-parents"
 
 import isElementWithProperties from "./util/isElement"
 import { WizardSteps, PositionProps } from "./frontmatter/KuiFrontmatter"
@@ -149,6 +149,9 @@ function transformer(ast: Root) {
 
     function extractStepsFromDivsVisitor(node: Element, ancestors: Parent[]) {
       const parent = ancestors[ancestors.length - 1]
+      if (node !== ast && isImports(node.properties)) {
+        return SKIP
+      }
 
       if (node.tagName === "div" && node.properties["data-kui-split"] === "wizard" && parent) {
         delete node.properties["data-kui-split"]
