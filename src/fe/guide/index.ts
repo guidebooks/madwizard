@@ -190,7 +190,7 @@ export class Guide {
       const title = extractTitle(graph)
       const description = extractDescription(graph)
       if (title) {
-        console.log("📖 " + chalk.bold.blue.underline(title.trim()))
+        console.log("📖 " + chalk.bold.blue(title.trim()))
       }
       if (description) {
         console.log(this.indent(description.trim(), "   "))
@@ -210,6 +210,7 @@ export class Guide {
   }
 
   public async run() {
+    console.clear()
     const taskSteps = await this.resolveChoices()
     console.log()
     await this.runTasks(taskSteps)
