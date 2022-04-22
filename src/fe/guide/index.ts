@@ -35,8 +35,12 @@ export class Guide {
     private readonly prompt = inquirer.createPromptModule()
   ) {}
 
+  private wrap(str: string) {
+    return wrap(str, process.stdout.columns - 10)
+  }
+
   private indent(str: string) {
-    return indent(wrap(str, process.stdout.columns - 5), "  ")
+    return indent(this.wrap(str), "  ")
   }
 
   private questions() {
@@ -46,24 +50,20 @@ export class Guide {
     const choiceSteps = steps.filter(isChoiceStep)
     const taskSteps = steps.filter(isTaskStep)
 
-    const questions = choiceSteps.map(({ step }) => ({
+    const questions = choiceSteps.map(({ step }, stepIdx) => ({
       type: "list",
       pageSize: 20,
       name: step.name,
-      message: step.name,
-      choices: [
-        new inquirer.Separator(),
-        ...step.content.map((tile, idx, A) => ({
-          value: tile.title,
-          short: tile.title,
-          name:
-            tile.title +
-            (!tile.description
-              ? ""
-              : "\n" + chalk.reset(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : "\n")),
-        })),
-        new inquirer.Separator(),
-      ],
+      message: chalk.yellow(`Choice ${stepIdx + 1}:`) + ` ${step.name}`,
+      choices: step.content.map((tile, idx, A) => ({
+        value: tile.title,
+        short: tile.title,
+        name:
+          chalk.bold(tile.title) +
+          (!tile.description
+            ? ""
+            : "\n" + chalk.reset(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : "\n")),
+      })),
     }))
 
     return {
@@ -84,28 +84,26 @@ export class Guide {
   private ask(questions: Question[], iter = 0) {
     if (questions.length > 0) {
       if (iter === 0) {
-        this.separator("Your Choices")
+        // console.log(this.separator("Your Choices"))
       }
       return this.prompt(questions)
     }
   }
 
-  private separator(title = "", extra = false) {
-    if (extra) {
-      console.log()
-    }
-    console.log(chalk.yellow(title))
+  private separator(title?: string) {
+    return chalk.yellow(title)
   }
 
   private async runTasks(taskSteps: TaskStep[]) {
-    this.separator("This guide is now ready for execution", true)
+    console.log()
+    // rocket: 🚀
 
     const answers = await this.prompt([
       {
         type: "list",
         name: "execution",
-        message: "Execute now? 🚀",
-        choices: ["Cancel", "Yes, run them all unattended 🤖", "Yes, step me through the execution"],
+        message: this.separator("Guidebook is now ready for execution"),
+        choices: ["Run unattended 🤖", "Step me through the execution", "Cancel"],
       },
     ])
 
@@ -120,7 +118,7 @@ export class Guide {
           task.newListr(
             blocks(graph).map((block) => ({
               title: block.validate
-                ? chalk.yellow("checking to see if this task has already been done\u2026")
+                ? chalk.dim("checking to see if this task has already been done\u2026")
                 : chalk.magenta(block.body),
               task: async () => {
                 if (block.validate) {
@@ -145,34 +143,35 @@ export class Guide {
     ).run()
   }
 
-  public async run() {
-    let done = false
-    let iter = 0
-    while (!done) {
-      const { graph, choiceSteps, taskSteps, questions } = await this.questions()
+  /** Iterate until all choices have been resolved */
+  private async resolveChoices(iter = 0) {
+    const { graph, choiceSteps, taskSteps, questions } = await this.questions()
 
-      if (iter === 0) {
-        const title = extractTitle(graph)
-        const description = extractDescription(graph)
-        if (title) {
-          console.log(chalk.bold.underline(title.trim()))
-        }
-        if (description) {
-          console.log(this.indent(chalk.reset(description.trim())))
-        }
-
-        if (title || description) {
-          console.log()
-        }
+    if (iter === 0) {
+      const title = extractTitle(graph)
+      const description = extractDescription(graph)
+      if (title) {
+        console.log(chalk.bold.blue.underline(title.trim()))
+      }
+      if (description) {
+        console.log(this.indent(description.trim()))
       }
 
-      if (questions.length === 0) {
-        await this.runTasks(taskSteps)
-        done = true
-      } else {
-        await this.incorporateAnswers(choiceSteps, await this.ask(questions, iter))
+      if (title || description) {
+        console.log()
       }
-      iter++
     }
+
+    if (questions.length === 0) {
+      return taskSteps
+    } else {
+      await this.incorporateAnswers(choiceSteps, await this.ask(questions, iter))
+      return this.resolveChoices(iter + 1)
+    }
+  }
+
+  public async run() {
+    const taskSteps = await this.resolveChoices()
+    await this.runTasks(taskSteps)
   }
 }
