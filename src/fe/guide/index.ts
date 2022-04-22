@@ -20,6 +20,7 @@ import wrap from "wrap-ansi"
 import { Listr } from "listr2"
 import readline from "readline"
 import { Writable } from "stream"
+import terminalLink from "terminal-link"
 import inquirer, { Question, Answers } from "inquirer"
 
 import { ChoiceState } from "../../choices"
@@ -64,7 +65,7 @@ export class Guide {
           chalk.bold(tile.title) +
           (!tile.description
             ? ""
-            : "\n" + chalk.reset(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : "\n")),
+            : "\n" + this.linkify(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : "\n")),
       })),
     }))
 
@@ -154,7 +155,7 @@ export class Guide {
       {
         type: "list",
         name: "execution",
-        message: this.separator("Guidebook is now ready for execution"),
+        message: this.separator("This guidebook is ready for execution"),
         choices: [
           { value: "auto", name: "Run unattended 🤖" },
           { value: "step", name: "Step me through it 🐌" },
@@ -182,6 +183,10 @@ export class Guide {
     ).run()
   }
 
+  private linkify(str: string) {
+    return str.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, p1, p2) => terminalLink(p1, p2))
+  }
+
   /** Iterate until all choices have been resolved */
   private async resolveChoices(iter = 0) {
     const { graph, choiceSteps, taskSteps, questions } = await this.questions()
@@ -193,7 +198,7 @@ export class Guide {
         console.log("📖 " + chalk.bold.blue(title.trim()))
       }
       if (description) {
-        console.log(this.indent(description.trim(), "   "))
+        console.log(this.linkify(this.indent(description.trim(), "   ")))
       }
 
       if (title || description) {
