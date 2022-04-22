@@ -23,5 +23,5 @@ import collapseMadeChoices from "./collapseMadeChoices"
 import deadCodeElimination from "./deadCodeElimination"
 
 export default function optimize(graph: Graph, choices: ChoiceState) {
-  return propagateTitles(deadCodeElimination(hoistSubTasks(collapseMadeChoices(graph, choices), choices)))
+  return propagateTitles(deadCodeElimination(hoistSubTasks(collapseMadeChoices(graph, choices))))
 }

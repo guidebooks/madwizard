@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { ChoiceState } from "../choices"
 import {
   Graph,
   Choice,
@@ -101,8 +100,8 @@ function wizardStepForChoiceOnFrontier(graph: Choice, isFirstChoice: boolean): W
 type Wizard = WizardStepWithGraph[]
 export { Wizard }
 
-export function wizardify(graph: Graph, choices: ChoiceState): Wizard {
-  const frontier = findChoiceFrontierWithFallbacks(graph, choices)
+export function wizardify(graph: Graph): Wizard {
+  const frontier = findChoiceFrontierWithFallbacks(graph)
 
   // the steps will be the interleaved ((...prereqs, choice), ...)
   // dictated by the this.state.frontier model, which comes from

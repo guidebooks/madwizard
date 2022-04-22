@@ -27,8 +27,8 @@ import { newChoiceState } from "../choices"
  */
 export async function main(input: VFileCompatible, choices = newChoiceState()) {
   const { blocks } = await blockify(input, choices)
-  const dag = compile(blocks, choices)
-  const wizard = wizardify(dag, choices)
+  const graph = compile(blocks, choices)
+  const wizard = wizardify(graph)
 
-  return { blocks, dag, wizard, choices }
+  return { blocks, graph, wizard, choices }
 }
