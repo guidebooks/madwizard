@@ -18,6 +18,8 @@ import Debug from "debug"
 import chalk from "chalk"
 import wrap from "wrap-ansi"
 import { Listr } from "listr2"
+import readline from "readline"
+import { Writable } from "stream"
 import inquirer, { Question, Answers } from "inquirer"
 
 import { ChoiceState } from "../../choices"
@@ -94,48 +96,85 @@ export class Guide {
     return chalk.yellow(title)
   }
 
-  private async runTasks(taskSteps: TaskStep[]) {
-    console.log()
-    // rocket: 🚀
+  private listrTaskStep({ step, graph }: TaskStep) {
+    return {
+      title: step.name,
+      task: (ctx, task) =>
+        task.newListr(
+          blocks(graph).flatMap((block) => ({
+            title: block.validate
+              ? chalk.dim("checking to see if this task has already been done\u2026")
+              : chalk.magenta(block.body),
+            task: async () => {
+              if (block.validate) {
+                try {
+                  await validate(block)
+                  task.skip()
+                  return
+                } catch (err) {
+                  this.debug("Validation error", err)
+                }
+              }
 
-    const answers = await this.prompt([
+              // await shellExec(block.body)
+            },
+          }))
+        ),
+    }
+  }
+
+  private waitForEnter() {
+    const mutedStdout = new Writable({
+      write: function (chunk, encoding, callback) {
+        callback()
+      },
+    })
+
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: mutedStdout,
+    })
+
+    return new Promise<void>((resolve) => {
+      rl.on("close", resolve)
+
+      rl.question("", () => {
+        rl.close()
+        resolve()
+      })
+    })
+  }
+
+  private listrPauseStep() {
+    return [{ task: this.waitForEnter }]
+  }
+
+  private async runTasks(taskSteps: TaskStep[]) {
+    const { execution } = await this.prompt([
       {
         type: "list",
         name: "execution",
         message: this.separator("Guidebook is now ready for execution"),
-        choices: ["Run unattended 🤖", "Step me through the execution", "Cancel"],
+        choices: [
+          { value: "auto", name: "Run unattended 🤖" },
+          { value: "step", name: "Step me through it 🐌" },
+          { value: "stop", name: "Cancel 🛑" },
+        ],
       },
     ])
 
-    if (answers.execution === "Cancel") {
+    if (execution === "stop") {
       return
+    } else if (execution === "step") {
+      console.log("🖐  Hit enter after every step to proceed to the next step, or ctrl+c to cancel.")
+      console.log()
     }
 
     await new Listr(
-      taskSteps.map(({ step, graph }) => ({
-        title: step.name,
-        task: (ctx, task) =>
-          task.newListr(
-            blocks(graph).map((block) => ({
-              title: block.validate
-                ? chalk.dim("checking to see if this task has already been done\u2026")
-                : chalk.magenta(block.body),
-              task: async () => {
-                if (block.validate) {
-                  try {
-                    await validate(block)
-                    task.skip()
-                    return
-                  } catch (err) {
-                    this.debug("Validation error", err)
-                  }
-                }
-
-                // await shellExec(block.body)
-              },
-            }))
-          ),
-      })),
+      taskSteps.flatMap((_, idx, A) => [
+        this.listrTaskStep(_),
+        ...(execution === "step" && idx < A.length - 1 ? this.listrPauseStep() : []),
+      ]),
       {
         /* options */
         concurrent: false,
@@ -172,6 +211,7 @@ export class Guide {
 
   public async run() {
     const taskSteps = await this.resolveChoices()
+    console.log()
     await this.runTasks(taskSteps)
   }
 }
