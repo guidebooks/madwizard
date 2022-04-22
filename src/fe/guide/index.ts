@@ -41,8 +41,8 @@ export class Guide {
     return wrap(str, process.stdout.columns - 10)
   }
 
-  private indent(str: string) {
-    return indent(this.wrap(str), "  ")
+  private indent(str: string, indentation = "  ") {
+    return indent(this.wrap(str), indentation)
   }
 
   private questions() {
@@ -190,10 +190,10 @@ export class Guide {
       const title = extractTitle(graph)
       const description = extractDescription(graph)
       if (title) {
-        console.log(chalk.bold.blue.underline(title.trim()))
+        console.log("📖 " + chalk.bold.blue.underline(title.trim()))
       }
       if (description) {
-        console.log(this.indent(description.trim()))
+        console.log(this.indent(description.trim(), "   "))
       }
 
       if (title || description) {
