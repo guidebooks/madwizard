@@ -330,8 +330,8 @@ function hoist(inputGraph: Graph, inheritedSubTasks: SubTask[], choices: ChoiceS
   const choiceFrontier = findChoiceFrontier(inputGraph, choices)
   const frontierAllChoicesSubTasks = choiceFrontier.flatMap(extractSubTasksCommonToAllChoices)
 
-  const mySubTasks = union(frontierAllChoicesSubTasks, myDominatedSubTasks)
-  const allSubTasks = union(mySubTasks, inheritedSubTasks)
+  const mySubTasks = removeDuplicates(union(frontierAllChoicesSubTasks, myDominatedSubTasks))
+  const allSubTasks = removeDuplicates(union(mySubTasks, inheritedSubTasks))
 
   if (allSubTasks.length === 0) {
     // then there is nothing to optimize
