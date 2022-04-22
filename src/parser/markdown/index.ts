@@ -15,8 +15,9 @@
  */
 
 import { v4 } from "uuid"
-import { read } from "to-vfile"
+import needle from "needle"
 import expandHomeDir from "expand-home-dir"
+import { read as vfileRead } from "to-vfile"
 import { VFile, VFileCompatible } from "vfile"
 
 import remarkParse from "remark-parse"
@@ -73,6 +74,20 @@ const rehypePlugins = (uuid: string, choices: ChoiceState, codeblocks: CodeBlock
   rehypeRaw,
   rehypeSlug,
 ]
+
+async function read(file: VFile): Promise<VFile> {
+  if (/^https?:/.test(file.path)) {
+    const { statusCode, body } = await needle("get", file.path)
+    file.value = body
+    if (statusCode !== 200) {
+      throw new Error(body)
+    } else {
+      return file
+    }
+  } else {
+    return vfileRead(file)
+  }
+}
 
 /** Parse the given `input` into a `Graph` syntax tree. */
 async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid = v4(), reader = read) {
