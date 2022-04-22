@@ -48,7 +48,7 @@ export class Guide {
 
   private questions() {
     const graph = compile(this.blocks, this.choices)
-    const steps = wizardify(graph, this.choices)
+    const steps = wizardify(graph)
 
     const choiceSteps = steps.filter(isChoiceStep)
     const taskSteps = steps.filter(isTaskStep)
@@ -158,7 +158,7 @@ export class Guide {
         message: this.separator("This guidebook is ready for execution"),
         choices: [
           { value: "auto", name: "Run unattended 🤖" },
-          { value: "step", name: "Step me through it 🐌" },
+          { value: "step", name: "Step me through it 🐢" },
           { value: "stop", name: "Cancel 🛑" },
         ],
       },

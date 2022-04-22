@@ -27,12 +27,9 @@ import {
   isSequence,
   isParallel,
   isTitledSteps,
-  chooseIndex,
   asSubTask,
   subtask,
 } from "."
-
-import { ChoiceState } from "../choices"
 
 function key(graph: Graph) {
   if (hasKey(graph)) {
@@ -48,31 +45,27 @@ function key(graph: Graph) {
 
 /**
  * Find the first set of `CodeBlock` nodes, when scanning the given
- * `graph`. Do not scan under Choice nodes for nested subtasks, unless
- *  the user has already indicated a selection for that choice.
+ * `graph`. Do not scan under Choice nodes for nested subtasks, as we
+ * assume that `collapseMadeChoices` has already been applied to the
+ * given `graph`.
  */
 
-export function findCodeBlockFrontier(graph: Graph, choices: ChoiceState): Graph[] {
+export function findCodeBlockFrontier(graph: Graph): Graph[] {
   if (isSubTask(graph)) {
-    const children = findCodeBlockFrontier(graph.graph, choices)
+    const children = findCodeBlockFrontier(graph.graph)
     if (children.every(isLeafNode)) {
       return [graph]
     } else {
       return children
     }
   } else if (isChoice(graph)) {
-    if (graph.group in choices) {
-      const whatTheUserChose = chooseIndex(graph, choices)
-      return findCodeBlockFrontier(graph.choices[whatTheUserChose].graph, choices)
-    } else {
-      return []
-    }
+    return []
   } else if (isSequence(graph)) {
-    return graph.sequence.flatMap((_) => findCodeBlockFrontier(_, choices))
+    return graph.sequence.flatMap(findCodeBlockFrontier)
   } else if (isParallel(graph)) {
-    return graph.parallel.flatMap((_) => findCodeBlockFrontier(_, choices))
+    return graph.parallel.flatMap(findCodeBlockFrontier)
   } else if (isTitledSteps(graph)) {
-    return graph.steps.flatMap((_) => findCodeBlockFrontier(_.graph, choices))
+    return graph.steps.flatMap((_) => findCodeBlockFrontier(_.graph))
   } else {
     return [graph]
   }
@@ -107,35 +100,27 @@ export function findPrereqsAndMainTasks(graph: Graph): Graph[] {
 
 /**
  * Find the first set of `Choice` nodes, when scanning the given
- * `graph`. Do not scan under Choice nodes for nested
- * choices... unless the user has already made a choice (according to
- * the given `ChoiceState`) for that choice; in which case, we tunnel
- * through under that branch, looking for the next choice...
+ * `graph`. Do not scan under Choice nodes for nested choices... we
+ * assume that `collapseMadeChoices` has already been applied to the
+ * `graph`.
  *
  */
 export function findChoiceFrontier(
   graph: Graph,
-  choices: ChoiceState,
   prereqs: Graph[] = [],
   marks: Record<string, boolean> = {}
 ): { prereqs?: Graph[]; choice: Choice }[] {
   if (isChoice(graph)) {
     marks[key(graph)] = true
 
-    if (!(graph.group in choices)) {
-      // user has not yet made a choice. stop here and consume all
-      // prereqs
-      const frontier = [{ prereqs: prereqs.slice(), choice: graph }]
-      prereqs.forEach((_) => (marks[key(_)] = true))
-      prereqs.splice(0, prereqs.length) // consume...
-      return frontier
-    } else {
-      // otherwise, we continue to tunnel down that chosen branch
-      const whatTheUserChose = chooseIndex(graph, choices)
-      return findChoiceFrontier(graph.choices[whatTheUserChose].graph, choices, prereqs, marks)
-    }
+    // user has not yet made a choice. stop here and consume all
+    // prereqs
+    const frontier = [{ prereqs: prereqs.slice(), choice: graph }]
+    prereqs.forEach((_) => (marks[key(_)] = true))
+    prereqs.splice(0, prereqs.length) // consume...
+    return frontier
   } else if (isSubTask(graph)) {
-    const frontier = findChoiceFrontier(graph.graph, choices, prereqs, marks)
+    const frontier = findChoiceFrontier(graph.graph, prereqs, marks)
 
     if (graph.title === "Prerequisites") {
       graph.graph.sequence.forEach((_) => {
@@ -162,7 +147,7 @@ export function findChoiceFrontier(
     return frontier
   } else if (isSequence(graph)) {
     const frontier = graph.sequence.flatMap((_) => {
-      const frontier = findChoiceFrontier(_, choices, prereqs, marks)
+      const frontier = findChoiceFrontier(_, prereqs, marks)
 
       if (!marks[key(_)]) {
         prereqs.push(_)
@@ -182,7 +167,7 @@ export function findChoiceFrontier(
     return frontier
   } else if (isParallel(graph)) {
     const frontier = graph.parallel.flatMap((_) => {
-      const frontier = findChoiceFrontier(_, choices, prereqs, marks)
+      const frontier = findChoiceFrontier(_, prereqs, marks)
 
       if (!marks[key(_)]) {
         prereqs.push(_)
@@ -202,7 +187,7 @@ export function findChoiceFrontier(
     return frontier
   } else if (isTitledSteps(graph)) {
     const frontier = graph.steps.flatMap((_) => {
-      const frontier = findChoiceFrontier(_.graph, choices, prereqs, marks)
+      const frontier = findChoiceFrontier(_.graph, prereqs, marks)
 
       if (!marks[key(_.graph)]) {
         if (hasTitle(_.graph)) {
@@ -234,8 +219,8 @@ export function isValidFrontier(frontier: ReturnType<typeof findChoiceFrontier>)
   return frontier.length > 0 && frontier.every((_) => _.prereqs.length > 0 || !!_.choice)
 }
 
-export function findChoiceFrontierWithFallbacks(graph: Graph, choices: ChoiceState) {
-  const frontier1 = findChoiceFrontier(graph, choices)
+export function findChoiceFrontierWithFallbacks(graph: Graph) {
+  const frontier1 = findChoiceFrontier(graph)
 
   const frontier2 = isValidFrontier(frontier1)
     ? frontier1
@@ -250,7 +235,7 @@ export function findChoiceFrontierWithFallbacks(graph: Graph, choices: ChoiceSta
     ? frontier2
     : [
         {
-          prereqs: findCodeBlockFrontier(graph, choices),
+          prereqs: findCodeBlockFrontier(graph),
           choice: undefined,
         },
       ]
@@ -258,6 +243,6 @@ export function findChoiceFrontierWithFallbacks(graph: Graph, choices: ChoiceSta
   return frontier
 }
 
-export function findChoicesOnFrontier(graph: Graph, choices: ChoiceState): Choice[] {
-  return findChoiceFrontier(graph, choices).map((_) => _.choice)
+export function findChoicesOnFrontier(graph: Graph): Choice[] {
+  return findChoiceFrontier(graph).map((_) => _.choice)
 }

@@ -34,7 +34,6 @@ import {
   subtask,
 } from "."
 
-import { ChoiceState } from "../choices"
 import { findChoicesOnFrontier as findChoiceFrontier } from "./choice-frontier"
 
 type LookupTable = Record<SubTask["key"], SubTask>
@@ -202,16 +201,12 @@ function pruneShadowedSubTasks(graph: Graph, inheritedSubTasks: SubTask[]): Grap
   }
 }
 
-function findAndHoistChoiceFrontier(
-  graph: void | Graph,
-  inheritedSubTasks: SubTask[],
-  choices: ChoiceState
-): Graph | void {
+function findAndHoistChoiceFrontier(graph: void | Graph, inheritedSubTasks: SubTask[]): Graph | void {
   if (!graph) {
     return graph
   } else if (isChoice(graph)) {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    const recurse = graph.choices.map((_) => hoist(_.graph, inheritedSubTasks, choices))
+    const recurse = graph.choices.map((_) => hoist(_.graph, inheritedSubTasks))
     return Object.assign({}, graph, {
       choices: graph.choices.map((_, idx) =>
         Object.assign({}, _, {
@@ -220,16 +215,16 @@ function findAndHoistChoiceFrontier(
       ),
     })
   } else if (isSubTask(graph)) {
-    const recurse = findAndHoistChoiceFrontier(graph.graph, inheritedSubTasks, choices)
+    const recurse = findAndHoistChoiceFrontier(graph.graph, inheritedSubTasks)
     return Object.assign({}, graph, { graph: recurse })
   } else if (isSequence(graph)) {
-    const recurse = graph.sequence.map((_) => findAndHoistChoiceFrontier(_, inheritedSubTasks, choices))
+    const recurse = graph.sequence.map((_) => findAndHoistChoiceFrontier(_, inheritedSubTasks))
     return Object.assign({}, graph, { sequence: recurse })
   } else if (isParallel(graph)) {
-    const recurse = graph.parallel.map((_) => findAndHoistChoiceFrontier(_, inheritedSubTasks, choices))
+    const recurse = graph.parallel.map((_) => findAndHoistChoiceFrontier(_, inheritedSubTasks))
     return Object.assign({}, graph, { parallel: recurse })
   } else if (isTitledSteps(graph)) {
-    const recurse = graph.steps.map((_) => findAndHoistChoiceFrontier(_.graph, inheritedSubTasks, choices))
+    const recurse = graph.steps.map((_) => findAndHoistChoiceFrontier(_.graph, inheritedSubTasks))
     return Object.assign({}, graph, {
       steps: graph.steps.map((_, idx) =>
         Object.assign({}, _, {
@@ -324,10 +319,10 @@ function recombine(inputGraph: Graph, graph: Graph | void, subTasks1: SubTask[])
 }
 
 /** Hoist shared SubTasks as high as possible in the graph */
-function hoist(inputGraph: Graph, inheritedSubTasks: SubTask[], choices: ChoiceState): Graph | void {
+function hoist(inputGraph: Graph, inheritedSubTasks: SubTask[]): Graph | void {
   const myDominatedSubTasks = extractDominatedSubTasksUpToChoice(inputGraph)
 
-  const choiceFrontier = findChoiceFrontier(inputGraph, choices)
+  const choiceFrontier = findChoiceFrontier(inputGraph)
   const frontierAllChoicesSubTasks = choiceFrontier.flatMap(extractSubTasksCommonToAllChoices)
 
   const mySubTasks = removeDuplicates(union(frontierAllChoicesSubTasks, myDominatedSubTasks))
@@ -342,7 +337,7 @@ function hoist(inputGraph: Graph, inheritedSubTasks: SubTask[], choices: ChoiceS
   const prunedGraph = pruneShadowedSubTasks(inputGraph, allSubTasks)
 
   // then, recurse, for each control subregion
-  const prunedGraph2 = findAndHoistChoiceFrontier(prunedGraph, allSubTasks, choices)
+  const prunedGraph2 = findAndHoistChoiceFrontier(prunedGraph, allSubTasks)
 
   // smash in any subTasks we hoisted.
   return recombine(inputGraph, prunedGraph2, mySubTasks)
@@ -358,6 +353,6 @@ function hoist(inputGraph: Graph, inheritedSubTasks: SubTask[], choices: ChoiceS
  * @param inputGraph the graph to optimize
  * @param maxIter to protect against infinite loop bugs
  */
-export default function hoistSubTasks(inputGraph: Graph, choices: ChoiceState): Graph {
-  return hoist(inputGraph, [], choices) || emptySequence()
+export default function hoistSubTasks(inputGraph: Graph): Graph {
+  return hoist(inputGraph, []) || emptySequence()
 }

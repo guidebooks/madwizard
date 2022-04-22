@@ -61,7 +61,7 @@ export async function cli<Writer extends (msg: string) => void>(argv: string[], 
 
     case "json": {
       const graph = compile(blocks, choices)
-      const wizard = wizardify(graph, choices)
+      const wizard = wizardify(graph)
       console.log(JSON.stringify(wizard, undefined, 2))
       break
     }
