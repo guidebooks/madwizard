@@ -23,8 +23,8 @@ import inquirer, { Question, Answers } from "inquirer"
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
 import indent from "../../parser/markdown/util/indent"
-import { blocks, compile, /* shellExec, */ validate } from "../../graph"
 import { wizardify, ChoiceStep, TaskStep, isChoiceStep, isTaskStep } from "../../wizard"
+import { blocks, compile, extractTitle, extractDescription, /* shellExec, */ validate } from "../../graph"
 
 export class Guide {
   private readonly debug = Debug("madwizard/fe/guide")
@@ -34,6 +34,10 @@ export class Guide {
     private readonly choices: ChoiceState,
     private readonly prompt = inquirer.createPromptModule()
   ) {}
+
+  private indent(str: string) {
+    return indent(wrap(str, process.stdout.columns - 5), "  ")
+  }
 
   private questions() {
     const graph = compile(this.blocks, this.choices)
@@ -49,16 +53,21 @@ export class Guide {
       message: step.name,
       choices: [
         new inquirer.Separator(),
-        ...step.content.map((tile) => ({
+        ...step.content.map((tile, idx, A) => ({
           value: tile.title,
           short: tile.title,
-          name: tile.title + (!tile.description ? "" : "\n" + chalk.dim(indent(wrap(tile.description, 80), "  "))),
+          name:
+            tile.title +
+            (!tile.description
+              ? ""
+              : "\n" + chalk.reset(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : "\n")),
         })),
         new inquirer.Separator(),
       ],
     }))
 
     return {
+      graph,
       choiceSteps,
       taskSteps,
       questions,
@@ -86,7 +95,6 @@ export class Guide {
       console.log()
     }
     console.log(chalk.yellow(title))
-    // console.log(chalk.dim(new Array(40).fill('──').join('')))
   }
 
   private async runTasks(taskSteps: TaskStep[]) {
@@ -97,7 +105,7 @@ export class Guide {
         type: "list",
         name: "execution",
         message: "Execute now? 🚀",
-        choices: ["Cancel", "Yes, run them all unattended", "Yes, step me through the execution"],
+        choices: ["Cancel", "Yes, run them all unattended 🤖", "Yes, step me through the execution"],
       },
     ])
 
@@ -141,7 +149,23 @@ export class Guide {
     let done = false
     let iter = 0
     while (!done) {
-      const { choiceSteps, taskSteps, questions } = await this.questions()
+      const { graph, choiceSteps, taskSteps, questions } = await this.questions()
+
+      if (iter === 0) {
+        const title = extractTitle(graph)
+        const description = extractDescription(graph)
+        if (title) {
+          console.log(chalk.bold.underline(title.trim()))
+        }
+        if (description) {
+          console.log(this.indent(chalk.reset(description.trim())))
+        }
+
+        if (title || description) {
+          console.log()
+        }
+      }
+
       if (questions.length === 0) {
         await this.runTasks(taskSteps)
         done = true
