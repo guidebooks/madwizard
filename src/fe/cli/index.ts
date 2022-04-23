@@ -15,6 +15,7 @@
  */
 
 import chalk from "chalk"
+import { basename } from "path"
 
 import { Guide } from "../guide"
 import { parse, wizardify, compile, order } from "../.."
@@ -24,29 +25,36 @@ export { Guide }
 
 type Task = "tree" | "json" | "guide"
 
+function validTasks(): Task[] {
+  return ["tree", "json", "guide"]
+}
+
 function isValidTask(task: string): task is Task {
-  return task === "tree" || task === "json" || task === "guide"
+  return validTasks().includes(task as Task)
 }
 
 function assertExhaustive(value: never, message = "Reached unexpected case in exhaustive switch"): never {
   throw new Error(message)
 }
 
+function usage(argv: string[], msg?: string) {
+  if (msg) {
+    console.error(chalk.red(msg))
+  }
+  console.error(`Usage: ${basename(argv[0])} ${validTasks().join("|")} <a filepath or url>`)
+  process.exit(1)
+}
+
 export async function cli<Writer extends (msg: string) => void>(argv: string[], write?: Writer) {
   const task = argv[1]
   const input = argv[2]
 
-  if (!input) {
-    console.error(chalk.red("Please provide an input filepath or URI"))
-    process.exit(1)
+  if (!task || !input) {
+    return usage(argv)
   }
 
-  if (!task) {
-    console.error(chalk.red("Please provide a task"))
-    process.exit(1)
-  } else if (!isValidTask(task)) {
-    console.error(chalk.red(`Invalid task: ${task}`))
-    process.exit(1)
+  if (!isValidTask(task)) {
+    return usage(argv, `Invalid task: ${task}`)
   }
 
   const { blocks, choices } = await parse(input)
