@@ -20,6 +20,7 @@ import wrap from "wrap-ansi"
 import { Listr } from "listr2"
 import readline from "readline"
 import { Writable } from "stream"
+import { EventEmitter } from "events"
 import terminalLink from "terminal-link"
 import inquirer, { Question, Answers } from "inquirer"
 
@@ -27,7 +28,7 @@ import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
 import indent from "../../parser/markdown/util/indent"
 import { wizardify, ChoiceStep, TaskStep, isChoiceStep, isTaskStep } from "../../wizard"
-import { blocks, compile, extractTitle, extractDescription, /* shellExec, */ validate } from "../../graph"
+import { blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
 
 export class Guide {
   private readonly debug = Debug("madwizard/fe/guide")
@@ -97,7 +98,7 @@ export class Guide {
     return chalk.yellow(title)
   }
 
-  private listrTaskStep({ step, graph }: TaskStep) {
+  private listrTaskStep({ step, graph }: TaskStep, taskIdx: number) {
     return {
       title: step.name,
       task: (ctx, task) =>
@@ -105,8 +106,9 @@ export class Guide {
           blocks(graph).flatMap((block) => ({
             title: block.validate
               ? chalk.dim("checking to see if this task has already been done\u2026")
-              : chalk.magenta(block.body),
-            task: async () => {
+              : chalk[taskIdx === 1 ? "reset" : "dim"].magenta(block.body),
+            // options: { persistentOutput: true },
+            task: async (_, task) => {
               if (block.validate) {
                 try {
                   await validate(block)
@@ -117,7 +119,14 @@ export class Guide {
                 }
               }
 
-              // await shellExec(block.body)
+              await this.waitTillDone(taskIdx - 1)
+              task.title = chalk.magenta(block.body)
+              try {
+                await shellExec(block.body, task.stdout())
+              } finally {
+                task.title = chalk.magenta.dim(block.body)
+                this.markDone(taskIdx)
+              }
             },
           }))
         ),
@@ -146,8 +155,32 @@ export class Guide {
     })
   }
 
-  private listrPauseStep() {
-    return [{ task: this.waitForEnter }]
+  private listrPauseStep(taskIdx: number) {
+    return [
+      {
+        task: async () => {
+          await this.waitTillDone(taskIdx - 1)
+          await this.waitForEnter()
+          this.markDone(taskIdx)
+        },
+      },
+    ]
+  }
+
+  private readonly done: boolean[] = []
+  private readonly doneEvents = new EventEmitter()
+  private markDone(taskIdx: number) {
+    this.done[taskIdx] = true
+    this.doneEvents.emit(taskIdx.toString())
+  }
+  private waitTillDone(taskIdx: number): Promise<void> {
+    if (!this.done[taskIdx]) {
+      return new Promise<void>((resolve) =>
+        this.doneEvents.once(taskIdx.toString(), () => {
+          resolve()
+        })
+      )
+    }
   }
 
   private async runTasks(taskSteps: TaskStep[]) {
@@ -155,7 +188,7 @@ export class Guide {
       {
         type: "list",
         name: "execution",
-        message: this.separator("This guidebook is ready for execution"),
+        message: this.separator("Execute?"),
         choices: [
           { value: "auto", name: "Run unattended 🤖" },
           { value: "step", name: "Step me through it 🐢" },
@@ -171,16 +204,21 @@ export class Guide {
       console.log()
     }
 
-    await new Listr(
+    const stepIt = execution === "step"
+
+    const taskPromise = new Listr(
       taskSteps.flatMap((_, idx, A) => [
-        this.listrTaskStep(_),
-        ...(execution === "step" && idx < A.length - 1 ? this.listrPauseStep() : []),
+        this.listrTaskStep(_, stepIt ? idx * 2 + 1 : idx + 1),
+        ...(stepIt && idx < A.length - 1 ? this.listrPauseStep(idx * 2 + 2) : []),
       ]),
       {
         /* options */
-        concurrent: false,
+        concurrent: true,
       }
     ).run()
+
+    this.markDone(0)
+    await taskPromise
   }
 
   private linkify(str: string) {
@@ -217,7 +255,6 @@ export class Guide {
   public async run() {
     console.clear()
     const taskSteps = await this.resolveChoices()
-    console.log()
     await this.runTasks(taskSteps)
   }
 }

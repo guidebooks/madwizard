@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
+import { Writable } from "stream"
 import { exec } from "child_process"
 import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask } from "."
 
 export type ValidationExecutor = (cmdline: string) => "success" | Promise<"success">
 
-export async function shellExec(cmdline: string): Promise<"success"> {
-  return new Promise((resolve, reject) =>
-    exec(cmdline, (err) => {
-      if (err) {
-        reject(err)
-      } else {
+export async function shellExec(cmdline: string, out?: Writable): Promise<"success"> {
+  return new Promise((resolve, reject) => {
+    const child = exec(cmdline)
+    child.on("close", (code) => {
+      if (code === 0) {
         resolve("success")
+      } else {
+        reject(new Error("subprocess execution failed"))
       }
     })
-  )
+
+    if (out) {
+      child.stdout.pipe(out)
+    }
+  })
 }
 
 /** Succeed only if all paths succeed, fail if any path fails */
