@@ -15,8 +15,8 @@
  */
 
 import Debug from "debug"
+import { EOL } from "os"
 import chalk from "chalk"
-import wrap from "wrap-ansi"
 import { Listr } from "listr2"
 import readline from "readline"
 import { Writable } from "stream"
@@ -39,12 +39,9 @@ export class Guide {
     private readonly prompt = inquirer.createPromptModule()
   ) {}
 
-  private wrap(str: string) {
-    return wrap(str, process.stdout.columns - 10)
-  }
-
   private indent(str: string, indentation = "  ") {
-    return indent(this.wrap(str), indentation)
+    return indent(str, indentation)
+    return str
   }
 
   private questions() {
@@ -58,7 +55,7 @@ export class Guide {
       type: "list",
       pageSize: 20,
       name: step.name,
-      message: chalk.yellow(`Choice ${stepIdx + 1}:`) + ` ${step.name}`,
+      message: chalk.underline(`Choice ${stepIdx + 1}:` + ` ${step.name}`),
       choices: step.content.map((tile, idx, A) => ({
         value: tile.title,
         short: tile.title,
@@ -66,7 +63,7 @@ export class Guide {
           chalk.bold(tile.title) +
           (!tile.description
             ? ""
-            : "\n" + this.linkify(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : "\n")),
+            : ": " + this.linkify(/*this.indent*/ tile.description.trim()) + (idx === A.length - 1 ? "" : EOL)),
       })),
     }))
 
@@ -85,20 +82,13 @@ export class Guide {
     })
   }
 
-  private ask(questions: Question[], iter = 0) {
+  private ask(questions: Question[]) {
     if (questions.length > 0) {
-      if (iter === 0) {
-        // console.log(this.separator("Your Choices"))
-      }
       return this.prompt(questions)
     }
   }
 
-  private separator(title?: string) {
-    return chalk.yellow(title)
-  }
-
-  private listrTaskStep({ step, graph }: TaskStep, taskIdx: number) {
+  private listrTaskStep({ step, graph }: TaskStep, taskIdx: number, dryRun: boolean) {
     return {
       title: step.name,
       task: (ctx, task) =>
@@ -119,12 +109,14 @@ export class Guide {
                 }
               }
 
-              await this.waitTillDone(taskIdx - 1)
-              task.title = chalk.magenta(block.body)
               try {
-                await shellExec(block.body, task.stdout())
+                if (!dryRun) {
+                  await this.waitTillDone(taskIdx - 1)
+                  task.title = chalk.magenta(block.body)
+                  await shellExec(block.body, task.stdout())
+                }
               } finally {
-                task.title = chalk.magenta.dim(block.body)
+                task.title = chalk.magenta(block.body)
                 this.markDone(taskIdx)
               }
             },
@@ -188,11 +180,12 @@ export class Guide {
       {
         type: "list",
         name: "execution",
-        message: this.separator("Execute?"),
+        message: "How do you wish to execute this guidebook?",
         choices: [
+          { value: "dryr", name: "Dry run" },
           { value: "auto", name: "Run unattended 🤖" },
-          { value: "step", name: "Step me through it 🐢" },
-          { value: "stop", name: "Cancel 🛑" },
+          { value: "step", name: "Stepped execution" },
+          { value: "stop", name: "Cancel" },
         ],
       },
     ])
@@ -208,7 +201,7 @@ export class Guide {
 
     const taskPromise = new Listr(
       taskSteps.flatMap((_, idx, A) => [
-        this.listrTaskStep(_, stepIt ? idx * 2 + 1 : idx + 1),
+        this.listrTaskStep(_, stepIt ? idx * 2 + 1 : idx + 1, execution === "dryr"),
         ...(stepIt && idx < A.length - 1 ? this.listrPauseStep(idx * 2 + 2) : []),
       ]),
       {
@@ -247,7 +240,7 @@ export class Guide {
     if (questions.length === 0) {
       return taskSteps
     } else {
-      await this.incorporateAnswers(choiceSteps, await this.ask(questions, iter))
+      await this.incorporateAnswers(choiceSteps, await this.ask(questions))
       return this.resolveChoices(iter + 1)
     }
   }
