@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { Element } from "hast"
 import { Parent } from "unist"
 import { Transformer } from "unified"
@@ -93,183 +94,187 @@ function findNearestEnclosingTitle(grandparent: Parent, parent: Node) {
  */
 export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
   const transformer: Transformer<Element> = (ast /*: Root */) => {
-    let codeIdx = 0
-    const allocCodeBlockId = (myCodeIdx: number) => `${uuid}-${myCodeIdx}`
+    const debug = Debug("madwizard/timing/parser:markdown/rehype-code-indexer")
+    debug("start")
 
-    visitParents(/* <Element> */ ast, "element", function visitor(node, ancestors) {
-      if (node.tagName === "code") {
-        // react-markdown v6+ places the language in the className
-        const match = node.properties.className ? /language-([\w{.]+)/.exec(node.properties.className.toString()) : ""
-        const language = match ? match[1].replace(/[{.]/g, "") : undefined
-        // re: the replace: this is a bit of a hack to support {.bash .no-copy} style languages from pymdown
+    try {
+      let codeIdx = 0
+      const allocCodeBlockId = (myCodeIdx: number) => `${uuid}-${myCodeIdx}`
 
-        if (isExecutable(language)) {
-          const myCodeIdx = codeIdx++
-          node.properties.codeIdx = myCodeIdx
+      visitParents(/* <Element> */ ast, "element", function visitor(node, ancestors) {
+        if (node.tagName === "code") {
+          // react-markdown v6+ places the language in the className
+          const match = node.properties.className ? /language-([\w{.]+)/.exec(node.properties.className.toString()) : ""
+          const language = match ? match[1].replace(/[{.]/g, "") : undefined
+          // re: the replace: this is a bit of a hack to support {.bash .no-copy} style languages from pymdown
 
-          if (node.children.length === 1 && node.children[0].type === "text") {
-            // the AST node that houses this code block's string content
-            const codeValueElement = node.children[0]
+          if (isExecutable(language)) {
+            const myCodeIdx = codeIdx++
+            node.properties.codeIdx = myCodeIdx
 
-            const code = String(codeValueElement.value).trim()
-            const { body, attributes } = tryFrontmatter(code)
+            if (node.children.length === 1 && node.children[0].type === "text") {
+              // the AST node that houses this code block's string content
+              const codeValueElement = node.children[0]
 
-            if (typeof attributes === "object") {
-              if (!attributes.id) {
-                // assign a codeBlockId if the author did not specify one
-                attributes.id = allocCodeBlockId(myCodeIdx)
-              }
+              const code = String(codeValueElement.value).trim()
+              const { body, attributes } = tryFrontmatter(code)
 
-              const dumpCodeBlockProps = () =>
-                Buffer.from(JSON.stringify(Object.assign({ body, language }, attributes))).toString("base64")
+              if (typeof attributes === "object") {
+                if (!attributes.id) {
+                  // assign a codeBlockId if the author did not specify one
+                  attributes.id = allocCodeBlockId(myCodeIdx)
+                }
 
-              let codeBlockProps = dumpCodeBlockProps()
+                const dumpCodeBlockProps = () =>
+                  Buffer.from(JSON.stringify(Object.assign({ body, language }, attributes))).toString("base64")
 
-              const reserialize = () => {
-                // re-serialize this update for later use
-                codeBlockProps = dumpCodeBlockProps()
-                codeValueElement.value = dump(attributes, body)
-              }
+                let codeBlockProps = dumpCodeBlockProps()
 
-              const addNesting = (...params: Parameters<typeof addCodeBlockNesting>) => {
-                addCodeBlockNesting(...params)
-                reserialize()
-              }
+                const reserialize = () => {
+                  // re-serialize this update for later use
+                  codeBlockProps = dumpCodeBlockProps()
+                  codeValueElement.value = dump(attributes, body)
+                }
 
-              if (attributes.validate === "$body") {
-                attributes.validate = body
-                reserialize()
-              }
-
-              // go from top to bottom, which is in reverse order, so
-              // that we can synthesize the "optional" and "choices"
-              // attributes
-              for (let idx = ancestors.length - 1; idx >= 0; idx--) {
-                const _ = ancestors[idx]
-
-                if (attributes.optional !== true && isImplicitlyOptional(_)) {
-                  // don't propagate code blocks out of either
-                  // explicitly or implicitly optional elements. Re:
-                  // implicitly, the idea is that we should stop
-                  // propagating the code block upwards if we reach
-                  // some element that seems indicative of blocking
-                  // out an optional area, e.g. an expandable section
-                  // that is default-closed
-                  attributes.optional = true
+                const addNesting = (...params: Parameters<typeof addCodeBlockNesting>) => {
+                  addCodeBlockNesting(...params)
                   reserialize()
                 }
 
-                if (isElementWithProperties(_)) {
-                  if (isTab(_)) {
-                    if (!attributes.choice || !attributes.choice.group) {
-                      // get the choice group id from the parent (which encloses the tabs... in this group)
+                if (attributes.validate === "$body") {
+                  attributes.validate = body
+                  reserialize()
+                }
+
+                // go from top to bottom, which is in reverse order, so
+                // that we can synthesize the "optional" and "choices"
+                // attributes
+                for (let idx = ancestors.length - 1; idx >= 0; idx--) {
+                  const _ = ancestors[idx]
+
+                  if (attributes.optional !== true && isImplicitlyOptional(_)) {
+                    // don't propagate code blocks out of either
+                    // explicitly or implicitly optional elements. Re:
+                    // implicitly, the idea is that we should stop
+                    // propagating the code block upwards if we reach
+                    // some element that seems indicative of blocking
+                    // out an optional area, e.g. an expandable section
+                    // that is default-closed
+                    attributes.optional = true
+                    reserialize()
+                  }
+
+                  if (isElementWithProperties(_)) {
+                    if (isTab(_)) {
+                      if (!attributes.choice || !attributes.choice.group) {
+                        // get the choice group id from the parent (which encloses the tabs... in this group)
+                        const parent = ancestors[idx - 1]
+                        if (isElementWithProperties(parent)) {
+                          // title for this choice
+                          const title = _.properties.title.toString()
+
+                          // identifier for this choice's group of choices
+                          const group = parent.properties["data-kui-choice-group"].toString()
+
+                          // identifier for this member of that group
+                          const member = parseInt(_.properties["data-kui-tab-index"].toString(), 0)
+                          // const nestingDepth = parseInt(parent.properties['data-kui-choice-nesting-depth'].toString(), 0)
+
+                          const grandparent = ancestors[idx - 2]
+                          addNesting(attributes, {
+                            kind: "Choice",
+                            source: toMarkdownString(_),
+                            group,
+                            title,
+                            description: extractFirstParagraph(_),
+                            member,
+                            groupDetail: findNearestEnclosingTitle(grandparent, parent),
+                          })
+                        }
+                      }
+                    } else if (isWizardStep(_.properties)) {
                       const parent = ancestors[idx - 1]
-                      if (isElementWithProperties(parent)) {
-                        // title for this choice
-                        const title = _.properties.title.toString()
-
-                        // identifier for this choice's group of choices
-                        const group = parent.properties["data-kui-choice-group"].toString()
-
-                        // identifier for this member of that group
-                        const member = parseInt(_.properties["data-kui-tab-index"].toString(), 0)
-                        // const nestingDepth = parseInt(parent.properties['data-kui-choice-nesting-depth'].toString(), 0)
-
-                        const grandparent = ancestors[idx - 2]
+                      if (parent && isElementWithProperties(parent) && isWizard(parent.properties)) {
                         addNesting(attributes, {
-                          kind: "Choice",
+                          kind: "WizardStep",
                           source: toMarkdownString(_),
-                          group,
-                          title,
-                          description: extractFirstParagraph(_),
-                          member,
-                          groupDetail: findNearestEnclosingTitle(grandparent, parent),
+                          group: getWizardGroup(_.properties),
+                          member: getWizardStepMember(_.properties),
+                          title: getTitle(_.properties),
+                          description: getDescription(_.properties),
+                          wizard: {
+                            source: toMarkdownString(parent),
+                            title: getTitle(parent.properties),
+                            description: parent.children[0] ? toMarkdownString(parent.children[0]) : undefined,
+                          },
                         })
                       }
-                    }
-                  } else if (isWizardStep(_.properties)) {
-                    const parent = ancestors[idx - 1]
-                    if (parent && isElementWithProperties(parent) && isWizard(parent.properties)) {
+                    } else if (isImports(_.properties)) {
                       addNesting(attributes, {
-                        kind: "WizardStep",
+                        kind: "Import",
                         source: toMarkdownString(_),
-                        group: getWizardGroup(_.properties),
-                        member: getWizardStepMember(_.properties),
-                        title: getTitle(_.properties),
-                        description: getDescription(_.properties),
-                        wizard: {
-                          source: toMarkdownString(parent),
-                          title: getTitle(parent.properties),
-                          description: parent.children[0] ? toMarkdownString(parent.children[0]) : undefined,
-                        },
+                        key: getImportKey(_.properties),
+                        title: getImportTitle(_.properties),
+                        filepath: getImportFilepath(_.properties),
                       })
                     }
-                  } else if (isImports(_.properties)) {
-                    addNesting(attributes, {
-                      kind: "Import",
-                      source: toMarkdownString(_),
-                      key: getImportKey(_.properties),
-                      title: getImportTitle(_.properties),
-                      filepath: getImportFilepath(_.properties),
-                    })
                   }
                 }
-              }
 
-              // we had to go from top to bottom, so reverse now
-              if (attributes.nesting) {
-                attributes.nesting = attributes.nesting.reverse()
-                reserialize()
+                // we had to go from top to bottom, so reverse now
+                if (attributes.nesting) {
+                  attributes.nesting = attributes.nesting.reverse()
+                  reserialize()
 
-                let parent = ancestors[ancestors.length - 1]
-                let grandparent = ancestors[ancestors.length - 2]
+                  let parent = ancestors[ancestors.length - 1]
+                  let grandparent = ancestors[ancestors.length - 2]
 
-                if (isTipWithoutFullTitle(grandparent)) {
-                  parent = grandparent
-                  grandparent = ancestors[ancestors.length - 3]
-                }
-
-                if (parent && grandparent && attributes.nesting.length === 1) {
-                  // Hmm, we don't have much context for this code
-                  // block. Try adding a bit more context by looking for
-                  // an enclosing heading.
-                  const parentHeading = findNearestEnclosingTitle(grandparent, parent)
-                  if (parentHeading && parentHeading.title) {
-                    const { title, source } = parentHeading
-                    addNesting(attributes, {
-                      kind: "Import",
-                      source,
-                      title,
-                      key: title,
-                      filepath: "",
-                    })
-                  }
-                }
-              }
-
-              // go from bottom to top stopping at the first import,
-              // accumulating code blocks
-              // let isOnImportChain = false
-              for (let idx = ancestors.length - 1; idx >= 0; idx--) {
-                const _ = ancestors[idx]
-
-                if (isElementWithProperties(_)) {
-                  if (Array.isArray(_.properties.containedCodeBlocks)) {
-                    // satisify any element that has requested that
-                    // we aggregate code blocks
-                    _.properties.containedCodeBlocks.push(codeBlockProps)
+                  if (isTipWithoutFullTitle(grandparent)) {
+                    parent = grandparent
+                    grandparent = ancestors[ancestors.length - 3]
                   }
 
-                  if (isImports(_.properties)) {
-                    // don't propagate containedCodeBlocks above the
-                    // import declaration
-                    // isOnImportChain = true
-                    break
+                  if (parent && grandparent && attributes.nesting.length === 1) {
+                    // Hmm, we don't have much context for this code
+                    // block. Try adding a bit more context by looking for
+                    // an enclosing heading.
+                    const parentHeading = findNearestEnclosingTitle(grandparent, parent)
+                    if (parentHeading && parentHeading.title) {
+                      const { title, source } = parentHeading
+                      addNesting(attributes, {
+                        kind: "Import",
+                        source,
+                        title,
+                        key: title,
+                        filepath: "",
+                      })
+                    }
                   }
                 }
-              }
 
-              /*const root = ancestors.find(_ => _.type === 'root')
+                // go from bottom to top stopping at the first import,
+                // accumulating code blocks
+                // let isOnImportChain = false
+                for (let idx = ancestors.length - 1; idx >= 0; idx--) {
+                  const _ = ancestors[idx]
+
+                  if (isElementWithProperties(_)) {
+                    if (Array.isArray(_.properties.containedCodeBlocks)) {
+                      // satisify any element that has requested that
+                      // we aggregate code blocks
+                      _.properties.containedCodeBlocks.push(codeBlockProps)
+                    }
+
+                    if (isImports(_.properties)) {
+                      // don't propagate containedCodeBlocks above the
+                      // import declaration
+                      // isOnImportChain = true
+                      break
+                    }
+                  }
+                }
+
+                /*const root = ancestors.find(_ => _.type === 'root')
               if (root) {
                 let properties: { containedCodeBlocks: string[] } = root['properties']
                 if (!properties) {
@@ -280,14 +285,17 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
 
                 properties.containedCodeBlocks.push(codeBlockProps)
                 }*/
-              if (codeblocks) {
-                codeblocks.push(JSON.parse(Buffer.from(codeBlockProps, "base64").toString()))
+                if (codeblocks) {
+                  codeblocks.push(JSON.parse(Buffer.from(codeBlockProps, "base64").toString()))
+                }
               }
             }
           }
         }
-      }
-    })
+      })
+    } finally {
+      debug("complete")
+    }
   }
   return transformer
 }

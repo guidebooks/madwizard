@@ -18,11 +18,15 @@ import Debug from "debug"
 import expandHomeDir from "expand-home-dir"
 import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin } from "path"
 
+// import promiseEach from './promise-each'
+
 import indent from "../util/indent"
 import { hasImports } from "../frontmatter/KuiFrontmatter"
 import { tryFrontmatter } from "../frontmatter/frontmatter-parser"
 
-const debug = Debug("madwizard/snippets")
+const debug = Debug("madwizard/fetch/snippets")
+
+const RE_DOCS_URL = /^(https:\/\/([^/]+\/){4}docs)/
 
 const RE_INCLUDE = /^(\s*){%\s+include "([^"]+)"\s+%}/
 //                 [1]                    [2]
@@ -34,11 +38,10 @@ const RE_IMPORT = /^(\s*):import{(.*)}\s*$/
 //                    \- [1] leading whitespace
 //                                \- filepath to import
 
-const RE_SNIPPET = /^(\s*)--(-*)8<--(-*)\s+"([^"]+)"(\s+"([^"]+)")?\s*$/
-//                    [1]   [2]     [3]      [4]          [6]
+const RE_SNIPPET = /^(\s*)--(-*)8<--(-*)\s+"([^"]+)"\s*$/
+//                    [1]   [2]     [3]      [4]
 //                    \- [1] leading whitespace
 //                                           \- [4] snippet file name
-//                                                        \- [6] deprecated
 
 function isError(x: string | Error) {
   return x && x.constructor === Error
@@ -86,6 +89,22 @@ function rerouteLinks(basePath: string, data: string) {
   )
 }
 
+type Pair = { myBasePath: string; filepath: string }
+type LookupTable = Record<Pair["filepath"], Pair>
+
+function toLookupTable(list: Pair[]): LookupTable {
+  return list.reduce((M, pair) => {
+    M[pair.filepath] = pair
+    return M
+  }, {})
+}
+
+function removeDuplicates(list: Pair[]) {
+  const uniqueKeys = [...new Set(list.map((_) => _.filepath))]
+  const lookupTable = toLookupTable(list)
+  return uniqueKeys.map((filepath) => lookupTable[filepath])
+}
+
 /**
  * We want to use remark-directive's `:::` syntax for container
  * directives. It does support nested containers, but the outer
@@ -102,34 +121,59 @@ function colonColonColon(nestingDepth: number) {
   return new Array(Math.max(3, MAX - nestingDepth)).join(":")
 }
 
+type Options = {
+  fetcher: (filepath: string) => Promise<string | Error>
+  snippetBasePath?: string
+  includeFrontmatter?: boolean
+  nestingDepth?: number
+  inImport?: boolean
+  failFast?: boolean
+  snippetMemo?: Record<string, string>
+}
+
 /**
  * Simplistic approximation of
  * https://facelessuser.github.io/pymdown-extensions/extensions/snippets/.
  */
-export default function inlineSnippets(
-  fetcher: (filepath: string) => Promise<string | Error>,
-  snippetBasePath?: string,
-  includeFrontmatter = true,
-  nestingDepth = 0,
-  inImport = false
-) {
+export default function inlineSnippets(opts: Options) {
+  const {
+    fetcher,
+    snippetBasePath,
+    includeFrontmatter = true,
+    nestingDepth = 0,
+    inImport = false,
+    failFast = true,
+    snippetMemo = {},
+  } = opts
+
   const fetchRecursively = async (
     _snippetFileName: string,
     srcFilePath: string,
     provenance: string[],
-    optionalSnippetBasePathInSnippetLine?: string,
     nestingDepth = 0,
     inImport = false
   ) => {
+    const fetchAndMemoize = async (filepath: string): Promise<string | Error> => {
+      debug(`Fetching snippet ${snippetFileName} from ${filepath}`)
+      const content = await fetcher(filepath)
+      if (typeof content === "string") {
+        snippetMemo[filepath] = content
+      }
+      return content
+    }
+    const fetch = async (filepath: string): Promise<string | Error> => {
+      return snippetMemo[filepath] || (await fetchAndMemoize(filepath))
+    }
+
     const snippetFileName = expandHomeDir(_snippetFileName)
 
     const getBasePath = (snippetBasePath: string) => {
       if (!snippetBasePath) return ""
 
       try {
-        const basePath = optionalSnippetBasePathInSnippetLine || snippetBasePath
+        const basePath = snippetBasePath
 
-        return isAbsolute(basePath) ? basePath : srcFilePath ? join(srcFilePath, basePath) : undefined
+        return isAbsolute(basePath) ? basePath : srcFilePath ? join(dirname(srcFilePath), basePath) : undefined
       } catch (err) {
         debug(err)
         return undefined
@@ -147,46 +191,35 @@ export default function inlineSnippets(
       // the topmatter of the original document. The second
       // represents the current base path in the recursion.
       const base = isAbsolute(basePath) || !snippetBasePath ? basePath : snippetBasePath
-      return inlineSnippets(
+      return inlineSnippets({
+        failFast,
         fetcher,
-        base,
+        snippetBasePath: base,
+        includeFrontmatter: inImport,
+        nestingDepth: nestingDepth + 1,
         inImport,
-        nestingDepth + 1,
-        inImport
-      )(rerouteLinks(base, data), recursedSnippetFileName, provenance)
+        snippetMemo,
+      })(rerouteLinks(base, data), recursedSnippetFileName, provenance)
     }
 
-    const candidates = optionalSnippetBasePathInSnippetLine
-      ? [optionalSnippetBasePathInSnippetLine]
-      : [
-          process.cwd(),
-          snippetBasePath,
-          "../",
-          "../snippets",
-          "../../snippets",
-          "../../../snippets",
-          "../../../../snippets",
-          "../../",
-          "../../../",
-        ].filter(Boolean)
-
-    debug(
-      "Candidates",
-      snippetFileName,
-      candidates,
-      candidates
-        .map(getBasePath)
-        .filter(Boolean)
-        .map((myBasePath) => ({
-          myBasePath,
-          filepath: join(myBasePath, snippetFileName),
-        }))
-    )
+    const candidates = [
+      // process.cwd(),
+      snippetBasePath,
+      snippetBasePath && RE_DOCS_URL.test(snippetBasePath) ? dirname(snippetBasePath.match(RE_DOCS_URL)[1]) : undefined,
+      "./",
+      "./snippets",
+      "../snippets",
+      "../../snippets",
+      "../../../snippets",
+      "../../../../snippets",
+      "../../",
+      "../../../",
+    ].filter(Boolean)
 
     const snippetDatas =
       isUrl(snippetFileName) || isAbsolute(snippetFileName)
         ? [
-            await fetcher(snippetFileName)
+            await fetch(snippetFileName)
               .then(async (data) => ({
                 filepath: snippetFileName,
                 snippetData: await recurse(
@@ -196,27 +229,29 @@ export default function inlineSnippets(
                 ),
               }))
               .catch((err) => {
-                debug("Warning: could not fetch inlined content 1", snippetBasePath, snippetFileName, err)
+                // debug("Warning: could not fetch inlined content 1", snippetBasePath, snippetFileName, err)
                 return err
               }),
           ]
         : await Promise.all(
-            candidates
-              .map(getBasePath)
-              .filter(Boolean)
-              .map((myBasePath) => ({
-                myBasePath,
-                filepath: join(myBasePath, snippetFileName),
-              }))
-              .filter((_) => _ && _.filepath !== srcFilePath) // avoid cycles
+            removeDuplicates(
+              candidates
+                .map(getBasePath)
+                .filter(Boolean)
+                .map((myBasePath) => ({
+                  myBasePath,
+                  filepath: join(myBasePath, snippetFileName),
+                }))
+                .filter((_) => _ && _.filepath !== srcFilePath)
+            ) // avoid cycles
               .map(({ myBasePath, filepath }) =>
-                fetcher(filepath)
+                fetch(filepath)
                   .then(async (data) => ({
                     filepath,
                     snippetData: await recurse(myBasePath, filepath, toString(data)),
                   }))
                   .catch((err) => {
-                    debug("Warning: could not fetch inlined content 2", myBasePath, snippetFileName, err)
+                    // debug("Warning: could not fetch inlined content 2", myBasePath, snippetFileName, err)
                     return err
                   })
               )
@@ -228,9 +263,14 @@ export default function inlineSnippets(
       snippetDatas[0]
 
     if (isError(snippetData)) {
-      debug("Error: completely failed to fetch inlined content", snippetFileName, snippetDatas)
+      const msg = `Error: failed to fetch snippet content: ${snippetFileName} from ${srcFilePath}`
+      if (failFast) {
+        throw new Error(msg)
+      } else {
+        console.error(msg, snippetDatas)
+      }
     } else {
-      debug("Success in fetch inline content", snippetFileName, snippetDatas)
+      // debug("Success in fetch inline content", snippetFileName, snippetDatas)
     }
 
     return snippetData
@@ -246,7 +286,6 @@ ${indent(errorMessage)}`
       snippetFileName,
       srcFilePath,
       provenance.concat([snippetFileName]),
-      undefined,
       nestingDepth + 1,
       true
     )
@@ -303,13 +342,11 @@ ${colons}
         } else {
           const indentation = match[1]
           const snippetFileName = matchSnippet ? match[4] : match[2]
-          const optionalSnippetBasePathInSnippetLine = matchSnippet ? match[6] : undefined
 
           const { snippetData } = await fetchRecursively(
             snippetFileName,
             srcFilePath,
             provenance,
-            optionalSnippetBasePathInSnippetLine,
             nestingDepth + 1,
             inImport
           )
@@ -319,7 +356,7 @@ ${colons}
           } else if (isError(snippetData)) {
             return oops404(snippetFileName, snippetData.message)
           } else {
-            debug("successfully fetched inlined content", snippetFileName)
+            // debug("successfully fetched inlined content", snippetFileName)
             return indent(toString(snippetData), indentation)
           }
         }

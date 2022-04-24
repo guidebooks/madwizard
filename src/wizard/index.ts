@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import {
   Graph,
   Choice,
@@ -99,16 +100,23 @@ type Wizard = WizardStepWithGraph[]
 export { Wizard }
 
 export function wizardify(graph: Graph): Wizard {
-  const frontier = findChoiceFrontierWithFallbacks(graph)
+  const debug = Debug("madwizard/timing/wizard:wizardify")
+  debug("start")
 
-  // the steps will be the interleaved ((...prereqs, choice), ...)
-  // dictated by the this.state.frontier model, which comes from
-  // choice-frontier.ts; the flatMap just says we want to flatten
-  // this nested interleaving down to a linear set of WizardSteps
-  const idxOfFirstChoice = frontier.findIndex((_) => _.choice)
+  try {
+    const frontier = findChoiceFrontierWithFallbacks(graph)
 
-  return frontier.flatMap(({ prereqs, choice }, idx) => [
-    ...(!prereqs ? [] : prereqs.map((_) => wizardStepForPrereq(_))),
-    ...(!choice ? [] : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice)]),
-  ])
+    // the steps will be the interleaved ((...prereqs, choice), ...)
+    // dictated by the this.state.frontier model, which comes from
+    // choice-frontier.ts; the flatMap just says we want to flatten
+    // this nested interleaving down to a linear set of WizardSteps
+    const idxOfFirstChoice = frontier.findIndex((_) => _.choice)
+
+    return frontier.flatMap(({ prereqs, choice }, idx) => [
+      ...(!prereqs ? [] : prereqs.map((_) => wizardStepForPrereq(_))),
+      ...(!choice ? [] : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice)]),
+    ])
+  } finally {
+    debug("complete")
+  }
 }

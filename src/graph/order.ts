@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
+
 import {
   Choice,
   ChoicePart,
@@ -106,17 +108,29 @@ function orderCodeBlock(graph: CodeBlockProps, ordinal: number): CodeBlockProps 
 
 // T extends Sequence ? Sequence<Ordered> : T extends Parallel ? Parallel<Ordered> : T extends Choice ? Choice<Ordered> : (CodeBlockProps & Ordered)
 export function order(graph: Graph, ordinal = 0): Graph<Ordered> {
-  if (isSequence(graph)) {
-    return orderSequence(graph, ordinal)
-  } else if (isParallel(graph)) {
-    return orderParallel(graph, ordinal)
-  } else if (isSubTask(graph)) {
-    return orderSubTask(graph, ordinal)
-  } else if (isTitledSteps(graph)) {
-    return orderTitledSteps(graph, ordinal)
-  } else if (isChoice(graph)) {
-    return orderChoice(graph, ordinal)
-  } else {
-    return orderCodeBlock(graph, ordinal)
+  if (ordinal === 0) {
+    const debug = Debug("madwizard/timing/graph:order")
+    debug("start")
+  }
+
+  try {
+    if (isSequence(graph)) {
+      return orderSequence(graph, ordinal)
+    } else if (isParallel(graph)) {
+      return orderParallel(graph, ordinal)
+    } else if (isSubTask(graph)) {
+      return orderSubTask(graph, ordinal)
+    } else if (isTitledSteps(graph)) {
+      return orderTitledSteps(graph, ordinal)
+    } else if (isChoice(graph)) {
+      return orderChoice(graph, ordinal)
+    } else {
+      return orderCodeBlock(graph, ordinal)
+    }
+  } finally {
+    if (ordinal === 0) {
+      const debug = Debug("madwizard/timing/graph:order")
+      debug("complete")
+    }
   }
 }

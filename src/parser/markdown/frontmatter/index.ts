@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { load } from "js-yaml"
 import { u } from "unist-builder"
 import { visit } from "unist-util-visit"
@@ -253,21 +254,28 @@ function preprocessWizardStepsForImports(tree /*: Root */) {
 /** Look for frontmatter and sections */
 export function kuiFrontmatter() {
   return (tree: Root) => {
-    const frontmatter = extractKuiFrontmatter(tree)
+    const debug = Debug("madwizard/timing/parser:markdown/remark-madwizard-frontmatter")
+    debug("start")
 
-    if (frontmatter) {
-      if (frontmatter.title && typeof frontmatter.title === "string") {
-        // don't do this synchronously. react complains about
-        // any transitive calls to setState() called from a
-        // render() method
-        // setTimeout(() => opts.tab.setTitle(frontmatter.title))
+    try {
+      const frontmatter = extractKuiFrontmatter(tree)
+
+      if (frontmatter) {
+        if (frontmatter.title && typeof frontmatter.title === "string") {
+          // don't do this synchronously. react complains about
+          // any transitive calls to setState() called from a
+          // render() method
+          // setTimeout(() => opts.tab.setTitle(frontmatter.title))
+        }
+
+        preprocessCodeBlocksInContent(tree, frontmatter)
+        preprocessWizard(tree, frontmatter)
       }
 
-      preprocessCodeBlocksInContent(tree, frontmatter)
-      preprocessWizard(tree, frontmatter)
+      preprocessCodeBlocksInImports(tree)
+      preprocessWizardStepsForImports(tree)
+    } finally {
+      debug("complete")
     }
-
-    preprocessCodeBlocksInImports(tree)
-    preprocessWizardStepsForImports(tree)
   }
 }

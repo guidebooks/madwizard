@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import chalk from "chalk"
 import { basename } from "path"
 
 import { Guide } from "../guide"
 import { parse, wizardify, compile, order } from "../.."
-import { prettyPrintUITree, Treeifier, AnsiUI } from "../tree"
+import { prettyPrintUITree, Treeifier, AnsiUI, DevNullUI } from "../tree"
 
 export { Guide }
 
-type Task = "tree" | "json" | "guide"
+type Task = "tree" | "json" | "guide" | "timing"
 
 function validTasks(): Task[] {
-  return ["tree", "json", "guide"]
+  return ["tree", "json", "guide", "timing"]
 }
 
 function isValidTask(task: string): task is Task {
@@ -57,9 +58,21 @@ export async function cli<Writer extends (msg: string) => boolean>(argv: string[
     return usage(argv, `Invalid task: ${task}`)
   }
 
+  if (task === "timing") {
+    Debug.enable("madwizard/timing/*")
+  }
+
   const { blocks, choices } = await parse(input)
 
   switch (task) {
+    case "timing": {
+      // print out timing
+      const graph = compile(blocks, choices)
+      wizardify(graph)
+      new Treeifier(new DevNullUI()).toTree(order(graph))
+      break
+    }
+
     case "tree": {
       const graph = compile(blocks, choices)
       const tree = new Treeifier(new AnsiUI()).toTree(order(graph))

@@ -39,7 +39,7 @@ function extname(input: VFileCompatible) {
 export async function parse(input: VFileCompatible, choices?: ChoiceState, uuid?: string, reader?: typeof read) {
   const ext = extname(input)
   if (ext === ".md") {
-    return import("./markdown").then((_) => _.blockify(input, choices, uuid, reader))
+    return await import("./markdown").then((_) => _.blockify(input, choices, uuid, reader))
   } else {
     throw new Error(`Unsupported file type: ${String(input)}`)
   }

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { Graph } from "."
 import { ChoiceState } from "../choices"
 
@@ -23,5 +24,12 @@ import collapseMadeChoices from "./collapseMadeChoices"
 import deadCodeElimination from "./deadCodeElimination"
 
 export default function optimize(graph: Graph, choices: ChoiceState) {
-  return propagateTitles(deadCodeElimination(hoistSubTasks(collapseMadeChoices(graph, choices))))
+  const debug = Debug("madwizard/timing/graph:optimize")
+  debug("start")
+
+  try {
+    return propagateTitles(deadCodeElimination(hoistSubTasks(collapseMadeChoices(graph, choices))))
+  } finally {
+    debug("complete")
+  }
 }
