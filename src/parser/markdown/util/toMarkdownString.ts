@@ -16,8 +16,8 @@
 
 import { u } from "unist-builder"
 import { Raw } from "hast-util-raw"
-import { Element, Parent } from "hast"
 import { toMdast } from "hast-util-to-mdast"
+import { Content, Element, Parent } from "hast"
 import { visit, CONTINUE, SKIP } from "unist-util-visit"
 import { toMarkdown } from "mdast-util-to-markdown"
 
@@ -163,13 +163,23 @@ function munge(root: Node): Node {
   return paragraphs(stringifyTabs(pruneComments(pruneImports(root))))
 }
 
+type Something = Node | Content | Parent
+
+function hasValue(node: Something): node is Something & { value: string } {
+  return typeof (node as { value: string }).value === "string"
+}
+
+function hasChildren(node: Something): node is Parent {
+  return Array.isArray((node as { children: Node[] }).children)
+}
+
 /**
  * Turn a hast tree back into a markdown string. We need to do a small
  * bit of munging on the data structures to facilitate the operation.
  */
-export default function toMarkdownString(root: Node): string {
-  if (typeof root["value"] === "string" && !Array.isArray(root["children"])) {
-    return root["value"]
+export default function toMarkdownString(root: Something): string {
+  if (hasValue(root) && !hasChildren(root)) {
+    return root.value
   }
 
   return toMarkdown(toMdast(munge(JSON.parse(JSON.stringify(root)) as Node)))

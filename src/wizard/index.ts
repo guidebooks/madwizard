@@ -31,14 +31,14 @@ export interface Tile {
   title: string
   group: string
   member: number
-  description: string
+  description?: string
 }
 
 type StepContent = Tile[] | Markdown
 
 export interface WizardStep<C extends StepContent> {
   name: string
-  description: string
+  description?: string
   introduction?: string
   content: C
 }
@@ -78,22 +78,20 @@ function wizardStepForPrereq<G extends Graph>(graph: G): WizardStepWithGraph<G, 
  * @return a `WizardStep` for a choice on the choice frontier
  */
 function wizardStepForChoiceOnFrontier(graph: Choice, isFirstChoice: boolean): WizardStepWithGraph<Choice, Tile[]> {
-  if (graph) {
-    return {
-      graph,
-      step: {
-        name: graph.title,
-        description: "This step requires you to choose how to proceed",
-        // TODO: introduction: graph.description,
-        content: graph.choices.map((_) => ({
-          title: _.title,
-          group: graph.group,
-          member: _.member,
-          isFirstChoice,
-          description: _.description,
-        })),
-      },
-    }
+  return {
+    graph,
+    step: {
+      name: graph.title,
+      description: "This step requires you to choose how to proceed",
+      // TODO: introduction: graph.description,
+      content: graph.choices.map((_) => ({
+        title: _.title,
+        group: graph.group,
+        member: _.member,
+        isFirstChoice,
+        description: _.description,
+      })),
+    },
   }
 }
 
@@ -109,10 +107,8 @@ export function wizardify(graph: Graph): Wizard {
   // this nested interleaving down to a linear set of WizardSteps
   const idxOfFirstChoice = frontier.findIndex((_) => _.choice)
 
-  return frontier.flatMap(({ prereqs, choice }, idx): WizardStepWithGraph[] =>
-    [
-      ...prereqs.map((_) => wizardStepForPrereq(_)),
-      wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice),
-    ].filter(Boolean)
-  )
+  return frontier.flatMap(({ prereqs, choice }, idx) => [
+    ...(!prereqs ? [] : prereqs.map((_) => wizardStepForPrereq(_))),
+    ...(!choice ? [] : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice)]),
+  ])
 }
