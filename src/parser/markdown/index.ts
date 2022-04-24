@@ -47,8 +47,8 @@ import rehypeImports, { remarkImports } from "./remark-import"
 import { rehypeCodeIndexer } from "./rehype-code-indexer"
 
 // react-markdown v6+ now require use of these to support html
-import rehypeRaw from "rehype-raw"
-import rehypeSlug from "rehype-slug"
+// import rehypeRaw from "rehype-raw"
+// import rehypeSlug from "rehype-slug"
 
 // import icons from "./rehype-icons"
 import { kuiFrontmatter } from "./frontmatter"
@@ -72,8 +72,8 @@ const rehypePlugins = (uuid: string, choices: ChoiceState, codeblocks: CodeBlock
   [rehypeCodeIndexer, uuid, codeblocks],
   rehypeImports,
   // icons,
-  rehypeRaw,
-  rehypeSlug,
+  // rehypeRaw,
+  // rehypeSlug,
 ]
 
 async function read(file: VFile): Promise<VFile> {
