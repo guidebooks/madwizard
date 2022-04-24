@@ -38,7 +38,7 @@ export class AnsiUI implements UI<string> {
   }
 
   public code(body: string) {
-    return chalk.magenta.dim(body)
+    return chalk.magenta(body)
   }
 
   public icon(cls: string) {
