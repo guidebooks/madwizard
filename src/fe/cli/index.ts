@@ -45,7 +45,7 @@ function usage(argv: string[], msg?: string) {
   process.exit(1)
 }
 
-export async function cli<Writer extends (msg: string) => void>(argv: string[], write?: Writer) {
+export async function cli<Writer extends (msg: string) => boolean>(argv: string[], write?: Writer) {
   const task = argv[1]
   const input = argv[2]
 

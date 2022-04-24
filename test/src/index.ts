@@ -58,11 +58,11 @@ function loadExpected(input: string, file: "wizard" | "tree") {
   }
 }
 
-function tryParseInt(str: string) {
+function tryParseInt(str: string): number {
   try {
     return parseInt(str, 10)
   } catch (err) {
-    return undefined
+    return NaN
   }
 }
 
@@ -72,13 +72,16 @@ function tryParseInt(str: string) {
  */
 readdirSync(inputDir)
   .map(tryParseInt)
-  .filter((_) => _ !== undefined && !isNaN(_))
+  .filter((_) => !isNaN(_))
   .sort((a, b) => a - b)
   .map((_) => join(inputDir, String(_)))
   .forEach((input) => {
     test(`tree for input ${input}`, async () => {
       let actualTree = ""
-      const write = (msg: string) => (actualTree += msg)
+      const write = (msg: string) => {
+        actualTree += msg
+        return true
+      }
 
       await cli(["test", "tree", join(input, "in.md")], write)
       const expectedTree = loadExpected(input, "tree")
