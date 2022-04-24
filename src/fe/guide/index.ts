@@ -41,7 +41,6 @@ export class Guide {
 
   private indent(str: string, indentation = "  ") {
     return indent(str, indentation)
-    return str
   }
 
   private questions() {
@@ -63,7 +62,7 @@ export class Guide {
           chalk.bold(tile.title) +
           (!tile.description
             ? ""
-            : ": " + this.linkify(/*this.indent*/ tile.description.trim()) + (idx === A.length - 1 ? "" : EOL)),
+            : "\n" + this.linkify(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : EOL)),
       })),
     }))
 
