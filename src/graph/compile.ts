@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { ChoiceState } from "../choices"
 import { CodeBlockProps } from "../codeblock"
 import { Choice, Graph, SubTask, TitledSteps, emptySequence, extractTitle, parallel, seq, sequence, subtask } from "."
@@ -58,216 +59,223 @@ export function compile(
   title?: string,
   description?: string
 ): Graph {
-  if (!blocks) {
-    return undefined
-  }
+  const debug = Debug("madwizard/timing/graph:compile")
+  debug("start")
 
-  const parts: Graph[] = []
-  let currentNesting: Nesting[] = []
+  try {
+    if (!blocks) {
+      return undefined
+    }
 
-  const newChoice = (block: CodeBlockProps, parent: CodeBlockChoice, isDeepest: boolean) => ({
-    member: parent.member,
-    graph: isDeepest ? seq(block) : emptySequence(),
-    title: parent.title,
-    description: parent.description,
-  })
+    const parts: Graph[] = []
+    let currentNesting: Nesting[] = []
 
-  const newChoices = (block: CodeBlockProps, parent: CodeBlockChoice, isDeepest: boolean): Choice => ({
-    group: parent.group,
-    title: parent.groupDetail.title,
-    source: parent.groupDetail.source,
-    choices: [newChoice(block, parent, isDeepest)],
-  })
-
-  const newWizardStep = (
-    block: CodeBlockProps,
-    parent: CodeBlockWizardStep,
-    isDeepest: boolean
-  ): TitledSteps["steps"][0] => {
-    return {
+    const newChoice = (block: CodeBlockProps, parent: CodeBlockChoice, isDeepest: boolean) => ({
+      member: parent.member,
+      graph: isDeepest ? seq(block) : emptySequence(),
       title: parent.title,
       description: parent.description,
-      source: parent.source,
-      graph: isDeepest ? seq(block) : emptySequence(),
-    }
-  }
+    })
 
-  const addToCurrentWizardStep = (
-    wiz: TitledSteps,
-    block: CodeBlockProps,
-    parent: CodeBlockWizardStep,
-    isDeepest: boolean
-  ): TitledSteps => {
-    if (isDeepest) {
-      wiz.steps[wiz.steps.length - 1].graph.sequence.push(block)
-    }
-    return wiz
-  }
+    const newChoices = (block: CodeBlockProps, parent: CodeBlockChoice, isDeepest: boolean): Choice => ({
+      group: parent.group,
+      title: parent.groupDetail.title,
+      source: parent.groupDetail.source,
+      choices: [newChoice(block, parent, isDeepest)],
+    })
 
-  const addWizardStep = (
-    wiz: TitledSteps,
-    block: CodeBlockProps,
-    parent: CodeBlockWizardStep,
-    isDeepest: boolean
-  ): TitledSteps => {
-    wiz.steps.push(newWizardStep(block, parent, isDeepest))
-    return wiz
-  }
-
-  const newWizard = (block: CodeBlockProps, parent: CodeBlockWizardStep, isDeepest: boolean): TitledSteps => {
-    const wiz = {
-      source: parent.source,
-      title: parent.wizard.title,
-      description: parent.wizard.description,
-      steps: [],
-    }
-    return addWizardStep(wiz, block, parent, isDeepest)
-  }
-
-  const newSubTask = (block: CodeBlockProps, parent: CodeBlockImport, isDeepest: boolean): SubTask => {
-    return subtask(
-      parent.key,
-      parent.title,
-      "",
-      parent.filepath,
-      isDeepest ? seq(block) : emptySequence(),
-      parent.source
-    )
-  }
-
-  const set = (idx: number, nesting: Nesting) => {
-    currentNesting = currentNesting.slice(0, idx).concat([nesting])
-    if (idx === 0) {
-      parts.push(nesting.graph)
-    } else {
-      const parent = currentNesting[idx - 1]
-      if (isChoiceNesting(parent)) {
-        parent.graph.choices[parent.graph.choices.length - 1].graph.sequence.push(nesting.graph)
-      } else if (isWizardStepNesting(parent)) {
-        parent.graph.steps[parent.graph.steps.length - 1].graph.sequence.push(nesting.graph)
-      } else {
-        parent.graph.graph.sequence.push(nesting.graph)
+    const newWizardStep = (
+      block: CodeBlockProps,
+      parent: CodeBlockWizardStep,
+      isDeepest: boolean
+    ): TitledSteps["steps"][0] => {
+      return {
+        title: parent.title,
+        description: parent.description,
+        source: parent.source,
+        graph: isDeepest ? seq(block) : emptySequence(),
       }
     }
-  }
 
-  blocks.forEach((block) => {
-    if (!block.nesting) {
-      parts.push(block)
-    } else {
-      block.nesting.forEach((parent, idx) => {
-        const isDeepest = idx === block.nesting.length - 1
-        const curNesting = currentNesting[idx]
+    const addToCurrentWizardStep = (
+      wiz: TitledSteps,
+      block: CodeBlockProps,
+      parent: CodeBlockWizardStep,
+      isDeepest: boolean
+    ): TitledSteps => {
+      if (isDeepest) {
+        wiz.steps[wiz.steps.length - 1].graph.sequence.push(block)
+      }
+      return wiz
+    }
 
-        // expect >=3^2 combinations
-        // [1] parent is Choice, current nesting is Choice
-        //   [1a] same group and member; add to the current choice graph
-        //   [1b] same group different member; add a new choice member node
-        //   [1c] different group; create new choice node
-        // [2] [3] parent is Choice, current nesting is WizardStep or Import
-        //    *: create new Choice node
-        // [4] parent is WizardStep, current nesting is WizardStep
-        //   [4a] same wizard, same step; add to its graph
-        //   [4b] same wizard, different step; create new step node
-        //   [4c] different wizard
-        // [5] [6] parent is WizardStep, current nesting is Choice or Import
-        //    *: create new WizardStep node
-        // [7] parent is Import, current nesting is Import
-        //   [7a] same import; add to current Import graph
-        //   [7b] different import; create new import node
-        // [8] [9] parent is Import, current nesting is Choice or WizardStep
-        //    *: create new Import node
-        if (curNesting) {
-          if (isCodeBlockChoice(parent)) {
-            if (isChoiceNesting(curNesting)) {
-              // here we are at [1]
-              if (curNesting.parent.group === parent.group) {
-                if (curNesting.parent.member === parent.member) {
-                  // here we are at [1a]
-                  if (isDeepest) {
-                    curNesting.graph.choices[curNesting.graph.choices.length - 1].graph.sequence.push(block)
+    const addWizardStep = (
+      wiz: TitledSteps,
+      block: CodeBlockProps,
+      parent: CodeBlockWizardStep,
+      isDeepest: boolean
+    ): TitledSteps => {
+      wiz.steps.push(newWizardStep(block, parent, isDeepest))
+      return wiz
+    }
+
+    const newWizard = (block: CodeBlockProps, parent: CodeBlockWizardStep, isDeepest: boolean): TitledSteps => {
+      const wiz = {
+        source: parent.source,
+        title: parent.wizard.title,
+        description: parent.wizard.description,
+        steps: [],
+      }
+      return addWizardStep(wiz, block, parent, isDeepest)
+    }
+
+    const newSubTask = (block: CodeBlockProps, parent: CodeBlockImport, isDeepest: boolean): SubTask => {
+      return subtask(
+        parent.key,
+        parent.title,
+        "",
+        parent.filepath,
+        isDeepest ? seq(block) : emptySequence(),
+        parent.source
+      )
+    }
+
+    const set = (idx: number, nesting: Nesting) => {
+      currentNesting = currentNesting.slice(0, idx).concat([nesting])
+      if (idx === 0) {
+        parts.push(nesting.graph)
+      } else {
+        const parent = currentNesting[idx - 1]
+        if (isChoiceNesting(parent)) {
+          parent.graph.choices[parent.graph.choices.length - 1].graph.sequence.push(nesting.graph)
+        } else if (isWizardStepNesting(parent)) {
+          parent.graph.steps[parent.graph.steps.length - 1].graph.sequence.push(nesting.graph)
+        } else {
+          parent.graph.graph.sequence.push(nesting.graph)
+        }
+      }
+    }
+
+    blocks.forEach((block) => {
+      if (!block.nesting) {
+        parts.push(block)
+      } else {
+        block.nesting.forEach((parent, idx) => {
+          const isDeepest = idx === block.nesting.length - 1
+          const curNesting = currentNesting[idx]
+
+          // expect >=3^2 combinations
+          // [1] parent is Choice, current nesting is Choice
+          //   [1a] same group and member; add to the current choice graph
+          //   [1b] same group different member; add a new choice member node
+          //   [1c] different group; create new choice node
+          // [2] [3] parent is Choice, current nesting is WizardStep or Import
+          //    *: create new Choice node
+          // [4] parent is WizardStep, current nesting is WizardStep
+          //   [4a] same wizard, same step; add to its graph
+          //   [4b] same wizard, different step; create new step node
+          //   [4c] different wizard
+          // [5] [6] parent is WizardStep, current nesting is Choice or Import
+          //    *: create new WizardStep node
+          // [7] parent is Import, current nesting is Import
+          //   [7a] same import; add to current Import graph
+          //   [7b] different import; create new import node
+          // [8] [9] parent is Import, current nesting is Choice or WizardStep
+          //    *: create new Import node
+          if (curNesting) {
+            if (isCodeBlockChoice(parent)) {
+              if (isChoiceNesting(curNesting)) {
+                // here we are at [1]
+                if (curNesting.parent.group === parent.group) {
+                  if (curNesting.parent.member === parent.member) {
+                    // here we are at [1a]
+                    if (isDeepest) {
+                      curNesting.graph.choices[curNesting.graph.choices.length - 1].graph.sequence.push(block)
+                    }
+                  } else {
+                    // here we are at [1b]
+                    currentNesting = [...currentNesting.slice(0, idx), { parent, graph: curNesting.graph }]
+                    curNesting.graph.choices.push(newChoice(block, parent, isDeepest))
                   }
                 } else {
-                  // here we are at [1b]
-                  currentNesting = [...currentNesting.slice(0, idx), { parent, graph: curNesting.graph }]
-                  curNesting.graph.choices.push(newChoice(block, parent, isDeepest))
+                  // here we are at [1c]
+                  set(idx, { parent, graph: newChoices(block, parent, isDeepest) })
                 }
               } else {
-                // here we are at [1c]
+                // here we are at [2] and [3]
                 set(idx, { parent, graph: newChoices(block, parent, isDeepest) })
               }
-            } else {
-              // here we are at [2] and [3]
-              set(idx, { parent, graph: newChoices(block, parent, isDeepest) })
-            }
-          } else if (isCodeBlockWizardStep(parent)) {
-            // here we are at [4]
-            if (isWizardStepNesting(curNesting)) {
-              if (curNesting.parent.group === parent.group) {
-                if (curNesting.parent.member === parent.member) {
-                  // here we are at [4a]
-                  addToCurrentWizardStep(curNesting.graph, block, parent, isDeepest)
+            } else if (isCodeBlockWizardStep(parent)) {
+              // here we are at [4]
+              if (isWizardStepNesting(curNesting)) {
+                if (curNesting.parent.group === parent.group) {
+                  if (curNesting.parent.member === parent.member) {
+                    // here we are at [4a]
+                    addToCurrentWizardStep(curNesting.graph, block, parent, isDeepest)
+                  } else {
+                    // here we are at [4b]
+                    currentNesting = [...currentNesting.slice(0, idx), { parent, graph: curNesting.graph }]
+                    addWizardStep(curNesting.graph, block, parent, isDeepest)
+                  }
                 } else {
-                  // here we are at [4b]
-                  currentNesting = [...currentNesting.slice(0, idx), { parent, graph: curNesting.graph }]
-                  addWizardStep(curNesting.graph, block, parent, isDeepest)
+                  // here we are at [4c]
+                  set(idx, { parent, graph: newWizard(block, parent, isDeepest) })
                 }
               } else {
-                // here we are at [4c]
+                // here we are at [5] and [6]
                 set(idx, { parent, graph: newWizard(block, parent, isDeepest) })
               }
-            } else {
-              // here we are at [5] and [6]
-              set(idx, { parent, graph: newWizard(block, parent, isDeepest) })
-            }
-          } else if (isImportNesting(curNesting)) {
-            // here we are at [7]
-            if (curNesting.parent.key === parent.key) {
-              // here we are at [7a]
-              if (isDeepest) {
-                curNesting.graph.graph.sequence.push(block)
+            } else if (isImportNesting(curNesting)) {
+              // here we are at [7]
+              if (curNesting.parent.key === parent.key) {
+                // here we are at [7a]
+                if (isDeepest) {
+                  curNesting.graph.graph.sequence.push(block)
+                }
+              } else {
+                // here we are at [7b]
+                set(idx, { parent, graph: newSubTask(block, parent, isDeepest) })
               }
             } else {
-              // here we are at [7b]
+              // here we are at [8] and [9]
               set(idx, { parent, graph: newSubTask(block, parent, isDeepest) })
             }
           } else {
-            // here we are at [8] and [9]
-            set(idx, { parent, graph: newSubTask(block, parent, isDeepest) })
+            // no graph node yet for this nesting depth
+            if (isCodeBlockChoice(parent)) {
+              // new graph node for choice
+              set(idx, { parent, graph: newChoices(block, parent, isDeepest) })
+            } else if (isCodeBlockWizardStep(parent)) {
+              // new graph node for wizard
+              set(idx, { parent, graph: newWizard(block, parent, isDeepest) })
+            } else if (isCodeBlockImport(parent)) {
+              // new graph node for import
+              set(idx, { parent, graph: newSubTask(block, parent, isDeepest) })
+            } else {
+              console.error("Missing handler in graph compilation", parent)
+            }
           }
-        } else {
-          // no graph node yet for this nesting depth
-          if (isCodeBlockChoice(parent)) {
-            // new graph node for choice
-            set(idx, { parent, graph: newChoices(block, parent, isDeepest) })
-          } else if (isCodeBlockWizardStep(parent)) {
-            // new graph node for wizard
-            set(idx, { parent, graph: newWizard(block, parent, isDeepest) })
-          } else if (isCodeBlockImport(parent)) {
-            // new graph node for import
-            set(idx, { parent, graph: newSubTask(block, parent, isDeepest) })
-          } else {
-            console.error("Missing handler in graph compilation", parent)
-          }
-        }
-      })
+        })
+      }
+    })
+
+    const unoptimized =
+      parts.length === 0
+        ? undefined
+        : parts.length === 1
+        ? parts[0]
+        : ordering === "parallel"
+        ? parallel(parts)
+        : sequence(parts)
+
+    const optimized = optimize(unoptimized, choices)
+
+    if (title && !extractTitle(optimized)) {
+      return subtask(title, title, description, "", sequence([optimized]))
+    } else {
+      return optimized
     }
-  })
-
-  const unoptimized =
-    parts.length === 0
-      ? undefined
-      : parts.length === 1
-      ? parts[0]
-      : ordering === "parallel"
-      ? parallel(parts)
-      : sequence(parts)
-
-  const optimized = optimize(unoptimized, choices)
-
-  if (title && !extractTitle(optimized)) {
-    return subtask(title, title, description, "", sequence([optimized]))
-  } else {
-    return optimized
+  } finally {
+    debug("complete")
   }
 }

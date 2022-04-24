@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { Transformer } from "unified"
 import { Element, ElementContent } from "hast"
 
@@ -72,22 +73,29 @@ export function setTabTitle(elt: Element, title: string): string {
 
 export function rehypeTabbed(uuid: string, choices: ChoiceState) {
   return function rehypeTabbedTransformer(tree: Parameters<Transformer>[0]): ReturnType<Transformer> {
-    // first, assemble the tabs into this tree structure, one of these per tab group:
-    // - div with properties {data-kui-choice-group, data-kui-choice-nesting-depth}
-    //   - span with properties {data-kui-tab-index=0}
-    //       children: content of first tab
-    //   - span with properties {data-kui-tab-index=1}
-    //       children: content of second tab
-    //   - span with properties {data-kui-tab-index=2}
-    //       children: content of third tab
-    //
-    const { tree: treeWithTabs, tabgroupIdx } = populateTabs(uuid, tree)
+    const debug = Debug("madwizard/timing/parser:markdown/rehype-tabbed")
+    debug("start")
 
-    // second, analyze the tabs to see if we can identify recognizable
-    // tab groups, e.g. "choose your platform"
-    const treeWithTabsInRecognizableGroups =
-      tabgroupIdx < 0 ? treeWithTabs : identifyRecognizableTabGroups(treeWithTabs, choices)
+    try {
+      // first, assemble the tabs into this tree structure, one of these per tab group:
+      // - div with properties {data-kui-choice-group, data-kui-choice-nesting-depth}
+      //   - span with properties {data-kui-tab-index=0}
+      //       children: content of first tab
+      //   - span with properties {data-kui-tab-index=1}
+      //       children: content of second tab
+      //   - span with properties {data-kui-tab-index=2}
+      //       children: content of third tab
+      //
+      const { tree: treeWithTabs, tabgroupIdx } = populateTabs(uuid, tree)
 
-    return treeWithTabsInRecognizableGroups
+      // second, analyze the tabs to see if we can identify recognizable
+      // tab groups, e.g. "choose your platform"
+      const treeWithTabsInRecognizableGroups =
+        tabgroupIdx < 0 ? treeWithTabs : identifyRecognizableTabGroups(treeWithTabs, choices)
+
+      return treeWithTabsInRecognizableGroups
+    } finally {
+      debug("complete")
+    }
   }
 }

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { v4 } from "uuid"
 import { u } from "unist-builder"
 import { visit } from "unist-util-visit"
@@ -104,6 +105,9 @@ export function isHeadingOrRemovedHeading(node: Content) {
  * This rehype plugin transforms wizard step headers.
  */
 function transformer(ast: Root) {
+  const debug = Debug("madwizard/timing/parser:markdown/rehype-wizard")
+  debug("start")
+
   /** Treat headings that parents of nodes marked as Wizards as wizard steps */
   function extractStepTitlesFromHeadingsVisitor() {
     const node: Element = arguments[0] // eslint-disable-line prefer-rest-params
@@ -225,6 +229,7 @@ function transformer(ast: Root) {
   visit(ast, "element", extractStepTitlesFromHeadingsVisitor)
   processWizards(ast)
   visitImportContainers(ast, ({ node }) => processWizards(node))
+  debug("complete")
 }
 
 export function isWizard(props: Partial<PositionProps> | WizardProps): props is WizardProps {

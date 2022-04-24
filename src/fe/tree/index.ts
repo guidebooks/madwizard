@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { basename } from "path"
 
 import {
@@ -273,18 +274,30 @@ export class Treeifier<Content> {
     metFirstChoice = false,
     name?: Content
   ): UITree<Content> {
-    if (isSequence(graph)) {
-      return this.treeModelForSequence(graph, idPrefix, depth, metFirstChoice, name)
-    } else if (isTitledSteps(graph)) {
-      return this.treeModelForTitledSteps(graph, idPrefix, depth, metFirstChoice)
-    } else if (isParallel(graph)) {
-      return this.treeModelForParallel(graph, idPrefix, depth, metFirstChoice, name)
-    } else if (isChoice(graph)) {
-      return this.treeModelForChoice(graph, idPrefix, depth)
-    } else if (isSubTask(graph)) {
-      return this.treeModelForSubTask(graph, depth, metFirstChoice)
-    } else if (!graph.optional) {
-      return this.treeModelForLeafNode(graph)
+    if (depth === 0) {
+      const debug = Debug("madwizard/timing/fe/tree:toTree")
+      debug("start")
+    }
+
+    try {
+      if (isSequence(graph)) {
+        return this.treeModelForSequence(graph, idPrefix, depth, metFirstChoice, name)
+      } else if (isTitledSteps(graph)) {
+        return this.treeModelForTitledSteps(graph, idPrefix, depth, metFirstChoice)
+      } else if (isParallel(graph)) {
+        return this.treeModelForParallel(graph, idPrefix, depth, metFirstChoice, name)
+      } else if (isChoice(graph)) {
+        return this.treeModelForChoice(graph, idPrefix, depth)
+      } else if (isSubTask(graph)) {
+        return this.treeModelForSubTask(graph, depth, metFirstChoice)
+      } else if (!graph.optional) {
+        return this.treeModelForLeafNode(graph)
+      }
+    } finally {
+      if (depth === 0) {
+        const debug = Debug("madwizard/timing/fe/tree:toTree")
+        debug("complete")
+      }
     }
   }
 }

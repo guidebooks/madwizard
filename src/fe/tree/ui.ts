@@ -28,6 +28,28 @@ export interface UI<Content> {
   open?(filepath: string): Content
 }
 
+export class DevNullUI implements UI<string> {
+  public span() {
+    return ""
+  }
+
+  public code() {
+    return ""
+  }
+
+  public icon() {
+    return ""
+  }
+
+  public statusToIcon() {
+    return ""
+  }
+
+  public title() {
+    return ""
+  }
+}
+
 export class AnsiUI implements UI<string> {
   public span(content: string, ...decorations: Decoration[]) {
     if (decorations.length === 0) {

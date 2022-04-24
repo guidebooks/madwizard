@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { v4 } from "uuid"
 import needle from "needle"
 import expandHomeDir from "expand-home-dir"
@@ -91,23 +92,32 @@ async function read(file: VFile): Promise<VFile> {
 
 /** Parse the given `input` into a `Graph` syntax tree. */
 async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid = v4(), reader = read) {
-  const blocks: CodeBlockProps[] = []
+  const debug = Debug("madwizard/timing/parser:markdown")
+  debug("start")
 
-  const processor = unified()
-    .use(remarkParse)
-    .use(remarkPlugins())
-    .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypePlugins(uuid, choices, blocks))
+  try {
+    const blocks: CodeBlockProps[] = []
 
-  const fetcher = (filepath: string) => reader(new VFile({ path: filepath })).then((_) => _.value.toString())
+    const processor = unified()
+      .use(remarkParse)
+      .use(remarkPlugins())
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypePlugins(uuid, choices, blocks))
 
-  const sourcePriorToInlining = input.value.toString()
-  const source = await inlineSnippets(fetcher)(sourcePriorToInlining, input.path)
+    const fetcher = (filepath: string) => reader(new VFile({ path: filepath })).then((_) => _.value.toString())
 
-  return {
-    choices,
-    blocks,
-    ast: processor.run(processor.parse(hackMarkdownSource(source))),
+    debug("fetch start")
+    const sourcePriorToInlining = input.value.toString()
+    const source = await inlineSnippets({ fetcher })(sourcePriorToInlining, input.path)
+    debug("fetch compplete")
+
+    return {
+      choices,
+      blocks,
+      ast: processor.run(processor.parse(hackMarkdownSource(source))),
+    }
+  } finally {
+    debug("complete")
   }
 }
 
