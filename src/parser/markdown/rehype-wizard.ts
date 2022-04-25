@@ -87,8 +87,14 @@ function removedHeading() {
   return u("raw", REMOVED_HEADING_PLACEHOLDER_TEXT)
 }
 
-export function isHeading(node: Content) {
+export function isHeading(node: Content): node is Element {
   return isElementWithProperties(node) && /^h\d+$/.test(node.tagName)
+}
+
+export function getHeadingLevel(node: Content): number {
+  if (isHeading(node)) {
+    return parseInt(node.tagName.slice(1), 10)
+  }
 }
 
 export function isHeadingOrRemovedHeading(node: Content) {

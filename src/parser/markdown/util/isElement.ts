@@ -15,15 +15,23 @@
  */
 
 import { Node, Parent } from "unist"
-import { Element, ElementContent } from "hast"
+import { Element, ElementContent, Root } from "hast"
 
 export function isParent(node: Node): node is Parent {
   return Array.isArray((node as Parent).children)
 }
 
+export function isRoot(node: Node): node is Root {
+  return (node as Root).type === "root"
+}
+
 export function isElement(_: Node | Parent | ElementContent): _ is Element {
   const elt = _ as Element
   return elt && typeof elt.tagName === "string"
+}
+
+export function hasContentChildren(node: Node): node is Element | Root {
+  return isElement(node) || isRoot(node)
 }
 
 export default function isElementWithProperties(_: Element | ElementContent | Parent | Node): _ is Element {

@@ -6,12 +6,12 @@
       "description": "",
       "filepath": "test/inputs/snippets/importg.md",
       "graph": {
-        "key": "9d9d1ab7-51d1-4a2f-bd11-4c628ed07f83",
+        "key": "2767c6d7-b82e-4d1e-9bfe-2d0d0ab9a648",
         "sequence": [
           {
-            "body": "echo WWW",
+            "body": "echo MMM",
             "language": "bash",
-            "id": "0e43c529-7b15-4570-8fb3-623ecddcc712-2",
+            "id": "31e2d716-37b7-4fca-946a-05c39d320542-0",
             "nesting": [
               {
                 "kind": "Import",
@@ -22,8 +22,8 @@
               {
                 "kind": "Choice",
                 "group": "org.kubernetes-sigs.kui/choice/platform",
-                "title": "Win32",
-                "member": 2,
+                "title": "Darwin",
+                "member": 0,
                 "groupDetail": {}
               }
             ]
@@ -45,13 +45,13 @@
       "description": "",
       "filepath": "test/inputs/snippets/importa.md",
       "graph": {
-        "key": "e778754f-e5f9-4750-b253-961c6a34aa3b",
+        "key": "95fe8fc2-f073-47fe-af40-4c381a5ca873",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "0e43c529-7b15-4570-8fb3-623ecddcc712-3",
+            "id": "31e2d716-37b7-4fca-946a-05c39d320542-3",
             "nesting": [
               {
                 "kind": "Import",
@@ -73,20 +73,20 @@
   },
   {
     "graph": {
-      "group": "1ed55043-b1f5-5396-baad-d7f8b8cd1800",
+      "group": "0595efe2-36c6-5708-afc6-279285f6a327",
       "title": "DDD",
       "source": "placeholder",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "a66b8870-8847-4477-a5fa-d9d8aa37652b",
+            "key": "b508a921-3ebe-4273-9f24-159a9173402d",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "0e43c529-7b15-4570-8fb3-623ecddcc712-4",
+                "id": "31e2d716-37b7-4fca-946a-05c39d320542-4",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -96,10 +96,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "1ed55043-b1f5-5396-baad-d7f8b8cd1800",
+                    "group": "0595efe2-36c6-5708-afc6-279285f6a327",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -109,7 +123,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "0e43c529-7b15-4570-8fb3-623ecddcc712-5",
+                "id": "31e2d716-37b7-4fca-946a-05c39d320542-5",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -119,10 +133,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "1ed55043-b1f5-5396-baad-d7f8b8cd1800",
+                    "group": "0595efe2-36c6-5708-afc6-279285f6a327",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -132,7 +160,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "0e43c529-7b15-4570-8fb3-623ecddcc712-6",
+                "id": "31e2d716-37b7-4fca-946a-05c39d320542-6",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -142,10 +170,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "1ed55043-b1f5-5396-baad-d7f8b8cd1800",
+                    "group": "0595efe2-36c6-5708-afc6-279285f6a327",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -158,13 +200,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "8a7025a6-da41-4150-b2d4-4eb8be9dd616",
+            "key": "8553a69d-1c7a-416e-b2aa-3d216f54c7b6",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "0e43c529-7b15-4570-8fb3-623ecddcc712-7",
+                "id": "31e2d716-37b7-4fca-946a-05c39d320542-7",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -174,10 +216,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "1ed55043-b1f5-5396-baad-d7f8b8cd1800",
+                    "group": "0595efe2-36c6-5708-afc6-279285f6a327",
                     "title": "SubTab2",
                     "member": 1,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -195,13 +251,13 @@
       "content": [
         {
           "title": "SubTab1",
-          "group": "1ed55043-b1f5-5396-baad-d7f8b8cd1800",
+          "group": "0595efe2-36c6-5708-afc6-279285f6a327",
           "member": 0,
           "isFirstChoice": true
         },
         {
           "title": "SubTab2",
-          "group": "1ed55043-b1f5-5396-baad-d7f8b8cd1800",
+          "group": "0595efe2-36c6-5708-afc6-279285f6a327",
           "member": 1,
           "isFirstChoice": true
         }

@@ -36,7 +36,7 @@ export function getTipTitle(elt: Element) {
 }
 
 export function isTipWithFullTitle(node: Node): node is Element {
-  return isTip(node) && !!node.properties.fullTitle
+  return isTip(node) && !!node.properties.hasFullTitle
 }
 
 export function isTipWithoutFullTitle(node: Node): node is Element {

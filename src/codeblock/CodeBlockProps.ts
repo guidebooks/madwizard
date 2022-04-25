@@ -108,9 +108,14 @@ export interface CodeBlockProps {
   nesting?: CodeBlockNestingParent[]
 }
 
-export function addNesting(props: CodeBlockProps, nesting: CodeBlockNestingParent) {
+export function addNesting(props: CodeBlockProps, nesting: CodeBlockNestingParent, insertIdx?: number) {
   if (!props.nesting) {
     props.nesting = []
   }
-  props.nesting.push(nesting)
+
+  if (typeof insertIdx === "number") {
+    props.nesting.splice(insertIdx, 0, nesting)
+  } else {
+    props.nesting.push(nesting)
+  }
 }
