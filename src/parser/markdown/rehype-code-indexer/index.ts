@@ -142,6 +142,11 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                   reserialize()
                 }
 
+                if (attributes.validate === "$body") {
+                  attributes.validate = body
+                  reserialize()
+                }
+
                 // go from top to bottom, which is in reverse order, so
                 // that we can synthesize the "optional" and "choices"
                 // attributes
