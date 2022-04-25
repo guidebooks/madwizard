@@ -57,6 +57,10 @@ export class Treeifier<Content> {
     return nDone === nTotal
   }
 
+  private firstBitOf(msg: string) {
+    return msg.slice(0, 50).split(/\n/)[0]
+  }
+
   private withIcons(
     rollupStatus: Progress,
     origin: OrderedGraph,
@@ -253,10 +257,10 @@ export class Treeifier<Content> {
           name: this.ui.code(
             graph.body
               .split(/\n/)
-              .map((_) => _.replace(/#.*/, ""))
+              .map((_) => _.replace(/#.*/, "")) // remove comments
               .filter(Boolean)[0]
               .trim()
-              .slice(0, 30),
+              .slice(0, 50),
             graph.optional
           ),
         },
