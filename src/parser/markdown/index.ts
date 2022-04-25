@@ -109,7 +109,7 @@ async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid
     debug("fetch start")
     const sourcePriorToInlining = input.value.toString()
     const source = await inlineSnippets({ fetcher })(sourcePriorToInlining, input.path)
-    debug("fetch compplete")
+    debug("fetch complete")
 
     return {
       choices,
