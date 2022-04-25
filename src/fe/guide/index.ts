@@ -17,12 +17,12 @@
 import Debug from "debug"
 import { EOL } from "os"
 import chalk from "chalk"
-import { Listr } from "listr2"
 import readline from "readline"
 import { Writable } from "stream"
 import { EventEmitter } from "events"
 import terminalLink from "terminal-link"
 import inquirer, { Question, Answers } from "inquirer"
+import { Listr, ListrError, ListrErrorTypes } from "listr2"
 
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
@@ -87,35 +87,51 @@ export class Guide {
     }
   }
 
+  private firstBitOf(msg: string) {
+    return msg.slice(0, 30).split(/\n/)[0]
+  }
+
   private listrTaskStep({ step, graph }: TaskStep, taskIdx: number, dryRun: boolean) {
     return {
       title: step.name,
+      options: { persistentOutput: false, exitOnError: !dryRun },
       task: (ctx, task) =>
         task.newListr(
           blocks(graph).flatMap((block) => ({
             title: block.validate
               ? chalk.dim("checking to see if this task has already been done\u2026")
               : chalk[taskIdx === 1 ? "reset" : "dim"].magenta(block.body),
-            // options: { persistentOutput: true },
-            task: async (_, task) => {
+            options: { exitOnError: !dryRun },
+            task: async (_, subtask) => {
               if (block.validate) {
                 try {
-                  await validate(block)
-                  task.skip()
+                  await validate(block, { throwErrors: dryRun })
+                  subtask.skip()
                   return
                 } catch (err) {
-                  this.debug("Validation error", err)
+                  if (dryRun) {
+                    if (dryRun) {
+                      // task.state = ListrTaskState.FAILED
+                      task.title += dryRun
+                        ? chalk.yellow(" [NOT READY] " + chalk.dim(this.firstBitOf(err.message)))
+                        : chalk.red(" [FAILED] " + chalk.dim(this.firstBitOf(err.message)))
+                    } else {
+                      throw new ListrError(err, ListrErrorTypes.HAS_FAILED, task)
+                    }
+                  } else {
+                    this.debug("Validation error", err)
+                  }
                 }
               }
 
               try {
                 if (!dryRun) {
                   await this.waitTillDone(taskIdx - 1)
-                  task.title = chalk.magenta(block.body)
+                  subtask.title = chalk.magenta(block.body)
                   await shellExec(block.body, task.stdout())
                 }
               } finally {
-                task.title = chalk.magenta(block.body)
+                subtask.title = chalk.magenta(block.body)
                 this.markDone(taskIdx)
               }
             },
@@ -247,6 +263,10 @@ export class Guide {
   public async run() {
     console.clear()
     const taskSteps = await this.resolveChoices()
-    await this.runTasks(taskSteps)
+    try {
+      await this.runTasks(taskSteps)
+    } catch (err) {
+      console.error(chalk.red("Run failed"))
+    }
   }
 }
