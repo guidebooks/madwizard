@@ -62,7 +62,7 @@ export class Guide {
           chalk.bold(tile.title) +
           (!tile.description
             ? ""
-            : "\n" + this.linkify(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : EOL)),
+            : EOL + this.linkify(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : EOL)),
       })),
     }))
 
@@ -225,10 +225,10 @@ export class Guide {
       const title = extractTitle(graph)
       const description = extractDescription(graph)
       if (title) {
-        console.log("📖 " + chalk.bold.blue(title.trim()))
+        console.log(chalk.bold.blue(title.trim()))
       }
       if (description) {
-        console.log(this.linkify(this.indent(description.trim(), "   ")))
+        console.log(this.linkify(this.indent(description.trim())))
       }
 
       if (title || description) {
