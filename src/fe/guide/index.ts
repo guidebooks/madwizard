@@ -277,8 +277,9 @@ export class Guide {
     const taskSteps = await this.resolveChoices()
     try {
       await this.runTasks(taskSteps)
+      console.log(EOL + "🔥 Guidebook successful")
     } catch (err) {
-      console.error(EOL + chalk.red("✖") + " Run failed")
+      throw new Error(EOL + chalk.red("✖") + " Run failed")
     }
   }
 }

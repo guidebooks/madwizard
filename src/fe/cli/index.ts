@@ -64,36 +64,41 @@ export async function cli<Writer extends (msg: string) => boolean>(argv: string[
 
   const { blocks, choices } = await parse(input)
 
-  switch (task) {
-    case "timing": {
-      // print out timing
-      const graph = compile(blocks, choices)
-      wizardify(graph)
-      new Treeifier(new DevNullUI()).toTree(order(graph))
-      break
+  try {
+    switch (task) {
+      case "timing": {
+        // print out timing
+        const graph = compile(blocks, choices)
+        wizardify(graph)
+        new Treeifier(new DevNullUI()).toTree(order(graph))
+        break
+      }
+
+      case "tree": {
+        const graph = compile(blocks, choices)
+        const tree = new Treeifier(new AnsiUI()).toTree(order(graph))
+        prettyPrintUITree(tree, write)
+        break
+      }
+
+      case "json": {
+        const graph = compile(blocks, choices)
+        const wizard = wizardify(graph)
+        console.log(JSON.stringify(wizard, (key, value) => (key === "source" ? "placeholder" : value), 2))
+        break
+      }
+
+      case "guide":
+        await new Guide(blocks, choices).run()
+        break
+
+      default:
+        // if our switch isn't exhaustive, you will see this typescript error:
+        // Argument of type 'string' is not assignable to parameter of type 'never'.
+        assertExhaustive(task)
     }
-
-    case "tree": {
-      const graph = compile(blocks, choices)
-      const tree = new Treeifier(new AnsiUI()).toTree(order(graph))
-      prettyPrintUITree(tree, write)
-      break
-    }
-
-    case "json": {
-      const graph = compile(blocks, choices)
-      const wizard = wizardify(graph)
-      console.log(JSON.stringify(wizard, (key, value) => (key === "source" ? "placeholder" : value), 2))
-      break
-    }
-
-    case "guide":
-      await new Guide(blocks, choices).run()
-      break
-
-    default:
-      // if our switch isn't exhaustive, you will see this typescript error:
-      // Argument of type 'string' is not assignable to parameter of type 'never'.
-      assertExhaustive(task)
+  } catch (err) {
+    console.log(err.message)
+    process.exit(1)
   }
 }
