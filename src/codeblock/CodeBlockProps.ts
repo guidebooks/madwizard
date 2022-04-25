@@ -39,7 +39,7 @@ export interface Description {
 }
 
 export type Source = {
-  source: string
+  source: () => string
 }
 
 /**

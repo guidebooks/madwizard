@@ -173,11 +173,7 @@ function hasChildren(node: Something): node is Parent {
   return Array.isArray((node as { children: Node[] }).children)
 }
 
-/**
- * Turn a hast tree back into a markdown string. We need to do a small
- * bit of munging on the data structures to facilitate the operation.
- */
-export default function toMarkdownString(root: Something): string {
+export function toMarkdownString(root: Something): string {
   if (hasValue(root) && !hasChildren(root)) {
     return root.value
   }
@@ -186,4 +182,12 @@ export default function toMarkdownString(root: Something): string {
     .replace(/(\\)+([=`-][=`-][=`-])/g, "$2")
     .replace(/(\\)+([[\]()*<>`])/g, "$2")
     .replace(/&#x20;/g, " ")
+}
+
+/**
+ * Turn a hast tree back into a markdown string. We need to do a small
+ * bit of munging on the data structures to facilitate the operation.
+ */
+export default function toMarkdownStringDelayed(root: Something) {
+  return () => toMarkdownString(root)
 }

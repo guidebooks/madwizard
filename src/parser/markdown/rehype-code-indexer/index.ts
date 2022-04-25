@@ -25,7 +25,7 @@ import dump from "./dump"
 import { isTab } from "../rehype-tabbed"
 import isElementWithProperties from "../util/isElement"
 import { isExecutable } from "../../../codeblock/isCodeBlock"
-import toMarkdownString, { Node } from "../util/toMarkdownString"
+import toMarkdownStringDelayed, { toMarkdownString, Node } from "../util/toMarkdownString"
 import { getTipTitle, isTipWithFullTitle, isTipWithoutFullTitle } from "../rehype-tip"
 
 import {
@@ -74,17 +74,18 @@ function findNearestEnclosingTitle(grandparent: Parent, parent: Node) {
       if (isHeadingOrRemovedHeading(child) || isTipWithFullTitle(child)) {
         return {
           title: isHeading(child) ? toString(child) : isTipWithFullTitle(child) ? getTipTitle(child) : "",
-          source: grandparent.children
-            .slice(idx, parentIdx + 1)
-            .map(toMarkdownString)
-            .join("\n"),
+          source: () =>
+            grandparent.children
+              .slice(idx, parentIdx + 1)
+              .map(toMarkdownString)
+              .join("\n"),
         }
       }
     }
   }
 
   return {
-    source: toMarkdownString(parent),
+    source: toMarkdownStringDelayed(parent),
   }
 }
 
@@ -183,7 +184,7 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                           const grandparent = ancestors[idx - 2]
                           addNesting(attributes, {
                             kind: "Choice",
-                            source: toMarkdownString(_),
+                            source: toMarkdownStringDelayed(_),
                             group,
                             title,
                             description: extractFirstParagraph(_),
@@ -197,13 +198,13 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                       if (parent && isElementWithProperties(parent) && isWizard(parent.properties)) {
                         addNesting(attributes, {
                           kind: "WizardStep",
-                          source: toMarkdownString(_),
+                          source: toMarkdownStringDelayed(_),
                           group: getWizardGroup(_.properties),
                           member: getWizardStepMember(_.properties),
                           title: getTitle(_.properties),
                           description: getDescription(_.properties),
                           wizard: {
-                            source: toMarkdownString(parent),
+                            source: toMarkdownStringDelayed(parent),
                             title: getTitle(parent.properties),
                             description: parent.children[0] ? toMarkdownString(parent.children[0]) : undefined,
                           },
@@ -212,7 +213,7 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                     } else if (isImports(_.properties)) {
                       addNesting(attributes, {
                         kind: "Import",
-                        source: toMarkdownString(_),
+                        source: toMarkdownStringDelayed(_),
                         key: getImportKey(_.properties),
                         title: getImportTitle(_.properties),
                         filepath: getImportFilepath(_.properties),

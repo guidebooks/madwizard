@@ -83,7 +83,7 @@ export async function cli<Writer extends (msg: string) => boolean>(argv: string[
     case "json": {
       const graph = compile(blocks, choices)
       const wizard = wizardify(graph)
-      console.log(JSON.stringify(wizard, undefined, 2))
+      console.log(JSON.stringify(wizard, (key, value) => (key === "source" ? "placeholder" : value), 2))
       break
     }
 
