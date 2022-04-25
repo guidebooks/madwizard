@@ -56,7 +56,12 @@ export function preprocessCodeBlocksInContent(tree /*: Root */, frontmatter: Kui
             if (matched.validate) {
               // smash in validation logic; this is done in the
               // topmatter of the code block, and parsed out by rehype-code-indexer
-              attributes.validate = matched.validate
+
+              if (matched.validate === "$body") {
+                attributes.validate = body
+              } else {
+                attributes.validate = matched.validate
+              }
             }
 
             if (matched.cleanup) {
