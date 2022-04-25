@@ -187,7 +187,7 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
   description: string,
   filepath: string,
   graph: Sequence<T>,
-  source: Source["source"] = ""
+  source: Source["source"] = () => ""
 ): SubTask<Unordered> {
   return {
     key,

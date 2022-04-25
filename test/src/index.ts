@@ -33,6 +33,8 @@ function munge(wizard: Awaited<ReturnType<typeof main>>["wizard"]) {
     JSON.stringify(wizard, (key, value) => {
       if (key === "group" || key === "id" || key === "key" || key === "filepath") {
         return "fakeit"
+      } else if (key === "source" && (typeof value === "function" || typeof value === "undefined")) {
+        return "placeholder"
       } else if (key === "source" || (key === "content" && typeof value === "string")) {
         return value.replace(/(id): [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(-\d+)?/g, "$1: fakeid")
       } else {

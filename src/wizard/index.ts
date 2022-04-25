@@ -70,7 +70,7 @@ function wizardStepForPrereq<G extends Graph>(graph: G): WizardStepWithGraph<G, 
     step: {
       name: extractTitle(graph),
       description: extractDescription(graph),
-      content: hasSource(graph) ? graph.source : isLeafNode(graph) ? bodySource(graph) : "",
+      content: hasSource(graph) ? graph.source() : isLeafNode(graph) ? bodySource(graph) : "",
     },
   }
 }
