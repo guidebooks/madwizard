@@ -131,6 +131,6 @@ async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid
 
 /** Parse the given `input` into a `Graph` syntax tree. */
 export async function blockify(input: VFileCompatible, choices?: ChoiceState, uuid?: string, reader = read) {
-  const file = typeof input === "string" ? await reader(expandHomeDir(input)) : new VFile(input)
+  const file = typeof input === "string" ? await reader(new VFile({ path: expandHomeDir(input) })) : new VFile(input)
   return parse(file, choices, uuid, reader)
 }
