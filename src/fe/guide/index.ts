@@ -28,7 +28,7 @@ import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
 import indent from "../../parser/markdown/util/indent"
 import { wizardify, ChoiceStep, TaskStep, isChoiceStep, isTaskStep } from "../../wizard"
-import { blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
+import { Status, blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
 
 export class Guide {
   private readonly debug = Debug("madwizard/fe/guide")
@@ -95,9 +95,9 @@ export class Guide {
     const subtasks = blocks(graph)
 
     let doneCount = 0
-    const markDone = () => {
+    const markDone = (status: Status) => {
       if (++doneCount === subtasks.length) {
-        this.markDone(taskIdx)
+        this.markDone(taskIdx, status)
       }
     }
 
@@ -112,10 +112,12 @@ export class Guide {
               : chalk[taskIdx === 1 ? "reset" : "dim"].magenta(block.body),
             options: { exitOnError: !dryRun },
             task: async (_, subtask) => {
+              let status: Status = "blank"
+
               try {
                 if (block.validate) {
                   try {
-                    const status = await validate(block, { throwErrors: dryRun })
+                    status = await validate(block, { throwErrors: dryRun })
                     if (status === "success") {
                       subtask.skip()
                       return
@@ -137,13 +139,16 @@ export class Guide {
                   if (!dryRun) {
                     await this.waitTillDone(taskIdx - 1)
                     subtask.title = chalk.magenta(block.body)
-                    await shellExec(block.body, subtask.stdout())
+                    status = await shellExec(block.body, subtask.stdout())
                   }
+                } catch (err) {
+                  status = "error"
+                  throw err
                 } finally {
                   subtask.title = chalk.magenta(block.body)
                 }
               } finally {
-                markDone()
+                markDone(status)
               }
             },
           }))
@@ -179,16 +184,19 @@ export class Guide {
         task: async () => {
           await this.waitTillDone(taskIdx - 1)
           await this.waitForEnter()
-          this.markDone(taskIdx)
+          this.markDone(taskIdx, "success")
         },
       },
     ]
   }
 
-  private readonly done: boolean[] = []
+  private readonly done: Status[] = []
   private readonly doneEvents = new EventEmitter()
-  private markDone(taskIdx: number) {
-    this.done[taskIdx] = true
+  private allDoneSuccessfully() {
+    return this.done.every((_) => _ === "success")
+  }
+  private markDone(taskIdx: number, status: Status) {
+    this.done[taskIdx] = status
     this.doneEvents.emit(taskIdx.toString())
   }
   private waitTillDone(taskIdx: number): Promise<void> {
@@ -237,7 +245,7 @@ export class Guide {
       }
     ).run()
 
-    this.markDone(0)
+    this.markDone(0, "success")
     await taskPromise
   }
 
@@ -277,7 +285,12 @@ export class Guide {
     const taskSteps = await this.resolveChoices()
     try {
       await this.runTasks(taskSteps)
-      console.log(EOL + "🔥 Guidebook successful")
+
+      if (this.allDoneSuccessfully()) {
+        console.log(EOL + "🔥 Guidebook successful")
+      } else {
+        console.log(EOL + "⚠️  Guidebook incomplete")
+      }
     } catch (err) {
       throw new Error(EOL + chalk.red("✖") + " Run failed")
     }
