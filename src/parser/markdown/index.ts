@@ -111,10 +111,18 @@ async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid
     const source = await inlineSnippets({ fetcher })(sourcePriorToInlining, input.path)
     debug("fetch complete")
 
+    debug("parse start")
+    const rawAst = processor.parse(hackMarkdownSource(source))
+    debug("parse complete")
+
+    debug("processor start")
+    const ast = processor.run(rawAst)
+    debug("processor complete")
+
     return {
       choices,
       blocks,
-      ast: processor.run(processor.parse(hackMarkdownSource(source))),
+      ast,
     }
   } finally {
     debug("complete")
