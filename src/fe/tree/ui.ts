@@ -21,7 +21,7 @@ export type Decoration = Modifiers | Color
 
 export interface UI<Content> {
   span(body: string, ...decorations: Decoration[]): Content
-  code(body: string): Content
+  code(body: string, optional?: boolean): Content
   icon(cls: string): Content
   statusToIcon(status: Status): Content
   title(title: Content | string | (Content | string)[], status?: Status): Content
@@ -59,8 +59,12 @@ export class AnsiUI implements UI<string> {
     }
   }
 
-  public code(body: string) {
-    return chalk.magenta(body)
+  public code(body: string, optional = false) {
+    if (optional) {
+      return chalk.magenta.dim(body + " [OPTIONAL]")
+    } else {
+      return chalk.magenta(body)
+    }
   }
 
   public icon(cls: string) {

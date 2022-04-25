@@ -256,7 +256,8 @@ export class Treeifier<Content> {
               .map((_) => _.replace(/#.*/, ""))
               .filter(Boolean)[0]
               .trim()
-              .slice(0, 30)
+              .slice(0, 30),
+            graph.optional
           ),
         },
       ]
@@ -290,7 +291,7 @@ export class Treeifier<Content> {
         return this.treeModelForChoice(graph, idPrefix, depth)
       } else if (isSubTask(graph)) {
         return this.treeModelForSubTask(graph, depth, metFirstChoice)
-      } else if (!graph.optional) {
+      } else {
         return this.treeModelForLeafNode(graph)
       }
     } finally {
