@@ -1,20 +1,20 @@
 [
   {
     "graph": {
-      "group": "0c5ab6ce-b289-53cf-87b5-150163915a5c",
+      "group": "a03e3ec6-a66f-5e4e-9f61-b48c4c0accbd",
       "title": "DDD",
       "source": "placeholder",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "52e6c9a3-8ecc-41ae-bdb9-16fd9e6a1dc2",
+            "key": "4d46200f-9abd-480c-b7b3-8848d18d6683",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "56505fc9-b3a1-49f2-bdc4-943604ef543a-0",
+                "id": "168a2fa7-87b2-4e60-aea6-db4bbd29da12-0",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -24,10 +24,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "17be6164-ab89-59bc-97c5-19e920f88dd2",
+                    "group": "26cdae5b-02b0-554a-898a-8a2e6ffd5980",
                     "title": "Tab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "Chooser",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "Chooser"
                     }
                   },
@@ -39,10 +53,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "0c5ab6ce-b289-53cf-87b5-150163915a5c",
+                    "group": "a03e3ec6-a66f-5e4e-9f61-b48c4c0accbd",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -52,7 +80,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "56505fc9-b3a1-49f2-bdc4-943604ef543a-1",
+                "id": "168a2fa7-87b2-4e60-aea6-db4bbd29da12-1",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -62,10 +90,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "17be6164-ab89-59bc-97c5-19e920f88dd2",
+                    "group": "26cdae5b-02b0-554a-898a-8a2e6ffd5980",
                     "title": "Tab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "Chooser",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "Chooser"
                     }
                   },
@@ -77,10 +119,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "0c5ab6ce-b289-53cf-87b5-150163915a5c",
+                    "group": "a03e3ec6-a66f-5e4e-9f61-b48c4c0accbd",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -90,7 +146,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "56505fc9-b3a1-49f2-bdc4-943604ef543a-2",
+                "id": "168a2fa7-87b2-4e60-aea6-db4bbd29da12-2",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -100,10 +156,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "17be6164-ab89-59bc-97c5-19e920f88dd2",
+                    "group": "26cdae5b-02b0-554a-898a-8a2e6ffd5980",
                     "title": "Tab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "Chooser",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "Chooser"
                     }
                   },
@@ -115,10 +185,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "0c5ab6ce-b289-53cf-87b5-150163915a5c",
+                    "group": "a03e3ec6-a66f-5e4e-9f61-b48c4c0accbd",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -131,13 +215,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "376b001e-1a11-430c-9fa2-5053a627e977",
+            "key": "7b080b15-fc79-43c3-a0bb-afb23e2a411e",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "56505fc9-b3a1-49f2-bdc4-943604ef543a-3",
+                "id": "168a2fa7-87b2-4e60-aea6-db4bbd29da12-3",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -147,10 +231,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "17be6164-ab89-59bc-97c5-19e920f88dd2",
+                    "group": "26cdae5b-02b0-554a-898a-8a2e6ffd5980",
                     "title": "Tab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "Chooser",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "Chooser"
                     }
                   },
@@ -162,10 +260,24 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "0c5ab6ce-b289-53cf-87b5-150163915a5c",
+                    "group": "a03e3ec6-a66f-5e4e-9f61-b48c4c0accbd",
                     "title": "SubTab2",
                     "member": 1,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -183,13 +295,13 @@
       "content": [
         {
           "title": "SubTab1",
-          "group": "0c5ab6ce-b289-53cf-87b5-150163915a5c",
+          "group": "a03e3ec6-a66f-5e4e-9f61-b48c4c0accbd",
           "member": 0,
           "isFirstChoice": true
         },
         {
           "title": "SubTab2",
-          "group": "0c5ab6ce-b289-53cf-87b5-150163915a5c",
+          "group": "a03e3ec6-a66f-5e4e-9f61-b48c4c0accbd",
           "member": 1,
           "isFirstChoice": true
         }

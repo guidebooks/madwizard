@@ -6,12 +6,12 @@
       "description": "",
       "filepath": "test/inputs/snippets/importgg.md",
       "graph": {
-        "key": "d82af8d0-fcfb-413e-bb86-61f2a30ac802",
+        "key": "2aca0714-e6f7-42a6-b796-216fb734cda5",
         "sequence": [
           {
             "body": "echo LLL",
             "language": "bash",
-            "id": "5eeecd25-5387-4c1e-8712-0cb4874457e8-1",
+            "id": "4509c2fe-43aa-4dbc-a0e7-db6dd8cec6fb-1",
             "nesting": [
               {
                 "kind": "Import",
@@ -45,13 +45,13 @@
       "description": "",
       "filepath": "test/inputs/snippets/importaa.md",
       "graph": {
-        "key": "34178019-5aa2-4ead-830f-11cd0bcd1f96",
+        "key": "f9e764ac-975d-44e1-bd5d-d327bd8835cf",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "5eeecd25-5387-4c1e-8712-0cb4874457e8-3",
+            "id": "4509c2fe-43aa-4dbc-a0e7-db6dd8cec6fb-3",
             "nesting": [
               {
                 "kind": "Import",
@@ -73,20 +73,20 @@
   },
   {
     "graph": {
-      "group": "181b6342-91f7-5e96-aad4-ffdeafb20cd5",
+      "group": "56a36329-9780-591f-a98f-34e6d7344ad4",
       "title": "DDD",
       "source": "placeholder",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "58b69b96-ac48-4e0a-b5e4-c5d2bf37d860",
+            "key": "2dc93765-e061-440c-9608-3d18a0b31d5a",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "5eeecd25-5387-4c1e-8712-0cb4874457e8-4",
+                "id": "4509c2fe-43aa-4dbc-a0e7-db6dd8cec6fb-4",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -96,10 +96,46 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "181b6342-91f7-5e96-aad4-ffdeafb20cd5",
+                    "group": "56a36329-9780-591f-a98f-34e6d7344ad4",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": {
+                              "start": {
+                                "line": 58,
+                                "column": 3,
+                                "offset": 1352
+                              },
+                              "end": {
+                                "line": 58,
+                                "column": 6,
+                                "offset": 1355
+                              }
+                            }
+                          }
+                        ],
+                        "position": {
+                          "start": {
+                            "line": 58,
+                            "column": 1,
+                            "offset": 1350
+                          },
+                          "end": {
+                            "line": 58,
+                            "column": 6,
+                            "offset": 1355
+                          }
+                        }
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -109,7 +145,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "5eeecd25-5387-4c1e-8712-0cb4874457e8-5",
+                "id": "4509c2fe-43aa-4dbc-a0e7-db6dd8cec6fb-5",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -119,10 +155,46 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "181b6342-91f7-5e96-aad4-ffdeafb20cd5",
+                    "group": "56a36329-9780-591f-a98f-34e6d7344ad4",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": {
+                              "start": {
+                                "line": 58,
+                                "column": 3,
+                                "offset": 1352
+                              },
+                              "end": {
+                                "line": 58,
+                                "column": 6,
+                                "offset": 1355
+                              }
+                            }
+                          }
+                        ],
+                        "position": {
+                          "start": {
+                            "line": 58,
+                            "column": 1,
+                            "offset": 1350
+                          },
+                          "end": {
+                            "line": 58,
+                            "column": 6,
+                            "offset": 1355
+                          }
+                        }
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -132,7 +204,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "5eeecd25-5387-4c1e-8712-0cb4874457e8-6",
+                "id": "4509c2fe-43aa-4dbc-a0e7-db6dd8cec6fb-6",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -142,10 +214,46 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "181b6342-91f7-5e96-aad4-ffdeafb20cd5",
+                    "group": "56a36329-9780-591f-a98f-34e6d7344ad4",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": {
+                              "start": {
+                                "line": 58,
+                                "column": 3,
+                                "offset": 1352
+                              },
+                              "end": {
+                                "line": 58,
+                                "column": 6,
+                                "offset": 1355
+                              }
+                            }
+                          }
+                        ],
+                        "position": {
+                          "start": {
+                            "line": 58,
+                            "column": 1,
+                            "offset": 1350
+                          },
+                          "end": {
+                            "line": 58,
+                            "column": 6,
+                            "offset": 1355
+                          }
+                        }
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -158,13 +266,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "503ef61b-31c0-4668-87cb-734b7f93c784",
+            "key": "ae18b5ba-4bc4-4153-af46-b77db55e8420",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "5eeecd25-5387-4c1e-8712-0cb4874457e8-7",
+                "id": "4509c2fe-43aa-4dbc-a0e7-db6dd8cec6fb-7",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -174,10 +282,46 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "181b6342-91f7-5e96-aad4-ffdeafb20cd5",
+                    "group": "56a36329-9780-591f-a98f-34e6d7344ad4",
                     "title": "SubTab2",
                     "member": 1,
                     "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "DDD",
+                            "position": {
+                              "start": {
+                                "line": 58,
+                                "column": 3,
+                                "offset": 1352
+                              },
+                              "end": {
+                                "line": 58,
+                                "column": 6,
+                                "offset": 1355
+                              }
+                            }
+                          }
+                        ],
+                        "position": {
+                          "start": {
+                            "line": 58,
+                            "column": 1,
+                            "offset": 1350
+                          },
+                          "end": {
+                            "line": 58,
+                            "column": 6,
+                            "offset": 1355
+                          }
+                        }
+                      },
+                      "level": 1,
                       "title": "DDD"
                     }
                   }
@@ -195,13 +339,13 @@
       "content": [
         {
           "title": "SubTab1",
-          "group": "181b6342-91f7-5e96-aad4-ffdeafb20cd5",
+          "group": "56a36329-9780-591f-a98f-34e6d7344ad4",
           "member": 0,
           "isFirstChoice": true
         },
         {
           "title": "SubTab2",
-          "group": "181b6342-91f7-5e96-aad4-ffdeafb20cd5",
+          "group": "56a36329-9780-591f-a98f-34e6d7344ad4",
           "member": 1,
           "isFirstChoice": true
         }

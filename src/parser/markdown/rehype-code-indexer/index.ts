@@ -23,10 +23,10 @@ import { visitParents } from "unist-util-visit-parents"
 
 import dump from "./dump"
 import { isTab } from "../rehype-tabbed"
-import isElementWithProperties from "../util/isElement"
 import { isExecutable } from "../../../codeblock/isCodeBlock"
+import { getTipTitle, isTipWithFullTitle } from "../rehype-tip"
+import isElementWithProperties, { hasContentChildren } from "../util/isElement"
 import toMarkdownStringDelayed, { toMarkdownString, Node } from "../util/toMarkdownString"
-import { getTipTitle, isTipWithFullTitle, isTipWithoutFullTitle } from "../rehype-tip"
 
 import {
   isHeading,
@@ -37,6 +37,7 @@ import {
   getWizardStepMember,
   getTitle,
   getDescription,
+  getHeadingLevel,
 } from "../rehype-wizard"
 
 import { tryFrontmatter } from "../frontmatter"
@@ -65,20 +66,25 @@ function extractFirstParagraph(parent: Parent) {
  * all of the source between that heading and the given `parent`,
  * inclusive.
  */
-function findNearestEnclosingTitle(grandparent: Parent, parent: Node) {
+function findNearestEnclosingTitle(grandparent: Parent, parent: Node, desiredHeadingLevel?: number) {
   const parentIdx = !grandparent ? -1 : grandparent.children.findIndex((child) => child === parent)
 
-  if (grandparent && parentIdx >= 0 && isElementWithProperties(grandparent)) {
+  if (grandparent && parentIdx >= 0 && hasContentChildren(grandparent)) {
     for (let idx = parentIdx - 1; idx >= 0; idx--) {
       const child = grandparent.children[idx]
       if (isHeadingOrRemovedHeading(child) || isTipWithFullTitle(child)) {
-        return {
-          title: isHeading(child) ? toString(child) : isTipWithFullTitle(child) ? getTipTitle(child) : "",
-          source: () =>
-            grandparent.children
-              .slice(idx, parentIdx + 1)
-              .map(toMarkdownString)
-              .join("\n"),
+        const level = getHeadingLevel(child)
+        if (desiredHeadingLevel === undefined || (!isNaN(level) && level === desiredHeadingLevel)) {
+          return {
+            child,
+            level,
+            title: isHeading(child) ? toString(child) : isTipWithFullTitle(child) ? getTipTitle(child) : "",
+            source: () =>
+              grandparent.children
+                .slice(idx, parentIdx + 1)
+                .map(toMarkdownString)
+                .join("\n"),
+          }
         }
       }
     }
@@ -218,6 +224,32 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                         title: getImportTitle(_.properties),
                         filepath: getImportFilepath(_.properties),
                       })
+                    } else if (isTipWithFullTitle(_)) {
+                      const title = getTipTitle(_)
+                      addNesting(attributes, {
+                        kind: "Import",
+                        source: toMarkdownStringDelayed(_),
+                        key: title,
+                        title,
+                        filepath: "",
+                      })
+                    }
+                  }
+                }
+
+                if (!attributes.nesting) {
+                  const parent = ancestors[ancestors.length - 1]
+                  const grandparent = ancestors[ancestors.length - 2]
+                  if (parent && grandparent) {
+                    const { title, source } = findNearestEnclosingTitle(grandparent, parent)
+                    if (title) {
+                      addNesting(attributes, {
+                        kind: "Import",
+                        source,
+                        key: title,
+                        title,
+                        filepath: "",
+                      })
                     }
                   }
                 }
@@ -227,7 +259,31 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                   attributes.nesting = attributes.nesting.reverse()
                   reserialize()
 
-                  let parent = ancestors[ancestors.length - 1]
+                  if (!attributes.nesting.find((_) => _.kind === "WizardStep" || (_.kind === "Import" && _.filepath))) {
+                    // try looking for an h1
+                    const grandparent = ancestors[0]
+                    if (grandparent) {
+                      const parent = grandparent.children[grandparent.children.length - 1]
+                      if (grandparent && parent) {
+                        const { title, source } = findNearestEnclosingTitle(grandparent, parent, 1)
+                        if (title) {
+                          addNesting(
+                            attributes,
+                            {
+                              kind: "Import",
+                              source,
+                              key: title,
+                              title,
+                              filepath: "",
+                            },
+                            0
+                          )
+                        }
+                      }
+                    }
+                  }
+
+                  /* let parent = ancestors[ancestors.length - 1]
                   let grandparent = ancestors[ancestors.length - 2]
 
                   if (isTipWithoutFullTitle(grandparent)) {
@@ -250,7 +306,7 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                         filepath: "",
                       })
                     }
-                  }
+                  } */
                 }
 
                 // go from bottom to top stopping at the first import,
