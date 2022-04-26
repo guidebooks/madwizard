@@ -30,6 +30,7 @@ const inputDir = join(dirname(require.resolve(".")), "../inputs")
 
 const options: { suffix: string; options: MadWizardOptions }[] = [
   { suffix: "", options: {} },
+  { suffix: "noaprioris", options: { optimize: { aprioris: false } } },
   { suffix: "noopt", options: { optimize: false } },
 ]
 
