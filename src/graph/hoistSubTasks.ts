@@ -25,6 +25,7 @@ import {
   hasTitle,
   hasTitleProperty,
   isSubTask,
+  isSubTaskWithFilepath,
   isChoice,
   isSequence,
   isParallel,
@@ -239,14 +240,14 @@ function findAndHoistChoiceFrontier(graph: void | Graph, inheritedSubTasks: SubT
 
 function extractTopLevelSubTasks(graph: Graph): { toplevelSubTasks: SubTask[]; residual: Graph } {
   if (isSequence(graph)) {
-    const toplevelSubTasks = graph.sequence.filter(isSubTask)
-    const residual = sequence(graph.sequence.filter((_) => !isSubTask(_)))
+    const toplevelSubTasks = graph.sequence.filter(isSubTaskWithFilepath)
+    const residual = sequence(graph.sequence.filter((_) => !isSubTaskWithFilepath(_)))
     return { toplevelSubTasks, residual }
   } else if (isParallel(graph)) {
     const toplevelSubTasks = graph.parallel.filter(isSubTask)
     const residual = parallel(graph.parallel.filter((_) => !isSubTask(_)))
     return { toplevelSubTasks, residual }
-  } else if (isSubTask(graph)) {
+  } else if (isSubTaskWithFilepath(graph)) {
     return { toplevelSubTasks: [graph], residual: emptySequence() }
   } else {
     return { toplevelSubTasks: [], residual: graph }

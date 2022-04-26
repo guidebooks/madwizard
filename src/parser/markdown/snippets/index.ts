@@ -15,12 +15,14 @@
  */
 
 import Debug from "debug"
+import { load } from "js-yaml"
 import expandHomeDir from "expand-home-dir"
 import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin } from "path"
 
 // import promiseEach from './promise-each'
 
 import indent from "../util/indent"
+import { MadWizardOptions } from "../../.."
 import { hasImports } from "../frontmatter/KuiFrontmatter"
 import { tryFrontmatter } from "../frontmatter/frontmatter-parser"
 
@@ -122,20 +124,43 @@ function colonColonColon(nestingDepth: number) {
 }
 
 type Options = {
-  fetcher: (filepath: string) => Promise<string | Error>
   snippetBasePath?: string
   includeFrontmatter?: boolean
-  nestingDepth?: number
-  inImport?: boolean
   failFast?: boolean
+
+  /** Fetch the contents of the given `filepath` */
+  fetcher: (filepath: string) => Promise<string | Error>
+
+  /** Options passed through from client, e.g. fe/cli */
+  madwizardOptions?: MadWizardOptions
+}
+
+/** Data used by `inlineSnippets`, but not accessible to outside clients. */
+type InternalOptions = {
+  /** Are we processing an import? */
+  inImport?: boolean
+
+  /** How deep are we, in the import/inline chain? */
+  nestingDepth?: number
+
+  /**
+   * To avoid fetching the same content more than once. Key is filepath, value is content.
+   */
   snippetMemo?: Record<string, string>
+
+  /**
+   * This provides us a way to specify a known set of base path for
+   * all snippets, rather than us having to guess. See `candidates`
+   * below for our heuristics in the case we have to guess.
+   */
+  altBasePaths?: Promise<string[]>
 }
 
 /**
  * Simplistic approximation of
  * https://facelessuser.github.io/pymdown-extensions/extensions/snippets/.
  */
-export default function inlineSnippets(opts: Options) {
+function inlineSnippets(opts: Options & InternalOptions) {
   const {
     fetcher,
     snippetBasePath,
@@ -144,6 +169,7 @@ export default function inlineSnippets(opts: Options) {
     inImport = false,
     failFast = true,
     snippetMemo = {},
+    altBasePaths = Promise.resolve([]),
   } = opts
 
   const fetchRecursively = async (
@@ -199,22 +225,28 @@ export default function inlineSnippets(opts: Options) {
         nestingDepth: nestingDepth + 1,
         inImport,
         snippetMemo,
+        altBasePaths,
       })(rerouteLinks(base, data), recursedSnippetFileName, provenance)
     }
 
-    const candidates = [
-      // process.cwd(),
-      snippetBasePath,
-      snippetBasePath && RE_DOCS_URL.test(snippetBasePath) ? dirname(snippetBasePath.match(RE_DOCS_URL)[1]) : undefined,
-      "./",
-      "./snippets",
-      "../snippets",
-      "../../snippets",
-      "../../../snippets",
-      "../../../../snippets",
-      "../../",
-      "../../../",
-    ].filter(Boolean)
+    const candidates =
+      (await altBasePaths).length > 0
+        ? await altBasePaths
+        : [
+            // process.cwd(),
+            snippetBasePath,
+            snippetBasePath && RE_DOCS_URL.test(snippetBasePath)
+              ? dirname(snippetBasePath.match(RE_DOCS_URL)[1])
+              : undefined,
+            "./",
+            "./snippets",
+            "../snippets",
+            "../../snippets",
+            "../../../snippets",
+            "../../../../snippets",
+            "../../",
+            "../../../",
+          ].filter(Boolean)
 
     const snippetDatas =
       isUrl(snippetFileName) || isAbsolute(snippetFileName)
@@ -386,4 +418,55 @@ ${await importedContent}
 ${body}`
     }
   }
+}
+
+function extractSnippetBasePath(mkdocs: unknown): string[] {
+  const content = mkdocs as { markdown_extensions: object[] } //{ "pymdownx.snippets": { base_path: string[] } } }
+
+  if (Array.isArray(content.markdown_extensions)) {
+    const snippetsConfig = content.markdown_extensions.find(
+      (_) => typeof _ === "object" && typeof _["pymdownx.snippets"] === "object"
+    )
+
+    if (
+      snippetsConfig &&
+      Array.isArray(snippetsConfig["pymdownx.snippets"].base_path) &&
+      snippetsConfig["pymdownx.snippets"].base_path.every((_) => typeof _ === "string")
+    ) {
+      return snippetsConfig["pymdownx.snippets"].base_path
+    }
+  }
+
+  return []
+}
+
+async function fetchMkdocsBasePath(opts: Options) {
+  if (opts.madwizardOptions && typeof opts.madwizardOptions.mkdocs === "string") {
+    try {
+      const { mkdocs } = opts.madwizardOptions
+      const mkdocsFilepath = /mkdocs\.ya?ml$/.test(mkdocs) ? mkdocs : join(mkdocs, "mkdocs.yml")
+      const rawContent = await opts.fetcher(mkdocsFilepath)
+
+      if (typeof rawContent === "string") {
+        const content = load(rawContent.replace(/: !!/g, ": redaced"))
+        const mkdocsBase = /mkdocs\.ya?ml$/.test(mkdocs) ? dirname(mkdocs) : mkdocs
+        return extractSnippetBasePath(content).map((_) => _.replace(/\.\/?/, mkdocsBase))
+      } else {
+        console.error("Error loading mkdocs", rawContent)
+      }
+    } catch (err) {
+      console.error("Error loading mkdocs", err)
+    }
+  }
+
+  // intentional fall-through
+  return []
+}
+
+export default function processSnippets(opts: Options) {
+  return inlineSnippets(
+    Object.assign({}, opts, {
+      altBasePaths: fetchMkdocsBasePath(opts),
+    })
+  )
 }

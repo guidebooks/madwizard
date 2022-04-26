@@ -247,6 +247,10 @@ export function isSubTask<T extends Unordered | Ordered = Unordered>(graph: Grap
   return subtask && typeof subtask.key === "string" && typeof subtask.filepath === "string"
 }
 
+export function isSubTaskWithFilepath<T extends Unordered | Ordered = Unordered>(graph: Graph<T>): graph is SubTask<T> {
+  return isSubTask(graph) && !!graph.filepath
+}
+
 function sameCodeBlock(a: CodeBlockProps, b: CodeBlockProps) {
   return (
     a.id === b.id &&

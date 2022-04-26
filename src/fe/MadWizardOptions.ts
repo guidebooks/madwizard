@@ -14,19 +14,6 @@
  * limitations under the License.
  */
 
-// CLI
-export * from "./fe/cli"
-
-// UI support
-export * from "./fe/tree"
-
-// An entrypoint useful for tests
-export * from "./fe/main"
-
-// APIs
-export * from "./graph"
-export * from "./parser"
-export * from "./choices"
-export * from "./wizard"
-
-export * from "./fe/MadWizardOptions"
+export interface MadWizardOptions {
+  mkdocs?: string
+}

@@ -89,7 +89,7 @@ export default class TreeTransformer<Content> {
    */
   public foldNestedSubTask(graph: UITree<Content>[number]) {
     const origin1 = graph["data-origin"]
-    if (origin1 && isSubTask(origin1)) {
+    if (origin1 && isSubTask(origin1) && origin1.title !== "Prerequisites") {
       if (graph.children.length === 1) {
         const singleChild = graph.children[0]
         const origin2 = singleChild["data-origin"]
