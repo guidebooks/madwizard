@@ -31,7 +31,7 @@ class Homebrew {
   private readonly canonicalName = "Homebrew"
 
   /** tabs whose title matches this pattern will be treated as being a Homebrew choice */
-  private readonly RE_HOMEBREW = /homebrew/i
+  private readonly RE_HOMEBREW = /(home)?brew/i
 
   /**
    * This code assumes the given `node` satisfies `import('..').isTabGroup`.
