@@ -61,7 +61,7 @@ export function prettyPrintUITree(
     if (narrow) {
       const remaining = Math.max(10, process.stdout.columns - prefix.length)
       const ellipsis = remaining < name.length ? "\u2026" : ""
-      write(name.slice(0, remaining).replace(/\n.*$/, "") + ellipsis + EOL)
+      write(name.slice(0, remaining).replace(/[\n\r][\S\s]*$/, "") + ellipsis + EOL)
     } else {
       write(name.replace(new RegExp(EOL, "g"), EOL + prefix + nextPrefix) + EOL)
     }
