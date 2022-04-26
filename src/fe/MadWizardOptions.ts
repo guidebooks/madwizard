@@ -15,5 +15,12 @@
  */
 
 export interface MadWizardOptions {
+  /** Shorten output of long or multi-line code blocks. */
+  narrow?: boolean
+
+  /**
+   * Path to an mkdocs.yml config. This may be used to assist in
+   * finding snippet content when parsing markdown.
+   */
   mkdocs?: string
 }

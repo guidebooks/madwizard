@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+import { EOL } from "os"
+
 import { UITree } from "../tree"
+import { MadWizardOptions } from "../.."
 
 const Symbols = {
   ansi: {
@@ -26,14 +29,24 @@ const Symbols = {
   },
 }
 
+type PrettyPrintOptions = {
+  write: typeof process.stdout.write
+  symbols?: typeof Symbols.ansi
+}
+
+type State = {
+  depth: number
+  prefix: string
+  isLast: boolean
+}
+
 export function prettyPrintUITree(
   graph: UITree<string>,
-  write = process.stdout.write.bind(process.stdout),
-  symbols = Symbols.ansi,
-  prefix = "",
-  depth = 0,
-  isLast = false
+  options: PrettyPrintOptions & MadWizardOptions,
+  { depth, prefix, isLast }: State = { depth: 0, prefix: "", isLast: false }
 ) {
+  const { write = process.stdout.write.bind(process.stdout), symbols = Symbols.ansi, narrow } = options
+
   write(prefix)
 
   if (depth >= 1) {
@@ -43,11 +56,23 @@ export function prettyPrintUITree(
   const nextPrefix = depth >= 1 ? (isLast ? symbols.INDENT : symbols.VERTICAL) : symbols.EMPTY
 
   graph.forEach((node) => {
-    write((node.name || node.title) + "\n")
+    const name = node.name || node.title
+
+    if (narrow) {
+      const remaining = Math.max(10, process.stdout.columns - prefix.length)
+      const ellipsis = remaining < name.length ? "\u2026" : ""
+      write(name.slice(0, remaining).replace(/\n.*$/, "") + ellipsis + EOL)
+    } else {
+      write(name.replace(new RegExp(EOL, "g"), EOL + prefix + nextPrefix) + EOL)
+    }
 
     if (node.children) {
       node.children.forEach((child, idx, A) =>
-        prettyPrintUITree([child], write, symbols, prefix + nextPrefix, depth + 1, idx === A.length - 1)
+        prettyPrintUITree([child], options, {
+          prefix: prefix + nextPrefix,
+          depth: depth + 1,
+          isLast: idx === A.length - 1,
+        })
       )
     }
   })

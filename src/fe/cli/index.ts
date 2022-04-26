@@ -18,6 +18,8 @@ import Debug from "debug"
 import chalk from "chalk"
 import { basename } from "path"
 
+import { MadWizardOptions } from "../MadWizardOptions"
+
 import { Guide } from "../guide"
 import { parse, wizardify, compile, order } from "../.."
 import { prettyPrintUITree, Treeifier, AnsiUI, DevNullUI } from "../tree"
@@ -47,12 +49,15 @@ function usage(argv: string[], msg?: string) {
 }
 
 export async function cli<Writer extends (msg: string) => boolean>(_argv: string[], write?: Writer) {
+  // TODO replace this with yargs or something like that
   const argv = _argv.filter((_, idx) => !/^-/.test(_) && (idx === 0 || !/^--/.test(_argv[idx - 1])))
   const task = argv[1]
   const input = argv[2]
-
   const mkdocsIdx = _argv.findIndex((_) => _ === "--mkdocs")
   const mkdocs = mkdocsIdx < 0 ? undefined : _argv[mkdocsIdx + 1]
+  const narrow = !!_argv.find((_) => _ === "--narrow" || _ === "-n")
+
+  const options: MadWizardOptions = { mkdocs, narrow }
 
   if (!task || !input) {
     return usage(argv)
@@ -66,7 +71,7 @@ export async function cli<Writer extends (msg: string) => boolean>(_argv: string
     Debug.enable("madwizard/timing/*")
   }
 
-  const { blocks, choices } = await parse(input, undefined, undefined, undefined, { mkdocs })
+  const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)
 
   try {
     switch (task) {
@@ -81,7 +86,7 @@ export async function cli<Writer extends (msg: string) => boolean>(_argv: string
       case "tree": {
         const graph = compile(blocks, choices)
         const tree = new Treeifier(new AnsiUI()).toTree(order(graph))
-        prettyPrintUITree(tree, write)
+        prettyPrintUITree(tree, Object.assign({ write }, options))
         break
       }
 
