@@ -133,7 +133,7 @@ export function compile(
       return subtask(
         parent.key,
         parent.title,
-        "",
+        parent.description,
         parent.filepath,
         isDeepest ? seq(block) : emptySequence(),
         parent.source

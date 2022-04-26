@@ -1,22 +1,22 @@
 [
   {
     "graph": {
-      "group": "18f9d4dc-7aab-5906-869a-ede097e1932e",
+      "group": "ee83f65c-3702-5660-8e39-f0f1cbe96f2c",
       "source": "placeholder",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "8c39a6fb-6f9c-40d1-8b1d-2f4218d0bd6b",
+            "key": "f4a043b4-b86e-4eec-ae45-358d982a21d9",
             "sequence": [
               {
                 "body": "echo 111",
                 "language": "bash",
-                "id": "917f44fe-e50e-4520-ae17-c0f7871bd11d-0",
+                "id": "0971c4d9-903c-4347-bc45-3b3fef87c77e-0",
                 "nesting": [
                   {
                     "kind": "Choice",
-                    "group": "18f9d4dc-7aab-5906-869a-ede097e1932e",
+                    "group": "ee83f65c-3702-5660-8e39-f0f1cbe96f2c",
                     "title": "Tab1Title",
                     "member": 0,
                     "groupDetail": {}
@@ -30,16 +30,16 @@
         {
           "member": 1,
           "graph": {
-            "key": "badd00bb-fb81-4421-b0de-e41c560ac123",
+            "key": "a9c8bd76-513d-49bc-98db-876e820e5a08",
             "sequence": [
               {
                 "body": "echo 222",
                 "language": "bash",
-                "id": "917f44fe-e50e-4520-ae17-c0f7871bd11d-1",
+                "id": "0971c4d9-903c-4347-bc45-3b3fef87c77e-1",
                 "nesting": [
                   {
                     "kind": "Choice",
-                    "group": "18f9d4dc-7aab-5906-869a-ede097e1932e",
+                    "group": "ee83f65c-3702-5660-8e39-f0f1cbe96f2c",
                     "title": "Tab2Title",
                     "member": 1,
                     "groupDetail": {}
@@ -57,13 +57,13 @@
       "content": [
         {
           "title": "Tab1Title",
-          "group": "18f9d4dc-7aab-5906-869a-ede097e1932e",
+          "group": "ee83f65c-3702-5660-8e39-f0f1cbe96f2c",
           "member": 0,
           "isFirstChoice": true
         },
         {
           "title": "Tab2Title",
-          "group": "18f9d4dc-7aab-5906-869a-ede097e1932e",
+          "group": "ee83f65c-3702-5660-8e39-f0f1cbe96f2c",
           "member": 1,
           "isFirstChoice": true
         }
