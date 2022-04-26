@@ -54,7 +54,7 @@ export class Guide {
       type: "list",
       pageSize: 20,
       name: step.name,
-      message: chalk.underline(`Choice ${stepIdx + 1}:` + ` ${step.name}`),
+      message: chalk.yellow(`Choice ${stepIdx + 1}:` + ` ${step.name}`),
       choices: step.content.map((tile, idx, A) => ({
         value: tile.title,
         short: tile.title,
@@ -214,9 +214,9 @@ export class Guide {
       {
         type: "list",
         name: "execution",
-        message: "How do you wish to execute this guidebook?",
+        message: chalk.yellow("How do you wish to execute this guidebook?"),
         choices: [
-          { value: "dryr", name: "Dry run" },
+          { value: "dryr", name: "Dry run 👀" },
           { value: "auto", name: "Run unattended 🤖" },
           { value: "step", name: "Stepped execution" },
           { value: "stop", name: "Cancel" },
