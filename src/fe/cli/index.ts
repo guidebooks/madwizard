@@ -48,7 +48,11 @@ function usage(argv: string[], msg?: string) {
   process.exit(1)
 }
 
-export async function cli<Writer extends (msg: string) => boolean>(_argv: string[], write?: Writer) {
+export async function cli<Writer extends (msg: string) => boolean>(
+  _argv: string[],
+  write?: Writer,
+  providedOptions: MadWizardOptions = {}
+) {
   // TODO replace this with yargs or something like that
   const argv = _argv.filter((_, idx) => !/^-/.test(_) && (idx === 0 || !/^--/.test(_argv[idx - 1])))
   const task = argv[1]
@@ -56,8 +60,11 @@ export async function cli<Writer extends (msg: string) => boolean>(_argv: string
   const mkdocsIdx = _argv.findIndex((_) => _ === "--mkdocs")
   const mkdocs = mkdocsIdx < 0 ? undefined : _argv[mkdocsIdx + 1]
   const narrow = !!_argv.find((_) => _ === "--narrow" || _ === "-n")
+  const noOptimize = !!_argv.find((_) => _ === "-O0" || _ === "--optimize=0" || _ === "--no-optimize")
+  const noAprioris = !!_argv.find((_) => _ === "--no-aprioris")
 
-  const options: MadWizardOptions = { mkdocs, narrow }
+  const optimize = noOptimize ? false : { aprioris: !noAprioris }
+  const options = Object.assign({}, { mkdocs, narrow, optimize }, providedOptions)
 
   if (!task || !input) {
     return usage(argv)

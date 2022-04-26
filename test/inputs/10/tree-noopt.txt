@@ -1,0 +1,17 @@
+Sequence
+├── importgg.md
+│   ├── Option 1: MacOS
+│   │   └── echo MMM
+│   ├── Option 2: Linux
+│   │   └── echo LLL
+│   └── Option 3: Windows
+│       └── echo WWW
+├── importaa.md
+│   └── echo AAA
+└── DDD
+    ├── Option 1: SubTab1
+    │   ├── echo AAA
+    │   ├── echo AAA
+    │   └── echo AAA
+    └── Option 2: SubTab2
+        └── echo BBB

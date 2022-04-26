@@ -16,6 +16,8 @@
 
 import { VFileCompatible } from "vfile"
 
+import { MadWizardOptions } from "../"
+
 import { compile } from "../graph"
 import { blockify } from "../parser"
 import { wizardify } from "../wizard"
@@ -25,8 +27,8 @@ import { newChoiceState } from "../choices"
  * This is mostly a demonstration front-end. Most users should invoke
  * the underlying APIs directly.
  */
-export async function main(input: VFileCompatible, choices = newChoiceState()) {
-  const { blocks } = await blockify(input, choices)
+export async function main(input: VFileCompatible, choices = newChoiceState(), madwizardOptions?: MadWizardOptions) {
+  const { blocks } = await blockify(input, choices, undefined, undefined, madwizardOptions)
   const graph = compile(blocks, choices)
   const wizard = wizardify(graph)
 

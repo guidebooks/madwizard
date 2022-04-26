@@ -67,9 +67,14 @@ const remarkPlugins = (): PluggableList => [
   [kuiFrontmatter],
 ]
 
-const rehypePlugins = (uuid: string, choices: ChoiceState, codeblocks: CodeBlockProps[]): PluggableList => [
+const rehypePlugins = (
+  uuid: string,
+  choices: ChoiceState,
+  codeblocks: CodeBlockProps[],
+  madwizardOptions: MadWizardOptions
+): PluggableList => [
   wizard,
-  [rehypeTabbed, uuid, choices],
+  [rehypeTabbed, uuid, choices, madwizardOptions],
   rehypeTip,
   [rehypeCodeIndexer, uuid, codeblocks],
   rehypeImports,
@@ -110,7 +115,7 @@ async function parse(
       .use(remarkParse)
       .use(remarkPlugins())
       .use(remarkRehype, { allowDangerousHtml: true })
-      .use(rehypePlugins(uuid, choices, blocks))
+      .use(rehypePlugins(uuid, choices, blocks, madwizardOptions))
 
     const fetcher = (filepath: string) => reader(new VFile({ path: filepath })).then((_) => _.value.toString())
 
