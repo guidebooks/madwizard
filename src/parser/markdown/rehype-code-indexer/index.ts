@@ -41,7 +41,7 @@ import {
 } from "../rehype-wizard"
 
 import { tryFrontmatter } from "../frontmatter"
-import { isImports, getImportKey, getImportFilepath, getImportTitle } from "../remark-import"
+import { isOnAnImportChain, isImports, getImportKey, getImportFilepath, getImportTitle } from "../remark-import"
 import { CodeBlockProps, addNesting as addCodeBlockNesting } from "../../../codeblock/CodeBlockProps"
 
 /**
@@ -259,7 +259,10 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                   attributes.nesting = attributes.nesting.reverse()
                   reserialize()
 
-                  if (!attributes.nesting.find((_) => _.kind === "WizardStep" || (_.kind === "Import" && _.filepath))) {
+                  if (
+                    !isOnAnImportChain(ancestors) &&
+                    !attributes.nesting.find((_) => _.kind === "WizardStep" || (_.kind === "Import" && _.filepath))
+                  ) {
                     // try looking for an h1
                     const grandparent = ancestors[0]
                     if (grandparent) {

@@ -25,6 +25,8 @@ import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
 import { unified, PluggableList } from "unified"
 
+import { MadWizardOptions } from "../../"
+
 import { CodeBlockProps } from "../../codeblock"
 import { ChoiceState, newChoiceState } from "../../choices"
 
@@ -91,7 +93,13 @@ async function read(file: VFile): Promise<VFile> {
 }
 
 /** Parse the given `input` into a `Graph` syntax tree. */
-async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid = v4(), reader = read) {
+async function parse(
+  input: VFile,
+  choices: ChoiceState = newChoiceState(),
+  uuid = v4(),
+  reader = read,
+  madwizardOptions: MadWizardOptions = {}
+) {
   const debug = Debug("madwizard/timing/parser:markdown")
   debug("start")
 
@@ -108,7 +116,7 @@ async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid
 
     debug("fetch start")
     const sourcePriorToInlining = input.value.toString()
-    const source = await inlineSnippets({ fetcher })(sourcePriorToInlining, input.path)
+    const source = await inlineSnippets({ fetcher, madwizardOptions })(sourcePriorToInlining, input.path)
     debug("fetch complete")
 
     debug("parse start")
@@ -130,7 +138,13 @@ async function parse(input: VFile, choices: ChoiceState = newChoiceState(), uuid
 }
 
 /** Parse the given `input` into a `Graph` syntax tree. */
-export async function blockify(input: VFileCompatible, choices?: ChoiceState, uuid?: string, reader = read) {
+export async function blockify(
+  input: VFileCompatible,
+  choices?: ChoiceState,
+  uuid?: string,
+  reader = read,
+  madwizardOptions?: MadWizardOptions
+) {
   const file = typeof input === "string" ? await reader(new VFile({ path: expandHomeDir(input) })) : new VFile(input)
-  return parse(file, choices, uuid, reader)
+  return parse(file, choices, uuid, reader, madwizardOptions)
 }

@@ -18,7 +18,7 @@ import { read } from "to-vfile"
 import { VFileCompatible } from "vfile"
 import { extname as pathExtname } from "path"
 
-import { ChoiceState } from "../choices"
+import { ChoiceState, MadWizardOptions } from "../../"
 
 export * from "./markdown"
 
@@ -36,10 +36,16 @@ function extname(input: VFileCompatible) {
 }
 
 /** Parse the given `input` into a `Graph` syntax tree. */
-export async function parse(input: VFileCompatible, choices?: ChoiceState, uuid?: string, reader?: typeof read) {
+export async function parse(
+  input: VFileCompatible,
+  choices?: ChoiceState,
+  uuid?: string,
+  reader?: typeof read,
+  madwizardOptions?: MadWizardOptions
+) {
   const ext = extname(input)
   if (ext === ".md") {
-    return await import("./markdown").then((_) => _.blockify(input, choices, uuid, reader))
+    return await import("./markdown").then((_) => _.blockify(input, choices, uuid, reader, madwizardOptions))
   } else {
     throw new Error(`Unsupported file type: ${String(input)}`)
   }
