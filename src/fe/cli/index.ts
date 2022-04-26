@@ -78,9 +78,9 @@ export async function cli<Writer extends (msg: string) => boolean>(
     Debug.enable("madwizard/timing/*")
   }
 
-  const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)
-
   try {
+    const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)
+
     switch (task) {
       case "timing": {
         // print out timing
