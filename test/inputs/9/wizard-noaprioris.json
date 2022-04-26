@@ -1,19 +1,19 @@
 [
   {
     "graph": {
-      "group": "649d406c-603b-5c61-8a66-a6d236529b93",
+      "group": "cd748591-123d-5715-bd7a-82bb622cf890",
       "title": "importg.md",
       "source": "placeholder",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "b464b248-1282-468c-b5f3-4c62f0c5019c",
+            "key": "6a94bc16-0e9b-4b27-ba15-4dc662b3e7b3",
             "sequence": [
               {
                 "body": "echo MMM",
                 "language": "bash",
-                "id": "46e82efd-b10a-4f96-b7a2-78279af20470-0",
+                "id": "7251e892-9b48-4ed9-91c7-016c21fbc0a4-0",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -23,7 +23,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "649d406c-603b-5c61-8a66-a6d236529b93",
+                    "group": "cd748591-123d-5715-bd7a-82bb622cf890",
                     "title": "MacOS",
                     "member": 0,
                     "groupDetail": {}
@@ -37,12 +37,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "c6e98526-5868-4c01-ba23-9e17155045bd",
+            "key": "47ae2014-38b5-4596-8f04-f1a5c87ed400",
             "sequence": [
               {
                 "body": "echo LLL",
                 "language": "bash",
-                "id": "46e82efd-b10a-4f96-b7a2-78279af20470-1",
+                "id": "7251e892-9b48-4ed9-91c7-016c21fbc0a4-1",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -52,7 +52,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "649d406c-603b-5c61-8a66-a6d236529b93",
+                    "group": "cd748591-123d-5715-bd7a-82bb622cf890",
                     "title": "Linux",
                     "member": 1,
                     "groupDetail": {}
@@ -66,12 +66,12 @@
         {
           "member": 2,
           "graph": {
-            "key": "a7ac5095-1e19-406a-946a-d7c31200c2e0",
+            "key": "8c2a7d3a-40a2-4a25-a18b-7ec91a330cf1",
             "sequence": [
               {
                 "body": "echo WWW",
                 "language": "bash",
-                "id": "46e82efd-b10a-4f96-b7a2-78279af20470-2",
+                "id": "7251e892-9b48-4ed9-91c7-016c21fbc0a4-2",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -81,7 +81,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "649d406c-603b-5c61-8a66-a6d236529b93",
+                    "group": "cd748591-123d-5715-bd7a-82bb622cf890",
                     "title": "Windows",
                     "member": 2,
                     "groupDetail": {}
@@ -100,19 +100,19 @@
       "content": [
         {
           "title": "MacOS",
-          "group": "649d406c-603b-5c61-8a66-a6d236529b93",
+          "group": "cd748591-123d-5715-bd7a-82bb622cf890",
           "member": 0,
           "isFirstChoice": true
         },
         {
           "title": "Linux",
-          "group": "649d406c-603b-5c61-8a66-a6d236529b93",
+          "group": "cd748591-123d-5715-bd7a-82bb622cf890",
           "member": 1,
           "isFirstChoice": true
         },
         {
           "title": "Windows",
-          "group": "649d406c-603b-5c61-8a66-a6d236529b93",
+          "group": "cd748591-123d-5715-bd7a-82bb622cf890",
           "member": 2,
           "isFirstChoice": true
         }
@@ -123,16 +123,15 @@
     "graph": {
       "key": "test/inputs/snippets/importa.md",
       "title": "importa.md",
-      "description": "",
       "filepath": "test/inputs/snippets/importa.md",
       "graph": {
-        "key": "89b2df83-8558-4cb1-b09b-b7235af548c0",
+        "key": "eeeaf30b-d28a-49bf-bc37-f743175fdac4",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "46e82efd-b10a-4f96-b7a2-78279af20470-3",
+            "id": "7251e892-9b48-4ed9-91c7-016c21fbc0a4-3",
             "nesting": [
               {
                 "kind": "Import",
@@ -148,26 +147,25 @@
     },
     "step": {
       "name": "importa.md",
-      "description": "",
       "content": ""
     }
   },
   {
     "graph": {
-      "group": "039883ce-60cb-5d4a-ac4c-235b2b35f244",
+      "group": "1336d532-be5f-5088-8c4d-7fe33e7e79d4",
       "title": "DDD",
       "source": "placeholder",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "5bcaf0ff-d682-4107-8de0-bc83ddfc6b86",
+            "key": "f881d236-026f-49ec-8a02-31d9a27e5b81",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "46e82efd-b10a-4f96-b7a2-78279af20470-4",
+                "id": "7251e892-9b48-4ed9-91c7-016c21fbc0a4-4",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -177,7 +175,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "039883ce-60cb-5d4a-ac4c-235b2b35f244",
+                    "group": "1336d532-be5f-5088-8c4d-7fe33e7e79d4",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
@@ -204,7 +202,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "46e82efd-b10a-4f96-b7a2-78279af20470-5",
+                "id": "7251e892-9b48-4ed9-91c7-016c21fbc0a4-5",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -214,7 +212,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "039883ce-60cb-5d4a-ac4c-235b2b35f244",
+                    "group": "1336d532-be5f-5088-8c4d-7fe33e7e79d4",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
@@ -241,7 +239,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "46e82efd-b10a-4f96-b7a2-78279af20470-6",
+                "id": "7251e892-9b48-4ed9-91c7-016c21fbc0a4-6",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -251,7 +249,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "039883ce-60cb-5d4a-ac4c-235b2b35f244",
+                    "group": "1336d532-be5f-5088-8c4d-7fe33e7e79d4",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
@@ -281,13 +279,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "402479a8-6970-4709-abfc-714c93953138",
+            "key": "5dda6e2f-0cc8-4edb-b48e-2995ce8fdd3b",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "46e82efd-b10a-4f96-b7a2-78279af20470-7",
+                "id": "7251e892-9b48-4ed9-91c7-016c21fbc0a4-7",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -297,7 +295,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "039883ce-60cb-5d4a-ac4c-235b2b35f244",
+                    "group": "1336d532-be5f-5088-8c4d-7fe33e7e79d4",
                     "title": "SubTab2",
                     "member": 1,
                     "groupDetail": {
@@ -332,13 +330,13 @@
       "content": [
         {
           "title": "SubTab1",
-          "group": "039883ce-60cb-5d4a-ac4c-235b2b35f244",
+          "group": "1336d532-be5f-5088-8c4d-7fe33e7e79d4",
           "member": 0,
           "isFirstChoice": false
         },
         {
           "title": "SubTab2",
-          "group": "039883ce-60cb-5d4a-ac4c-235b2b35f244",
+          "group": "1336d532-be5f-5088-8c4d-7fe33e7e79d4",
           "member": 1,
           "isFirstChoice": false
         }

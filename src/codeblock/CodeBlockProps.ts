@@ -55,8 +55,9 @@ export type Choice = GroupMember &
     groupDetail: Partial<Title> & Source
   }
 
-export type Import = Title &
-  Source &
+export type Import = Source &
+  Title &
+  Partial<Description> &
   Kind<"Import"> & {
     key: string
     filepath: string
@@ -82,6 +83,10 @@ export function isGroupMember<T extends CodeBlockNestingParent>(part: T): part i
 function hasTitle<T extends CodeBlockNestingParent>(part: T): part is T & Title {
   return typeof (part as Title).title === "string"
 }
+
+/* function hasDescription<T extends CodeBlockNestingParent>(part: T): part is T & Description {
+  return typeof (part as Description).description === "string"
+} */
 
 function hasKind<T extends CodeBlockNestingParent, K extends T["kind"]>(part: T, kind: K): part is T & Kind<K> {
   return (part as T).kind === kind
