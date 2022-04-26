@@ -18,7 +18,7 @@ import { Node } from "hast"
 import { visit } from "unist-util-visit"
 
 import { isTabGroup } from ".."
-import { ChoiceState } from "../../../../choices"
+import { ChoiceState, MadWizardOptions } from "../../../.."
 
 import arch from "./arch"
 import platform from "./platform"
@@ -31,7 +31,15 @@ const providers = [arch, platform, homebrew]
  * priori knowledge, e.g. about what platform we are on.
  *
  */
-export default function identifyRecognizableTabGroups(tree: Node, choices: ChoiceState) {
+export default function identifyRecognizableTabGroups(
+  tree: Node,
+  choices: ChoiceState,
+  { optimize = true }: MadWizardOptions
+) {
+  if (optimize === false || (optimize !== true && optimize.aprioris === false)) {
+    return
+  }
+
   /* if (!Capabilities.inElectron()) {
     // I don't think this is a meaningful thing to do whilst running
     // in browser? TODO: maybe we should allow the providers a say?

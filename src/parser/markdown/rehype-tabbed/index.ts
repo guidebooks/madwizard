@@ -22,7 +22,7 @@ import isElementWithProperties from "../util/isElement"
 
 import populateTabs from "./populate"
 
-import { ChoiceState } from "../../../choices"
+import { ChoiceState, MadWizardOptions } from "../../.."
 import identifyRecognizableTabGroups from "./groups"
 
 export const START_OF_TAB = `<!-- ____KUI_START_OF_TAB____ -->`
@@ -71,7 +71,7 @@ export function setTabTitle(elt: Element, title: string): string {
   return (elt.properties.title = title)
 }
 
-export function rehypeTabbed(uuid: string, choices: ChoiceState) {
+export function rehypeTabbed(uuid: string, choices: ChoiceState, madwizardOptions: MadWizardOptions) {
   return function rehypeTabbedTransformer(tree: Parameters<Transformer>[0]): ReturnType<Transformer> {
     const debug = Debug("madwizard/timing/parser:markdown/rehype-tabbed")
     debug("start")
@@ -91,7 +91,7 @@ export function rehypeTabbed(uuid: string, choices: ChoiceState) {
       // second, analyze the tabs to see if we can identify recognizable
       // tab groups, e.g. "choose your platform"
       const treeWithTabsInRecognizableGroups =
-        tabgroupIdx < 0 ? treeWithTabs : identifyRecognizableTabGroups(treeWithTabs, choices)
+        tabgroupIdx < 0 ? treeWithTabs : identifyRecognizableTabGroups(treeWithTabs, choices, madwizardOptions)
 
       return treeWithTabsInRecognizableGroups
     } finally {

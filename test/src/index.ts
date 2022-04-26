@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { test } from "uvu"
+import { suite } from "uvu"
 import * as assert from "uvu/assert"
 
 import stripAnsi from "strip-ansi"
@@ -23,10 +23,15 @@ import { diffString } from "json-diff"
 import { createRequire } from "module"
 import { readdirSync, readFileSync } from "fs"
 
-import { cli, main } from "../.."
+import { cli, main, MadWizardOptions } from "../.."
 
 const require = createRequire(import.meta.url)
 const inputDir = join(dirname(require.resolve(".")), "../inputs")
+
+const options: { suffix: string; options: MadWizardOptions }[] = [
+  { suffix: "", options: {} },
+  { suffix: "noopt", options: { optimize: false } },
+]
 
 function munge(wizard: Awaited<ReturnType<typeof main>>["wizard"]) {
   return JSON.parse(
@@ -44,19 +49,26 @@ function munge(wizard: Awaited<ReturnType<typeof main>>["wizard"]) {
   )
 }
 
-function loadExpected(input: string, file: "wizard" | "tree") {
-  const ext = file === "wizard" ? ".json" : ".txt"
+function loadExpected(input: string, task: "wizard" | "tree", suffix: string) {
+  const ext = task === "wizard" ? ".json" : ".txt"
+
+  let originalErr: Error
+  try {
+    return readFileSync(join(input, task + (suffix ? `-${suffix}` : "") + ext)).toString()
+  } catch (err) {
+    originalErr = err
+    try {
+      return readFileSync(join(input, task + ext)).toString()
+    } catch (err) {
+      originalErr = err
+    }
+  }
 
   try {
-    return readFileSync(join(input, file + ext)).toString()
+    // in case we have platform-specific expected wizard
+    return readFileSync(join(input, `${task}-${process.platform}${ext}`)).toString()
   } catch (err) {
-    const originalErr = err
-    try {
-      // in case we have platform-specific expected wizard
-      return readFileSync(join(input, `${file}-${process.platform}${ext}`)).toString()
-    } catch (err) {
-      throw originalErr
-    }
+    throw originalErr
   }
 }
 
@@ -68,6 +80,8 @@ function tryParseInt(str: string): number {
   }
 }
 
+const tasks = ["tree", "wizard"]
+const suites = options.flatMap(({ suffix }) => tasks.map((task) => suite(`${task} ${suffix || "default options"}`)))
 /**
  * Assumption: test inputs are numbered directories. All other
  * directories are ignored.
@@ -78,24 +92,28 @@ readdirSync(inputDir)
   .sort((a, b) => a - b)
   .map((_) => join(inputDir, String(_)))
   .forEach((input) => {
-    test(`tree for input ${input}`, async () => {
-      let actualTree = ""
-      const write = (msg: string) => {
-        actualTree += msg
-        return true
-      }
+    options.forEach(({ suffix, options }, idx) => {
+      const test1 = suites[idx * tasks.length]
+      test1(`tree for input ${input} options=${suffix || "default"}`, async () => {
+        let actualTree = ""
+        const write = (msg: string) => {
+          actualTree += msg
+          return true
+        }
 
-      await cli(["test", "tree", join(input, "in.md")], write)
-      const expectedTree = loadExpected(input, "tree")
-      assert.equal(stripAnsi(actualTree.trim()), stripAnsi(expectedTree.trim()), "tree should match")
-    })
+        await cli(["test", "tree", join(input, "in.md")], write, options)
+        const expectedTree = loadExpected(input, "tree", suffix)
+        assert.equal(stripAnsi(actualTree.trim()), stripAnsi(expectedTree.trim()), "tree should match")
+      })
 
-    test(`wizards for input ${input}`, async () => {
-      const { wizard } = await main(join(input, "in.md"))
-      const expectedWizard = JSON.parse(loadExpected(input, "wizard"))
-      const diff = diffString(munge(wizard), munge(expectedWizard), { color: false })
-      assert.is(diff, "", "wizard should match")
+      const test2 = suites[idx * tasks.length + 1]
+      test2(`wizards for input ${input} options=${suffix || "default"}`, async () => {
+        const { wizard } = await main(join(input, "in.md"), undefined, options)
+        const expectedWizard = JSON.parse(loadExpected(input, "wizard", suffix))
+        const diff = diffString(munge(wizard), munge(expectedWizard), { color: false })
+        assert.is(diff, "", "wizard should match")
+      })
     })
   })
 
-test.run()
+suites.forEach((suite) => suite.run())
