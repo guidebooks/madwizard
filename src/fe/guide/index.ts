@@ -21,8 +21,9 @@ import { Listr } from "listr2"
 import readline from "readline"
 import { Writable } from "stream"
 import { EventEmitter } from "events"
-import terminalLink from "terminal-link"
 import inquirer, { Question, Answers } from "inquirer"
+
+import { UI, AnsiUI } from "../tree"
 
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
@@ -36,7 +37,8 @@ export class Guide {
   public constructor(
     private readonly blocks: CodeBlockProps[],
     private readonly choices: ChoiceState,
-    private readonly prompt = inquirer.createPromptModule()
+    private readonly prompt = inquirer.createPromptModule(),
+    private readonly ui: UI<string> = new AnsiUI()
   ) {}
 
   private indent(str: string, indentation = "  ") {
@@ -62,7 +64,7 @@ export class Guide {
           chalk.bold(tile.title) +
           (!tile.description
             ? ""
-            : EOL + this.linkify(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : EOL)),
+            : EOL + this.ui.markdown(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : EOL)),
       })),
     }))
 
@@ -249,10 +251,6 @@ export class Guide {
     await taskPromise
   }
 
-  private linkify(str: string) {
-    return str.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, p1, p2) => terminalLink(p1, p2))
-  }
-
   /** Iterate until all choices have been resolved */
   private async resolveChoices(iter = 0) {
     const { graph, choiceSteps, taskSteps, questions } = await this.questions()
@@ -264,7 +262,7 @@ export class Guide {
         console.log(chalk.bold.blue(title.trim()))
       }
       if (description) {
-        console.log(this.linkify(this.indent(description.trim())))
+        console.log(this.ui.markdown(this.indent(description.trim())))
       }
 
       if (title || description) {

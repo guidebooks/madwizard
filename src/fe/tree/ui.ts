@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+import terminalLink from "terminal-link"
 import chalk, { Modifiers, Color } from "chalk"
+
 import { Status } from "../../graph"
 
 export type Decoration = Modifiers | Color
@@ -26,6 +28,7 @@ export interface UI<Content> {
   statusToIcon(status: Status): Content
   title(title: Content | string | (Content | string)[], status?: Status): Content
   open?(filepath: string): Content
+  markdown(body: string): Content
 }
 
 export class DevNullUI implements UI<string> {
@@ -46,6 +49,10 @@ export class DevNullUI implements UI<string> {
   }
 
   public title() {
+    return ""
+  }
+
+  public markdown() {
     return ""
   }
 }
@@ -91,5 +98,12 @@ export class AnsiUI implements UI<string> {
     } else {
       return title
     }
+  }
+
+  /** Primitive, here, for now. */
+  public markdown(body: string) {
+    return body
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, p1, p2) => terminalLink(p1, p2)) // links
+      .replace(/`([^`]+)`/g, (_, p1) => this.code(p1))
   }
 }
