@@ -17,6 +17,7 @@
 import Debug from "debug"
 import { EOL } from "os"
 import chalk from "chalk"
+import wrap from "wrap-ansi"
 import { Listr } from "listr2"
 import readline from "readline"
 import { Writable } from "stream"
@@ -41,8 +42,8 @@ export class Guide {
     private readonly ui: UI<string> = new AnsiUI()
   ) {}
 
-  private indent(str: string, indentation = "  ") {
-    return indent(str, indentation)
+  private format(str: string, indentation = "  ") {
+    return indent(wrap(this.ui.markdown(str.trim()), Math.min(100, process.stdout.columns - 5)), indentation)
   }
 
   private questions() {
@@ -62,9 +63,7 @@ export class Guide {
         short: tile.title,
         name:
           chalk.bold(tile.title) +
-          (!tile.description
-            ? ""
-            : EOL + this.ui.markdown(this.indent(tile.description.trim())) + (idx === A.length - 1 ? "" : EOL)),
+          (!tile.description ? "" : EOL + this.format(tile.description) + (idx === A.length - 1 ? "" : EOL)),
       })),
     }))
 
@@ -266,10 +265,10 @@ export class Guide {
       const title = extractTitle(graph)
       const description = extractDescription(graph)
       if (title) {
-        console.log(chalk.bold.blue(title.trim()))
+        console.log(chalk.bold(title.trim()))
       }
       if (description) {
-        console.log(this.ui.markdown(this.indent(description.trim())))
+        console.log(this.format(description))
       }
 
       if (title || description) {
