@@ -1,0 +1,119 @@
+[
+  {
+    "graph": {
+      "group": "f964cdce-763d-5ca7-9d68-3ccbabf57cb3",
+      "title": "Text versus HTML?",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "75dfa26a-b94d-46c5-aa69-8705e259b0f6",
+            "sequence": [
+              {
+                "body": "echo text",
+                "language": "shell",
+                "id": "ff96a505-b5c1-498d-ab59-a26408c6f560-0",
+                "nesting": [
+                  {
+                    "kind": "Import",
+                    "key": "Text versus HTML?",
+                    "title": "Text versus HTML?",
+                    "filepath": ""
+                  },
+                  {
+                    "kind": "Choice",
+                    "group": "f964cdce-763d-5ca7-9d68-3ccbabf57cb3",
+                    "title": "Text",
+                    "member": 0,
+                    "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "Text versus HTML?",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
+                      "title": "Text versus HTML?"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "title": "Text"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "608616c2-5455-45b6-9101-c66f41456842",
+            "sequence": [
+              {
+                "body": "echo html",
+                "language": "shell",
+                "id": "ff96a505-b5c1-498d-ab59-a26408c6f560-1",
+                "nesting": [
+                  {
+                    "kind": "Import",
+                    "key": "Text versus HTML?",
+                    "title": "Text versus HTML?",
+                    "filepath": ""
+                  },
+                  {
+                    "kind": "Choice",
+                    "group": "f964cdce-763d-5ca7-9d68-3ccbabf57cb3",
+                    "title": "HTML",
+                    "member": 1,
+                    "groupDetail": {
+                      "child": {
+                        "type": "element",
+                        "tagName": "h1",
+                        "properties": {},
+                        "children": [
+                          {
+                            "type": "text",
+                            "value": "Text versus HTML?",
+                            "position": "placeholder"
+                          }
+                        ],
+                        "position": "placeholder"
+                      },
+                      "level": 1,
+                      "title": "Text versus HTML?"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "title": "HTML"
+        }
+      ]
+    },
+    "step": {
+      "name": "Text versus HTML?",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Text",
+          "group": "f964cdce-763d-5ca7-9d68-3ccbabf57cb3",
+          "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "HTML",
+          "group": "f964cdce-763d-5ca7-9d68-3ccbabf57cb3",
+          "member": 1,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  }
+]

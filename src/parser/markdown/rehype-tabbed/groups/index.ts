@@ -23,8 +23,9 @@ import { ChoiceState, MadWizardOptions } from "../../../.."
 import arch from "./arch"
 import platform from "./platform"
 import homebrew from "./homebrew"
+import interminal from "./interminal"
 
-const providers = [arch, platform, homebrew]
+const providers = [arch, platform, homebrew, interminal]
 
 /**
  * Scan tab groups to see if we can squash down the choice given our a
