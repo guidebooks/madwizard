@@ -219,9 +219,11 @@ export class Guide {
         message: chalk.yellow("How do you wish to execute this guidebook?"),
         choices: [
           { value: "dryr", name: "Dry run 👀" },
-          { value: "tree", name: "Show the plan 🧠" },
           { value: "auto", name: "Run unattended 🤖" },
-          { value: "step", name: "Stepped execution" },
+          new inquirer.Separator(),
+          { value: "tree", name: "Show me the plan" },
+          { value: "step", name: "Step me through the execution" },
+          new inquirer.Separator(),
           { value: "stop", name: "Cancel" },
         ],
       },
@@ -231,7 +233,8 @@ export class Guide {
       return false
     } else if (execution === "tree") {
       prettyPrintUITreeFromBlocks(this.blocks, this.choices)
-      return false
+      console.log()
+      return this.runTasks(taskSteps)
     } else if (execution === "step") {
       console.log("🖐  Hit enter after every step to proceed to the next step, or ctrl+c to cancel.")
       console.log()
