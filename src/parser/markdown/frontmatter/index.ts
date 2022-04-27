@@ -257,9 +257,9 @@ export function kuiFrontmatter() {
     const debug = Debug("madwizard/timing/parser:markdown/remark-madwizard-frontmatter")
     debug("start")
 
-    try {
-      const frontmatter = extractKuiFrontmatter(tree)
+    const frontmatter = extractKuiFrontmatter(tree)
 
+    try {
       if (frontmatter) {
         if (frontmatter.title && typeof frontmatter.title === "string") {
           // don't do this synchronously. react complains about
@@ -272,7 +272,7 @@ export function kuiFrontmatter() {
         preprocessWizard(tree, frontmatter)
       }
 
-      preprocessCodeBlocksInImports(tree)
+      preprocessCodeBlocksInImports(tree, frontmatter)
       preprocessWizardStepsForImports(tree)
     } finally {
       debug("complete")

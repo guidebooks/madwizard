@@ -28,13 +28,24 @@ function isCode(node: Node): node is Code {
 }
 
 /** Scan and process the `codeblocks` schema of the given `frontmatter` */
-export function preprocessCodeBlocksInContent(tree /*: Root */, frontmatter: KuiFrontmatter, ignoreImports = true) {
-  if (hasCodeBlocks(frontmatter)) {
-    const codeblocks = frontmatter.codeblocks.map((_) => Object.assign({}, _, { match: new RegExp(_.match) }))
+export function preprocessCodeBlocksInContent(
+  tree /*: Root */,
+  frontmatter: KuiFrontmatter,
+  topmostFrontmatter?: KuiFrontmatter,
+  currentImport?: Node
+) {
+  const codeblocksToUse = hasCodeBlocks(frontmatter)
+    ? frontmatter.codeblocks
+    : topmostFrontmatter && hasCodeBlocks(topmostFrontmatter)
+    ? topmostFrontmatter.codeblocks
+    : undefined
+
+  if (codeblocksToUse) {
+    const codeblocks = codeblocksToUse.map((_) => Object.assign({}, _, { match: new RegExp(_.match) }))
 
     visitParents(tree, "code", (node, ancestors) => {
       if (isCode(node)) {
-        if (ignoreImports && isOnAnImportChain(ancestors)) {
+        if (isOnAnImportChain(ancestors, currentImport)) {
           return
         }
 
@@ -77,8 +88,8 @@ export function preprocessCodeBlocksInContent(tree /*: Root */, frontmatter: Kui
 }
 
 /** Scan and process the `codeblocks` schema of the given `frontmatter` */
-export function preprocessCodeBlocksInImports(tree /*: Root */) {
+export function preprocessCodeBlocksInImports(tree /*: Root */, topmostFrontmatter: KuiFrontmatter) {
   visitImportContainers(tree, ({ node, frontmatter }) => {
-    preprocessCodeBlocksInContent(node, frontmatter, false)
+    preprocessCodeBlocksInContent(node, frontmatter, topmostFrontmatter, node)
   })
 }

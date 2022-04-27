@@ -34,8 +34,8 @@ export function isImportContainer(node: Node) {
   return node.type === "containerDirective" && node["name"] === "import"
 }
 
-export function isOnAnImportChain(ancestors: Node[]) {
-  return ancestors.find(isImportContainer)
+export function isOnAnImportChain(ancestors: Node[], except?: Node) {
+  return ancestors.filter(isImportContainer).filter((_) => !except || _ !== except).length > 0
 }
 
 export function isImports(props: Partial<ImportProps>): props is Required<ImportProps> {

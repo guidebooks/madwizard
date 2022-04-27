@@ -1,13 +1,13 @@
 Sequence
 ├── DDD
 │   ├── Option 1: SubTab1
-│   │   ├── echo AAA
-│   │   ├── echo AAA
-│   │   └── echo AAA
+│   │   ├── echo AAA †
+│   │   ├── echo AAA †
+│   │   └── echo AAA †
 │   └── Option 2: SubTab2
 │       └── echo BBB
 ├── importa.md
-│   └── echo AAA
+│   └── echo AAA †
 ├── EEE
 │   └── Option 1: TabE1
 │       └── echo EEE

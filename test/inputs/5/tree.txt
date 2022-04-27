@@ -1,7 +1,7 @@
 snippets-in-tab5.md
 ├── Prerequisites
 │   ├── importa.md
-│   │   └── echo AAA
+│   │   └── echo AAA †
 │   └── EEE
 │       └── Option 1: TabE1
 │           └── echo EEE
@@ -9,9 +9,9 @@ snippets-in-tab5.md
     ├── Option 1: Tab1
     │   └── DDD
     │       ├── Option 1: SubTab1
-    │       │   ├── echo AAA
-    │       │   ├── echo AAA
-    │       │   └── echo AAA
+    │       │   ├── echo AAA †
+    │       │   ├── echo AAA †
+    │       │   └── echo AAA †
     │       └── Option 2: SubTab2
     │           └── echo BBB
     ├── Option 2: Tab2
@@ -19,8 +19,8 @@ snippets-in-tab5.md
     └── Option 3: Tab3
         └── DDD
             ├── Option 1: SubTab1
-            │   ├── echo AAA
-            │   ├── echo AAA
-            │   └── echo AAA
+            │   ├── echo AAA †
+            │   ├── echo AAA †
+            │   └── echo AAA †
             └── Option 2: SubTab2
                 └── echo BBB
