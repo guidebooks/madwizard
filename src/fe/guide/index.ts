@@ -268,7 +268,7 @@ export class Guide {
       const title = extractTitle(graph)
       const description = extractDescription(graph)
       if (title) {
-        console.log(chalk.bold(title.trim()))
+        console.log(chalk.inverse.bold(` ${title.trim()} `))
       }
       if (description) {
         console.log(this.format(description))
