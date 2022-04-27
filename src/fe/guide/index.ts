@@ -104,14 +104,20 @@ export class Guide {
 
     return {
       title: step.name,
-      options: { persistentOutput: false, exitOnError: !dryRun },
+      options: { showTimer: true, collapse: dryRun, exitOnError: !dryRun },
       task: (ctx, task) =>
         task.newListr(
           subtasks.map((block) => ({
             title: block.validate
               ? chalk.dim("checking to see if this task has already been done\u2026")
               : chalk[taskIdx === 1 ? "reset" : "dim"].magenta(block.body),
-            options: { exitOnError: !dryRun },
+            options: {
+              persistentOutput: !dryRun,
+              removeEmptyLines: false,
+              collapse: dryRun,
+              bottomBar: dryRun ? false : Infinity,
+              exitOnError: !dryRun,
+            },
             task: async (_, subtask) => {
               let status: Status = "blank"
 
