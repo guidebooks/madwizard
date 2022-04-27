@@ -263,7 +263,8 @@ export class Treeifier<Content> {
               .filter(Boolean)
               .join(EOL) /*[0]
               .slice(0, 50)*/,
-            graph.optional
+            graph.optional,
+            !!graph.validate
           ),
         },
       ]
