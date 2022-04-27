@@ -99,7 +99,19 @@ export async function cli<Writer extends (msg: string) => boolean>(
         const graph = compile(blocks, choices)
         const wizard = wizardify(graph)
         console.log(
-          JSON.stringify(wizard, (key, value) => (key === "source" || key === "position" ? "placeholder" : value), 2)
+          JSON.stringify(
+            wizard,
+            (key, value) => {
+              if (key === "source" || key === "position") {
+                return "placeholder"
+              } else if (key === "description" && !value) {
+                return undefined
+              } else {
+                return value
+              }
+            },
+            2
+          )
         )
         break
       }

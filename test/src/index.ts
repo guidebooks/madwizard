@@ -41,6 +41,8 @@ function munge(wizard: Awaited<ReturnType<typeof main>>["wizard"]) {
         return "fakeit"
       } else if (key === "source" || key === "position") {
         return "placeholder"
+      } else if (key === "description" && !value) {
+        return undefined
       } else if (key === "source" || (key === "content" && typeof value === "string")) {
         return value.replace(/(id): [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(-\d+)?/g, "$1: fakeid")
       } else {

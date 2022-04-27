@@ -15,7 +15,19 @@
  */
 
 import { ChoiceState } from "../choices"
-import { Graph, isChoice, isSequence, isParallel, isSubTask, isTitledSteps, emptySequence } from "."
+import {
+  Graph,
+  emptySequence,
+  hasKey,
+  hasTitle,
+  isChoice,
+  isSequence,
+  isParallel,
+  isSubTask,
+  isTitledSteps,
+  sequence,
+  subtask,
+} from "."
 
 function collapse(graph: Graph, choices: ChoiceState): Graph {
   if (isChoice(graph)) {
@@ -31,7 +43,20 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
             ? chosenSubtree.graph.sequence[0]
             : chosenSubtree.graph
 
-        return collapse(chosenSubgraph, choices)
+        const collapsed = collapse(chosenSubgraph, choices)
+        if (!hasTitle(collapsed) && hasTitle(graph)) {
+          // TODO with graph.source
+          return subtask(
+            hasKey(collapsed) ? collapsed.key : graph.group,
+            graph.title,
+            "",
+            "",
+            sequence([collapsed]),
+            graph.source
+          )
+        } else {
+          return collapsed
+        }
       }
     }
 
