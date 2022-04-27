@@ -34,6 +34,7 @@ import { CodeBlockProps, Source, Title, Description } from "../codeblock/CodeBlo
 export * from "./order"
 export * from "./Status"
 export * from "./compile"
+export * from "./optional"
 export * from "./progress"
 export * from "./validate"
 export * from "./linearize"

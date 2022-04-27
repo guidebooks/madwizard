@@ -22,6 +22,7 @@ import {
   extractDescription,
   extractTitle,
   hasSource,
+  isOptional,
   isLeafNode,
   findChoiceFrontierWithFallbacks,
 } from "../graph"
@@ -99,7 +100,11 @@ function wizardStepForChoiceOnFrontier(graph: Choice, isFirstChoice: boolean): W
 type Wizard = WizardStepWithGraph[]
 export { Wizard }
 
-export function wizardify(graph: Graph): Wizard {
+type Options = {
+  includeOptional: boolean
+}
+
+export function wizardify(graph: Graph, { includeOptional }: Partial<Options> = {}): Wizard {
   const debug = Debug("madwizard/timing/wizard:wizardify")
   debug("start")
 
@@ -113,8 +118,10 @@ export function wizardify(graph: Graph): Wizard {
     const idxOfFirstChoice = frontier.findIndex((_) => _.choice)
 
     return frontier.flatMap(({ prereqs, choice }, idx) => [
-      ...(!prereqs ? [] : prereqs.map((_) => wizardStepForPrereq(_))),
-      ...(!choice ? [] : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice)]),
+      ...(!prereqs ? [] : prereqs.filter((_) => includeOptional || !isOptional(_)).map((_) => wizardStepForPrereq(_))),
+      ...(!choice || (!includeOptional && isOptional(choice))
+        ? []
+        : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice)]),
     ])
   } finally {
     debug("complete")
