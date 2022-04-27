@@ -23,7 +23,7 @@ import { Writable } from "stream"
 import { EventEmitter } from "events"
 import inquirer, { Question, Answers } from "inquirer"
 
-import { UI, AnsiUI } from "../tree"
+import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"
 
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
@@ -211,7 +211,8 @@ export class Guide {
     }
   }
 
-  private async runTasks(taskSteps: TaskStep[]) {
+  /** @return whether we actually ran them */
+  private async runTasks(taskSteps: TaskStep[]): Promise<boolean> {
     const { execution } = await this.prompt([
       {
         type: "list",
@@ -219,6 +220,7 @@ export class Guide {
         message: chalk.yellow("How do you wish to execute this guidebook?"),
         choices: [
           { value: "dryr", name: "Dry run 👀" },
+          { value: "tree", name: "Show the plan 🧠" },
           { value: "auto", name: "Run unattended 🤖" },
           { value: "step", name: "Stepped execution" },
           { value: "stop", name: "Cancel" },
@@ -227,7 +229,10 @@ export class Guide {
     ])
 
     if (execution === "stop") {
-      return
+      return false
+    } else if (execution === "tree") {
+      prettyPrintUITreeFromBlocks(this.blocks, this.choices)
+      return false
     } else if (execution === "step") {
       console.log("🖐  Hit enter after every step to proceed to the next step, or ctrl+c to cancel.")
       console.log()
@@ -249,6 +254,8 @@ export class Guide {
 
     this.markDone(0, "success")
     await taskPromise
+
+    return true // we actually ran the tasks
   }
 
   /** Iterate until all choices have been resolved */
@@ -282,12 +289,14 @@ export class Guide {
     console.clear()
     const taskSteps = await this.resolveChoices()
     try {
-      await this.runTasks(taskSteps)
+      const tasksWereRun = await this.runTasks(taskSteps)
 
-      if (this.allDoneSuccessfully()) {
-        console.log(EOL + "🔥 Guidebook successful")
-      } else {
-        console.log(EOL + "⚠️  Guidebook incomplete")
+      if (tasksWereRun) {
+        if (this.allDoneSuccessfully()) {
+          console.log(EOL + "🔥 Guidebook successful")
+        } else {
+          console.log(EOL + "⚠️  Guidebook incomplete")
+        }
       }
     } catch (err) {
       throw new Error(EOL + chalk.red("✖") + " Run failed")

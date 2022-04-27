@@ -17,8 +17,11 @@
 import { EOL } from "os"
 import chalk from "chalk"
 
-import { UITree } from "../tree"
-import { MadWizardOptions } from "../.."
+import { ChoiceState } from "../../choices"
+import { compile, order } from "../../graph"
+import { CodeBlockProps } from "../../codeblock"
+import { AnsiUI, Treeifier, UITree } from "../tree"
+import { MadWizardOptions } from "../MadWizardOptions"
 
 const Symbols = {
   ansi: {
@@ -77,4 +80,14 @@ export function prettyPrintUITree(
       )
     }
   })
+}
+
+export function prettyPrintUITreeFromBlocks(
+  blocks: CodeBlockProps[],
+  choices: ChoiceState,
+  options: PrettyPrintOptions & MadWizardOptions = { write: process.stdout.write.bind(process.stdout) }
+) {
+  const graph = compile(blocks, choices)
+  const tree = new Treeifier(new AnsiUI()).toTree(order(graph))
+  prettyPrintUITree(tree, options)
 }

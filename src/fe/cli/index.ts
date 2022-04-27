@@ -22,7 +22,7 @@ import { MadWizardOptions } from "../MadWizardOptions"
 
 import { Guide } from "../guide"
 import { parse, wizardify, compile, order } from "../.."
-import { prettyPrintUITree, Treeifier, AnsiUI, DevNullUI } from "../tree"
+import { prettyPrintUITreeFromBlocks, Treeifier, DevNullUI } from "../tree"
 
 export { Guide }
 
@@ -91,9 +91,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
       }
 
       case "tree": {
-        const graph = compile(blocks, choices)
-        const tree = new Treeifier(new AnsiUI()).toTree(order(graph))
-        prettyPrintUITree(tree, Object.assign({ write }, options))
+        prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
         break
       }
 
