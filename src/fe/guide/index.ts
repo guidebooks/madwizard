@@ -30,7 +30,7 @@ import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
 import indent from "../../parser/markdown/util/indent"
 import { wizardify, ChoiceStep, TaskStep, isChoiceStep, isTaskStep } from "../../wizard"
-import { Status, blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
+import { Graph, Status, blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
 
 export class Guide {
   private readonly debug = Debug("madwizard/fe/guide")
@@ -46,7 +46,11 @@ export class Guide {
     return indent(wrap(this.ui.markdown(str.trim()), Math.min(100, process.stdout.columns - 5)), indentation)
   }
 
-  private questions() {
+  /**
+   * @param iter How many questions have we asked so far?
+   * @return the list of remaining questions
+   */
+  private questions(iter: number) {
     const graph = compile(this.blocks, this.choices)
     const steps = wizardify(graph)
 
@@ -57,7 +61,7 @@ export class Guide {
       type: "list",
       pageSize: 20,
       name: step.name,
-      message: chalk.yellow(`Choice ${stepIdx + 1}:` + ` ${step.name}`),
+      message: chalk.yellow(`Choice ${iter + stepIdx + 1}:` + ` ${step.name}`),
       choices: step.content.map((tile, idx, A) => ({
         value: tile.title,
         short: tile.title,
@@ -266,29 +270,36 @@ export class Guide {
     return true // we actually ran the tasks
   }
 
+  /** Emit the title and description of the given `graph` */
+  private presentGuidebookTitle(graph: Graph) {
+    const title = extractTitle(graph)
+    const description = extractDescription(graph)
+    if (title) {
+      console.log(chalk.inverse.bold(` ${title.trim()} `))
+    }
+    if (description) {
+      console.log(this.format(description))
+    }
+
+    if (title || description) {
+      console.log()
+    }
+  }
+
   /** Iterate until all choices have been resolved */
   private async resolveChoices(iter = 0) {
-    const { graph, choiceSteps, taskSteps, questions } = await this.questions()
+    const { graph, choiceSteps, taskSteps, questions } = await this.questions(iter)
 
     if (iter === 0) {
-      const title = extractTitle(graph)
-      const description = extractDescription(graph)
-      if (title) {
-        console.log(chalk.inverse.bold(` ${title.trim()} `))
-      }
-      if (description) {
-        console.log(this.format(description))
-      }
-
-      if (title || description) {
-        console.log()
-      }
+      this.presentGuidebookTitle(graph)
     }
 
     if (questions.length === 0) {
       return taskSteps
     } else {
-      await this.incorporateAnswers(choiceSteps, await this.ask(questions))
+      // note that we ask one question at a time, because the answer
+      // to the first question may influence what question we ask next
+      await this.incorporateAnswers(choiceSteps, await this.ask(questions.slice(0, 1)))
       return this.resolveChoices(iter + 1)
     }
   }
