@@ -21,14 +21,16 @@ import wrap from "wrap-ansi"
 import { Listr } from "listr2"
 import readline from "readline"
 import { Writable } from "stream"
+import { mainSymbols } from "figures"
 import { EventEmitter } from "events"
 import inquirer, { Question, Answers } from "inquirer"
 
-import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"
+import decorateStream from "./stream-decorator"
 
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
 import indent from "../../parser/markdown/util/indent"
+import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"
 import { wizardify, ChoiceStep, TaskStep, isChoiceStep, isTaskStep } from "../../wizard"
 import { Graph, Status, blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
 
@@ -150,7 +152,7 @@ export class Guide {
                   if (!dryRun) {
                     await this.waitTillDone(taskIdx - 1)
                     subtask.title = chalk.magenta(block.body)
-                    status = await shellExec(block.body, subtask.stdout())
+                    status = await shellExec(block.body, decorateStream(block, subtask.stdout(), this.ui))
                   }
                 } catch (err) {
                   status = "error"
@@ -312,13 +314,13 @@ export class Guide {
 
       if (tasksWereRun) {
         if (this.allDoneSuccessfully()) {
-          console.log(EOL + "🔥 Guidebook successful")
+          console.log(EOL + chalk.green(mainSymbols.tick) + " Guidebook successful")
         } else {
-          console.log(EOL + "⚠️  Guidebook incomplete")
+          console.log(EOL + chalk.yellow(mainSymbols.warning) + " Guidebook incomplete")
         }
       }
     } catch (err) {
-      throw new Error(EOL + chalk.red("✖") + " Run failed")
+      throw new Error(EOL + chalk.red(mainSymbols.cross) + " Run failed")
     }
   }
 }
