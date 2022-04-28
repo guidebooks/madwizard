@@ -25,7 +25,7 @@ import { mainSymbols } from "figures"
 import { EventEmitter } from "events"
 import inquirer, { Question, Answers } from "inquirer"
 
-import decorateStream from "./stream-decorator"
+import decorateStream, { separator } from "./stream-decorator"
 
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
@@ -222,6 +222,20 @@ export class Guide {
     }
   }
 
+  /** Visualize the current execution plan, which reflects all choices made so far. */
+  private showPlan(skipOptionalBlocks = true, skipFirstTitle = false) {
+    console.log(separator("The Plan"))
+
+    prettyPrintUITreeFromBlocks(
+      !skipOptionalBlocks ? this.blocks : this.blocks.filter((_) => !_.optional),
+      this.choices,
+      { skipFirstTitle }
+    )
+
+    console.log(separator())
+    console.log()
+  }
+
   /** @return whether we actually ran them */
   private async runTasks(taskSteps: TaskStep[]): Promise<boolean> {
     const { execution } = await this.prompt([
@@ -232,10 +246,10 @@ export class Guide {
         choices: [
           { value: "dryr", name: "Dry run 👀" },
           { value: "auto", name: "Run unattended 🤖" },
-          new inquirer.Separator(),
-          { value: "tree", name: "Show me the plan" },
+          // new inquirer.Separator(),
+          // { value: "plan", name: "Show me the plan" },
           { value: "step", name: "Step me through the execution" },
-          new inquirer.Separator(),
+          // new inquirer.Separator(),
           { value: "stop", name: "Cancel" },
         ],
       },
@@ -243,8 +257,8 @@ export class Guide {
 
     if (execution === "stop") {
       return false
-    } else if (execution === "tree") {
-      prettyPrintUITreeFromBlocks(this.blocks, this.choices)
+    } else if (execution === "plan") {
+      this.showPlan()
       console.log()
       return this.runTasks(taskSteps)
     } else if (execution === "step") {
@@ -310,6 +324,8 @@ export class Guide {
     console.clear()
     const taskSteps = await this.resolveChoices()
     try {
+      this.showPlan(true, true)
+
       const tasksWereRun = await this.runTasks(taskSteps)
 
       if (tasksWereRun) {

@@ -22,8 +22,13 @@ import { mainSymbols } from "figures"
 import { AnsiUI, UI } from "../tree"
 import { CodeBlockProps } from "../../codeblock"
 
-function separator() {
-  return chalk.dim(Array(process.stdout.columns - 10).join(mainSymbols.line))
+export function separator(title = "") {
+  const prefix = 2
+  return chalk.dim(
+    Array(prefix).join(mainSymbols.line) +
+      chalk.bold(title) +
+      Array(process.stdout.columns - 10 - prefix - title.length).join(mainSymbols.line)
+  )
 }
 
 /**

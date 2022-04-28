@@ -34,8 +34,9 @@ const Symbols = {
 }
 
 type PrettyPrintOptions = {
-  write: typeof process.stdout.write
+  write?: typeof process.stdout.write
   symbols?: typeof Symbols.ansi
+  skipFirstTitle?: boolean
 }
 
 type State = {
@@ -44,12 +45,16 @@ type State = {
   isLast: boolean
 }
 
+function defaultWriteStream() {
+  return process.stdout.write.bind(process.stdout)
+}
+
 export function prettyPrintUITree(
   graph: UITree<string>,
   options: PrettyPrintOptions & MadWizardOptions,
   { depth, prefix, isLast }: State = { depth: 0, prefix: "", isLast: false }
 ) {
-  const { write = process.stdout.write.bind(process.stdout), symbols = Symbols.ansi, narrow } = options
+  const { write = defaultWriteStream(), symbols = Symbols.ansi, narrow } = options
 
   write(prefix)
 
@@ -85,9 +90,17 @@ export function prettyPrintUITree(
 export function prettyPrintUITreeFromBlocks(
   blocks: CodeBlockProps[],
   choices: ChoiceState,
-  options: PrettyPrintOptions & MadWizardOptions = { write: process.stdout.write.bind(process.stdout) }
+  options: PrettyPrintOptions & MadWizardOptions = {}
 ) {
   const graph = compile(blocks, choices)
   const tree = new Treeifier(new AnsiUI()).toTree(order(graph))
-  prettyPrintUITree(tree, options)
+
+  if (options.skipFirstTitle) {
+    prettyPrintUITree(
+      tree.flatMap((_) => _.children),
+      options
+    )
+  } else {
+    prettyPrintUITree(tree, options)
+  }
 }
