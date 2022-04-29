@@ -1,20 +1,20 @@
 [
   {
     "graph": {
-      "group": "cb7be6cd-029b-5d71-8314-5b89718fe630",
+      "group": "SubTab1####SubTab2",
       "title": "DDD",
       "source": "placeholder",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "6ef5437d-dc06-4e0f-974d-fe6feb3e209b",
+            "key": "d31fb27f-02ab-4c2b-809c-caf8d3a71ea6",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "07bfc324-9634-4272-b8c4-7f715dee2294-0",
+                "id": "4f47be51-375e-4be9-8a90-5409539a9bec-0",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -24,7 +24,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "c75d9e12-67f2-5ddf-9fde-b97ed33c7047",
+                    "group": "Tab1####Tab2####Tab3",
                     "title": "Tab1",
                     "member": 0,
                     "groupDetail": {
@@ -53,7 +53,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "cb7be6cd-029b-5d71-8314-5b89718fe630",
+                    "group": "SubTab1####SubTab2",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
@@ -80,7 +80,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "07bfc324-9634-4272-b8c4-7f715dee2294-1",
+                "id": "4f47be51-375e-4be9-8a90-5409539a9bec-1",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -90,7 +90,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "c75d9e12-67f2-5ddf-9fde-b97ed33c7047",
+                    "group": "Tab1####Tab2####Tab3",
                     "title": "Tab1",
                     "member": 0,
                     "groupDetail": {
@@ -119,7 +119,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "cb7be6cd-029b-5d71-8314-5b89718fe630",
+                    "group": "SubTab1####SubTab2",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
@@ -146,7 +146,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "07bfc324-9634-4272-b8c4-7f715dee2294-2",
+                "id": "4f47be51-375e-4be9-8a90-5409539a9bec-2",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -156,7 +156,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "c75d9e12-67f2-5ddf-9fde-b97ed33c7047",
+                    "group": "Tab1####Tab2####Tab3",
                     "title": "Tab1",
                     "member": 0,
                     "groupDetail": {
@@ -185,7 +185,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "cb7be6cd-029b-5d71-8314-5b89718fe630",
+                    "group": "SubTab1####SubTab2",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
@@ -215,13 +215,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "7fbcd1c6-a06f-4375-9b87-f99a24c2d218",
+            "key": "e4ad1147-046e-497f-ab7d-8d4b7f424211",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "07bfc324-9634-4272-b8c4-7f715dee2294-3",
+                "id": "4f47be51-375e-4be9-8a90-5409539a9bec-3",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -231,7 +231,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "c75d9e12-67f2-5ddf-9fde-b97ed33c7047",
+                    "group": "Tab1####Tab2####Tab3",
                     "title": "Tab1",
                     "member": 0,
                     "groupDetail": {
@@ -260,7 +260,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "cb7be6cd-029b-5d71-8314-5b89718fe630",
+                    "group": "SubTab1####SubTab2",
                     "title": "SubTab2",
                     "member": 1,
                     "groupDetail": {
@@ -295,13 +295,13 @@
       "content": [
         {
           "title": "SubTab1",
-          "group": "cb7be6cd-029b-5d71-8314-5b89718fe630",
+          "group": "SubTab1####SubTab2",
           "member": 0,
           "isFirstChoice": true
         },
         {
           "title": "SubTab2",
-          "group": "cb7be6cd-029b-5d71-8314-5b89718fe630",
+          "group": "SubTab1####SubTab2",
           "member": 1,
           "isFirstChoice": true
         }
