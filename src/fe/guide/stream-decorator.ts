@@ -15,7 +15,6 @@
  */
 
 import chalk from "chalk"
-import { EOL } from "os"
 import { Writable } from "stream"
 import { mainSymbols } from "figures"
 
@@ -30,9 +29,7 @@ export function separator(title = "") {
   const prefix = separatorPrefixLength()
   const { line } = mainSymbols
 
-  return chalk.dim(
-    line.repeat(prefix) + chalk.bold(title) + line.repeat(process.stdout.columns - 10 - prefix - title.length)
-  )
+  return line.repeat(prefix) + chalk.bold(title) + line.repeat(process.stdout.columns - 10 - prefix - title.length)
 }
 
 /**
@@ -44,10 +41,8 @@ export default function decorateStream(
   stream: NodeJS.WriteStream & NodeJS.WritableStream,
   ui: UI<string> = new AnsiUI()
 ) {
-  const ourPrefix = "Output for "
-  stream.write(
-    separator(`${ourPrefix}${ui.code(elide(block.body, 2 * separatorPrefixLength() + ourPrefix.length))}`) + EOL
-  )
+  const ourPrefix = ""
+  stream.write(separator(`${ourPrefix}${ui.code(elide(block.body, 2 * separatorPrefixLength() + ourPrefix.length))}`))
 
   return new Writable({
     write(chunk, encoding, callback) {
