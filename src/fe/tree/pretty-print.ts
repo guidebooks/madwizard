@@ -76,7 +76,7 @@ export function prettyPrintUITree(
     const name = node.name || node.title
 
     if (narrow) {
-      write(elide(name, prefix.length) + EOL)
+      write(elide(name, indent.length + prefix.length) + EOL)
     } else {
       write(name.replace(new RegExp(EOL, "g"), EOL + indent + prefix + nextPrefix) + EOL)
     }
