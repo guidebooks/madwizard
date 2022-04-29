@@ -1,6 +1,6 @@
 [![Node.js CI](https://github.com/guidebooks/madwizard/actions/workflows/test.yml/badge.svg)](https://github.com/guidebooks/madwizard/actions/workflows/test.yml)
 
-# Turn Your Markdown into Wizards
+# Turn Your Markdown into Wizards with MadWizard
 
 This module scans a given markdown file and automatically constructs a
 task graph.
