@@ -24,10 +24,10 @@ import { CodeBlockProps } from "../../codeblock"
 
 export function separator(title = "") {
   const prefix = 2
+  const { line } = mainSymbols
+
   return chalk.dim(
-    Array(prefix).join(mainSymbols.line) +
-      chalk.bold(title) +
-      Array(process.stdout.columns - 10 - prefix - title.length).join(mainSymbols.line)
+    line.repeat(prefix) + chalk.bold(title) + line.repeat(process.stdout.columns - 10 - prefix - title.length)
   )
 }
 
