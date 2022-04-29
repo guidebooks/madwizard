@@ -5,7 +5,7 @@
 This module scans a given markdown file and automatically constructs a
 task graph.
 
-<img width="300" src=".github/FREEANIMALREPTILEtrex003_generated.jpg" title="Fire Breathing Rainbow Trex Dinosaur Vectors by Vecteezy" align="right">
+<img src=".github/FREEANIMALREPTILEtrex003_generated.jpg" title="Fire Breathing Rainbow Trex Dinosaur Vectors by Vecteezy" align="right">
 
 ## Installation
 
