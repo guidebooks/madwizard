@@ -26,10 +26,10 @@ import { prettyPrintUITreeFromBlocks, Treeifier, DevNullUI } from "../tree"
 
 export { Guide }
 
-type Task = "tree" | "json" | "guide" | "timing"
+type Task = "tree" | "json" | "guide" | "timing" | "fetch"
 
 function validTasks(): Task[] {
-  return ["tree", "json", "guide", "timing"]
+  return ["tree", "json", "guide", "timing", "fetch"]
 }
 
 function isValidTask(task: string): task is Task {
@@ -46,6 +46,10 @@ function usage(argv: string[], msg?: string) {
   }
   console.error(`Usage: ${basename(argv[0])} ${validTasks().join("|")} <a filepath or url>`)
   process.exit(1)
+}
+
+function enableTracing(task: Task) {
+  Debug.enable(`madwizard/${task}/*`)
 }
 
 export async function cli<Writer extends (msg: string) => boolean>(
@@ -74,15 +78,14 @@ export async function cli<Writer extends (msg: string) => boolean>(
     return usage(argv, `Invalid task: ${task}`)
   }
 
-  if (task === "timing") {
-    Debug.enable("madwizard/timing/*")
-  }
+  enableTracing(task)
 
   try {
     const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)
 
     switch (task) {
-      case "timing": {
+      case "timing":
+      case "fetch": {
         // print out timing
         const graph = compile(blocks, choices)
         wizardify(graph)

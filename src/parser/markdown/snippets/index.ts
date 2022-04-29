@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+import chalk from "chalk"
 import Debug from "debug"
 import { load } from "js-yaml"
+import { mainSymbols } from "figures"
 import expandHomeDir from "expand-home-dir"
 import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin } from "path"
 
@@ -179,9 +181,11 @@ function inlineSnippets(opts: Options & InternalOptions) {
     nestingDepth = 0,
     inImport = false
   ) => {
+    debug(`${chalk.yellow(mainSymbols.triangleRight)} ${_snippetFileName}`)
+
     const fetchAndMemoize = async (filepath: string): Promise<string | Error> => {
-      debug(`Fetching snippet ${snippetFileName} from ${filepath}`)
       const content = await fetcher(filepath)
+      debug(`${chalk.green(mainSymbols.tick)} ${snippetFileName} from ${filepath}`)
       if (typeof content === "string") {
         snippetMemo[filepath] = content
       }
@@ -296,6 +300,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
 
     if (isError(snippetData)) {
       const msg = `Error: failed to fetch snippet content: ${snippetFileName} from ${srcFilePath}`
+      debug(`${chalk.red(mainSymbols.cross)} ${_snippetFileName}`)
       if (failFast) {
         throw new Error(msg)
       } else {
