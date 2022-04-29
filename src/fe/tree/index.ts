@@ -243,8 +243,8 @@ export class Treeifier<Content> {
   }
 
   private treeModelForLeafNode(graph: OrderedLeafNode): UITree<Content> {
-    if (this.validator) {
-      setTimeout(() => this.validator(graph))
+    if (typeof this.validator === "function") {
+      this.validator(graph)
     }
 
     try {
