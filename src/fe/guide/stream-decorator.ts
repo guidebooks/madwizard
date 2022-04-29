@@ -19,11 +19,15 @@ import { EOL } from "os"
 import { Writable } from "stream"
 import { mainSymbols } from "figures"
 
-import { AnsiUI, UI } from "../tree"
+import { AnsiUI, UI, elide } from "../tree"
 import { CodeBlockProps } from "../../codeblock"
 
+export function separatorPrefixLength() {
+  return 2
+}
+
 export function separator(title = "") {
-  const prefix = 2
+  const prefix = separatorPrefixLength()
   const { line } = mainSymbols
 
   return chalk.dim(
@@ -40,8 +44,10 @@ export default function decorateStream(
   stream: NodeJS.WriteStream & NodeJS.WritableStream,
   ui: UI<string> = new AnsiUI()
 ) {
-  stream.write(separator() + EOL)
-  stream.write(`Output for ${ui.code(block.body)}`)
+  const ourPrefix = "Output for "
+  stream.write(
+    separator(`${ourPrefix}${ui.code(elide(block.body, 2 * separatorPrefixLength() + ourPrefix.length))}`) + EOL
+  )
 
   return new Writable({
     write(chunk, encoding, callback) {
