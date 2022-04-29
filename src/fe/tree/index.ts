@@ -257,12 +257,10 @@ export class Treeifier<Content> {
           // icon: myStatus && myStatus !== 'success' && <LabelWithStatus status={myStatus} />,
           name: this.ui.code(
             graph.body
-              // .replace(/\\\s*\n\s*/g, ' ')
               .split(/\n/)
               .map((_) => _.replace(/#.*/, "").trim()) // remove comments
               .filter(Boolean)
-              .join(EOL) /*[0]
-              .slice(0, 50)*/,
+              .join(EOL),
             graph.optional,
             !!graph.validate
           ),
