@@ -50,6 +50,12 @@ function defaultWriteStream() {
   return process.stdout.write.bind(process.stdout)
 }
 
+export function elide(str: string, soFarOnLine = 0) {
+  const remaining = Math.max(10, process.stdout.columns - soFarOnLine)
+  const ellipsis = remaining < str.length ? chalk.dim("\u2026") : ""
+  return str.slice(0, remaining).replace(/[\n\r][\S\s]*$/, "") + ellipsis
+}
+
 export function prettyPrintUITree(
   graph: UITree<string>,
   options: PrettyPrintOptions & MadWizardOptions,
@@ -70,9 +76,7 @@ export function prettyPrintUITree(
     const name = node.name || node.title
 
     if (narrow) {
-      const remaining = Math.max(10, process.stdout.columns - prefix.length)
-      const ellipsis = remaining < name.length ? chalk.dim("\u2026") : ""
-      write(name.slice(0, remaining).replace(/[\n\r][\S\s]*$/, "") + ellipsis + EOL)
+      write(elide(name, prefix.length) + EOL)
     } else {
       write(name.replace(new RegExp(EOL, "g"), EOL + indent + prefix + nextPrefix) + EOL)
     }
