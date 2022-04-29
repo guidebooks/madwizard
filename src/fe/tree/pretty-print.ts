@@ -53,7 +53,15 @@ function defaultWriteStream() {
 export function elide(str: string, soFarOnLine = 0) {
   const remaining = Math.max(10, process.stdout.columns - soFarOnLine)
   const ellipsis = remaining < str.length ? chalk.dim("\u2026") : ""
-  return str.slice(0, remaining).replace(/[\n\r][\S\s]*$/, "") + ellipsis
+  return str.slice(0, remaining).replace(/[\n\r][\S\s]*$/, "") + chalk.reset(ellipsis)
+  // re: the chalk.reset; this is to conservatively assume that the
+  // given `str` has ANSI escape codes that we might have
+  // cropped. Since we desire no decoration for the ellipsis? I think
+  // this might be the simplest way to achieve what we need. But it's
+  // possible that there may be an enclosing escape sequence that we
+  // will reset? The alternatives are: either chalk.reset(" ") which
+  // introduces another space; or we could detect the situation more
+  // deeply.
 }
 
 export function prettyPrintUITree(
