@@ -222,13 +222,13 @@ export class Guide {
   }
 
   /** Visualize the current execution plan, which reflects all choices made so far. */
-  private showPlan(skipOptionalBlocks = true, skipFirstTitle = false) {
+  private showPlan(skipOptionalBlocks = true, skipFirstTitle = false, narrow = false) {
     console.log(separator("The Plan"))
 
     prettyPrintUITreeFromBlocks(
       !skipOptionalBlocks ? this.blocks : this.blocks.filter((_) => !_.optional),
       this.choices,
-      { skipFirstTitle, indent: "  " }
+      { skipFirstTitle, indent: "  ", narrow }
     )
 
     console.log(separator())
@@ -246,7 +246,7 @@ export class Guide {
           { value: "dryr", name: "Dry run 👀" },
           { value: "auto", name: "Run unattended 🤖" },
           // new inquirer.Separator(),
-          // { value: "plan", name: "Show me the plan" },
+          { value: "plan", name: "Show me the full plan" },
           { value: "step", name: "Step me through the execution" },
           // new inquirer.Separator(),
           { value: "stop", name: "Cancel" },
@@ -324,7 +324,7 @@ export class Guide {
     console.clear()
     const taskSteps = await this.resolveChoices()
     try {
-      this.showPlan(true, true)
+      this.showPlan(true, true, true)
 
       const tasksWereRun = await this.runTasks(taskSteps)
 
