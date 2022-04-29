@@ -119,7 +119,6 @@ export class Guide {
               : chalk[taskIdx === 1 ? "reset" : "dim"].magenta(block.body),
             options: {
               persistentOutput: !dryRun,
-              removeEmptyLines: false,
               collapse: dryRun,
               bottomBar: dryRun ? false : Infinity,
               exitOnError: !dryRun,
@@ -277,6 +276,7 @@ export class Guide {
       {
         /* options */
         concurrent: dryRun,
+        rendererOptions: { removeEmptyLines: false },
       }
     ).run()
 
