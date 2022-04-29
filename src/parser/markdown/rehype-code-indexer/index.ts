@@ -25,7 +25,12 @@ import dump from "./dump"
 import { isTab } from "../rehype-tabbed"
 import { isExecutable } from "../../../codeblock/isCodeBlock"
 import { getTipTitle, isTipWithFullTitle } from "../rehype-tip"
-import isElementWithProperties, { hasContentChildren } from "../util/isElement"
+import isElementWithProperties, {
+  hasContentChildren,
+  isParagraph,
+  isText,
+  isNonEmptyTextOrParagraph,
+} from "../util/isElement"
 import toMarkdownStringDelayed, { toMarkdownString, Node } from "../util/toMarkdownString"
 
 import {
@@ -55,11 +60,15 @@ function isImplicitlyOptional(_: Parent): _ is Element {
 /** @return the first child, if it is a paragraph  */
 function extractFirstParagraph(parent: Parent, after?: Node) {
   const startIdx = !after ? 0 : parent.children.findIndex((_) => _ === after) + 1
-  const pIdx = parent.children.findIndex((_, idx) => idx >= startIdx && isElementWithProperties(_) && _.tagName === "p")
+  const pIdx = parent.children.findIndex((_, idx) => idx >= startIdx && isNonEmptyTextOrParagraph(_))
   if (pIdx >= 0) {
     const firstChild = parent.children[pIdx]
-    if (firstChild && isElementWithProperties(firstChild) && firstChild.tagName === "p") {
-      return toMarkdownString(firstChild)
+    if (firstChild) {
+      if (isText(firstChild)) {
+        return firstChild.value
+      } else if (isParagraph(firstChild)) {
+        return toMarkdownString(firstChild)
+      }
     }
   }
   /*const firstChild = parent.children[startIdx]

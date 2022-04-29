@@ -15,12 +15,13 @@
  */
 
 import Debug from "debug"
+import { Root } from "hast"
 import { load } from "js-yaml"
 import { u } from "unist-builder"
 import { visit } from "unist-util-visit"
-import { Literal, Node, Root, Text } from "hast"
 import { visitParents } from "unist-util-visit-parents"
 
+import { isLiteral, isText } from "../util/isElement"
 import { isOnAnImportChain, visitImportContainers } from "../remark-import"
 import KuiFrontmatter, { hasWizardSteps, isNormalSplit, isValidPosition, isValidPositionObj } from "./KuiFrontmatter"
 import { preprocessCodeBlocksInContent, preprocessCodeBlocksInImports } from "../remark-codeblocks-topmatter"
@@ -34,14 +35,6 @@ export function splitTarget(node) {
       return match[1]
     }
   }
-}
-
-function isLiteral(node: Node): node is Literal {
-  return typeof (node as Literal).value === "string"
-}
-
-function isText(node: Node): node is Text {
-  return node.type === "text" && typeof (node as Text).value === "string"
 }
 
 /** Parse out the frontmatter at the top of a markdown file */

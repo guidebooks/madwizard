@@ -15,7 +15,23 @@
  */
 
 import { Node, Parent } from "unist"
-import { Element, ElementContent, Root } from "hast"
+import { Element, ElementContent, Literal, Root, Text } from "hast"
+
+export function isLiteral(node: Node): node is Literal {
+  return typeof (node as Literal).value === "string"
+}
+
+export function isText(node: Node): node is Text {
+  return node.type === "text" && typeof (node as Text).value === "string"
+}
+
+export function isParagraph(node: Node): node is Element & { tagName: "p" } {
+  return isElementWithProperties(node) && node.tagName === "p"
+}
+
+export function isNonEmptyTextOrParagraph(node: Node): node is Text | Element {
+  return (isText(node) && !!node.value.trim()) || isParagraph(node)
+}
 
 export function isParent(node: Node): node is Parent {
   return Array.isArray((node as Parent).children)

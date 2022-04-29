@@ -1,23 +1,24 @@
 [
   {
     "graph": {
-      "group": "ee83f65c-3702-5660-8e39-f0f1cbe96f2c",
+      "group": "Tab1Title####Tab2Title",
       "source": "placeholder",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "f4a043b4-b86e-4eec-ae45-358d982a21d9",
+            "key": "ac10930f-9226-4788-a846-7b96269dc5b2",
             "sequence": [
               {
                 "body": "echo 111",
                 "language": "bash",
-                "id": "0971c4d9-903c-4347-bc45-3b3fef87c77e-0",
+                "id": "6be74561-6b95-460c-8dae-71a84ad2eada-0",
                 "nesting": [
                   {
                     "kind": "Choice",
-                    "group": "ee83f65c-3702-5660-8e39-f0f1cbe96f2c",
+                    "group": "Tab1Title####Tab2Title",
                     "title": "Tab1Title",
+                    "description": "\nTab1Content",
                     "member": 0,
                     "groupDetail": {}
                   }
@@ -25,22 +26,24 @@
               }
             ]
           },
-          "title": "Tab1Title"
+          "title": "Tab1Title",
+          "description": "\nTab1Content"
         },
         {
           "member": 1,
           "graph": {
-            "key": "a9c8bd76-513d-49bc-98db-876e820e5a08",
+            "key": "92ab53e2-49c4-449d-a7ba-65d0b4a867f1",
             "sequence": [
               {
                 "body": "echo 222",
                 "language": "bash",
-                "id": "0971c4d9-903c-4347-bc45-3b3fef87c77e-1",
+                "id": "6be74561-6b95-460c-8dae-71a84ad2eada-1",
                 "nesting": [
                   {
                     "kind": "Choice",
-                    "group": "ee83f65c-3702-5660-8e39-f0f1cbe96f2c",
+                    "group": "Tab1Title####Tab2Title",
                     "title": "Tab2Title",
+                    "description": "\nTab2Content",
                     "member": 1,
                     "groupDetail": {}
                   }
@@ -48,7 +51,8 @@
               }
             ]
           },
-          "title": "Tab2Title"
+          "title": "Tab2Title",
+          "description": "\nTab2Content"
         }
       ]
     },
@@ -57,15 +61,17 @@
       "content": [
         {
           "title": "Tab1Title",
-          "group": "ee83f65c-3702-5660-8e39-f0f1cbe96f2c",
+          "group": "Tab1Title####Tab2Title",
           "member": 0,
-          "isFirstChoice": true
+          "isFirstChoice": true,
+          "description": "\nTab1Content"
         },
         {
           "title": "Tab2Title",
-          "group": "ee83f65c-3702-5660-8e39-f0f1cbe96f2c",
+          "group": "Tab1Title####Tab2Title",
           "member": 1,
-          "isFirstChoice": true
+          "isFirstChoice": true,
+          "description": "\nTab2Content"
         }
       ]
     }

@@ -5,13 +5,13 @@
       "title": "importa.md",
       "filepath": "test/inputs/snippets/importa.md",
       "graph": {
-        "key": "07ef077b-29bd-47c1-80da-af4b4fa43b5b",
+        "key": "d3faf64c-8fe4-4cdf-98bd-141370b0d631",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "01afb094-0382-48d7-8fcd-ebd1df121cb5-0",
+            "id": "0d654c72-03a1-495d-8972-de79262cc091-0",
             "nesting": [
               {
                 "kind": "Import",
@@ -38,19 +38,19 @@
   },
   {
     "graph": {
-      "group": "d15f06c0-29dd-5487-a9be-0a17c9815994",
+      "group": "TabE1",
       "title": "EEE",
       "source": "placeholder",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "5bc84e50-0d1d-48c4-8190-8df3466a73fd",
+            "key": "76a73fa0-32e5-451c-8d07-971f4f04ed36",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "01afb094-0382-48d7-8fcd-ebd1df121cb5-1",
+                "id": "0d654c72-03a1-495d-8972-de79262cc091-1",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -66,8 +66,9 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "d15f06c0-29dd-5487-a9be-0a17c9815994",
+                    "group": "TabE1",
                     "title": "TabE1",
+                    "description": "\nEEE1Content",
                     "member": 0,
                     "groupDetail": {
                       "child": {
@@ -91,7 +92,8 @@
               }
             ]
           },
-          "title": "TabE1"
+          "title": "TabE1",
+          "description": "\nEEE1Content"
         }
       ]
     },
@@ -101,29 +103,30 @@
       "content": [
         {
           "title": "TabE1",
-          "group": "d15f06c0-29dd-5487-a9be-0a17c9815994",
+          "group": "TabE1",
           "member": 0,
-          "isFirstChoice": true
+          "isFirstChoice": true,
+          "description": "\nEEE1Content"
         }
       ]
     }
   },
   {
     "graph": {
-      "group": "f7ee3bc8-82d8-5529-b555-4cb5c36db8e9",
+      "group": "SubTab1####SubTab2",
       "title": "DDD",
       "source": "placeholder",
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "b5fa3453-e216-4b2c-94af-01eada23c6b5",
+            "key": "42242325-bb7c-445f-a418-e3880e930dd5",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "01afb094-0382-48d7-8fcd-ebd1df121cb5-2",
+                "id": "0d654c72-03a1-495d-8972-de79262cc091-2",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -145,7 +148,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "f7ee3bc8-82d8-5529-b555-4cb5c36db8e9",
+                    "group": "SubTab1####SubTab2",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
@@ -172,7 +175,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "01afb094-0382-48d7-8fcd-ebd1df121cb5-3",
+                "id": "0d654c72-03a1-495d-8972-de79262cc091-3",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -194,7 +197,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "f7ee3bc8-82d8-5529-b555-4cb5c36db8e9",
+                    "group": "SubTab1####SubTab2",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
@@ -221,7 +224,7 @@
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "01afb094-0382-48d7-8fcd-ebd1df121cb5-4",
+                "id": "0d654c72-03a1-495d-8972-de79262cc091-4",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -243,7 +246,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "f7ee3bc8-82d8-5529-b555-4cb5c36db8e9",
+                    "group": "SubTab1####SubTab2",
                     "title": "SubTab1",
                     "member": 0,
                     "groupDetail": {
@@ -273,13 +276,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "d4c8a6f6-1bcf-4722-9b8b-2ce3941b10f4",
+            "key": "ebeb3be9-c849-4ab1-9c54-8a6ad39d0294",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "01afb094-0382-48d7-8fcd-ebd1df121cb5-5",
+                "id": "0d654c72-03a1-495d-8972-de79262cc091-5",
                 "nesting": [
                   {
                     "kind": "Import",
@@ -301,7 +304,7 @@
                   },
                   {
                     "kind": "Choice",
-                    "group": "f7ee3bc8-82d8-5529-b555-4cb5c36db8e9",
+                    "group": "SubTab1####SubTab2",
                     "title": "SubTab2",
                     "member": 1,
                     "groupDetail": {
@@ -336,13 +339,13 @@
       "content": [
         {
           "title": "SubTab1",
-          "group": "f7ee3bc8-82d8-5529-b555-4cb5c36db8e9",
+          "group": "SubTab1####SubTab2",
           "member": 0,
           "isFirstChoice": false
         },
         {
           "title": "SubTab2",
-          "group": "f7ee3bc8-82d8-5529-b555-4cb5c36db8e9",
+          "group": "SubTab1####SubTab2",
           "member": 1,
           "isFirstChoice": false
         }
@@ -351,27 +354,27 @@
   },
   {
     "graph": {
-      "group": "7b1882b0-675d-54b2-95c8-d8168a64acc0",
+      "group": "Tab1####Tab2",
       "title": "Main Tasks",
       "source": "placeholder",
       "choices": [
         {
           "member": 1,
           "graph": {
-            "key": "f5294460-e3a6-44a1-ac50-4f72c41a7ad1",
+            "key": "f74f9ca7-3675-46e5-a8cb-032e782db5a8",
             "sequence": [
               {
                 "key": "test/inputs/snippets/importc.md",
                 "title": "importc.md",
                 "filepath": "test/inputs/snippets/importc.md",
                 "graph": {
-                  "key": "e8c84cf4-2fcf-4453-8de0-20b51725e500",
+                  "key": "c713716e-8043-4d54-bc33-7c221470c616",
                   "sequence": [
                     {
                       "body": "echo CCC",
                       "language": "bash",
                       "validate": true,
-                      "id": "01afb094-0382-48d7-8fcd-ebd1df121cb5-10",
+                      "id": "0d654c72-03a1-495d-8972-de79262cc091-10",
                       "nesting": [
                         {
                           "kind": "Import",
@@ -381,7 +384,7 @@
                         },
                         {
                           "kind": "Choice",
-                          "group": "7b1882b0-675d-54b2-95c8-d8168a64acc0",
+                          "group": "Tab1####Tab2",
                           "title": "Tab2",
                           "description": "imports:\n",
                           "member": 1,
@@ -412,7 +415,7 @@
       "content": [
         {
           "title": "Tab2",
-          "group": "7b1882b0-675d-54b2-95c8-d8168a64acc0",
+          "group": "Tab1####Tab2",
           "member": 1,
           "isFirstChoice": false,
           "description": "imports:\n"
