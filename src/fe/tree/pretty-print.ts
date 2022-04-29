@@ -37,6 +37,7 @@ type PrettyPrintOptions = {
   write?: typeof process.stdout.write
   symbols?: typeof Symbols.ansi
   skipFirstTitle?: boolean
+  indent?: string
 }
 
 type State = {
@@ -54,8 +55,9 @@ export function prettyPrintUITree(
   options: PrettyPrintOptions & MadWizardOptions,
   { depth, prefix, isLast }: State = { depth: 0, prefix: "", isLast: false }
 ) {
-  const { write = defaultWriteStream(), symbols = Symbols.ansi, narrow } = options
+  const { write = defaultWriteStream(), symbols = Symbols.ansi, narrow, indent = "" } = options
 
+  write(indent)
   write(prefix)
 
   if (depth >= 1) {
@@ -72,7 +74,7 @@ export function prettyPrintUITree(
       const ellipsis = remaining < name.length ? chalk.dim("\u2026") : ""
       write(name.slice(0, remaining).replace(/[\n\r][\S\s]*$/, "") + ellipsis + EOL)
     } else {
-      write(name.replace(new RegExp(EOL, "g"), EOL + prefix + nextPrefix) + EOL)
+      write(name.replace(new RegExp(EOL, "g"), EOL + indent + prefix + nextPrefix) + EOL)
     }
 
     if (node.children) {
@@ -96,10 +98,7 @@ export function prettyPrintUITreeFromBlocks(
   const tree = new Treeifier(new AnsiUI()).toTree(order(graph))
 
   if (options.skipFirstTitle) {
-    prettyPrintUITree(
-      tree.flatMap((_) => _.children),
-      options
-    )
+    tree.flatMap((_) => _.children).map((_) => prettyPrintUITree([_], options))
   } else {
     prettyPrintUITree(tree, options)
   }

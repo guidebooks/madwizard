@@ -229,7 +229,7 @@ export class Guide {
     prettyPrintUITreeFromBlocks(
       !skipOptionalBlocks ? this.blocks : this.blocks.filter((_) => !_.optional),
       this.choices,
-      { skipFirstTitle }
+      { skipFirstTitle, indent: "  " }
     )
 
     console.log(separator())
