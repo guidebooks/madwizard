@@ -84,13 +84,13 @@ function extractFirstParagraph(parent: Parent, after?: Node) {
  * all of the source between that heading and the given `parent`,
  * inclusive.
  */
-function findNearestEnclosingTitle(grandparent: Parent, parent: Node, desiredHeadingLevel?: number) {
+function findNearestEnclosingTitle(grandparent: Parent, parent: Node, node: Node, desiredHeadingLevel?: number) {
   const parentIdx = !grandparent ? -1 : grandparent.children.findIndex((child) => child === parent)
 
   if (grandparent && parentIdx >= 0 && hasContentChildren(grandparent)) {
     for (let idx = parentIdx - 1; idx >= 0; idx--) {
       const child = grandparent.children[idx]
-      if (isHeadingOrRemovedHeading(child) || isTipWithFullTitle(child)) {
+      if (isHeadingOrRemovedHeading(child) || (isTipWithFullTitle(child) && child.children.find((_) => _ === node))) {
         const level = getHeadingLevel(child)
         if (desiredHeadingLevel === undefined || (!isNaN(level) && level === desiredHeadingLevel)) {
           return {
@@ -213,7 +213,7 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                             title,
                             description: extractFirstParagraph(_),
                             member,
-                            groupDetail: findNearestEnclosingTitle(grandparent, parent),
+                            groupDetail: findNearestEnclosingTitle(grandparent, parent, node),
                           })
                         }
                       }
@@ -259,7 +259,7 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                   const parent = ancestors[ancestors.length - 1]
                   const grandparent = ancestors[ancestors.length - 2]
                   if (parent && grandparent) {
-                    const { child, title, source } = findNearestEnclosingTitle(grandparent, parent)
+                    const { child, title, source } = findNearestEnclosingTitle(grandparent, parent, node)
                     if (title) {
                       addNesting(attributes, {
                         kind: "Import",
@@ -287,7 +287,7 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                     if (grandparent) {
                       const parent = grandparent.children[grandparent.children.length - 1]
                       if (grandparent && parent) {
-                        const { child, title, source } = findNearestEnclosingTitle(grandparent, parent, 1)
+                        const { child, title, source } = findNearestEnclosingTitle(grandparent, parent, node, 1)
                         if (title) {
                           addNesting(
                             attributes,
