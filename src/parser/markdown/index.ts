@@ -37,6 +37,7 @@ import { hackMarkdownSource } from "./hack"
 import remarkDirective from "remark-directive"
 
 import inlineSnippets from "./snippets"
+import { toRawGithubUserContent } from "./snippets/urls"
 
 import frontmatter from "remark-frontmatter"
 
@@ -150,6 +151,9 @@ export async function blockify(
   reader = read,
   madwizardOptions?: MadWizardOptions
 ) {
-  const file = typeof input === "string" ? await reader(new VFile({ path: expandHomeDir(input) })) : new VFile(input)
+  const file =
+    typeof input === "string"
+      ? await reader(new VFile({ path: toRawGithubUserContent(expandHomeDir(input)) }))
+      : new VFile(input)
   return parse(file, choices, uuid, reader, madwizardOptions)
 }

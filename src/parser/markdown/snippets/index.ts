@@ -21,7 +21,7 @@ import { mainSymbols } from "figures"
 import expandHomeDir from "expand-home-dir"
 import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin } from "path"
 
-// import promiseEach from './promise-each'
+import { isUrl, toRawGithubUserContent } from "./urls"
 
 import indent from "../util/indent"
 import { MadWizardOptions } from "../../.."
@@ -49,10 +49,6 @@ const RE_SNIPPET = /^(\s*)--(-*)8<--(-*)\s+"([^"]+)"\s*$/
 
 function isError(x: string | Error) {
   return x && x.constructor === Error
-}
-
-function isUrl(a: string) {
-  return /^https?:/.test(a)
 }
 
 function dirname(a: string) {
@@ -184,14 +180,15 @@ function inlineSnippets(opts: Options & InternalOptions) {
     debug(`${chalk.yellow(mainSymbols.triangleRight)} ${_snippetFileName}`)
 
     const fetchAndMemoize = async (filepath: string): Promise<string | Error> => {
-      const content = await fetcher(filepath)
+      const content = await fetcher(toRawGithubUserContent(filepath))
       debug(`${chalk.green(mainSymbols.tick)} ${snippetFileName} from ${filepath}`)
       if (typeof content === "string") {
         snippetMemo[filepath] = content
       }
       return content
     }
-    const fetch = async (filepath: string): Promise<string | Error> => {
+    const fetch = async (afilepath: string): Promise<string | Error> => {
+      const filepath = toRawGithubUserContent(afilepath)
       return snippetMemo[filepath] || (await fetchAndMemoize(filepath))
     }
 
@@ -450,7 +447,7 @@ async function fetchMkdocsBasePath(opts: Options) {
     try {
       const { mkdocs } = opts.madwizardOptions
       const mkdocsFilepath = /mkdocs\.ya?ml$/.test(mkdocs) ? mkdocs : join(mkdocs, "mkdocs.yml")
-      const rawContent = await opts.fetcher(mkdocsFilepath)
+      const rawContent = await opts.fetcher(toRawGithubUserContent(mkdocsFilepath))
 
       if (typeof rawContent === "string") {
         const content = load(rawContent.replace(/: !!/g, ": redaced"))
