@@ -35,7 +35,10 @@ export async function shellExec(cmdline: string, out?: Writable): Promise<"succe
 
     child.stderr.on("data", (data) => {
       err += data.toString()
-      out.write(data)
+
+      if (out) {
+        out.write(data)
+      }
     })
 
     if (out) {
