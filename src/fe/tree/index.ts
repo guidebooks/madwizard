@@ -38,8 +38,8 @@ import {
 } from "../../graph"
 
 import { UI } from "./ui"
-import { UITree } from "./props"
 import TreeTransformer from "./xform"
+import { UINode, UITree } from "./props"
 
 export * from "./ui"
 export * from "./props"
@@ -305,5 +305,9 @@ export class Treeifier<Content> {
         debug("complete")
       }
     }
+  }
+
+  public treeOf<Content>(name: Content, children: UINode<Content>[]): UITree<Content> {
+    return [{ name, children }]
   }
 }

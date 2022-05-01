@@ -18,14 +18,14 @@ import Debug from "debug"
 import { EOL } from "os"
 import chalk from "chalk"
 import wrap from "wrap-ansi"
-import { Listr } from "listr2"
+//import { Listr } from "listr2"
 import readline from "readline"
 import { Writable } from "stream"
 import { mainSymbols } from "figures"
 import { EventEmitter } from "events"
 import inquirer, { Question, Answers } from "inquirer"
 
-import decorateStream, { separator } from "./stream-decorator"
+import { taskRunner, Task } from "./taskrunner"
 
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
@@ -98,7 +98,7 @@ export class Guide {
     return msg.slice(0, 50).split(/\n/)[0]
   }
 
-  private listrTaskStep({ step, graph }: TaskStep, taskIdx: number, dryRun: boolean) {
+  private listrTaskStep({ step, graph }: TaskStep, taskIdx: number, dryRun: boolean): Task {
     const subtasks = blocks(graph)
 
     let doneCount = 0
@@ -109,21 +109,15 @@ export class Guide {
     }
 
     return {
-      title: step.name,
-      options: { showTimer: true, collapse: false, exitOnError: !dryRun },
-      task: (ctx, task) =>
-        task.newListr(
-          subtasks.map((block) => ({
+      title: (dryRun ? chalk.yellow(mainSymbols.questionMarkPrefix) : chalk.green(mainSymbols.play)) + " " + step.name,
+      task: () =>
+        subtasks.map(
+          (block): Task => ({
             title: block.validate
               ? chalk.dim("checking to see if this task has already been done\u2026")
-              : chalk[taskIdx === 1 ? "reset" : "dim"].magenta(block.body),
-            options: {
-              persistentOutput: !dryRun,
-              collapse: false,
-              bottomBar: dryRun ? false : Infinity,
-              exitOnError: !dryRun,
-            },
-            task: async (_, subtask) => {
+              : chalk.magenta(block.body),
+            spinner: !!block.validate,
+            task: async (subtask) => {
               let status: Status = "blank"
 
               try {
@@ -131,15 +125,13 @@ export class Guide {
                   try {
                     status = await validate(block, { throwErrors: dryRun })
                     if (status === "success") {
-                      subtask.skip()
+                      subtask.skip(dryRun ? "READY" : undefined)
                       return
                     }
                   } catch (err) {
                     if (dryRun) {
-                      // task.state = ListrTaskState.FAILED
-                      task.title += dryRun
-                        ? chalk.yellow(" [NOT READY] " + chalk.dim(this.firstBitOf(err.message)))
-                        : chalk.red(" [FAILED] " + chalk.dim(this.firstBitOf(err.message)))
+                      this.debug("validation error", err)
+                      subtask.fail(dryRun ? "NOT READY" : undefined, undefined, dryRun ? chalk.yellow : undefined)
                     } else {
                       // throw new ListrError(err, ListrErrorTypes.HAS_FAILED, task)
                       this.debug("Validation error", err)
@@ -149,21 +141,21 @@ export class Guide {
 
                 try {
                   if (!dryRun) {
+                    subtask.commence()
                     await this.waitTillDone(taskIdx - 1)
-                    subtask.title = chalk.magenta(block.body)
-                    status = await shellExec(block.body, decorateStream(block, subtask.stdout(), this.ui))
+                    status = await shellExec(block.body)
                   }
                 } catch (err) {
                   status = "error"
                   throw err
                 } finally {
-                  subtask.title = chalk.magenta(block.body)
+                  // subtask.title = chalk.magenta(block.body)
                 }
               } finally {
                 markDone(status)
               }
             },
-          }))
+          })
         ),
     }
   }
@@ -223,15 +215,15 @@ export class Guide {
 
   /** Visualize the current execution plan, which reflects all choices made so far. */
   private showPlan(skipOptionalBlocks = true, skipFirstTitle = false, narrow = false) {
-    console.log(separator("The Plan"))
+    console.log()
+    // console.log(chalk.blue.bold("The Plan"))
 
     prettyPrintUITreeFromBlocks(
       !skipOptionalBlocks ? this.blocks : this.blocks.filter((_) => !_.optional),
       this.choices,
-      { skipFirstTitle, indent: "  ", narrow }
+      { skipFirstTitle, /* indent: "  ",*/ narrow, root: chalk.blue.bold("The Plan") }
     )
 
-    console.log(separator())
     console.log()
   }
 
@@ -243,12 +235,11 @@ export class Guide {
         name: "execution",
         message: chalk.yellow("How do you wish to execute this guidebook?"),
         choices: [
-          { value: "dryr", name: "Dry run 👀" },
-          { value: "auto", name: "Run unattended 🤖" },
-          // new inquirer.Separator(),
+          { value: "dryr", name: "Check prerequisites 👀" },
+          { value: "auto", name: "Run this guidebook" },
+          new inquirer.Separator(),
           { value: "plan", name: "Show me the full plan" },
           { value: "step", name: "Step me through the execution" },
-          // new inquirer.Separator(),
           { value: "stop", name: "Cancel" },
         ],
       },
@@ -268,7 +259,7 @@ export class Guide {
     const stepIt = execution === "step"
     const dryRun = execution === "dryr"
 
-    const taskPromise = new Listr(
+    const taskPromise = taskRunner(
       taskSteps.flatMap((_, idx, A) => [
         this.listrTaskStep(_, stepIt ? idx * 2 + 1 : idx + 1, dryRun),
         ...(stepIt && idx < A.length - 1 ? this.listrPauseStep(idx * 2 + 2) : []),
@@ -276,9 +267,8 @@ export class Guide {
       {
         /* options */
         concurrent: dryRun,
-        rendererOptions: { removeEmptyLines: false },
       }
-    ).run()
+    )
 
     this.markDone(0, "success")
     await taskPromise
@@ -332,7 +322,7 @@ export class Guide {
         if (this.allDoneSuccessfully()) {
           console.log(EOL + chalk.green(mainSymbols.tick) + " Guidebook successful")
         } else {
-          console.log(EOL + chalk.yellow(mainSymbols.warning) + " Guidebook incomplete")
+          console.log(EOL + chalk.red("Guidebook incomplete"))
         }
       }
     } catch (err) {

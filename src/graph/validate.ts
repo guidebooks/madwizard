@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-import { Writable } from "stream"
-import { exec } from "child_process"
+import { spawn } from "child_process"
 import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask } from "."
 
-export type ValidationExecutor = (cmdline: string) => "success" | Promise<"success">
+export type ValidationExecutor = (cmdline: string, quiet?: boolean) => "success" | Promise<"success">
 
-export async function shellExec(cmdline: string, out?: Writable): Promise<"success"> {
+export async function shellExec(cmdline: string, quiet = false): Promise<"success"> {
   return new Promise((resolve, reject) => {
-    let err = ""
-    const child = exec(cmdline)
+    const child = spawn(process.env.SHELL, ["-c", cmdline], {
+      stdio: quiet ? ["inherit", "ignore", "pipe"] : ["inherit", "inherit", "inherit"],
+    })
 
+    child.on("error", reject)
+
+    let err = ""
     child.on("close", (code) => {
       if (code === 0) {
         resolve("success")
@@ -33,16 +36,8 @@ export async function shellExec(cmdline: string, out?: Writable): Promise<"succe
       }
     })
 
-    child.stderr.on("data", (data) => {
-      err += data.toString()
-
-      if (out) {
-        out.write(data)
-      }
-    })
-
-    if (out) {
-      child.stdout.pipe(out)
+    if (quiet) {
+      child.stderr.on("data", (data) => (err += data.toString()))
     }
   })
 }
@@ -81,7 +76,7 @@ function union(A: Promise<Status[]>) {
   return A.then((A) => A.slice(1).reduce(succeedFast, A[0]))
 }
 
-type Options = { executor?: ValidationExecutor; out?: Writable; throwErrors?: boolean }
+type Options = { executor?: ValidationExecutor; throwErrors?: boolean }
 
 /**
  * Note: this code assumes that collapseMadeChoices has already been
@@ -104,7 +99,7 @@ async function validateGraph(graph: Graph, opts: Options): Promise<Status> {
     return "success"
   } else if (graph.validate) {
     try {
-      await (opts.executor || shellExec)(graph.validate)
+      await (opts.executor || shellExec)(graph.validate, true)
       return "success"
     } catch (err) {
       if (opts.throwErrors) {
