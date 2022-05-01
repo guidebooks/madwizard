@@ -29,7 +29,9 @@ export function separator(title = "") {
   const prefix = separatorPrefixLength()
   const { line } = mainSymbols
 
-  return line.repeat(prefix) + chalk.bold(title) + line.repeat(process.stdout.columns - 10 - prefix - title.length)
+  return (
+    line.repeat(prefix) + chalk.bold(title) + line.repeat(Math.max(0, process.stdout.columns - prefix - title.length))
+  )
 }
 
 /**
@@ -41,8 +43,7 @@ export default function decorateStream(
   stream: NodeJS.WriteStream & NodeJS.WritableStream,
   ui: UI<string> = new AnsiUI()
 ) {
-  const ourPrefix = ""
-  stream.write(separator(`${ourPrefix}${ui.code(elide(block.body, 2 * separatorPrefixLength() + ourPrefix.length))}`))
+  stream.write(separator(ui.code(elide(block.body, 2 * separatorPrefixLength()))))
 
   return new Writable({
     write(chunk, encoding, callback) {
