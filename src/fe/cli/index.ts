@@ -44,7 +44,11 @@ function usage(argv: string[], msg?: string) {
   if (msg) {
     console.error(chalk.red(msg))
   }
-  console.error(`Usage: ${basename(argv[0])} ${validTasks().join("|")} <a filepath or url>`)
+  console.error(
+    `${chalk.bold.yellow("Usage:")} ${basename(argv[0]).replace(/\.js$/, "")} ${chalk.cyan(
+      validTasks().join("|")
+    )} <a filepath or url>`
+  )
   process.exit(1)
 }
 
