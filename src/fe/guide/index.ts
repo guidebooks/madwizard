@@ -110,7 +110,7 @@ export class Guide {
 
     return {
       title: step.name,
-      options: { showTimer: true, collapse: dryRun, exitOnError: !dryRun },
+      options: { showTimer: true, collapse: false, exitOnError: !dryRun },
       task: (ctx, task) =>
         task.newListr(
           subtasks.map((block) => ({
@@ -119,7 +119,7 @@ export class Guide {
               : chalk[taskIdx === 1 ? "reset" : "dim"].magenta(block.body),
             options: {
               persistentOutput: !dryRun,
-              collapse: dryRun,
+              collapse: false,
               bottomBar: dryRun ? false : Infinity,
               exitOnError: !dryRun,
             },
@@ -324,7 +324,7 @@ export class Guide {
     console.clear()
     const taskSteps = await this.resolveChoices()
     try {
-      this.showPlan(true, true, true)
+      this.showPlan(true, true)
 
       const tasksWereRun = await this.runTasks(taskSteps)
 
