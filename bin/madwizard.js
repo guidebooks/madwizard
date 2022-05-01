@@ -1,4 +1,4 @@
-#!/usr/bin/env node --experimental-specifier-resolution=node
+#!/usr/bin/env node --experimental-specifier-resolution=node --no-warnings
 
 /* eslint-env node */
 /* ^^^ rather than add env: node globally in package.json */
