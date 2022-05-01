@@ -104,14 +104,21 @@ export function prettyPrintUITree(
 export function prettyPrintUITreeFromBlocks(
   blocks: CodeBlockProps[],
   choices: ChoiceState,
-  options: PrettyPrintOptions & MadWizardOptions = {}
+  options: PrettyPrintOptions & MadWizardOptions & { root?: string } = {}
 ) {
   const graph = compile(blocks, choices)
-  const tree = new Treeifier(new AnsiUI()).toTree(order(graph))
+
+  const treeifier = new Treeifier(new AnsiUI())
+  const tree = treeifier.toTree(order(graph))
 
   if (options.skipFirstTitle) {
-    tree.flatMap((_) => _.children).map((_) => prettyPrintUITree([_], options))
+    const children = tree.flatMap((_) => _.children)
+    if (options.root) {
+      prettyPrintUITree(treeifier.treeOf(options.root, children), options)
+    } else {
+      children.map((_) => prettyPrintUITree([_], options))
+    }
   } else {
-    prettyPrintUITree(tree, options)
+    prettyPrintUITree(options.root ? treeifier.treeOf(options.root, tree) : tree, options)
   }
 }
