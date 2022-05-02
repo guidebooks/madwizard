@@ -26,10 +26,14 @@ import { prettyPrintUITreeFromBlocks, Treeifier, DevNullUI } from "../tree"
 
 export { Guide }
 
-type Task = "tree" | "json" | "guide" | "timing" | "fetch" | "topmatter"
+type Task = "tree" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "aprioris"
 
 function validTasks(): Task[] {
-  return ["tree", "json", "guide", "timing", "fetch", "topmatter"]
+  return ["tree", "json", "guide", "timing", "fetch", "topmatter", "aprioris"]
+}
+
+function isDebugTask(task: Task) {
+  return task === "timing" || task === "fetch" || task === "topmatter" || task === "aprioris"
 }
 
 function isValidTask(task: string): task is Task {
@@ -83,7 +87,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
   }
 
   try {
-    if (task === "topmatter" || task === "timing" || task === "fetch") {
+    if (isDebugTask(task)) {
       enableTracing(task)
     }
 
@@ -91,6 +95,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
 
     switch (task) {
       case "topmatter":
+      case "aprioris":
         break
 
       case "timing":

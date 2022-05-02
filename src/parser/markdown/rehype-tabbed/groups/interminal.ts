@@ -16,6 +16,7 @@
 
 import { Element } from "hast"
 
+import debug from "./debug"
 import { ChoiceState } from "../../../../choices"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
@@ -61,12 +62,15 @@ class RunningInTerminal {
 
   /** Set the platform choice group to use the current host platform */
   public populateChoice(choices: ChoiceState) {
-    choices.set(this.choiceGroup, this.inTerminal(), false)
+    const choice = this.inTerminal()
+    debug("interminal", "using choice " + choice)
+    choices.set(this.choiceGroup, choice, false)
   }
 
   /** Check if the given `node` is a tab group that we can inform */
   public checkAndSet(node: Element) {
     if (this.isMatchingTabGroup(node)) {
+      debug("interminal", "found matching tab group")
       setTabGroup(node, this.choiceGroup)
       this.rewriteTabsToUseCanonicalNames(node)
       return true
