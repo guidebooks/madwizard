@@ -19,11 +19,10 @@ import { Transformer } from "unified"
 import { Element, ElementContent } from "hast"
 
 import isElementWithProperties from "../util/isElement"
+import { ChoiceState, MadWizardOptions } from "../../.."
+import { identifyRecognizableTabGroups } from "../../../choices/groups"
 
 import populateTabs from "./populate"
-
-import { ChoiceState, MadWizardOptions } from "../../.."
-import identifyRecognizableTabGroups from "./groups"
 
 export const START_OF_TAB = `<!-- ____KUI_START_OF_TAB____ -->`
 export const PUSH_TABS = `<!-- ____KUI_NESTED_TABS____ -->`

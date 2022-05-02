@@ -17,58 +17,60 @@
 import { Element } from "hast"
 
 import debug from "./debug"
-import { ChoiceState } from "../../../../choices"
-import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
+import { ChoiceState } from ".."
+import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "."
 
-class Arch {
+class RunningInTerminal {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/arch"
-
-  private readonly archs: Record<string, typeof process["arch"]> = {
-    intel: "x64",
-    x86: "x64",
-
-    arm: "arm64",
-    arm64: "arm64",
-    "apple silicon": "arm64",
-    m1: "arm64",
-    m2: "arm64",
-  }
-
-  private readonly findArch = (str: string) => this.archs[str.toLowerCase()]
+  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/in-terminal"
 
   /**
    * This code assumes the given `node` satisfies `import('..').isTabGroup`.
    *
-   * @return whether or not this tab group represents a "what architecture are you on" choice group.
+   * @return whether or not this tab group represents a "what platform are you on" choice group.
    */
   private isMatchingTabGroup(node: Element) {
-    return node.children.filter(isTabWithProperties).map(getTabTitle).every(this.findArch)
+    return node.children
+      .filter(isTabWithProperties)
+      .map(getTabTitle)
+      .every((_) => /text/i.test(_) || /html/i.test(_))
   }
 
-  private capitalize(str: string) {
-    return str[0].toUpperCase() + str.slice(1)
+  private get text() {
+    return "Text"
+  }
+
+  private get html() {
+    return "HTML"
+  }
+
+  private canonicalize(str: string) {
+    return /text/i.test(str) ? this.text : this.html
   }
 
   private rewriteTabsToUseCanonicalNames(node: Element) {
     node.children.forEach((tab) => {
       if (isTabWithProperties(tab)) {
-        setTabTitle(tab, this.capitalize(this.findArch(getTabTitle(tab))))
+        setTabTitle(tab, this.canonicalize(getTabTitle(tab)))
       }
     })
   }
 
-  /** Set the architecture choice group to use the current host arch */
+  private inTerminal() {
+    return typeof window === "undefined" ? this.text : this.html
+  }
+
+  /** Set the platform choice group to use the current host platform */
   public populateChoice(choices: ChoiceState) {
-    const choice = process.arch
-    debug("arch", "using choice " + choice)
+    const choice = this.inTerminal()
+    debug("interminal", "using choice " + choice)
     choices.set(this.choiceGroup, choice, false)
   }
 
   /** Check if the given `node` is a tab group that we can inform */
   public checkAndSet(node: Element) {
     if (this.isMatchingTabGroup(node)) {
-      debug("arch", "found matching tab group")
+      debug("interminal", "found matching tab group")
       setTabGroup(node, this.choiceGroup)
       this.rewriteTabsToUseCanonicalNames(node)
       return true
@@ -76,4 +78,4 @@ class Arch {
   }
 }
 
-export default new Arch()
+export default new RunningInTerminal()

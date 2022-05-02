@@ -17,39 +17,33 @@
 import { Element } from "hast"
 
 import debug from "./debug"
-import { ChoiceState } from "../../../../choices"
-import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
+import { ChoiceState } from ".."
+import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "."
 
-class Platform {
+class Arch {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/platform"
+  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/arch"
 
-  private readonly platforms: Record<string, typeof process["platform"]> = {
-    mac: "darwin",
-    macos: "darwin",
-    darwin: "darwin",
+  private readonly archs: Record<string, typeof process["arch"]> = {
+    intel: "x64",
+    x86: "x64",
 
-    linux: "linux",
-
-    win: "win32",
-    win32: "win32",
-    windows: "win32",
-
-    wsl: "linux",
-    wsl2: "linux",
-    "windows subsystem for linux": "linux",
-    "windows subsystem for linux 2": "linux",
+    arm: "arm64",
+    arm64: "arm64",
+    "apple silicon": "arm64",
+    m1: "arm64",
+    m2: "arm64",
   }
 
-  private readonly findPlatform = (str: string) => this.platforms[str.toLowerCase()]
+  private readonly findArch = (str: string) => this.archs[str.toLowerCase()]
 
   /**
    * This code assumes the given `node` satisfies `import('..').isTabGroup`.
    *
-   * @return whether or not this tab group represents a "what platform are you on" choice group.
+   * @return whether or not this tab group represents a "what architecture are you on" choice group.
    */
   private isMatchingTabGroup(node: Element) {
-    return node.children.filter(isTabWithProperties).map(getTabTitle).every(this.findPlatform)
+    return node.children.filter(isTabWithProperties).map(getTabTitle).every(this.findArch)
   }
 
   private capitalize(str: string) {
@@ -59,22 +53,22 @@ class Platform {
   private rewriteTabsToUseCanonicalNames(node: Element) {
     node.children.forEach((tab) => {
       if (isTabWithProperties(tab)) {
-        setTabTitle(tab, this.capitalize(this.findPlatform(getTabTitle(tab))))
+        setTabTitle(tab, this.capitalize(this.findArch(getTabTitle(tab))))
       }
     })
   }
 
-  /** Set the platform choice group to use the current host platform */
+  /** Set the architecture choice group to use the current host arch */
   public populateChoice(choices: ChoiceState) {
-    const choice = process.platform
-    debug("platform", "using choice " + choice)
+    const choice = process.arch
+    debug("arch", "using choice " + choice)
     choices.set(this.choiceGroup, choice, false)
   }
 
   /** Check if the given `node` is a tab group that we can inform */
   public checkAndSet(node: Element) {
     if (this.isMatchingTabGroup(node)) {
-      debug("platform", "found matching tab group")
+      debug("arch", "found matching tab group")
       setTabGroup(node, this.choiceGroup)
       this.rewriteTabsToUseCanonicalNames(node)
       return true
@@ -82,4 +76,4 @@ class Platform {
   }
 }
 
-export default new Platform()
+export default new Arch()
