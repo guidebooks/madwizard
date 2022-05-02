@@ -16,6 +16,7 @@
 
 import { Element } from "hast"
 
+import debug from "./debug"
 import { ChoiceState } from "../../../../choices"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
@@ -33,6 +34,11 @@ class Platform {
     win: "win32",
     win32: "win32",
     windows: "win32",
+
+    wsl: "linux",
+    wsl2: "linux",
+    "windows subsystem for linux": "linux",
+    "windows subsystem for linux 2": "linux",
   }
 
   private readonly findPlatform = (str: string) => this.platforms[str.toLowerCase()]
@@ -60,12 +66,15 @@ class Platform {
 
   /** Set the platform choice group to use the current host platform */
   public populateChoice(choices: ChoiceState) {
-    choices.set(this.choiceGroup, process.platform, false)
+    const choice = process.platform
+    debug("platform", "using choice " + choice)
+    choices.set(this.choiceGroup, choice, false)
   }
 
   /** Check if the given `node` is a tab group that we can inform */
   public checkAndSet(node: Element) {
     if (this.isMatchingTabGroup(node)) {
+      debug("platform", "found matching tab group")
       setTabGroup(node, this.choiceGroup)
       this.rewriteTabsToUseCanonicalNames(node)
       return true

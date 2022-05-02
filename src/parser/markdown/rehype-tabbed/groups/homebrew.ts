@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-import Debug from "debug"
 import { Element } from "hast"
 import which from "which"
 
+import debug from "./debug"
 import { ChoiceState } from "../../../../choices"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
-
-const debug = Debug("rehype-tabbed/groups/homebrew")
 
 class Homebrew {
   /** the value should be namespaced and unique, but the particulars don't matter */
@@ -62,16 +60,19 @@ class Homebrew {
     // .catch(err => debug('Homebrew probably not found', err))
     try {
       if (which.sync("brew")) {
-        choices.set(this.choiceGroup, this.canonicalName, false)
+        const choice = this.canonicalName
+        debug("homebrew", "using choice " + choice)
+        choices.set(this.choiceGroup, choice, false)
       }
     } catch (err) {
-      debug("Homebrew probably not found", err)
+      debug("homebrew", "probably not installed", err)
     }
   }
 
   /** Check if the given `node` is a tab group that we can inform */
   public checkAndSet(node: Element) {
     if (this.isMatchingTabGroup(node)) {
+      debug("homebrew", "found matching tab group")
       setTabGroup(node, this.choiceGroup)
       this.rewriteTabsToUseCanonicalNames(node)
       return true

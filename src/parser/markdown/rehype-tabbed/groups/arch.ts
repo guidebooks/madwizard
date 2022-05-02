@@ -16,6 +16,7 @@
 
 import { Element } from "hast"
 
+import debug from "./debug"
 import { ChoiceState } from "../../../../choices"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
@@ -59,12 +60,15 @@ class Arch {
 
   /** Set the architecture choice group to use the current host arch */
   public populateChoice(choices: ChoiceState) {
-    choices.set(this.choiceGroup, process.arch, false)
+    const choice = process.arch
+    debug("arch", "using choice " + choice)
+    choices.set(this.choiceGroup, choice, false)
   }
 
   /** Check if the given `node` is a tab group that we can inform */
   public checkAndSet(node: Element) {
     if (this.isMatchingTabGroup(node)) {
+      debug("arch", "found matching tab group")
       setTabGroup(node, this.choiceGroup)
       this.rewriteTabsToUseCanonicalNames(node)
       return true
