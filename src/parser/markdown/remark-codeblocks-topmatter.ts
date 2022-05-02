@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { Node } from "hast"
 import { Code } from "mdast"
 import { visitParents } from "unist-util-visit-parents"
@@ -34,11 +35,15 @@ export function preprocessCodeBlocksInContent(
   topmostFrontmatter?: KuiFrontmatter,
   currentImport?: Node
 ) {
+  const debug = Debug("madwizard/topmatter/codeblocks")
+
   const codeblocksToUse = hasCodeBlocks(frontmatter)
     ? frontmatter.codeblocks
     : topmostFrontmatter && hasCodeBlocks(topmostFrontmatter)
     ? topmostFrontmatter.codeblocks
     : undefined
+
+  debug("code block specs", codeblocksToUse || "none")
 
   if (codeblocksToUse) {
     const codeblocks = codeblocksToUse.map((_) => Object.assign({}, _, { match: new RegExp(_.match) }))
@@ -51,10 +56,13 @@ export function preprocessCodeBlocksInContent(
 
         const matched = codeblocks.find((_) => _.match.test(node.value))
 
-        if (matched) {
+        if (!matched) {
+          debug("no matches", node.value.slice(0, 30))
+        } else if (matched) {
           if (matched.language) {
             // smash in a code block language (this would be the ```${language} part of the text)
             node.lang = matched.language
+            debug("code block force language", matched.language)
           }
 
           if (matched.optional !== undefined || matched.validate || matched.cleanup) {
@@ -71,6 +79,8 @@ export function preprocessCodeBlocksInContent(
               } else {
                 attributes.validate = matched.validate
               }
+
+              debug("validation:", `"${attributes.validate.slice(0, 30)}"`, `"${body.slice(0, 30)}"`)
             }
 
             if (matched.cleanup) {
