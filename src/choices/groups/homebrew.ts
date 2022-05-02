@@ -18,8 +18,8 @@ import { Element } from "hast"
 import which from "which"
 
 import debug from "./debug"
-import { ChoiceState } from "../../../../choices"
-import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
+import { ChoiceState } from ".."
+import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "."
 
 class Homebrew {
   /** the value should be namespaced and unique, but the particulars don't matter */
