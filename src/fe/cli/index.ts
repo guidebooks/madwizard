@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { EOL } from "os"
 import Debug from "debug"
 import chalk from "chalk"
 import { basename } from "path"
@@ -26,14 +27,14 @@ import { prettyPrintUITreeFromBlocks, Treeifier, DevNullUI } from "../tree"
 
 export { Guide }
 
-type Task = "tree" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "aprioris"
+type Task = "tree" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "groups"
 
 function validTasks(): Task[] {
-  return ["tree", "json", "guide", "timing", "fetch", "topmatter", "aprioris"]
+  return ["tree", "json", "guide", "timing", "fetch", "topmatter", "groups"]
 }
 
 function isDebugTask(task: Task) {
-  return task === "timing" || task === "fetch" || task === "topmatter" || task === "aprioris"
+  return task === "timing" || task === "fetch" || task === "topmatter" || task === "groups"
 }
 
 function isValidTask(task: string): task is Task {
@@ -94,8 +95,8 @@ export async function cli<Writer extends (msg: string) => boolean>(
     const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)
 
     switch (task) {
+      case "groups":
       case "topmatter":
-      case "aprioris":
         break
 
       case "timing":
@@ -115,7 +116,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
       case "json": {
         const graph = compile(blocks, choices)
         const wizard = wizardify(graph)
-        console.log(
+        ;(write || process.stdout.write.bind(process.stdout))(
           JSON.stringify(
             wizard,
             (key, value) => {
@@ -128,7 +129,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
               }
             },
             2
-          )
+          ) + EOL
         )
         break
       }
@@ -143,7 +144,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
         assertExhaustive(task)
     }
   } catch (err) {
-    console.log(err.message)
+    console.log(err)
     process.exit(1)
   }
 }

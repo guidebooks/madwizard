@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { Node } from "hast"
+import { Node, Element } from "hast"
 import { visit } from "unist-util-visit"
 
 import { ChoiceState, MadWizardOptions } from "../.."
-
 import { isTabGroup } from "../../parser/markdown/rehype-tabbed"
 export { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "../../parser/markdown/rehype-tabbed"
 
+import expand from "./expansion"
 import aprioris from "./aprioris"
 
 /**
@@ -29,7 +29,11 @@ import aprioris from "./aprioris"
  * priori knowledge, e.g. about what platform we are on.
  *
  */
-export function identifyRecognizableTabGroups(tree: Node, choices: ChoiceState, { optimize = true }: MadWizardOptions) {
+export async function identifyRecognizableTabGroups(
+  tree: Node,
+  choices: ChoiceState,
+  { optimize = true }: MadWizardOptions
+) {
   /* if (!Capabilities.inElectron()) {
     // I don't think this is a meaningful thing to do whilst running
     // in browser? TODO: maybe we should allow the providers a say?
@@ -48,8 +52,16 @@ export function identifyRecognizableTabGroups(tree: Node, choices: ChoiceState, 
       .forEach((_) => _.populateChoice(choices))
   }
 
+  const nodesToVisit: Element[] = []
+
   visit(tree, "element", (node) => {
     if (isTabGroup(node)) {
+      nodesToVisit.push(node)
+    }
+  })
+
+  await Promise.all(
+    nodesToVisit.map(async (node) => {
       if (useAprioris) {
         // re: the use of `find`
         // Assumption: a given tab group can only have one match,
@@ -59,8 +71,12 @@ export function identifyRecognizableTabGroups(tree: Node, choices: ChoiceState, 
           return
         }
       }
-    }
-  })
+
+      if (await expand(node)) {
+        return
+      }
+    })
+  )
 
   return tree
 }

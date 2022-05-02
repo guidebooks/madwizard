@@ -17,18 +17,37 @@
 import { spawn } from "child_process"
 import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask } from "."
 
-export type ValidationExecutor = (cmdline: string, quiet?: boolean) => "success" | Promise<"success">
+export type ExecOptions = {
+  /** Do not emit to console */
+  quiet?: boolean
 
-export async function shellExec(cmdline: string, quiet = false): Promise<"success"> {
+  /** Capture stdout here */
+  capture?: string
+}
+
+export type ValidationExecutor = (cmdline: string, opts?: ExecOptions) => "success" | Promise<"success">
+
+export async function shellExec(cmdline: string, opts: ExecOptions = { quiet: false }): Promise<"success"> {
+  const capture = typeof opts.capture === "string"
+
   return new Promise((resolve, reject) => {
-    const child = spawn(process.env.SHELL, ["-c", cmdline], {
-      stdio: quiet ? ["inherit", "ignore", "pipe"] : ["inherit", "inherit", "inherit"],
+    const child = spawn(process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash"), ["-c", cmdline], {
+      stdio: opts.quiet
+        ? ["inherit", "ignore", "pipe"]
+        : capture
+        ? ["inherit", "pipe", "pipe"]
+        : ["inherit", "inherit", "inherit"],
     })
 
     child.on("error", reject)
 
     let err = ""
+    let out = ""
     child.on("close", (code) => {
+      if (capture) {
+        opts.capture = out
+      }
+
       if (code === 0) {
         resolve("success")
       } else {
@@ -36,8 +55,13 @@ export async function shellExec(cmdline: string, quiet = false): Promise<"succes
       }
     })
 
-    if (quiet) {
+    if (opts.quiet) {
       child.stderr.on("data", (data) => (err += data.toString()))
+    }
+
+    if (capture) {
+      child.stderr.on("data", (data) => (out += data.toString()))
+      child.stdout.on("data", (data) => (out += data.toString()))
     }
   })
 }
@@ -99,7 +123,7 @@ async function validateGraph(graph: Graph, opts: Options): Promise<Status> {
     return "success"
   } else if (graph.validate) {
     try {
-      await (opts.executor || shellExec)(graph.validate, true)
+      await (opts.executor || shellExec)(graph.validate, { quiet: true })
       return "success"
     } catch (err) {
       if (opts.throwErrors) {

@@ -16,7 +16,7 @@
 
 import { Element } from "hast"
 
-import debug from "../debug"
+import debug from "./debug"
 import { ChoiceState } from "../.."
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
