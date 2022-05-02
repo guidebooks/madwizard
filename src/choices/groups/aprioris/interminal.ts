@@ -16,32 +16,13 @@
 
 import { Element } from "hast"
 
-import debug from "./debug"
-import { ChoiceState } from ".."
-import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "."
+import debug from "../debug"
+import { ChoiceState } from "../.."
+import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
-class Platform {
+export class RunningInTerminal {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/platform"
-
-  private readonly platforms: Record<string, typeof process["platform"]> = {
-    mac: "darwin",
-    macos: "darwin",
-    darwin: "darwin",
-
-    linux: "linux",
-
-    win: "win32",
-    win32: "win32",
-    windows: "win32",
-
-    wsl: "linux",
-    wsl2: "linux",
-    "windows subsystem for linux": "linux",
-    "windows subsystem for linux 2": "linux",
-  }
-
-  private readonly findPlatform = (str: string) => this.platforms[str.toLowerCase()]
+  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/in-terminal"
 
   /**
    * This code assumes the given `node` satisfies `import('..').isTabGroup`.
@@ -49,32 +30,47 @@ class Platform {
    * @return whether or not this tab group represents a "what platform are you on" choice group.
    */
   private isMatchingTabGroup(node: Element) {
-    return node.children.filter(isTabWithProperties).map(getTabTitle).every(this.findPlatform)
+    return node.children
+      .filter(isTabWithProperties)
+      .map(getTabTitle)
+      .every((_) => /text/i.test(_) || /html/i.test(_))
   }
 
-  private capitalize(str: string) {
-    return str[0].toUpperCase() + str.slice(1)
+  private get text() {
+    return "Text"
+  }
+
+  private get html() {
+    return "HTML"
+  }
+
+  private canonicalize(str: string) {
+    return /text/i.test(str) ? this.text : this.html
   }
 
   private rewriteTabsToUseCanonicalNames(node: Element) {
     node.children.forEach((tab) => {
       if (isTabWithProperties(tab)) {
-        setTabTitle(tab, this.capitalize(this.findPlatform(getTabTitle(tab))))
+        setTabTitle(tab, this.canonicalize(getTabTitle(tab)))
       }
     })
   }
 
+  private inTerminal() {
+    return typeof window === "undefined" ? this.text : this.html
+  }
+
   /** Set the platform choice group to use the current host platform */
   public populateChoice(choices: ChoiceState) {
-    const choice = process.platform
-    debug("platform", "using choice " + choice)
+    const choice = this.inTerminal()
+    debug("interminal", "using choice " + choice)
     choices.set(this.choiceGroup, choice, false)
   }
 
   /** Check if the given `node` is a tab group that we can inform */
   public checkAndSet(node: Element) {
     if (this.isMatchingTabGroup(node)) {
-      debug("platform", "found matching tab group")
+      debug("interminal", "found matching tab group")
       setTabGroup(node, this.choiceGroup)
       this.rewriteTabsToUseCanonicalNames(node)
       return true
@@ -82,4 +78,4 @@ class Platform {
   }
 }
 
-export default new Platform()
+export default new RunningInTerminal()

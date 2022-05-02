@@ -22,12 +22,7 @@ import { ChoiceState, MadWizardOptions } from "../.."
 import { isTabGroup } from "../../parser/markdown/rehype-tabbed"
 export { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "../../parser/markdown/rehype-tabbed"
 
-import arch from "./arch"
-import platform from "./platform"
-import homebrew from "./homebrew"
-import interminal from "./interminal"
-
-const providers = [arch, platform, homebrew, interminal]
+import aprioris from "./aprioris"
 
 /**
  * Scan tab groups to see if we can squash down the choice given our a
@@ -35,10 +30,6 @@ const providers = [arch, platform, homebrew, interminal]
  *
  */
 export function identifyRecognizableTabGroups(tree: Node, choices: ChoiceState, { optimize = true }: MadWizardOptions) {
-  if (optimize === false || (optimize !== true && optimize.aprioris === false)) {
-    return
-  }
-
   /* if (!Capabilities.inElectron()) {
     // I don't think this is a meaningful thing to do whilst running
     // in browser? TODO: maybe we should allow the providers a say?
@@ -49,18 +40,23 @@ export function identifyRecognizableTabGroups(tree: Node, choices: ChoiceState, 
     return
   }
 
-  providers
-    .filter((_) => !choices.contains(_.choiceGroup)) // already set?
-    .forEach((_) => _.populateChoice(choices))
+  const useAprioris = !(optimize === false || (optimize !== true && optimize.aprioris === false))
+
+  if (useAprioris) {
+    aprioris
+      .filter((_) => !choices.contains(_.choiceGroup)) // already set?
+      .forEach((_) => _.populateChoice(choices))
+  }
 
   visit(tree, "element", (node) => {
     if (isTabGroup(node)) {
-      for (let idx = 0; idx < providers.length; idx++) {
-        if (providers[idx].checkAndSet(node)) {
-          // Assumption: a given tab group can only have one match,
-          // e.g. it is either a platform choice (macos/linux/windows)
-          // or an download method choice (homebrew, curl)
-          break
+      if (useAprioris) {
+        // re: the use of `find`
+        // Assumption: a given tab group can only have one match,
+        // e.g. it is either a platform choice (macos/linux/windows)
+        // or an download method choice (homebrew, curl)
+        if (aprioris.find((_) => _.checkAndSet(node))) {
+          return
         }
       }
     }
