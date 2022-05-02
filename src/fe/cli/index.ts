@@ -26,10 +26,10 @@ import { prettyPrintUITreeFromBlocks, Treeifier, DevNullUI } from "../tree"
 
 export { Guide }
 
-type Task = "tree" | "json" | "guide" | "timing" | "fetch"
+type Task = "tree" | "json" | "guide" | "timing" | "fetch" | "topmatter"
 
 function validTasks(): Task[] {
-  return ["tree", "json", "guide", "timing", "fetch"]
+  return ["tree", "json", "guide", "timing", "fetch", "topmatter"]
 }
 
 function isValidTask(task: string): task is Task {
@@ -52,8 +52,8 @@ function usage(argv: string[], msg?: string) {
   process.exit(1)
 }
 
-function enableTracing(task: Task) {
-  Debug.enable(`madwizard/${task}/*`)
+function enableTracing(task: Task, subtask = "*") {
+  Debug.enable(`madwizard/${task}/${subtask}`)
 }
 
 export async function cli<Writer extends (msg: string) => boolean>(
@@ -82,12 +82,17 @@ export async function cli<Writer extends (msg: string) => boolean>(
     return usage(argv, `Invalid task: ${task}`)
   }
 
-  enableTracing(task)
-
   try {
+    if (task === "topmatter" || task === "timing" || task === "fetch") {
+      enableTracing(task)
+    }
+
     const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)
 
     switch (task) {
+      case "topmatter":
+        break
+
       case "timing":
       case "fetch": {
         // print out timing
