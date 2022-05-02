@@ -215,9 +215,6 @@ export class Guide {
 
   /** Visualize the current execution plan, which reflects all choices made so far. */
   private showPlan(skipOptionalBlocks = true, skipFirstTitle = false, narrow = false) {
-    console.log()
-    // console.log(chalk.blue.bold("The Plan"))
-
     prettyPrintUITreeFromBlocks(
       !skipOptionalBlocks ? this.blocks : this.blocks.filter((_) => !_.optional),
       this.choices,
