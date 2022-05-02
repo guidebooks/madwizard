@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-import Debug from "debug"
+import BaseDebug from "debug"
+
+export function Debug(subtask?: string) {
+  return BaseDebug(`madwizard/groups${subtask ? "/" + subtask : ""}`)
+}
 
 export default function debug(subtask: string, formatter: string, ...args: string[]) {
-  return Debug(`madwizard/aprioris/${subtask}`)(formatter, ...args)
+  return Debug(subtask)(formatter, ...args)
 }

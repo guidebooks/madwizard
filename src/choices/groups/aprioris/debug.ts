@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-// CLI
-export * from "./fe/cli"
+import { Debug } from "../debug"
 
-// UI support
-export * from "./fe/tree"
-
-// APIs
-export * from "./graph"
-export * from "./parser"
-export * from "./choices"
-export * from "./wizard"
-
-export * from "./fe/MadWizardOptions"
+export default function debug(subtask: string, formatter: string, ...args: string[]) {
+  return Debug(`aprioris/${subtask}`)(formatter, ...args)
+}

@@ -23,7 +23,7 @@ import { diffString } from "json-diff"
 import { createRequire } from "module"
 import { readdirSync, readFileSync } from "fs"
 
-import { cli, main, MadWizardOptions } from "../.."
+import { cli, MadWizardOptions } from "../.."
 
 const require = createRequire(import.meta.url)
 const inputDir = join(dirname(require.resolve(".")), "../inputs")
@@ -34,7 +34,7 @@ const options: { suffix: string; options: MadWizardOptions }[] = [
   { suffix: "noopt", options: { optimize: false } },
 ]
 
-function munge(wizard: Awaited<ReturnType<typeof main>>["wizard"]) {
+function munge(wizard: Record<string, unknown>) {
   return JSON.parse(
     JSON.stringify(wizard, (key, value) => {
       if (key === "group" || key === "id" || key === "key" || key === "filepath") {
@@ -111,9 +111,15 @@ readdirSync(inputDir)
 
       const test2 = suites[idx * tasks.length + 1]
       test2(`wizards for input ${input} options=${suffix || "default"}`, async () => {
-        const { wizard } = await main(join(input, "in.md"), undefined, options)
+        let actualWizard = ""
+        const write = (msg: string) => {
+          actualWizard += msg
+          return true
+        }
+
+        await cli(["test", "json", join(input, "in.md")], write, options)
         const expectedWizard = JSON.parse(loadExpected(input, "wizard", suffix))
-        const diff = diffString(munge(wizard), munge(expectedWizard), { color: false })
+        const diff = diffString(munge(JSON.parse(actualWizard)), munge(expectedWizard), { color: false })
         assert.is(diff, "", "wizard should match")
       })
     })

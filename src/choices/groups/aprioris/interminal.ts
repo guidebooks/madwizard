@@ -16,7 +16,7 @@
 
 import { Element } from "hast"
 
-import debug from "../debug"
+import debug from "./debug"
 import { ChoiceState } from "../.."
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
@@ -33,7 +33,7 @@ export class RunningInTerminal {
     return node.children
       .filter(isTabWithProperties)
       .map(getTabTitle)
-      .every((_) => /text/i.test(_) || /html/i.test(_))
+      .every((_) => /^text$/i.test(_) || /^html$/i.test(_))
   }
 
   private get text() {

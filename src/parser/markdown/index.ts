@@ -130,7 +130,7 @@ async function parse(
     debug("parse complete")
 
     debug("processor start")
-    const ast = processor.run(rawAst)
+    const ast = await processor.run(rawAst)
     debug("processor complete")
 
     return {

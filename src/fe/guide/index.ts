@@ -62,8 +62,8 @@ export class Guide {
     const questions = choiceSteps.map(({ step }, stepIdx) => ({
       type: "list",
       pageSize: 20,
-      name: step.name,
-      message: chalk.yellow(`Choice ${iter + stepIdx + 1}:` + ` ${step.name}`),
+      name: step.name || chalk.red("Missing name"),
+      message: chalk.yellow(`Choice ${iter + stepIdx + 1}:` + ` ${step.name || chalk.red("Missing name")}`),
       choices: step.content.map((tile, idx, A) => ({
         value: tile.title,
         short: tile.title,
