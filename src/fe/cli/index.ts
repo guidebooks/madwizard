@@ -102,7 +102,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
       case "timing":
       case "fetch": {
         // print out timing
-        const graph = compile(blocks, choices)
+        const graph = compile(blocks, choices, options)
         wizardify(graph)
         new Treeifier(new DevNullUI()).toTree(order(graph))
         break
@@ -137,7 +137,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
       }
 
       case "guide":
-        await new Guide(blocks, choices).run()
+        await new Guide(blocks, choices, options).run()
         break
 
       default:
