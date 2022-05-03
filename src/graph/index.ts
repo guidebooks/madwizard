@@ -206,7 +206,10 @@ export function asSubTask(step: TitledStep): SubTask {
 
 function sameSubTask(A: SubTask, B: SubTask) {
   return (
-    A.key === B.key && A.title === B.title && A.filepath === B.filepath && sameGraph(A.graph, B.graph) // eslint-disable-line @typescript-eslint/no-use-before-define
+    /* A.key === B.key &&*/ A.title === B.title &&
+    A.description === B.description &&
+    A.filepath === B.filepath &&
+    sameGraph(A.graph, B.graph) // eslint-disable-line @typescript-eslint/no-use-before-define
   )
 }
 

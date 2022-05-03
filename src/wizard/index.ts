@@ -164,23 +164,25 @@ export async function wizardify(
 
     if (validator) {
       // then update the Wizard model with real Status fields.
-      const spinners = wizard.map(({ step }) => ora(chalk.dim(`Validating ${chalk.blue(step.name)}`)).start())
+      const alreadyDone = wizard.map(({ graph }) => {
+        return previous ? previous.findIndex((_) => sameGraph(graph, _.graph)) : -1
+      })
+
+      const spinners = wizard.map(({ step }, idx) => {
+        if (alreadyDone[idx] < 0) {
+          return ora(chalk.dim(`Validating ${chalk.blue(step.name)}`)).start()
+        }
+      })
 
       return Promise.all(
         wizard.map(async ({ step, graph }, idx) => {
-          const spinner = spinners[idx]
-
-          if (previous && sameGraph(graph, previous[idx].graph)) {
+          if (alreadyDone[idx] >= 0) {
             // probably no need to re-compute status
-            const { status } = previous[idx]
-            if (status === "success") {
-              spinner.succeed()
-            } else {
-              spinner.warn()
-            }
+            const { status } = previous[alreadyDone[idx]]
             return { step, graph, status }
           }
 
+          const spinner = spinners[idx]
           try {
             const status = await validate(graph, { validator })
 

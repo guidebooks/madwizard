@@ -233,7 +233,7 @@ export class Guide {
         name: "execution",
         message: chalk.yellow("How do you wish to execute this guidebook?"),
         choices: [
-          { value: "dryr", name: "Check prerequisites 👀" },
+          { value: "dryr", name: "Dry run 👀" },
           { value: "auto", name: "Run this guidebook" },
           new inquirer.Separator(),
           { value: "plan", name: "Show me the full plan" },
