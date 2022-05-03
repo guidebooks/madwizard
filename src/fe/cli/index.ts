@@ -115,7 +115,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
 
       case "json": {
         const graph = compile(blocks, choices)
-        const wizard = wizardify(graph)
+        const wizard = await wizardify(graph)
         ;(write || process.stdout.write.bind(process.stdout))(
           JSON.stringify(
             wizard,

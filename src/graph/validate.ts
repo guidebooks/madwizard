@@ -100,7 +100,7 @@ function union(A: Promise<Status[]>) {
   return A.then((A) => A.slice(1).reduce(succeedFast, A[0]))
 }
 
-type Options = { executor?: ValidationExecutor; throwErrors?: boolean }
+type Options = { validator?: ValidationExecutor; throwErrors?: boolean }
 
 /**
  * Note: this code assumes that collapseMadeChoices has already been
@@ -123,7 +123,7 @@ async function validateGraph(graph: Graph, opts: Options): Promise<Status> {
     return "success"
   } else if (graph.validate) {
     try {
-      await (opts.executor || shellExec)(graph.validate, { quiet: true })
+      await (opts.validator || shellExec)(graph.validate, { quiet: true })
       return "success"
     } catch (err) {
       if (opts.throwErrors) {
