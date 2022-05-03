@@ -17,6 +17,7 @@
 import chalk from "chalk"
 import Debug from "debug"
 import { load } from "js-yaml"
+import { oraPromise } from "ora"
 import { mainSymbols } from "figures"
 import expandHomeDir from "expand-home-dir"
 import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin } from "path"
@@ -154,6 +155,11 @@ type InternalOptions = {
   altBasePaths?: Promise<string[]>
 }
 
+/** Small wrapper that rewrites regular github urls to raw "githubusercontent" urls */
+async function doFetch(filepath: string, fetcher: (filepath: string) => Promise<string | Error>) {
+  return fetcher(toRawGithubUserContent(filepath))
+}
+
 /**
  * Simplistic approximation of
  * https://facelessuser.github.io/pymdown-extensions/extensions/snippets/.
@@ -170,7 +176,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
     altBasePaths = Promise.resolve([]),
   } = opts
 
-  const fetchRecursively = async (
+  const _fetchRecursively = async (
     _snippetFileName: string,
     srcFilePath: string,
     provenance: string[],
@@ -180,7 +186,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
     debug(`${chalk.yellow(mainSymbols.triangleRight)} ${_snippetFileName}`)
 
     const fetchAndMemoize = async (filepath: string): Promise<string | Error> => {
-      const content = await fetcher(toRawGithubUserContent(filepath))
+      const content = await doFetch(filepath, fetcher)
       debug(`${chalk.green(mainSymbols.tick)} ${snippetFileName} from ${filepath}`)
       if (typeof content === "string") {
         snippetMemo[filepath] = content
@@ -309,6 +315,18 @@ function inlineSnippets(opts: Options & InternalOptions) {
 
     return snippetData
   }
+
+  const fetchRecursively = (
+    _snippetFileName: string,
+    srcFilePath: string,
+    provenance: string[],
+    nestingDepth = 0,
+    inImport = false
+  ) =>
+    oraPromise(
+      _fetchRecursively(_snippetFileName, srcFilePath, provenance, nestingDepth, inImport),
+      `Fetching ${chalk.blue(_snippetFileName)}`
+    )
 
   const oops404 = (snippetFileName: string, errorMessage = "Failed to fetch this file") => {
     return `??? bug "Could not fetch snippet ${snippetFileName}"
@@ -447,7 +465,7 @@ async function fetchMkdocsBasePath(opts: Options) {
     try {
       const { mkdocs } = opts.madwizardOptions
       const mkdocsFilepath = /mkdocs\.ya?ml$/.test(mkdocs) ? mkdocs : join(mkdocs, "mkdocs.yml")
-      const rawContent = await opts.fetcher(toRawGithubUserContent(mkdocsFilepath))
+      const rawContent = await oraPromise(doFetch(mkdocsFilepath, opts.fetcher))
 
       if (typeof rawContent === "string") {
         const content = load(rawContent.replace(/: !!/g, ": redaced"))
