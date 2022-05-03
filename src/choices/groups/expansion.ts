@@ -33,7 +33,10 @@ function updateTemplate(part: ChoicePart, choice: string, member: number) {
 
   part.title = choice
   part.member = member
-  part.description = part.description.replace(pattern, choice)
+
+  if (part.description) {
+    part.description = part.description.replace(pattern, choice)
+  }
 
   blocks(part.graph).forEach((_) => (_.body = _.body.replace(pattern, choice)))
 }
