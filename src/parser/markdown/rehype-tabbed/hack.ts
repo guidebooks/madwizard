@@ -91,7 +91,7 @@ export default function hackIndentation(source: string): string {
 
       if (!inBlockquote && startMatch) {
         const thisIndentation = startMatch[1] || ""
-        const indentDepth = indentDepthOfContent[indentDepthOfContent.length - 1] || 0
+        let indentDepth = indentDepthOfContent[indentDepthOfContent.length - 1] || 0
         const thisIndentDepth = !thisIndentation ? 1 : ~~(thisIndentation.length / 4) + 1
 
         const currentEndMarker = endMarkers.length === 0 ? undefined : endMarkers[endMarkers.length - 1]
@@ -103,6 +103,8 @@ export default function hackIndentation(source: string): string {
             : !(inTab && indentDepth > thisIndentDepth)
             ? ""
             : pop(line, 1)
+
+        indentDepth = indentDepthOfContent[indentDepthOfContent.length - 1] || 0
 
         const possibleNesting = !(
           inTab &&

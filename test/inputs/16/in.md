@@ -3,7 +3,11 @@
 MainDescription
 
 === "Tab1"
+
     Tab1Description
+
+    ??? tip "Tip1"
+        Tip1Content
 
     === "SubTab1"
         ```shell
