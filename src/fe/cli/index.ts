@@ -124,6 +124,8 @@ export async function cli<Writer extends (msg: string) => boolean>(
                 return "placeholder"
               } else if (key === "description" && !value) {
                 return undefined
+              } else if (key === "status" && value === "blank") {
+                return undefined
               } else {
                 return value
               }
