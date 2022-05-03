@@ -1,0 +1,2 @@
+Codeblocks in enclosing markdown
+└── echo AAA †

@@ -106,7 +106,7 @@ export function prettyPrintUITreeFromBlocks(
   choices: ChoiceState,
   options: PrettyPrintOptions & MadWizardOptions & { root?: string } = {}
 ) {
-  const graph = compile(blocks, choices)
+  const graph = compile(blocks, choices, options)
 
   const treeifier = new Treeifier(new AnsiUI())
   const tree = treeifier.toTree(order(graph))

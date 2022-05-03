@@ -19,6 +19,8 @@ import { ChoiceState } from "../choices"
 import { CodeBlockProps } from "../codeblock"
 import { Choice, Graph, SubTask, TitledSteps, emptySequence, extractTitle, parallel, seq, sequence, subtask } from "."
 
+import { MadWizardOptions } from "../../"
+
 import {
   Import as CodeBlockImport,
   Choice as CodeBlockChoice,
@@ -55,6 +57,7 @@ function isWizardStepNesting(nesting: Nesting): nesting is WizardStepNesting {
 export function compile(
   blocks: CodeBlockProps[],
   choices: ChoiceState,
+  options: Pick<MadWizardOptions, "optimize"> = {},
   ordering: "sequence" | "parallel" = "sequence",
   title?: string,
   description?: string
@@ -268,7 +271,7 @@ export function compile(
         ? parallel(parts)
         : sequence(parts)
 
-    const optimized = optimize(unoptimized, choices)
+    const optimized = options.optimize === false ? unoptimized : optimize(unoptimized, choices)
 
     if (title && !extractTitle(optimized)) {
       return subtask(title, title, description, "", sequence([optimized]))

@@ -18,7 +18,6 @@ import Debug from "debug"
 import { EOL } from "os"
 import chalk from "chalk"
 import wrap from "wrap-ansi"
-//import { Listr } from "listr2"
 import readline from "readline"
 import { Writable } from "stream"
 import { mainSymbols } from "figures"
@@ -27,6 +26,7 @@ import inquirer, { Question, Answers } from "inquirer"
 
 import { taskRunner, Task } from "./taskrunner"
 
+import { MadWizardOptions } from "../../"
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
 import indent from "../../parser/markdown/util/indent"
@@ -40,6 +40,7 @@ export class Guide {
   public constructor(
     private readonly blocks: CodeBlockProps[],
     private readonly choices: ChoiceState,
+    private readonly options: MadWizardOptions,
     private readonly prompt = inquirer.createPromptModule(),
     private readonly ui: UI<string> = new AnsiUI()
   ) {}
@@ -53,7 +54,7 @@ export class Guide {
    * @return the list of remaining questions
    */
   private async questions(iter: number, previous?: Wizard) {
-    const graph = compile(this.blocks, this.choices)
+    const graph = compile(this.blocks, this.choices, this.options)
     const wizard = await wizardify(graph, { validator: shellExec, previous })
 
     const choiceSteps = wizard.filter(isChoiceStep).filter((_) => _.status !== "success")

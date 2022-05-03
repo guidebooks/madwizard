@@ -1,0 +1,149 @@
+[
+  {
+    "graph": {
+      "group": "Tab1",
+      "title": "MainTitle",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "cb3de668-f4b7-471e-a92f-f0b24bf9fb18",
+            "sequence": [
+              {
+                "group": "SubTab1####SubTab2",
+                "title": "Tab1",
+                "source": "placeholder",
+                "choices": [
+                  {
+                    "member": 0,
+                    "graph": {
+                      "key": "7ca8da68-6d03-4f8a-98bc-b2c36a8ea540",
+                      "sequence": [
+                        {
+                          "body": "echo 111",
+                          "language": "shell",
+                          "id": "d61aeb75-b5fe-402e-83c2-7314ed951f72-0",
+                          "nesting": [
+                            {
+                              "kind": "Import",
+                              "key": "MainTitle",
+                              "title": "MainTitle",
+                              "description": "MainDescription\n",
+                              "filepath": ""
+                            },
+                            {
+                              "kind": "Choice",
+                              "group": "Tab1",
+                              "title": "Tab1",
+                              "description": "Use the [Knative Quickstart plugin](../guidebooks/install-knative-quickstart.md) to install a preconfigured, local distribution of Knative for development purposes.\n",
+                              "member": 0,
+                              "groupDetail": {
+                                "child": {
+                                  "type": "element",
+                                  "tagName": "h1",
+                                  "properties": {},
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "value": "MainTitle",
+                                      "position": "placeholder"
+                                    }
+                                  ],
+                                  "position": "placeholder"
+                                },
+                                "level": 1,
+                                "title": "MainTitle"
+                              }
+                            },
+                            {
+                              "kind": "Choice",
+                              "group": "SubTab1####SubTab2",
+                              "title": "SubTab1",
+                              "member": 0,
+                              "groupDetail": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "title": "SubTab1"
+                  },
+                  {
+                    "member": 1,
+                    "graph": {
+                      "key": "6d21d8e6-ffc6-4627-b62c-6c3e07742881",
+                      "sequence": [
+                        {
+                          "body": "echo 222",
+                          "language": "shell",
+                          "id": "d61aeb75-b5fe-402e-83c2-7314ed951f72-1",
+                          "nesting": [
+                            {
+                              "kind": "Import",
+                              "key": "MainTitle",
+                              "title": "MainTitle",
+                              "description": "MainDescription\n",
+                              "filepath": ""
+                            },
+                            {
+                              "kind": "Choice",
+                              "group": "Tab1",
+                              "title": "Tab1",
+                              "description": "Use the [Knative Quickstart plugin](../guidebooks/install-knative-quickstart.md) to install a preconfigured, local distribution of Knative for development purposes.\n",
+                              "member": 0,
+                              "groupDetail": {
+                                "child": {
+                                  "type": "element",
+                                  "tagName": "h1",
+                                  "properties": {},
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "value": "MainTitle",
+                                      "position": "placeholder"
+                                    }
+                                  ],
+                                  "position": "placeholder"
+                                },
+                                "level": 1,
+                                "title": "MainTitle"
+                              }
+                            },
+                            {
+                              "kind": "Choice",
+                              "group": "SubTab1####SubTab2",
+                              "title": "SubTab2",
+                              "member": 1,
+                              "groupDetail": {}
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "title": "SubTab2"
+                  }
+                ]
+              }
+            ]
+          },
+          "title": "Tab1",
+          "description": "Use the [Knative Quickstart plugin](../guidebooks/install-knative-quickstart.md) to install a preconfigured, local distribution of Knative for development purposes.\n"
+        }
+      ]
+    },
+    "step": {
+      "name": "MainTitle",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "Use the [Knative Quickstart plugin](../guidebooks/install-knative-quickstart.md) to install a preconfigured, local distribution of Knative for development purposes.\n"
+        }
+      ]
+    }
+  }
+]
