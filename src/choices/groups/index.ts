@@ -21,7 +21,6 @@ import { ChoiceState, MadWizardOptions } from "../.."
 import { isTabGroup } from "../../parser/markdown/rehype-tabbed"
 export { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "../../parser/markdown/rehype-tabbed"
 
-import expand from "./expansion"
 import aprioris from "./aprioris"
 
 /**
@@ -61,7 +60,7 @@ export async function identifyRecognizableTabGroups(
   })
 
   await Promise.all(
-    nodesToVisit.map(async (node) => {
+    nodesToVisit.map((node) => {
       if (useAprioris) {
         // re: the use of `find`
         // Assumption: a given tab group can only have one match,
@@ -72,9 +71,9 @@ export async function identifyRecognizableTabGroups(
         }
       }
 
-      if (await expand(node)) {
-        return
-      }
+      // if (await expand(node)) {
+      // return
+      // }
     })
   )
 

@@ -18,6 +18,8 @@ import ChoiceStateImpl from "./impl"
 import { Choice as CodeBlockChoice } from "../codeblock/CodeBlockProps"
 import { ChoiceHandlerRegistration } from "./events"
 
+export { expand } from "./groups/expansion"
+
 /* map from choice group to selected choice member */
 export type ChoicesMap = Record<CodeBlockChoice["group"], CodeBlockChoice["title"]>
 

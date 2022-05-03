@@ -58,13 +58,6 @@ export function isTabGroup(elt: Element): boolean {
   return elt.properties["data-kui-choice-group"] !== undefined
 }
 
-export function isExpansionGroup(elt: Element): string {
-  if (isTabGroup(elt)) {
-    const match = elt.properties["data-kui-choice-group"].toString().match(/expand\((.+)\)/)
-    return match && match[1]
-  }
-}
-
 export function setTabGroup(elt: Element, group: string) {
   elt.properties["data-kui-choice-group"] = group
 }
@@ -77,20 +70,9 @@ export function setTabTitle(elt: Element, title: string): string {
   return (elt.properties.title = title)
 }
 
-function setTabIndex(elt: Element, idx: number) {
+/* function setTabIndex(elt: Element, idx: number) {
   elt.properties["data-kui-tab-index"] = idx
-}
-
-export function cloneAndAddTab(elt: Element, template: Element, title: string, idx: number) {
-  if (isTabGroup(elt) && isTabWithProperties(template)) {
-    const tab = JSON.parse(JSON.stringify(template))
-    setTabTitle(tab, title)
-    setTabIndex(tab, idx)
-    elt.children.push(tab)
-
-    return tab
-  }
-}
+} */
 
 export function rehypeTabbed(uuid: string, choices: ChoiceState, madwizardOptions: MadWizardOptions) {
   return async function rehypeTabbedTransformer(tree: Parameters<Transformer>[0]): Promise<ReturnType<Transformer>> {

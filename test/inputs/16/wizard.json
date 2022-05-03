@@ -8,7 +8,7 @@
         {
           "member": 0,
           "graph": {
-            "key": "7f7290af-d3c8-48f4-a788-2512f3b86229",
+            "key": "c771d056-0b58-470a-97be-ea299b6e5711",
             "sequence": [
               {
                 "group": "SubTab1####SubTab2",
@@ -18,52 +18,12 @@
                   {
                     "member": 0,
                     "graph": {
-                      "key": "2c140c97-5c18-4cf5-9666-5dfa90406beb",
+                      "key": "249f5fd4-1929-4e52-af65-c96366d9d92c",
                       "sequence": [
                         {
                           "body": "echo 111",
                           "language": "shell",
-                          "id": "b190cf6f-a699-4471-81a7-9caf4feb66f9-0",
-                          "nesting": [
-                            {
-                              "kind": "Import",
-                              "key": "MainTitle",
-                              "title": "MainTitle",
-                              "description": "MainDescription\n",
-                              "filepath": ""
-                            },
-                            {
-                              "kind": "Choice",
-                              "group": "Tab1",
-                              "title": "Tab1",
-                              "description": "Tab1Description\n",
-                              "member": 0,
-                              "groupDetail": {
-                                "child": {
-                                  "type": "element",
-                                  "tagName": "h1",
-                                  "properties": {},
-                                  "children": [
-                                    {
-                                      "type": "text",
-                                      "value": "MainTitle",
-                                      "position": "placeholder"
-                                    }
-                                  ],
-                                  "position": "placeholder"
-                                },
-                                "level": 1,
-                                "title": "MainTitle"
-                              }
-                            },
-                            {
-                              "kind": "Choice",
-                              "group": "SubTab1####SubTab2",
-                              "title": "SubTab1",
-                              "member": 0,
-                              "groupDetail": {}
-                            }
-                          ]
+                          "id": "78344111-588b-4131-b71c-8d0ccdb6666d-0"
                         }
                       ]
                     },
@@ -72,52 +32,12 @@
                   {
                     "member": 1,
                     "graph": {
-                      "key": "87cb49b1-1575-4830-b397-20d06959780c",
+                      "key": "370d3b03-5ba2-4f8b-b509-30931e31c68c",
                       "sequence": [
                         {
                           "body": "echo 222",
                           "language": "shell",
-                          "id": "b190cf6f-a699-4471-81a7-9caf4feb66f9-1",
-                          "nesting": [
-                            {
-                              "kind": "Import",
-                              "key": "MainTitle",
-                              "title": "MainTitle",
-                              "description": "MainDescription\n",
-                              "filepath": ""
-                            },
-                            {
-                              "kind": "Choice",
-                              "group": "Tab1",
-                              "title": "Tab1",
-                              "description": "Tab1Description\n",
-                              "member": 0,
-                              "groupDetail": {
-                                "child": {
-                                  "type": "element",
-                                  "tagName": "h1",
-                                  "properties": {},
-                                  "children": [
-                                    {
-                                      "type": "text",
-                                      "value": "MainTitle",
-                                      "position": "placeholder"
-                                    }
-                                  ],
-                                  "position": "placeholder"
-                                },
-                                "level": 1,
-                                "title": "MainTitle"
-                              }
-                            },
-                            {
-                              "kind": "Choice",
-                              "group": "SubTab1####SubTab2",
-                              "title": "SubTab2",
-                              "member": 1,
-                              "groupDetail": {}
-                            }
-                          ]
+                          "id": "78344111-588b-4131-b71c-8d0ccdb6666d-1"
                         }
                       ]
                     },

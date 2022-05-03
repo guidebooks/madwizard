@@ -101,12 +101,12 @@ export function prettyPrintUITree(
   })
 }
 
-export function prettyPrintUITreeFromBlocks(
+export async function prettyPrintUITreeFromBlocks(
   blocks: CodeBlockProps[],
   choices: ChoiceState,
   options: PrettyPrintOptions & MadWizardOptions & { root?: string } = {}
 ) {
-  const graph = compile(blocks, choices, options)
+  const graph = await compile(blocks, choices, options)
 
   const treeifier = new Treeifier(new AnsiUI())
   const tree = treeifier.toTree(order(graph))

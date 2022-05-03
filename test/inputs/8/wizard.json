@@ -8,205 +8,25 @@
         {
           "member": 0,
           "graph": {
-            "key": "d31fb27f-02ab-4c2b-809c-caf8d3a71ea6",
+            "key": "c2558692-4059-43af-9420-a584dd5e895a",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "4f47be51-375e-4be9-8a90-5409539a9bec-0",
-                "nesting": [
-                  {
-                    "kind": "Import",
-                    "key": "test/inputs/snippets/snippets-in-tab6.md",
-                    "title": "Chooser",
-                    "filepath": "test/inputs/snippets/snippets-in-tab6.md"
-                  },
-                  {
-                    "kind": "Choice",
-                    "group": "Tab1####Tab2####Tab3",
-                    "title": "Tab1",
-                    "member": 0,
-                    "groupDetail": {
-                      "child": {
-                        "type": "element",
-                        "tagName": "h1",
-                        "properties": {},
-                        "children": [
-                          {
-                            "type": "text",
-                            "value": "Chooser",
-                            "position": "placeholder"
-                          }
-                        ],
-                        "position": "placeholder"
-                      },
-                      "level": 1,
-                      "title": "Chooser"
-                    }
-                  },
-                  {
-                    "kind": "Import",
-                    "key": "test/inputs/snippets/importd.md",
-                    "title": "DDD",
-                    "filepath": "test/inputs/snippets/importd.md"
-                  },
-                  {
-                    "kind": "Choice",
-                    "group": "SubTab1####SubTab2",
-                    "title": "SubTab1",
-                    "member": 0,
-                    "groupDetail": {
-                      "child": {
-                        "type": "element",
-                        "tagName": "h1",
-                        "properties": {},
-                        "children": [
-                          {
-                            "type": "text",
-                            "value": "DDD",
-                            "position": "placeholder"
-                          }
-                        ],
-                        "position": "placeholder"
-                      },
-                      "level": 1,
-                      "title": "DDD"
-                    }
-                  }
-                ]
+                "id": "fc6dc138-100e-4664-8544-5de529da6bd2-0"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "4f47be51-375e-4be9-8a90-5409539a9bec-1",
-                "nesting": [
-                  {
-                    "kind": "Import",
-                    "key": "test/inputs/snippets/snippets-in-tab6.md",
-                    "title": "Chooser",
-                    "filepath": "test/inputs/snippets/snippets-in-tab6.md"
-                  },
-                  {
-                    "kind": "Choice",
-                    "group": "Tab1####Tab2####Tab3",
-                    "title": "Tab1",
-                    "member": 0,
-                    "groupDetail": {
-                      "child": {
-                        "type": "element",
-                        "tagName": "h1",
-                        "properties": {},
-                        "children": [
-                          {
-                            "type": "text",
-                            "value": "Chooser",
-                            "position": "placeholder"
-                          }
-                        ],
-                        "position": "placeholder"
-                      },
-                      "level": 1,
-                      "title": "Chooser"
-                    }
-                  },
-                  {
-                    "kind": "Import",
-                    "key": "test/inputs/snippets/importd.md",
-                    "title": "DDD",
-                    "filepath": "test/inputs/snippets/importd.md"
-                  },
-                  {
-                    "kind": "Choice",
-                    "group": "SubTab1####SubTab2",
-                    "title": "SubTab1",
-                    "member": 0,
-                    "groupDetail": {
-                      "child": {
-                        "type": "element",
-                        "tagName": "h1",
-                        "properties": {},
-                        "children": [
-                          {
-                            "type": "text",
-                            "value": "DDD",
-                            "position": "placeholder"
-                          }
-                        ],
-                        "position": "placeholder"
-                      },
-                      "level": 1,
-                      "title": "DDD"
-                    }
-                  }
-                ]
+                "id": "fc6dc138-100e-4664-8544-5de529da6bd2-1"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "4f47be51-375e-4be9-8a90-5409539a9bec-2",
-                "nesting": [
-                  {
-                    "kind": "Import",
-                    "key": "test/inputs/snippets/snippets-in-tab6.md",
-                    "title": "Chooser",
-                    "filepath": "test/inputs/snippets/snippets-in-tab6.md"
-                  },
-                  {
-                    "kind": "Choice",
-                    "group": "Tab1####Tab2####Tab3",
-                    "title": "Tab1",
-                    "member": 0,
-                    "groupDetail": {
-                      "child": {
-                        "type": "element",
-                        "tagName": "h1",
-                        "properties": {},
-                        "children": [
-                          {
-                            "type": "text",
-                            "value": "Chooser",
-                            "position": "placeholder"
-                          }
-                        ],
-                        "position": "placeholder"
-                      },
-                      "level": 1,
-                      "title": "Chooser"
-                    }
-                  },
-                  {
-                    "kind": "Import",
-                    "key": "test/inputs/snippets/importd.md",
-                    "title": "DDD",
-                    "filepath": "test/inputs/snippets/importd.md"
-                  },
-                  {
-                    "kind": "Choice",
-                    "group": "SubTab1####SubTab2",
-                    "title": "SubTab1",
-                    "member": 0,
-                    "groupDetail": {
-                      "child": {
-                        "type": "element",
-                        "tagName": "h1",
-                        "properties": {},
-                        "children": [
-                          {
-                            "type": "text",
-                            "value": "DDD",
-                            "position": "placeholder"
-                          }
-                        ],
-                        "position": "placeholder"
-                      },
-                      "level": 1,
-                      "title": "DDD"
-                    }
-                  }
-                ]
+                "id": "fc6dc138-100e-4664-8544-5de529da6bd2-2"
               }
             ]
           },
@@ -215,73 +35,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "e4ad1147-046e-497f-ab7d-8d4b7f424211",
+            "key": "5857e1e2-4c5a-401f-afe4-ff281c5e6600",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "4f47be51-375e-4be9-8a90-5409539a9bec-3",
-                "nesting": [
-                  {
-                    "kind": "Import",
-                    "key": "test/inputs/snippets/snippets-in-tab6.md",
-                    "title": "Chooser",
-                    "filepath": "test/inputs/snippets/snippets-in-tab6.md"
-                  },
-                  {
-                    "kind": "Choice",
-                    "group": "Tab1####Tab2####Tab3",
-                    "title": "Tab1",
-                    "member": 0,
-                    "groupDetail": {
-                      "child": {
-                        "type": "element",
-                        "tagName": "h1",
-                        "properties": {},
-                        "children": [
-                          {
-                            "type": "text",
-                            "value": "Chooser",
-                            "position": "placeholder"
-                          }
-                        ],
-                        "position": "placeholder"
-                      },
-                      "level": 1,
-                      "title": "Chooser"
-                    }
-                  },
-                  {
-                    "kind": "Import",
-                    "key": "test/inputs/snippets/importd.md",
-                    "title": "DDD",
-                    "filepath": "test/inputs/snippets/importd.md"
-                  },
-                  {
-                    "kind": "Choice",
-                    "group": "SubTab1####SubTab2",
-                    "title": "SubTab2",
-                    "member": 1,
-                    "groupDetail": {
-                      "child": {
-                        "type": "element",
-                        "tagName": "h1",
-                        "properties": {},
-                        "children": [
-                          {
-                            "type": "text",
-                            "value": "DDD",
-                            "position": "placeholder"
-                          }
-                        ],
-                        "position": "placeholder"
-                      },
-                      "level": 1,
-                      "title": "DDD"
-                    }
-                  }
-                ]
+                "id": "fc6dc138-100e-4664-8544-5de529da6bd2-3"
               }
             ]
           },

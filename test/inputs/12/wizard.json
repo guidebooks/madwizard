@@ -5,21 +5,13 @@
       "title": "Main Tasks",
       "filepath": "test/inputs/12/snippet.md",
       "graph": {
-        "key": "d095d362-bb5f-4006-bf8b-bc834ffa6ba9",
+        "key": "ae39d7a7-eeba-4675-84c8-9006749a863e",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "shell",
             "validate": "echo true",
-            "id": "1a246867-2e6e-450f-afd7-9308903d55d6-0",
-            "nesting": [
-              {
-                "kind": "Import",
-                "key": "test/inputs/12/snippet.md",
-                "title": "Codeblocks in enclosing markdown",
-                "filepath": "test/inputs/12/snippet.md"
-              }
-            ]
+            "id": "9cff9e53-9f0c-4c29-a354-37018421bc0b-0"
           }
         ]
       },
