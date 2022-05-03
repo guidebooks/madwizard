@@ -216,8 +216,8 @@ export class Guide {
   }
 
   /** Visualize the current execution plan, which reflects all choices made so far. */
-  private showPlan(skipOptionalBlocks = true, skipFirstTitle = false, narrow = false) {
-    prettyPrintUITreeFromBlocks(
+  private async showPlan(skipOptionalBlocks = true, skipFirstTitle = false, narrow = false) {
+    await prettyPrintUITreeFromBlocks(
       !skipOptionalBlocks ? this.blocks : this.blocks.filter((_) => !_.optional),
       this.choices,
       { skipFirstTitle, /* indent: "  ",*/ narrow, root: chalk.blue.bold("The Plan") }
@@ -247,7 +247,7 @@ export class Guide {
     if (execution === "stop") {
       return false
     } else if (execution === "plan") {
-      this.showPlan()
+      await this.showPlan()
       console.log()
       return this.runTasks(taskSteps)
     } else if (execution === "step") {
@@ -298,7 +298,7 @@ export class Guide {
 
     if (iter === 0) {
       // start a fresh screen before presenting the guide proper
-      // console.clear()
+      console.clear()
 
       this.presentGuidebookTitle(graph)
     }
@@ -316,7 +316,7 @@ export class Guide {
   public async run() {
     const taskSteps = await this.resolveChoices()
     try {
-      this.showPlan(true, true)
+      await this.showPlan(true, true)
 
       const tasksWereRun = await this.runTasks(taskSteps)
 
