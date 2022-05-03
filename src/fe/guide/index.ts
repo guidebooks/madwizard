@@ -52,9 +52,9 @@ export class Guide {
    * @param iter How many questions have we asked so far?
    * @return the list of remaining questions
    */
-  private questions(iter: number) {
+  private async questions(iter: number) {
     const graph = compile(this.blocks, this.choices)
-    const steps = wizardify(graph)
+    const steps = await wizardify(graph, { validator: shellExec })
 
     const choiceSteps = steps.filter(isChoiceStep)
     const taskSteps = steps.filter(isTaskStep)
@@ -293,6 +293,9 @@ export class Guide {
   private async resolveChoices(iter = 0) {
     const { graph, choiceSteps, taskSteps, questions } = await this.questions(iter)
 
+    // start a fresh screen before presenting the guide proper
+    console.clear()
+
     if (iter === 0) {
       this.presentGuidebookTitle(graph)
     }
@@ -308,7 +311,6 @@ export class Guide {
   }
 
   public async run() {
-    console.clear()
     const taskSteps = await this.resolveChoices()
     try {
       this.showPlan(true, true)

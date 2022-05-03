@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import ora from "ora"
 import { EOL } from "os"
+import ora, { Ora } from "ora"
 import { mainSymbols } from "figures"
 import chalk, { ChalkInstance } from "chalk"
 
@@ -56,6 +56,13 @@ async function promiseEach<T, R>(arr: T[], fn: (t: T, idx: number) => R | Promis
   return result
 }
 
+export function skip(ora: Ora, text: string) {
+  ora.stopAndPersist({
+    text,
+    symbol: chalk.blue(mainSymbols.arrowDown),
+  })
+}
+
 class TaskWrapperImpl implements TaskWrapper {
   public constructor(
     private readonly title: string,
@@ -65,10 +72,7 @@ class TaskWrapperImpl implements TaskWrapper {
 
   public skip(parentheticalMsg = "SKIPPED", fullMsg = ` [${parentheticalMsg}]`) {
     if (this.spinner) {
-      this.spinner.stopAndPersist({
-        text: this.title + chalk.yellow(fullMsg),
-        symbol: chalk.blue(mainSymbols.arrowDown),
-      })
+      skip(this.spinner, this.title + chalk.yellow(fullMsg))
     } else {
       this.stream.write(chalk.yellow(fullMsg))
       this.stream.write(EOL)

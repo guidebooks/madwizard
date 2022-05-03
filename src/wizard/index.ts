@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
+import ora from "ora"
+import chalk from "chalk"
 import Debug from "debug"
+
 import {
   Graph,
   Choice,
+  Status,
+  ValidationExecutor,
   bodySource,
   extractDescription,
   extractTitle,
@@ -25,6 +30,7 @@ import {
   isOptional,
   isLeafNode,
   findChoiceFrontierWithFallbacks,
+  validate,
 } from "../graph"
 
 type Markdown = string
@@ -100,11 +106,19 @@ function wizardStepForChoiceOnFrontier(graph: Choice, isFirstChoice: boolean): W
 type Wizard = WizardStepWithGraph[]
 export { Wizard }
 
+/** Options to the graph->wizard transformer */
 type Options = {
+  /** Include optional blocks in the wizard? */
   includeOptional: boolean
+
+  /**
+   * If given, tasks in the wizard will be validated, and incomplete
+   * tasks will be returned as part of the `Wizard` model.
+   */
+  validator: ValidationExecutor
 }
 
-export function wizardify(graph: Graph, { includeOptional }: Partial<Options> = {}): Wizard {
+export async function wizardify(graph: Graph, { includeOptional, validator }: Partial<Options> = {}): Promise<Wizard> {
   const debug = Debug("madwizard/timing/wizard:wizardify")
   debug("start")
 
@@ -117,12 +131,38 @@ export function wizardify(graph: Graph, { includeOptional }: Partial<Options> = 
     // this nested interleaving down to a linear set of WizardSteps
     const idxOfFirstChoice = frontier.findIndex((_) => _.choice)
 
-    return frontier.flatMap(({ prereqs, choice }, idx) => [
+    const wizard = frontier.flatMap(({ prereqs, choice }, idx) => [
       ...(!prereqs ? [] : prereqs.filter((_) => includeOptional || !isOptional(_)).map((_) => wizardStepForPrereq(_))),
       ...(!choice || (!includeOptional && isOptional(choice))
         ? []
         : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice)]),
     ])
+
+    if (validator) {
+      // then filter out tasks that are already done
+      const debug = Debug("madwizard/wizard/validator")
+
+      const spinners = wizard.map(({ step }) => ora(`Validating ${chalk.blue(step.name)}`).start())
+
+      const statuses: Status[] = await Promise.all(
+        wizard.map(async ({ graph }, idx) => {
+          const spinner = spinners[idx]
+          try {
+            const status = await validate(graph, { validator })
+            spinner.succeed()
+            return status
+          } catch (err) {
+            spinner.warn()
+            return "blank"
+          }
+        })
+      )
+
+      debug("wizard step validation", statuses)
+      return wizard.filter((_, idx) => statuses[idx] !== "success")
+    }
+
+    return wizard
   } finally {
     debug("complete")
   }
