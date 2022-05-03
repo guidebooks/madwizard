@@ -145,7 +145,7 @@ type InternalOptions = {
   /**
    * To avoid fetching the same content more than once. Key is filepath, value is content.
    */
-  snippetMemo?: Record<string, string>
+  snippetMemo?: Record<string, string | Error>
 
   /**
    * This provides us a way to specify a known set of base path for
@@ -186,16 +186,25 @@ function inlineSnippets(opts: Options & InternalOptions) {
     debug(`${chalk.yellow(mainSymbols.triangleRight)} ${_snippetFileName}`)
 
     const fetchAndMemoize = async (filepath: string): Promise<string | Error> => {
-      const content = await doFetch(filepath, fetcher)
-      debug(`${chalk.green(mainSymbols.tick)} ${snippetFileName} from ${filepath}`)
-      if (typeof content === "string") {
-        snippetMemo[filepath] = content
+      try {
+        const content = await doFetch(filepath, fetcher)
+        debug(`${chalk.green(mainSymbols.tick)} ${snippetFileName} from ${filepath}`)
+        if (typeof content === "string") {
+          snippetMemo[filepath] = content
+        }
+        return content
+      } catch (err) {
+        snippetMemo[filepath] = err
+        throw err
       }
-      return content
     }
     const fetch = async (afilepath: string): Promise<string | Error> => {
       const filepath = toRawGithubUserContent(afilepath)
-      return snippetMemo[filepath] || (await fetchAndMemoize(filepath))
+      if (isError(snippetMemo[filepath])) {
+        throw snippetMemo[filepath]
+      } else {
+        return snippetMemo[filepath] || (await fetchAndMemoize(filepath))
+      }
     }
 
     const snippetFileName = expandHomeDir(_snippetFileName)
