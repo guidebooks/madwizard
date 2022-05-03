@@ -102,19 +102,19 @@ export async function cli<Writer extends (msg: string) => boolean>(
       case "timing":
       case "fetch": {
         // print out timing
-        const graph = compile(blocks, choices, options)
+        const graph = await compile(blocks, choices, options)
         wizardify(graph)
         new Treeifier(new DevNullUI()).toTree(order(graph))
         break
       }
 
       case "tree": {
-        prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
+        await prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
         break
       }
 
       case "json": {
-        const graph = compile(blocks, choices)
+        const graph = await compile(blocks, choices)
         const wizard = await wizardify(graph)
         ;(write || process.stdout.write.bind(process.stdout))(
           JSON.stringify(
@@ -123,6 +123,8 @@ export async function cli<Writer extends (msg: string) => boolean>(
               if (key === "source" || key === "position") {
                 return "placeholder"
               } else if (key === "description" && !value) {
+                return undefined
+              } else if (key === "nesting" && Array.isArray(value)) {
                 return undefined
               } else if (key === "status" && value === "blank") {
                 return undefined

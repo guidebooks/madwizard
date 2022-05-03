@@ -15,8 +15,8 @@
  */
 
 import Debug from "debug"
-import { ChoiceState } from "../choices"
 import { CodeBlockProps } from "../codeblock"
+import { ChoiceState, expand } from "../choices"
 import { Choice, Graph, SubTask, TitledSteps, emptySequence, extractTitle, parallel, seq, sequence, subtask } from "."
 
 import { MadWizardOptions } from "../../"
@@ -54,14 +54,14 @@ function isWizardStepNesting(nesting: Nesting): nesting is WizardStepNesting {
 }
 
 /** Take a list of code blocks and arrange them into a control flow dag */
-export function compile(
+export async function compile(
   blocks: CodeBlockProps[],
   choices: ChoiceState,
   options: Pick<MadWizardOptions, "optimize"> = {},
   ordering: "sequence" | "parallel" = "sequence",
   title?: string,
   description?: string
-): Graph {
+): Promise<Graph> {
   const debug = Debug("madwizard/timing/graph:compile")
   debug("start")
 
@@ -265,11 +265,7 @@ export function compile(
     const unoptimized =
       parts.length === 0
         ? undefined
-        : parts.length === 1
-        ? parts[0]
-        : ordering === "parallel"
-        ? parallel(parts)
-        : sequence(parts)
+        : await expand(parts.length === 1 ? parts[0] : ordering === "parallel" ? parallel(parts) : sequence(parts))
 
     const optimized = options.optimize === false ? unoptimized : optimize(unoptimized, choices)
 

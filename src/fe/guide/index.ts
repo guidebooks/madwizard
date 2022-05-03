@@ -54,7 +54,7 @@ export class Guide {
    * @return the list of remaining questions
    */
   private async questions(iter: number, previous?: Wizard) {
-    const graph = compile(this.blocks, this.choices, this.options)
+    const graph = await compile(this.blocks, this.choices, this.options)
     const wizard = await wizardify(graph, { validator: shellExec, previous })
 
     const choiceSteps = wizard.filter(isChoiceStep).filter((_) => _.status !== "success")
@@ -298,7 +298,7 @@ export class Guide {
 
     if (iter === 0) {
       // start a fresh screen before presenting the guide proper
-      console.clear()
+      // console.clear()
 
       this.presentGuidebookTitle(graph)
     }

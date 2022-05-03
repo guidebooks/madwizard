@@ -14,54 +14,75 @@
  * limitations under the License.
  */
 
-import { Element } from "hast"
-import { visit } from "unist-util-visit"
-
-import debug from "./debug"
-import { isText } from "../../parser/markdown/util/isElement"
-import { cloneAndAddTab, isExpansionGroup, isTabWithProperties, setTabTitle } from "../../parser/markdown/rehype-tabbed"
-
 // TODO allow a ValidationExecutor to be passed in
-import { shellExec } from "../../graph"
+import {
+  Graph,
+  Choice,
+  ChoicePart,
+  blocks,
+  isSequence,
+  isParallel,
+  isChoice,
+  isTitledSteps,
+  isSubTask,
+  shellExec,
+} from "../../graph"
 
-function updateTemplate(tab: Element, choice: string) {
-  visit(tab, (node) => {
-    if (isText(node)) {
-      node.value = node.value.replace(/\$\{choice\}/gi, choice)
-    }
+function updateTemplate(part: ChoicePart, choice: string, member: number) {
+  const pattern = /\$\{choice\}/gi
+
+  part.title = choice
+  part.member = member
+  part.description = part.description.replace(pattern, choice)
+
+  blocks(part.graph).forEach((_) => (_.body = _.body.replace(pattern, choice)))
+}
+
+function rewriteChoiceToIncludeExpansion(graph: Choice, names: string[]) {
+  const firstChoice = graph.choices[0]
+  names.slice(1).forEach((name, idx) => {
+    const choice = JSON.parse(JSON.stringify(firstChoice))
+    updateTemplate(choice, name, idx + 1)
+
+    graph.choices.push(choice)
   })
+
+  firstChoice.title = names[0]
+  updateTemplate(firstChoice, names[0], 0)
 }
 
-function rewriteTabsToIncludeExpansion(node: Element, names: string[]) {
-  const firstTab = node.children[0]
-  if (isTabWithProperties(firstTab)) {
-    names.slice(1).forEach((name, idx) => {
-      const tab = cloneAndAddTab(node, firstTab, name, idx + 1)
-      if (tab) {
-        updateTemplate(tab, name)
+function isExpansionGroup(graph: Choice) {
+  const match = graph.group.match(/expand\((.+)\)/)
+  return match && match[1]
+}
+
+export async function expand(graph: Graph) {
+  if (isSequence(graph)) {
+    await Promise.all(graph.sequence.map(expand))
+  } else if (isParallel(graph)) {
+    await Promise.all(graph.parallel.map(expand))
+  } else if (isChoice(graph)) {
+    const expansionExpr = isExpansionGroup(graph)
+    if (expansionExpr) {
+      // debug("expansion/expr", expansionExpr)
+
+      const opts = { capture: "", throwErrors: true }
+      try {
+        await shellExec(expansionExpr, opts)
+        // debug("expansion/response", opts.capture)
+        const response = opts.capture.split(/\n/).filter(Boolean)
+        rewriteChoiceToIncludeExpansion(graph, response)
+      } catch (err) {
+        // debug("expansion/error", err)
       }
-    })
-
-    setTabTitle(firstTab, names[0])
-    updateTemplate(firstTab, names[0])
-  }
-}
-
-export default async function expand(node: Element) {
-  const expansionExpr = isExpansionGroup(node)
-  if (expansionExpr) {
-    debug("expansion/expr", expansionExpr)
-
-    const opts = { capture: "" }
-    try {
-      await shellExec(expansionExpr, opts)
-      debug("expansion/response", opts.capture)
-      const response = opts.capture.split(/\n/).filter(Boolean)
-      rewriteTabsToIncludeExpansion(node, response)
-    } catch (err) {
-      debug("expansion/error", err)
     }
 
-    return true
+    await Promise.all(graph.choices.map((_) => expand(_.graph)))
+  } else if (isSubTask(graph)) {
+    await expand(graph.graph)
+  } else if (isTitledSteps(graph)) {
+    await Promise.all(graph.steps.map((_) => expand(_.graph)))
   }
+
+  return graph
 }

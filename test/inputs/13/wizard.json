@@ -5,26 +5,12 @@
       "title": "H1",
       "filepath": "",
       "graph": {
-        "key": "8a4fd559-a328-41e6-a43b-aa4d31f9da3e",
+        "key": "014a8f24-180c-4ba8-9e16-d5ec3af04548",
         "sequence": [
           {
             "body": "111",
             "language": "shell",
-            "id": "af97e788-2189-46a6-a9a8-f3b26bf55eeb-0",
-            "nesting": [
-              {
-                "kind": "Import",
-                "key": "H1",
-                "title": "H1",
-                "filepath": ""
-              },
-              {
-                "kind": "Import",
-                "key": "H1",
-                "title": "H1",
-                "filepath": ""
-              }
-            ]
+            "id": "546a70b5-d710-46f6-a790-11cd270bac8c-0"
           }
         ]
       },

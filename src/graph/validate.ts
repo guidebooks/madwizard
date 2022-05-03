@@ -31,13 +31,17 @@ export async function shellExec(cmdline: string, opts: ExecOptions = { quiet: fa
   const capture = typeof opts.capture === "string"
 
   return new Promise((resolve, reject) => {
-    const child = spawn(process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash"), ["-c", cmdline], {
-      stdio: opts.quiet
-        ? ["inherit", "ignore", "pipe"]
-        : capture
-        ? ["inherit", "pipe", "pipe"]
-        : ["inherit", "inherit", "inherit"],
-    })
+    const child = spawn(
+      process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash"),
+      ["-c", `set -o pipefail; ${cmdline}`],
+      {
+        stdio: opts.quiet
+          ? ["inherit", "ignore", "pipe"]
+          : capture
+          ? ["inherit", "pipe", "pipe"]
+          : ["inherit", "inherit", "inherit"],
+      }
+    )
 
     child.on("error", reject)
 

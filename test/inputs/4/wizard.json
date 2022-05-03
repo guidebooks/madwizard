@@ -5,27 +5,13 @@
       "title": "importa.md",
       "filepath": "test/inputs/snippets/importa.md",
       "graph": {
-        "key": "404a7173-6631-4447-8b2d-ec7e79c117f7",
+        "key": "79a76ea5-0038-4acf-991d-4a98d8db884d",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "0e8e1c09-11d8-4c10-8cd6-2597f7cb7b3e-0",
-            "nesting": [
-              {
-                "kind": "Import",
-                "key": "test/inputs/snippets/snippets-in-tab4.md",
-                "title": "snippets-in-tab4.md",
-                "filepath": "test/inputs/snippets/snippets-in-tab4.md"
-              },
-              {
-                "kind": "Import",
-                "key": "test/inputs/snippets/importa.md",
-                "title": "importa.md",
-                "filepath": "test/inputs/snippets/importa.md"
-              }
-            ]
+            "id": "8ec10849-7856-4375-a108-edf9645940e6-0"
           }
         ]
       },
@@ -45,50 +31,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "0a828d36-d55f-42e3-a4a3-36a0fc56c963",
+            "key": "3d89ed6c-86b9-4b71-bf62-bd4e12780296",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "0e8e1c09-11d8-4c10-8cd6-2597f7cb7b3e-1",
-                "nesting": [
-                  {
-                    "kind": "Import",
-                    "key": "test/inputs/snippets/snippets-in-tab4.md",
-                    "title": "snippets-in-tab4.md",
-                    "filepath": "test/inputs/snippets/snippets-in-tab4.md"
-                  },
-                  {
-                    "kind": "Import",
-                    "key": "test/inputs/snippets/importe.md",
-                    "title": "EEE",
-                    "filepath": "test/inputs/snippets/importe.md"
-                  },
-                  {
-                    "kind": "Choice",
-                    "group": "TabE1",
-                    "title": "TabE1",
-                    "description": "\nEEE1Content",
-                    "member": 0,
-                    "groupDetail": {
-                      "child": {
-                        "type": "element",
-                        "tagName": "h1",
-                        "properties": {},
-                        "children": [
-                          {
-                            "type": "text",
-                            "value": "EEE",
-                            "position": "placeholder"
-                          }
-                        ],
-                        "position": "placeholder"
-                      },
-                      "level": 1,
-                      "title": "EEE"
-                    }
-                  }
-                ]
+                "id": "8ec10849-7856-4375-a108-edf9645940e6-1"
               }
             ]
           },
@@ -120,14 +68,14 @@
         {
           "member": 0,
           "graph": {
-            "key": "cea683cf-3920-426b-b0a3-f4bb448c3622",
+            "key": "c6d758bc-b5db-4a90-a936-3c17b8c9e447",
             "sequence": [
               {
                 "key": "test/inputs/snippets/importd.md",
                 "title": "DDD",
                 "filepath": "test/inputs/snippets/importd.md",
                 "graph": {
-                  "key": "58cc085b-00cb-4a35-807e-fa653865ecb4",
+                  "key": "7a1bde8b-ca56-4e12-97c9-5ee786fb36c2",
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
@@ -137,160 +85,25 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "00e9031c-521c-4976-9831-3dfc09c5c75c",
+                            "key": "54f81dbc-e37a-4491-b040-80bee0cf5123",
                             "sequence": [
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "0e8e1c09-11d8-4c10-8cd6-2597f7cb7b3e-2",
-                                "nesting": [
-                                  {
-                                    "kind": "Import",
-                                    "key": "test/inputs/snippets/snippets-in-tab4.md",
-                                    "title": "snippets-in-tab4.md",
-                                    "filepath": "test/inputs/snippets/snippets-in-tab4.md"
-                                  },
-                                  {
-                                    "kind": "Choice",
-                                    "group": "Tab1####Tab2",
-                                    "title": "Tab1",
-                                    "description": "imports:\n",
-                                    "member": 0,
-                                    "groupDetail": {}
-                                  },
-                                  {
-                                    "kind": "Import",
-                                    "key": "test/inputs/snippets/importd.md",
-                                    "title": "DDD",
-                                    "filepath": "test/inputs/snippets/importd.md"
-                                  },
-                                  {
-                                    "kind": "Choice",
-                                    "group": "SubTab1####SubTab2",
-                                    "title": "SubTab1",
-                                    "member": 0,
-                                    "groupDetail": {
-                                      "child": {
-                                        "type": "element",
-                                        "tagName": "h1",
-                                        "properties": {},
-                                        "children": [
-                                          {
-                                            "type": "text",
-                                            "value": "DDD",
-                                            "position": "placeholder"
-                                          }
-                                        ],
-                                        "position": "placeholder"
-                                      },
-                                      "level": 1,
-                                      "title": "DDD"
-                                    }
-                                  }
-                                ]
+                                "id": "8ec10849-7856-4375-a108-edf9645940e6-2"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "0e8e1c09-11d8-4c10-8cd6-2597f7cb7b3e-3",
-                                "nesting": [
-                                  {
-                                    "kind": "Import",
-                                    "key": "test/inputs/snippets/snippets-in-tab4.md",
-                                    "title": "snippets-in-tab4.md",
-                                    "filepath": "test/inputs/snippets/snippets-in-tab4.md"
-                                  },
-                                  {
-                                    "kind": "Choice",
-                                    "group": "Tab1####Tab2",
-                                    "title": "Tab1",
-                                    "description": "imports:\n",
-                                    "member": 0,
-                                    "groupDetail": {}
-                                  },
-                                  {
-                                    "kind": "Import",
-                                    "key": "test/inputs/snippets/importd.md",
-                                    "title": "DDD",
-                                    "filepath": "test/inputs/snippets/importd.md"
-                                  },
-                                  {
-                                    "kind": "Choice",
-                                    "group": "SubTab1####SubTab2",
-                                    "title": "SubTab1",
-                                    "member": 0,
-                                    "groupDetail": {
-                                      "child": {
-                                        "type": "element",
-                                        "tagName": "h1",
-                                        "properties": {},
-                                        "children": [
-                                          {
-                                            "type": "text",
-                                            "value": "DDD",
-                                            "position": "placeholder"
-                                          }
-                                        ],
-                                        "position": "placeholder"
-                                      },
-                                      "level": 1,
-                                      "title": "DDD"
-                                    }
-                                  }
-                                ]
+                                "id": "8ec10849-7856-4375-a108-edf9645940e6-3"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "0e8e1c09-11d8-4c10-8cd6-2597f7cb7b3e-4",
-                                "nesting": [
-                                  {
-                                    "kind": "Import",
-                                    "key": "test/inputs/snippets/snippets-in-tab4.md",
-                                    "title": "snippets-in-tab4.md",
-                                    "filepath": "test/inputs/snippets/snippets-in-tab4.md"
-                                  },
-                                  {
-                                    "kind": "Choice",
-                                    "group": "Tab1####Tab2",
-                                    "title": "Tab1",
-                                    "description": "imports:\n",
-                                    "member": 0,
-                                    "groupDetail": {}
-                                  },
-                                  {
-                                    "kind": "Import",
-                                    "key": "test/inputs/snippets/importd.md",
-                                    "title": "DDD",
-                                    "filepath": "test/inputs/snippets/importd.md"
-                                  },
-                                  {
-                                    "kind": "Choice",
-                                    "group": "SubTab1####SubTab2",
-                                    "title": "SubTab1",
-                                    "member": 0,
-                                    "groupDetail": {
-                                      "child": {
-                                        "type": "element",
-                                        "tagName": "h1",
-                                        "properties": {},
-                                        "children": [
-                                          {
-                                            "type": "text",
-                                            "value": "DDD",
-                                            "position": "placeholder"
-                                          }
-                                        ],
-                                        "position": "placeholder"
-                                      },
-                                      "level": 1,
-                                      "title": "DDD"
-                                    }
-                                  }
-                                ]
+                                "id": "8ec10849-7856-4375-a108-edf9645940e6-4"
                               }
                             ]
                           },
@@ -299,58 +112,13 @@
                         {
                           "member": 1,
                           "graph": {
-                            "key": "8fa8768e-d470-4803-961d-03d1d0532f93",
+                            "key": "b7398028-f5b6-4f0d-8eab-b05f09061c1c",
                             "sequence": [
                               {
                                 "body": "echo BBB",
                                 "language": "bash",
                                 "validate": false,
-                                "id": "0e8e1c09-11d8-4c10-8cd6-2597f7cb7b3e-5",
-                                "nesting": [
-                                  {
-                                    "kind": "Import",
-                                    "key": "test/inputs/snippets/snippets-in-tab4.md",
-                                    "title": "snippets-in-tab4.md",
-                                    "filepath": "test/inputs/snippets/snippets-in-tab4.md"
-                                  },
-                                  {
-                                    "kind": "Choice",
-                                    "group": "Tab1####Tab2",
-                                    "title": "Tab1",
-                                    "description": "imports:\n",
-                                    "member": 0,
-                                    "groupDetail": {}
-                                  },
-                                  {
-                                    "kind": "Import",
-                                    "key": "test/inputs/snippets/importd.md",
-                                    "title": "DDD",
-                                    "filepath": "test/inputs/snippets/importd.md"
-                                  },
-                                  {
-                                    "kind": "Choice",
-                                    "group": "SubTab1####SubTab2",
-                                    "title": "SubTab2",
-                                    "member": 1,
-                                    "groupDetail": {
-                                      "child": {
-                                        "type": "element",
-                                        "tagName": "h1",
-                                        "properties": {},
-                                        "children": [
-                                          {
-                                            "type": "text",
-                                            "value": "DDD",
-                                            "position": "placeholder"
-                                          }
-                                        ],
-                                        "position": "placeholder"
-                                      },
-                                      "level": 1,
-                                      "title": "DDD"
-                                    }
-                                  }
-                                ]
+                                "id": "8ec10849-7856-4375-a108-edf9645940e6-5"
                               }
                             ]
                           },
@@ -370,28 +138,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "ffe8f02a-9b3a-4278-96c8-aab063217d88",
+            "key": "3ece0c99-90dd-4b72-b9d0-c5e219e75ce7",
             "sequence": [
               {
                 "body": "echo XXX",
                 "language": "bash",
-                "id": "0e8e1c09-11d8-4c10-8cd6-2597f7cb7b3e-6",
-                "nesting": [
-                  {
-                    "kind": "Import",
-                    "key": "test/inputs/snippets/snippets-in-tab4.md",
-                    "title": "snippets-in-tab4.md",
-                    "filepath": "test/inputs/snippets/snippets-in-tab4.md"
-                  },
-                  {
-                    "kind": "Choice",
-                    "group": "Tab1####Tab2",
-                    "title": "Tab2",
-                    "description": "\nBBBoo",
-                    "member": 1,
-                    "groupDetail": {}
-                  }
-                ]
+                "id": "8ec10849-7856-4375-a108-edf9645940e6-6"
               }
             ]
           },
