@@ -8,7 +8,7 @@
         {
           "member": 0,
           "graph": {
-            "key": "26c5e1cf-e723-4914-9f55-2a81e2a505a6",
+            "key": "7f7290af-d3c8-48f4-a788-2512f3b86229",
             "sequence": [
               {
                 "group": "SubTab1####SubTab2",
@@ -18,12 +18,12 @@
                   {
                     "member": 0,
                     "graph": {
-                      "key": "fc4f87f8-2809-49f2-a61f-94451035ce96",
+                      "key": "2c140c97-5c18-4cf5-9666-5dfa90406beb",
                       "sequence": [
                         {
                           "body": "echo 111",
                           "language": "shell",
-                          "id": "811eb55d-2b29-40f2-8637-c9935605681f-0",
+                          "id": "b190cf6f-a699-4471-81a7-9caf4feb66f9-0",
                           "nesting": [
                             {
                               "kind": "Import",
@@ -36,7 +36,7 @@
                               "kind": "Choice",
                               "group": "Tab1",
                               "title": "Tab1",
-                              "description": "\nTab1Description",
+                              "description": "Tab1Description\n",
                               "member": 0,
                               "groupDetail": {
                                 "child": {
@@ -72,12 +72,12 @@
                   {
                     "member": 1,
                     "graph": {
-                      "key": "4251848d-7d91-416a-b502-8ef54585b4bf",
+                      "key": "87cb49b1-1575-4830-b397-20d06959780c",
                       "sequence": [
                         {
                           "body": "echo 222",
                           "language": "shell",
-                          "id": "811eb55d-2b29-40f2-8637-c9935605681f-1",
+                          "id": "b190cf6f-a699-4471-81a7-9caf4feb66f9-1",
                           "nesting": [
                             {
                               "kind": "Import",
@@ -90,7 +90,7 @@
                               "kind": "Choice",
                               "group": "Tab1",
                               "title": "Tab1",
-                              "description": "\nTab1Description",
+                              "description": "Tab1Description\n",
                               "member": 0,
                               "groupDetail": {
                                 "child": {
@@ -128,7 +128,7 @@
             ]
           },
           "title": "Tab1",
-          "description": "\nTab1Description"
+          "description": "Tab1Description\n"
         }
       ]
     },
@@ -141,7 +141,7 @@
           "group": "Tab1",
           "member": 0,
           "isFirstChoice": true,
-          "description": "\nTab1Description"
+          "description": "Tab1Description\n"
         }
       ]
     }
