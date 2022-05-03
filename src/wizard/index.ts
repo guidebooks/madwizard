@@ -30,6 +30,7 @@ import {
   isOptional,
   isLeafNode,
   findChoiceFrontierWithFallbacks,
+  sameGraph,
   validate,
 } from "../graph"
 
@@ -52,8 +53,20 @@ export interface WizardStep<C extends StepContent> {
 }
 
 type WizardStepWithGraph<G extends Graph = Graph, C extends StepContent = StepContent> = {
-  graph: G
+  /**
+   * If we were given a `ValidationExecutor`, we will keep the
+   * validation status of the step here
+   */
+  status: Status
+
+  /** The wizard model for this step */
   step: WizardStep<C>
+
+  /**
+   * The underlying graph model that was used to generate the `step`
+   * model.
+   */
+  graph: G
 }
 
 export type TaskStep = WizardStepWithGraph<Graph, Markdown>
@@ -74,6 +87,7 @@ export function isTaskStep(step: WizardStepWithGraph): step is TaskStep {
 function wizardStepForPrereq<G extends Graph>(graph: G): WizardStepWithGraph<G, Markdown> {
   return {
     graph,
+    status: "blank",
     step: {
       name: extractTitle(graph),
       description: extractDescription(graph),
@@ -88,6 +102,7 @@ function wizardStepForPrereq<G extends Graph>(graph: G): WizardStepWithGraph<G, 
 function wizardStepForChoiceOnFrontier(graph: Choice, isFirstChoice: boolean): WizardStepWithGraph<Choice, Tile[]> {
   return {
     graph,
+    status: "blank",
     step: {
       name: graph.title,
       description: "This step requires you to choose how to proceed",
@@ -116,9 +131,18 @@ type Options = {
    * tasks will be returned as part of the `Wizard` model.
    */
   validator: ValidationExecutor
+
+  /**
+   * In order to avoid re-checking validity, callers may pass in the
+   * prior Wizard model.
+   */
+  previous: Wizard
 }
 
-export async function wizardify(graph: Graph, { includeOptional, validator }: Partial<Options> = {}): Promise<Wizard> {
+export async function wizardify(
+  graph: Graph,
+  { includeOptional, validator, previous }: Partial<Options> = {}
+): Promise<Wizard> {
   const debug = Debug("madwizard/timing/wizard:wizardify")
   debug("start")
 
@@ -139,30 +163,43 @@ export async function wizardify(graph: Graph, { includeOptional, validator }: Pa
     ])
 
     if (validator) {
-      // then filter out tasks that are already done
-      const debug = Debug("madwizard/wizard/validator")
+      // then update the Wizard model with real Status fields.
+      const spinners = wizard.map(({ step }) => ora(chalk.dim(`Validating ${chalk.blue(step.name)}`)).start())
 
-      const spinners = wizard.map(({ step }) => ora(`Validating ${chalk.blue(step.name)}`).start())
-
-      const statuses: Status[] = await Promise.all(
-        wizard.map(async ({ graph }, idx) => {
+      return Promise.all(
+        wizard.map(async ({ step, graph }, idx) => {
           const spinner = spinners[idx]
+
+          if (previous && sameGraph(graph, previous[idx].graph)) {
+            // probably no need to re-compute status
+            const { status } = previous[idx]
+            if (status === "success") {
+              spinner.succeed()
+            } else {
+              spinner.warn()
+            }
+            return { step, graph, status }
+          }
+
           try {
             const status = await validate(graph, { validator })
-            spinner.succeed()
-            return status
+
+            if (status === "success") {
+              spinner.succeed()
+            } else {
+              spinner.warn()
+            }
+
+            return { step, graph, status }
           } catch (err) {
             spinner.warn()
-            return "blank"
+            return { step, graph, status: "blank" }
           }
         })
       )
-
-      debug("wizard step validation", statuses)
-      return wizard.filter((_, idx) => statuses[idx] !== "success")
+    } else {
+      return wizard
     }
-
-    return wizard
   } finally {
     debug("complete")
   }

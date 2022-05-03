@@ -325,7 +325,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
   ) =>
     oraPromise(
       _fetchRecursively(_snippetFileName, srcFilePath, provenance, nestingDepth, inImport),
-      `Fetching ${chalk.blue(_snippetFileName)}`
+      chalk.dim(`Fetching ${chalk.blue(_snippetFileName)}`)
     )
 
   const oops404 = (snippetFileName: string, errorMessage = "Failed to fetch this file") => {

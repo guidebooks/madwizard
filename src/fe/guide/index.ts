@@ -31,7 +31,7 @@ import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
 import indent from "../../parser/markdown/util/indent"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"
-import { wizardify, ChoiceStep, TaskStep, isChoiceStep, isTaskStep } from "../../wizard"
+import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isTaskStep, wizardify } from "../../wizard"
 import { Graph, Status, blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
 
 export class Guide {
@@ -52,12 +52,12 @@ export class Guide {
    * @param iter How many questions have we asked so far?
    * @return the list of remaining questions
    */
-  private async questions(iter: number) {
+  private async questions(iter: number, previous?: Wizard) {
     const graph = compile(this.blocks, this.choices)
-    const steps = await wizardify(graph, { validator: shellExec })
+    const wizard = await wizardify(graph, { validator: shellExec, previous })
 
-    const choiceSteps = steps.filter(isChoiceStep)
-    const taskSteps = steps.filter(isTaskStep)
+    const choiceSteps = wizard.filter(isChoiceStep).filter((_) => _.status !== "success")
+    const taskSteps = wizard.filter(isTaskStep).filter((_) => _.status !== "success")
 
     const questions = choiceSteps.map(({ step }, stepIdx) => ({
       type: "list",
@@ -75,6 +75,7 @@ export class Guide {
 
     return {
       graph,
+      wizard,
       choiceSteps,
       taskSteps,
       questions,
@@ -290,13 +291,14 @@ export class Guide {
   }
 
   /** Iterate until all choices have been resolved */
-  private async resolveChoices(iter = 0) {
-    const { graph, choiceSteps, taskSteps, questions } = await this.questions(iter)
-
-    // start a fresh screen before presenting the guide proper
-    console.clear()
+  private async resolveChoices(iter = 0, previous?: Wizard) {
+    const qs = await this.questions(iter, previous)
+    const { graph, choiceSteps, taskSteps, questions, wizard } = qs
 
     if (iter === 0) {
+      // start a fresh screen before presenting the guide proper
+      console.clear()
+
       this.presentGuidebookTitle(graph)
     }
 
@@ -306,7 +308,7 @@ export class Guide {
       // note that we ask one question at a time, because the answer
       // to the first question may influence what question we ask next
       await this.incorporateAnswers(choiceSteps, await this.ask(questions.slice(0, 1)))
-      return this.resolveChoices(iter + 1)
+      return this.resolveChoices(iter + 1, wizard)
     }
   }
 
