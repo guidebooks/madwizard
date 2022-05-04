@@ -14,88 +14,38 @@
  * limitations under the License.
  */
 
-import { v4 } from "uuid"
-
 import {
   Choice,
   Graph,
-  hasKey,
+  TitledGraph,
+  LeafNode,
   hasTitle,
-  isLeafNode,
-  isSubTask,
+  isBarrier,
   isChoice,
-  isSequence,
   isParallel,
+  isSequence,
+  isSubTask,
   isTitledSteps,
-  asSubTask,
-  subtask,
+  withTitle,
 } from "."
 
-function key(graph: Graph) {
-  if (hasKey(graph)) {
-    return graph.key
-  } else if (hasTitle(graph)) {
-    return graph.title
-  } else if (isChoice(graph)) {
-    return graph.group
-  } else {
-    return graph.id
-  }
+/** Choose `A` if it has a title, else `B` */
+function titlest(A: Graph, B?: TitledGraph) {
+  return hasTitle(A) ? A : B
 }
 
 /**
- * Find the first set of `CodeBlock` nodes, when scanning the given
- * `graph`. Do not scan under Choice nodes for nested subtasks, as we
- * assume that `collapseMadeChoices` has already been applied to the
- * given `graph`.
+ * If we have a nearest entitled parent `B`, then wrap that title
+ * around `A`, and push it on `S`. This will help with later
+ * presentation, so we have some explanation for what the `LeafNode`
+ * code block is doing.
  */
-
-export function findCodeBlockFrontier(graph: Graph): Graph[] {
-  if (isSubTask(graph)) {
-    const children = findCodeBlockFrontier(graph.graph)
-    if (children.every(isLeafNode)) {
-      return [graph]
-    } else {
-      return children
-    }
-  } else if (isChoice(graph)) {
-    return []
-  } else if (isSequence(graph)) {
-    return graph.sequence.flatMap(findCodeBlockFrontier)
-  } else if (isParallel(graph)) {
-    return graph.parallel.flatMap(findCodeBlockFrontier)
-  } else if (isTitledSteps(graph)) {
-    return graph.steps.flatMap((_) => findCodeBlockFrontier(_.graph))
+function pushWithTitle(S: Graph[], A: LeafNode, B?: TitledGraph, isPartOfBarrier = false) {
+  if (B) {
+    S.push(withTitle(A, B, isPartOfBarrier))
   } else {
-    return [graph]
+    S.push(A)
   }
-}
-
-/**
- * Enumerate the Prerequisites and Main Tasks in the given `graph.
- */
-export function findPrereqsAndMainTasks(graph: Graph): Graph[] {
-  if (isSubTask(graph) && isSequence(graph.graph) && graph.graph.sequence.length === 2) {
-    const child1 = graph.graph.sequence[0]
-    const child2 = graph.graph.sequence[1]
-
-    if (hasTitle(child1) && child1.title === "Prerequisites" && hasTitle(child2) && child2.title === "Main Tasks") {
-      // this needs a bit more refinement. we need to find a general
-      // way to deal with an arbitrary mixture of titled and untitled
-      // tasks
-      const children1 = isSubTask(child1) ? child1.graph.sequence : child1.steps.map((_) => _.graph)
-      const children2 = isSubTask(child2) ? child2.graph.sequence : child2.steps.map((_) => _.graph)
-      if (children1.every((_) => hasTitle(_)) && children2.every((_) => hasTitle(_))) {
-        return children1.concat(children2)
-      } else if (isTitledSteps(child2)) {
-        return children1.concat(child2.steps.map(asSubTask))
-      }
-    }
-  } else if (isTitledSteps(graph)) {
-    return graph.steps.map((_) => subtask(v4(), _.title, _.description, "", _.graph, _.source))
-  }
-
-  return []
 }
 
 /**
@@ -105,144 +55,62 @@ export function findPrereqsAndMainTasks(graph: Graph): Graph[] {
  * `graph`.
  *
  */
-export function findChoiceFrontier(
+export function _findChoiceFrontier(
   graph: Graph,
-  prereqs: Graph[] = [],
-  marks: Record<string, boolean> = {}
+  prereqs: Graph[],
+  nearestEnclosingTitledSubgraph?: TitledGraph,
+  isPartOfBarrier = false
 ): { prereqs?: Graph[]; choice: Choice }[] {
-  if (isChoice(graph)) {
-    marks[key(graph)] = true
+  const recurse = (graph: Graph) =>
+    _findChoiceFrontier(
+      graph,
+      prereqs,
+      titlest(graph, nearestEnclosingTitledSubgraph),
+      isPartOfBarrier || isBarrier(graph)
+    )
 
+  if (isChoice(graph)) {
     // user has not yet made a choice. stop here and consume all
     // prereqs
     const frontier = [{ prereqs: prereqs.slice(), choice: graph }]
-    prereqs.forEach((_) => (marks[key(_)] = true))
     prereqs.splice(0, prereqs.length) // consume...
     return frontier
   } else if (isSubTask(graph)) {
-    const frontier = findChoiceFrontier(graph.graph, prereqs, marks)
-
-    if (graph.title === "Prerequisites") {
-      graph.graph.sequence.forEach((_) => {
-        if (!marks[key(_)]) {
-          prereqs.push(_)
-          marks[key(_)] = true
-        }
-      })
-      marks[key(graph)] = true
-    }
-
-    if (isSequence(graph.graph) && graph.graph.sequence.every((child) => marks[key(child)])) {
-      marks[key(graph)] = true
-
-      if (frontier.length === 0 && graph.title === "Prerequisites") {
-        graph.graph.sequence.forEach((_) => {
-          if (!marks[key(_)]) {
-            prereqs.push(_)
-            marks[key(_)] = true
-          }
-        })
-      }
-    }
-    return frontier
+    return recurse(graph.graph)
   } else if (isSequence(graph)) {
-    const frontier = graph.sequence.flatMap((_) => {
-      const frontier = findChoiceFrontier(_, prereqs, marks)
-
-      if (!marks[key(_)]) {
-        prereqs.push(_)
-      }
-
-      return frontier
-    })
-    graph.sequence.forEach((a) => {
-      const idx = prereqs.findIndex((b) => a === b)
-      if (idx >= 0) {
-        prereqs.splice(idx, 1)
-      }
-    })
-    if (graph.sequence.every((child) => marks[key(child)])) {
-      marks[key(graph)] = true
-    }
-    return frontier
+    return graph.sequence.flatMap(recurse)
   } else if (isParallel(graph)) {
-    const frontier = graph.parallel.flatMap((_) => {
-      const frontier = findChoiceFrontier(_, prereqs, marks)
-
-      if (!marks[key(_)]) {
-        prereqs.push(_)
-      }
-
-      return frontier
-    })
-    graph.parallel.forEach((a) => {
-      const idx = prereqs.findIndex((b) => a === b)
-      if (idx >= 0) {
-        prereqs.splice(idx, 1)
-      }
-    })
-    if (graph.parallel.every((child) => marks[key(child)])) {
-      marks[key(graph)] = true
-    }
-    return frontier
+    return graph.parallel.flatMap(recurse)
   } else if (isTitledSteps(graph)) {
-    const frontier = graph.steps.flatMap((_) => {
-      const frontier = findChoiceFrontier(_.graph, prereqs, marks)
-
-      if (!marks[key(_.graph)]) {
-        if (hasTitle(_.graph)) {
-          prereqs.push(_.graph)
-        } else {
-          prereqs.push(subtask(_.title, _.title, _.description, "", _.graph, _.source))
-        }
-      }
-
-      return frontier
-    })
-    graph.steps.forEach(({ graph: a }) => {
-      const idx = prereqs.findIndex((b) => a === b)
-      if (idx >= 0) {
-        prereqs.splice(idx, 1)
-      }
-    })
-    if (graph.steps.every((step) => marks[key(step.graph)])) {
-      marks[key(graph)] = true
-    }
-    return frontier
+    return graph.steps.flatMap((_) => recurse(_.graph))
   } else {
     // leaf-most code blocks. no choices here.
+    pushWithTitle(prereqs, graph, nearestEnclosingTitledSubgraph, isPartOfBarrier)
     return []
   }
 }
 
-export function isValidFrontier(frontier: ReturnType<typeof findChoiceFrontier>): boolean {
-  return frontier.length > 0 && frontier.every((_) => _.prereqs.length > 0 || !!_.choice)
-}
-
-export function findChoiceFrontierWithFallbacks(graph: Graph) {
-  const frontier1 = findChoiceFrontier(graph)
-
-  const frontier2 = isValidFrontier(frontier1)
-    ? frontier1
-    : [
-        {
-          prereqs: findPrereqsAndMainTasks(graph),
-          choice: undefined,
-        },
-      ]
-
-  const frontier = isValidFrontier(frontier2)
-    ? frontier2
-    : [
-        {
-          prereqs: findCodeBlockFrontier(graph),
-          choice: undefined,
-        },
-      ]
-
+export function findChoiceFrontier(graph: Graph) {
+  const prereqs = []
+  const frontier = _findChoiceFrontier(graph, prereqs)
+  if (prereqs.length > 0) {
+    frontier.push({ prereqs, choice: undefined })
+  }
   return frontier
 }
 
 export function findChoicesOnFrontier(graph: Graph): Choice[] {
-  return findChoiceFrontier(graph).map((_) => _.choice)
+  if (isChoice(graph)) {
+    return [graph]
+  } else if (isSubTask(graph)) {
+    return findChoicesOnFrontier(graph.graph)
+  } else if (isSequence(graph)) {
+    return graph.sequence.flatMap(findChoicesOnFrontier)
+  } else if (isParallel(graph)) {
+    return graph.parallel.flatMap(findChoicesOnFrontier)
+  } else if (isTitledSteps(graph)) {
+    return graph.steps.flatMap((_) => findChoicesOnFrontier(_.graph))
+  } else {
+    return []
+  }
 }

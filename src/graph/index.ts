@@ -206,6 +206,10 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
   }
 }
 
+export function withTitle(block: LeafNode, { title, description }: Title & Partial<Description>, barrier = false) {
+  return subtask(title, title, description, "", seq(block), undefined, barrier)
+}
+
 export function asSubTask(step: TitledStep): SubTask {
   return subtask(v4(), step.title, step.description, "", step.graph, step.source)
 }
@@ -235,6 +239,8 @@ export function isLeafNode<T extends Unordered | Ordered = Unordered>(graph: Gra
 }
 
 export type Graph<T extends Unordered | Ordered = Unordered> = InteriorNode<T> | LeafNode<T>
+
+export type TitledGraph<T extends Unordered | Ordered = Unordered> = Graph<T> & Title
 
 export type OrderedGraph = Graph<Ordered>
 
