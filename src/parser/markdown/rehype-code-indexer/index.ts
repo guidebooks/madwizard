@@ -53,6 +53,7 @@ import {
   getImportKey,
   getImportFilepath,
   getImportTitle,
+  getValidate,
 } from "../remark-import"
 import { CodeBlockProps, addNesting as addCodeBlockNesting } from "../../../codeblock/CodeBlockProps"
 
@@ -249,6 +250,7 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                         key: getImportKey(_.properties),
                         title: getImportTitle(_.properties),
                         filepath: getImportFilepath(_.properties),
+                        validate: getValidate(_.properties),
                       })
                     } else if (isTipWithFullTitle(_)) {
                       const title = getTipTitle(_)

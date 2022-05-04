@@ -29,7 +29,7 @@ import { v4 } from "uuid"
 import { basename } from "path"
 
 import { ChoiceState } from "../choices"
-import { CodeBlockProps, Source, Title, Description } from "../codeblock/CodeBlockProps"
+import { Barrier, Validatable, CodeBlockProps, Source, Title, Description } from "../codeblock/CodeBlockProps"
 
 export * from "./order"
 export * from "./Status"
@@ -171,20 +171,13 @@ function sameTitledSteps(A: TitledSteps, B: TitledSteps) {
   )
 }
 
-/**
- * Does this guidebook need to be executed before subsequent choices
- * even make sense? e.g. logging in to a cluster.
- */
-type Barrier = {
-  barrier: boolean
-}
-
 export type SubTask<T extends Unordered | Ordered = Unordered> = Key &
   Source &
   Filepath &
   Title &
   Partial<Description> &
   Partial<Barrier> &
+  Partial<Validatable> &
   T & {
     graph: Sequence<T>
   }
@@ -198,7 +191,8 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
   filepath: string,
   graph: Sequence<T>,
   source: Source["source"] = () => "",
-  barrier = false
+  barrier = false,
+  validate?: string
 ): SubTask<Unordered> {
   return {
     key,
@@ -208,6 +202,7 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
     graph,
     source,
     barrier,
+    validate,
   }
 }
 
@@ -387,4 +382,8 @@ export function extractDescription(graph: Graph) {
 
 export function isBarrier(graph: Graph): graph is Graph & Barrier & { barrier: true } {
   return isSubTask(graph) && graph.barrier
+}
+
+export function isValidatable(graph: Graph): graph is Graph & Validatable {
+  return typeof (graph as Validatable).validate === "string"
 }

@@ -357,7 +357,7 @@ ${indent(errorMessage)}`
 
     const { attributes, body, bodyBegin } = tryFrontmatter(snippetData.trim())
 
-    const attributesEnc = bodyBegin === 0 ? "" : encodeURIComponent(JSON.stringify(attributes))
+    const attributesEnc = bodyBegin === 0 ? "" : Buffer.from(JSON.stringify(attributes)).toString("base64")
 
     // remark-directive uses ::: to indicate container directives,
     // i.e. directives that allow one to mark a block of text as
@@ -367,7 +367,7 @@ ${indent(errorMessage)}`
     // :::
     const colons = colonColonColon(nestingDepth)
     return `
-${colons}import{provenance=${provenance.concat([snippetFileName])} filepath=${filepath} attributes=${attributesEnc}${
+${colons}import{provenance=${provenance.concat([snippetFileName])} filepath=${filepath} attributes="${attributesEnc}"${
       attributes.title ? ` title="${attributes.title}"` : ""
     }}
 ${body}

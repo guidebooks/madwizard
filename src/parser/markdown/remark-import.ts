@@ -27,6 +27,7 @@ import KuiFrontmatter from "./frontmatter/KuiFrontmatter"
 
 export interface ImportProps {
   "data-kui-import": "true"
+  "data-kui-validate": string
   "data-kui-is-barrier": boolean
   "data-kui-filepath": string
   "data-kui-import-title": string
@@ -65,6 +66,10 @@ function isHeading(node: Node): boolean {
   return node.type === "heading"
 }
 
+export function getValidate(props: ImportProps) {
+  return props["data-kui-validate"]
+}
+
 export function visitImportContainers(
   tree,
   visitor: (importProps: {
@@ -87,7 +92,7 @@ export function visitImportContainers(
         frontmatter:
           typeof node.attributes.attributes !== "string" || node.attributes.attributes.length === 0
             ? {}
-            : JSON.parse(decodeURIComponent(node.attributes.attributes)),
+            : JSON.parse(Buffer.from(node.attributes.attributes, "base64").toString()),
       })
     }
   })
@@ -124,6 +129,7 @@ export function remarkImports() {
           hProperties: {
             containedCodeBlocks: [],
             "data-kui-import": "true",
+            "data-kui-validate": frontmatter.validate,
             "data-kui-is-barrier": frontmatter.barrier,
             "data-kui-filepath": filepath,
             "data-kui-provenance": provenance,
