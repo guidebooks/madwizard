@@ -28,30 +28,30 @@ import {
   shellExec,
 } from "../../graph"
 
-function updateTemplate(part: ChoicePart, choice: string, member: number) {
-  const pattern = /\$\{choice\}/gi
-
+function updateTemplate(part: ChoicePart, choice: string, member = 0) {
   part.title = choice
   part.member = member
+
+  const pattern = /\$\{choice\}/gi
+  blocks(part.graph).forEach((_) => (_.body = _.body.replace(pattern, choice)))
 
   if (part.description) {
     part.description = part.description.replace(pattern, choice)
   }
-
-  blocks(part.graph).forEach((_) => (_.body = _.body.replace(pattern, choice)))
 }
 
 function rewriteChoiceToIncludeExpansion(graph: Choice, names: string[]) {
   const firstChoice = graph.choices[0]
-  names.slice(1).forEach((name, idx) => {
-    const choice = JSON.parse(JSON.stringify(firstChoice))
-    updateTemplate(choice, name, idx + 1)
+  graph.choices = []
 
+  names.forEach((name, idx) => {
+    // clone the first choice, and smash in the template paramter
+    const choice = JSON.parse(JSON.stringify(firstChoice))
+    updateTemplate(choice, name, idx)
+
+    // and then add it to the list of choices
     graph.choices.push(choice)
   })
-
-  firstChoice.title = names[0]
-  updateTemplate(firstChoice, names[0], 0)
 }
 
 function isExpansionGroup(graph: Choice) {

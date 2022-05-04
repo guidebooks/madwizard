@@ -18,6 +18,8 @@ import ora from "ora"
 import chalk from "chalk"
 import Debug from "debug"
 
+import { Barrier } from "../codeblock"
+
 import {
   Graph,
   Choice,
@@ -29,6 +31,7 @@ import {
   hasSource,
   isOptional,
   isLeafNode,
+  isBarrier,
   findChoiceFrontierWithFallbacks,
   sameGraph,
   validate,
@@ -45,7 +48,7 @@ export interface Tile {
 
 type StepContent = Tile[] | Markdown
 
-export interface WizardStep<C extends StepContent> {
+export type WizardStep<C extends StepContent> = Partial<Barrier> & {
   name: string
   description?: string
   introduction?: string
@@ -91,6 +94,7 @@ function wizardStepForPrereq<G extends Graph>(graph: G): WizardStepWithGraph<G, 
     step: {
       name: extractTitle(graph),
       description: extractDescription(graph),
+      barrier: isBarrier(graph),
       content: hasSource(graph) ? graph.source() : isLeafNode(graph) ? bodySource(graph) : "",
     },
   }
@@ -139,10 +143,54 @@ type Options = {
   previous: Wizard
 }
 
-export async function wizardify(
-  graph: Graph,
-  { includeOptional, validator, previous }: Partial<Options> = {}
-): Promise<Wizard> {
+/**
+ * Execute the `validate` property of the steps in the given `wizard`,
+ * and stash the result in the `status` field of each step.
+ */
+function validateWizard(wizard: Wizard, { previous, validator }: Partial<Options>) {
+  if (validator) {
+    // then update the Wizard model with real Status fields.
+    const alreadyDone = wizard.map(({ graph }) => {
+      return previous ? previous.findIndex((_) => _.status === "success" && sameGraph(graph, _.graph)) : -1
+    })
+
+    const spinners = wizard.map(({ step }, idx) => {
+      if (alreadyDone[idx] < 0) {
+        return ora(chalk.dim(`Validating ${chalk.blue(step.name)}`)).start()
+      }
+    })
+
+    return Promise.all(
+      wizard.map(async ({ step, graph }, idx) => {
+        if (alreadyDone[idx] >= 0) {
+          // probably no need to re-compute status
+          const { status } = previous[alreadyDone[idx]]
+          return { step, graph, status }
+        }
+
+        const spinner = spinners[idx]
+        try {
+          const status = await validate(graph, { validator })
+
+          if (status === "success") {
+            spinner.succeed()
+          } else {
+            spinner.warn()
+          }
+
+          return { step, graph, status }
+        } catch (err) {
+          spinner.warn()
+          return { step, graph, status: "blank" as const }
+        }
+      })
+    )
+  } else {
+    return wizard
+  }
+}
+
+export async function wizardify(graph: Graph, options: Partial<Options> = {}): Promise<Wizard> {
   const debug = Debug("madwizard/timing/wizard:wizardify")
   debug("start")
 
@@ -155,6 +203,8 @@ export async function wizardify(
     // this nested interleaving down to a linear set of WizardSteps
     const idxOfFirstChoice = frontier.findIndex((_) => _.choice)
 
+    const { includeOptional } = options
+
     const wizard = frontier.flatMap(({ prereqs, choice }, idx) => [
       ...(!prereqs ? [] : prereqs.filter((_) => includeOptional || !isOptional(_)).map((_) => wizardStepForPrereq(_))),
       ...(!choice || (!includeOptional && isOptional(choice))
@@ -162,46 +212,7 @@ export async function wizardify(
         : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice)]),
     ])
 
-    if (validator) {
-      // then update the Wizard model with real Status fields.
-      const alreadyDone = wizard.map(({ graph }) => {
-        return previous ? previous.findIndex((_) => sameGraph(graph, _.graph)) : -1
-      })
-
-      const spinners = wizard.map(({ step }, idx) => {
-        if (alreadyDone[idx] < 0) {
-          return ora(chalk.dim(`Validating ${chalk.blue(step.name)}`)).start()
-        }
-      })
-
-      return Promise.all(
-        wizard.map(async ({ step, graph }, idx) => {
-          if (alreadyDone[idx] >= 0) {
-            // probably no need to re-compute status
-            const { status } = previous[alreadyDone[idx]]
-            return { step, graph, status }
-          }
-
-          const spinner = spinners[idx]
-          try {
-            const status = await validate(graph, { validator })
-
-            if (status === "success") {
-              spinner.succeed()
-            } else {
-              spinner.warn()
-            }
-
-            return { step, graph, status }
-          } catch (err) {
-            spinner.warn()
-            return { step, graph, status: "blank" }
-          }
-        })
-      )
-    } else {
-      return wizard
-    }
+    return validateWizard(wizard, options)
   } finally {
     debug("complete")
   }
