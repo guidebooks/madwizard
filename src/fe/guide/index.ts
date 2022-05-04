@@ -307,13 +307,13 @@ export class Guide {
 
       if (tasksWereRun) {
         if (this.allDoneSuccessfully()) {
-          console.log(EOL + chalk.green(mainSymbols.tick) + " Guidebook successful")
+          console.log(chalk.green(mainSymbols.tick) + " Guidebook successful")
         } else {
-          console.log(EOL + chalk.red("Guidebook incomplete"))
+          console.log(chalk.red("Guidebook incomplete"))
         }
       }
     } catch (err) {
-      throw new Error(EOL + chalk.red(mainSymbols.cross) + " Run failed: " + err.message)
+      throw new Error(chalk.red(mainSymbols.cross) + " Run failed: " + err.message)
     }
   }
 }
