@@ -302,8 +302,7 @@ export class Guide {
   public async run() {
     const tasks = await this.resolveChoices()
     try {
-      await this.showPlan(true, true)
-
+      // await this.showPlan(true, true)
       const tasksWereRun = await this.runTasks(tasks)
 
       if (tasksWereRun) {
