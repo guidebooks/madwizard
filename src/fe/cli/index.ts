@@ -27,10 +27,10 @@ import { prettyPrintUITreeFromBlocks, Treeifier, DevNullUI } from "../tree"
 
 export { Guide }
 
-type Task = "tree" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "groups"
+type Task = "plan" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "groups"
 
 function validTasks(): Task[] {
-  return ["tree", "json", "guide", "timing", "fetch", "topmatter", "groups"]
+  return ["plan", "json", "guide", "timing", "fetch", "topmatter", "groups"]
 }
 
 function isDebugTask(task: Task) {
@@ -109,7 +109,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
         break
       }
 
-      case "tree": {
+      case "plan": {
         await prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
         break
       }

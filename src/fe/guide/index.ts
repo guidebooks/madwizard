@@ -232,32 +232,8 @@ export class Guide {
   }
 
   /** @return whether we actually ran them */
-  private async runTasks(taskSteps: TaskStep[], withPrompt = true): Promise<boolean> {
-    const execution = !withPrompt
-      ? "auto"
-      : await this.prompt([
-          {
-            type: "list",
-            name: "execution",
-            message: chalk.yellow("How do you wish to execute this guidebook?"),
-            choices: [
-              { value: "dryr", name: "Dry run 👀" },
-              { value: "auto", name: "Run this guidebook" },
-              new inquirer.Separator(),
-              { value: "plan", name: "Show me the full plan" },
-              { value: "step", name: "Step me through the execution" },
-              { value: "stop", name: "Cancel" },
-            ],
-          },
-        ]).then((_) => _.execution)
-
-    if (execution === "stop") {
-      return false
-    } else if (execution === "plan") {
-      await this.showPlan()
-      console.log()
-      return this.runTasks(taskSteps, withPrompt)
-    } else if (execution === "step") {
+  private async runTasks(taskSteps: TaskStep[], execution: "auto" | "step" | "dryr" = "auto"): Promise<boolean> {
+    if (execution === "step") {
       console.log("🖐  Hit enter after every step to proceed to the next step, or ctrl+c to cancel.")
       console.log()
     }
@@ -313,7 +289,7 @@ export class Guide {
     if (questions.length === 0) {
       return postChoiceTasks
     } else if (preChoiceTasks.length > 0) {
-      await this.runTasks(preChoiceTasks, false)
+      await this.runTasks(preChoiceTasks)
       return this.resolveChoices(iter + 1, wizard)
     } else {
       // note that we ask one question at a time, because the answer
