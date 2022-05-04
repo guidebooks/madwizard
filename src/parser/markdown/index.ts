@@ -104,16 +104,20 @@ export async function madwizardRead(file: VFile, searchStore = false): Promise<V
         throw err
       }
 
+      // see if the path is in the guidebooks store
+      const ext = /\..+$/.test(file.path) ? "" : "md"
+      const base = `https://github.com/guidebooks/store/blob/main/guidebooks/${file.path}`
+
       try {
-        // see if the path is in the guidebooks store
-        const ext = /\..+$/.test(file.path) ? "" : ".md"
-        const path = toRawGithubUserContent(
-          `https://github.com/guidebooks/store/blob/main/guidebooks/${file.path}${ext}`
-        )
+        const path = toRawGithubUserContent(`${base}.${ext}`)
         return await madwizardRead(new VFile({ path }))
       } catch (err2) {
-        console.error(err2)
-        throw err
+        try {
+          const path = toRawGithubUserContent(`${base}/index.${ext}`)
+          return await madwizardRead(new VFile({ path }))
+        } catch (err3) {
+          throw err
+        }
       }
     }
   }
