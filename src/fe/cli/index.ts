@@ -22,15 +22,15 @@ import { basename } from "path"
 import { MadWizardOptions } from "../MadWizardOptions"
 
 import { Guide } from "../guide"
-import { parse, wizardify, compile, order } from "../.."
+import { parse, wizardify, compile, order, version } from "../.."
 import { prettyPrintUITreeFromBlocks, Treeifier, DevNullUI } from "../tree"
 
 export { Guide }
 
-type Task = "plan" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "groups"
+type Task = "plan" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "groups" | "version"
 
 function validTasks(): Task[] {
-  return ["plan", "json", "guide", "timing", "fetch", "topmatter", "groups"]
+  return ["plan", "json", "guide", "timing", "fetch", "topmatter", "groups", "version"]
 }
 
 function isDebugTask(task: Task) {
@@ -68,6 +68,11 @@ export async function cli<Writer extends (msg: string) => boolean>(
 ) {
   // TODO replace this with yargs or something like that
   const argv = _argv.filter((_, idx) => !/^-/.test(_) && (idx === 0 || !/^--/.test(_argv[idx - 1])))
+
+  if (argv[1] === "version") {
+    return version()
+  }
+
   const task = !argv[2] ? "guide" : argv[1]
   const input = argv[2] || argv[1]
 
@@ -96,6 +101,9 @@ export async function cli<Writer extends (msg: string) => boolean>(
     const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)
 
     switch (task) {
+      case "version":
+        break
+
       case "groups":
       case "topmatter":
         break
@@ -151,7 +159,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
         assertExhaustive(task)
     }
   } catch (err) {
-    console.log(err)
+    console.log(err.message)
     process.exit(1)
   }
 }

@@ -14,20 +14,6 @@
  * limitations under the License.
  */
 
-// CLI
-export * from "./fe/cli"
-
-// UI support
-export * from "./fe/tree"
-
-// APIs
-export * from "./graph"
-export * from "./parser"
-export * from "./choices"
-export * from "./wizard"
-
-// Options
-export * from "./fe/MadWizardOptions"
-
-// Version
-export * from "./version"
+export async function version() {
+  console.log((await import("./version.json")).version)
+}
