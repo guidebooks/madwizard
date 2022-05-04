@@ -28,6 +28,7 @@ import { taskRunner, Task } from "./taskrunner"
 import { MadWizardOptions } from "../../"
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
+import indent from "../../parser/markdown/util/indent"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"
 import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isTaskStep, wizardify } from "../../wizard"
 import { Graph, Status, blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
@@ -43,8 +44,8 @@ export class Guide {
     private readonly ui: UI<string> = new AnsiUI()
   ) {}
 
-  private format(str: string) {
-    return this.ui.markdown(str.trim())
+  private format(str: string, indentation = "  ") {
+    return indent(this.ui.markdown(str.trim()), indentation)
   }
 
   /**
