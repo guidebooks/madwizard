@@ -32,7 +32,7 @@ import {
   isOptional,
   isLeafNode,
   isBarrier,
-  findChoiceFrontierWithFallbacks,
+  findChoiceFrontier,
   sameGraph,
   validate,
 } from "../graph"
@@ -195,7 +195,7 @@ export async function wizardify(graph: Graph, options: Partial<Options> = {}): P
   debug("start")
 
   try {
-    const frontier = findChoiceFrontierWithFallbacks(graph)
+    const frontier = findChoiceFrontier(graph)
 
     // the steps will be the interleaved ((...prereqs, choice), ...)
     // dictated by the this.state.frontier model, which comes from
