@@ -57,10 +57,15 @@ export class Guide {
     const graph = await compile(this.blocks, this.choices, this.options)
     const wizard = await wizardify(graph, { validator: shellExec, previous })
 
-    const choiceSteps = wizard.filter(isChoiceStep).filter((_) => _.status !== "success")
-    const taskSteps = wizard.filter(isTaskStep).filter((_) => _.status !== "success")
+    const firstChoiceIdx = wizard.findIndex(isChoiceStep)
+    const preChoiceSteps = firstChoiceIdx < 0 ? [] : wizard.slice(0, firstChoiceIdx).filter(isTaskStep)
+    // no: run all tasks up to the first barrier: .filter((_) => isBarrier(_.graph))
 
-    const questions = choiceSteps.map(({ step }, stepIdx) => ({
+    const choices = wizard.filter(isChoiceStep).filter((_) => _.status !== "success")
+    const preChoiceTasks = preChoiceSteps.filter((_) => _.status !== "success")
+    const postChoiceTasks = wizard.filter(isTaskStep).filter((_) => _.status !== "success")
+
+    const questions = choices.map(({ step }, stepIdx) => ({
       type: "list",
       pageSize: 20,
       name: step.name || chalk.red("Missing name"),
@@ -77,8 +82,9 @@ export class Guide {
     return {
       graph,
       wizard,
-      choiceSteps,
-      taskSteps,
+      choices,
+      preChoiceTasks,
+      postChoiceTasks,
       questions,
     }
   }
@@ -227,29 +233,31 @@ export class Guide {
   }
 
   /** @return whether we actually ran them */
-  private async runTasks(taskSteps: TaskStep[]): Promise<boolean> {
-    const { execution } = await this.prompt([
-      {
-        type: "list",
-        name: "execution",
-        message: chalk.yellow("How do you wish to execute this guidebook?"),
-        choices: [
-          { value: "dryr", name: "Dry run 👀" },
-          { value: "auto", name: "Run this guidebook" },
-          new inquirer.Separator(),
-          { value: "plan", name: "Show me the full plan" },
-          { value: "step", name: "Step me through the execution" },
-          { value: "stop", name: "Cancel" },
-        ],
-      },
-    ])
+  private async runTasks(taskSteps: TaskStep[], withPrompt = true): Promise<boolean> {
+    const execution = !withPrompt
+      ? "auto"
+      : await this.prompt([
+          {
+            type: "list",
+            name: "execution",
+            message: chalk.yellow("How do you wish to execute this guidebook?"),
+            choices: [
+              { value: "dryr", name: "Dry run 👀" },
+              { value: "auto", name: "Run this guidebook" },
+              new inquirer.Separator(),
+              { value: "plan", name: "Show me the full plan" },
+              { value: "step", name: "Step me through the execution" },
+              { value: "stop", name: "Cancel" },
+            ],
+          },
+        ]).then((_) => _.execution)
 
     if (execution === "stop") {
       return false
     } else if (execution === "plan") {
       await this.showPlan()
       console.log()
-      return this.runTasks(taskSteps)
+      return this.runTasks(taskSteps, withPrompt)
     } else if (execution === "step") {
       console.log("🖐  Hit enter after every step to proceed to the next step, or ctrl+c to cancel.")
       console.log()
@@ -294,7 +302,7 @@ export class Guide {
   /** Iterate until all choices have been resolved */
   private async resolveChoices(iter = 0, previous?: Wizard) {
     const qs = await this.questions(iter, previous)
-    const { graph, choiceSteps, taskSteps, questions, wizard } = qs
+    const { graph, choices, preChoiceTasks, postChoiceTasks, questions, wizard } = qs
 
     if (iter === 0) {
       // start a fresh screen before presenting the guide proper
@@ -304,21 +312,24 @@ export class Guide {
     }
 
     if (questions.length === 0) {
-      return taskSteps
+      return postChoiceTasks
+    } else if (preChoiceTasks.length > 0) {
+      await this.runTasks(preChoiceTasks, false)
+      return this.resolveChoices(iter + 1, wizard)
     } else {
       // note that we ask one question at a time, because the answer
       // to the first question may influence what question we ask next
-      await this.incorporateAnswers(choiceSteps, await this.ask(questions.slice(0, 1)))
+      await this.incorporateAnswers(choices, await this.ask(questions.slice(0, 1)))
       return this.resolveChoices(iter + 1, wizard)
     }
   }
 
   public async run() {
-    const taskSteps = await this.resolveChoices()
+    const tasks = await this.resolveChoices()
     try {
       await this.showPlan(true, true)
 
-      const tasksWereRun = await this.runTasks(taskSteps)
+      const tasksWereRun = await this.runTasks(tasks)
 
       if (tasksWereRun) {
         if (this.allDoneSuccessfully()) {
@@ -328,7 +339,7 @@ export class Guide {
         }
       }
     } catch (err) {
-      throw new Error(EOL + chalk.red(mainSymbols.cross) + " Run failed")
+      throw new Error(EOL + chalk.red(mainSymbols.cross) + " Run failed: " + err.message)
     }
   }
 }

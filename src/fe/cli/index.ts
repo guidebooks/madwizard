@@ -126,6 +126,8 @@ export async function cli<Writer extends (msg: string) => boolean>(
                 return undefined
               } else if (key === "nesting" && Array.isArray(value)) {
                 return undefined
+              } else if (key === "barrier" && value === false) {
+                return undefined
               } else if (key === "status" && value === "blank") {
                 return undefined
               } else {

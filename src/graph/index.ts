@@ -171,11 +171,20 @@ function sameTitledSteps(A: TitledSteps, B: TitledSteps) {
   )
 }
 
+/**
+ * Does this guidebook need to be executed before subsequent choices
+ * even make sense? e.g. logging in to a cluster.
+ */
+type Barrier = {
+  barrier: boolean
+}
+
 export type SubTask<T extends Unordered | Ordered = Unordered> = Key &
   Source &
   Filepath &
   Title &
   Partial<Description> &
+  Partial<Barrier> &
   T & {
     graph: Sequence<T>
   }
@@ -188,7 +197,8 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
   description: string,
   filepath: string,
   graph: Sequence<T>,
-  source: Source["source"] = () => ""
+  source: Source["source"] = () => "",
+  barrier = false
 ): SubTask<Unordered> {
   return {
     key,
@@ -197,6 +207,7 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
     filepath,
     graph,
     source,
+    barrier,
   }
 }
 
@@ -209,6 +220,7 @@ function sameSubTask(A: SubTask, B: SubTask) {
     /* A.key === B.key &&*/ A.title === B.title &&
     A.description === B.description &&
     A.filepath === B.filepath &&
+    A.barrier === B.barrier &&
     sameGraph(A.graph, B.graph) // eslint-disable-line @typescript-eslint/no-use-before-define
   )
 }
@@ -371,4 +383,8 @@ export function extractDescription(graph: Graph) {
   if (hasDescriptionProperty(graph)) {
     return graph.description
   }
+}
+
+export function isBarrier(graph: Graph): graph is Graph & Barrier & { barrier: true } {
+  return isSubTask(graph) && graph.barrier
 }

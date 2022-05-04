@@ -90,6 +90,12 @@ type KuiFrontmatter = Partial<WizardSteps> &
     /** Title of the Notebook */
     title?: string
 
+    /**
+     * Does this guidebook need to be executed before subsequent
+     * choices even make sense? e.g. logging in to a cluster.
+     */
+    barrier?: boolean
+
     layoutCount?: Record<string, number>
 
     /**

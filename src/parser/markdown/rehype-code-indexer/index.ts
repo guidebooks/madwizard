@@ -46,7 +46,14 @@ import {
 } from "../rehype-wizard"
 
 import { tryFrontmatter } from "../frontmatter"
-import { isOnAnImportChain, isImports, getImportKey, getImportFilepath, getImportTitle } from "../remark-import"
+import {
+  isBarrier,
+  isOnAnImportChain,
+  isImports,
+  getImportKey,
+  getImportFilepath,
+  getImportTitle,
+} from "../remark-import"
 import { CodeBlockProps, addNesting as addCodeBlockNesting } from "../../../codeblock/CodeBlockProps"
 
 /**
@@ -238,6 +245,7 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                       addNesting(attributes, {
                         kind: "Import",
                         source: toMarkdownStringDelayed(_),
+                        barrier: isBarrier(_.properties),
                         key: getImportKey(_.properties),
                         title: getImportTitle(_.properties),
                         filepath: getImportFilepath(_.properties),

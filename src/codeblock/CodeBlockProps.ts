@@ -55,9 +55,18 @@ export type Choice = GroupMember &
     groupDetail: Partial<Title> & Source
   }
 
+/**
+ * Does this guidebook need to be executed before subsequent choices
+ * even make sense? e.g. logging in to a cluster.
+ */
+export interface Barrier {
+  barrier?: boolean
+}
+
 export type Import = Source &
   Title &
   Partial<Description> &
+  Partial<Barrier> &
   Kind<"Import"> & {
     key: string
     filepath: string

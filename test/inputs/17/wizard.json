@@ -1,0 +1,86 @@
+[
+  {
+    "graph": {
+      "key": "test/inputs/snippets/importa.md",
+      "title": "importa.md",
+      "filepath": "test/inputs/snippets/importa.md",
+      "graph": {
+        "key": "3563f51c-1aca-419b-9791-277b1bf04561",
+        "sequence": [
+          {
+            "body": "echo AAA",
+            "language": "bash",
+            "validate": true,
+            "id": "fe308790-aca8-43ff-a417-a2876ef24040-0"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "importa.md",
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "key": "test/inputs/snippets/barrier.md",
+      "title": "barrier.md",
+      "filepath": "test/inputs/snippets/barrier.md",
+      "graph": {
+        "key": "b1b44153-f2ff-4ec6-ab3d-134166298b91",
+        "sequence": [
+          {
+            "body": "echo barrier",
+            "language": "shell",
+            "id": "fe308790-aca8-43ff-a417-a2876ef24040-1"
+          }
+        ]
+      },
+      "source": "placeholder",
+      "barrier": true
+    },
+    "step": {
+      "name": "barrier.md",
+      "barrier": true,
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "group": "TabE1",
+      "title": "EEE",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "36ddc621-d9c3-48e6-b52d-ecb6c5a1bbc4",
+            "sequence": [
+              {
+                "body": "echo EEE",
+                "language": "bash",
+                "id": "fe308790-aca8-43ff-a417-a2876ef24040-2"
+              }
+            ]
+          },
+          "title": "TabE1",
+          "description": "\nEEE1Content"
+        }
+      ]
+    },
+    "step": {
+      "name": "EEE",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "TabE1",
+          "group": "TabE1",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "\nEEE1Content"
+        }
+      ]
+    }
+  }
+]
