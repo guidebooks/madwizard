@@ -84,8 +84,10 @@ const rehypePlugins = (
   // rehypeSlug,
 ]
 
-async function read(file: VFile): Promise<VFile> {
+/** Fetch the contents of the given `VFile` */
+export async function madwizardRead(file: VFile, searchStore = false): Promise<VFile> {
   if (/^https?:/.test(file.path)) {
+    // remote fetch
     const { statusCode, body } = await needle("get", file.path)
     file.value = body
     if (statusCode !== 200) {
@@ -94,7 +96,26 @@ async function read(file: VFile): Promise<VFile> {
       return file
     }
   } else {
-    return vfileRead(file)
+    try {
+      // try reading from the local filesystem
+      return await vfileRead(file)
+    } catch (err) {
+      if (!searchStore) {
+        throw err
+      }
+
+      try {
+        // see if the path is in the guidebooks store
+        const ext = /\..+$/.test(file.path) ? "" : ".md"
+        const path = toRawGithubUserContent(
+          `https://github.com/guidebooks/store/blob/main/guidebooks/${file.path}${ext}`
+        )
+        return await madwizardRead(new VFile({ path }))
+      } catch (err2) {
+        console.error(err2)
+        throw err
+      }
+    }
   }
 }
 
@@ -103,7 +124,7 @@ async function parse(
   input: VFile,
   choices: ChoiceState = newChoiceState(),
   uuid = v4(),
-  reader = read,
+  reader = madwizardRead,
   madwizardOptions: MadWizardOptions = {}
 ) {
   const debug = Debug("madwizard/timing/parser:markdown")
@@ -148,12 +169,12 @@ export async function blockify(
   input: VFileCompatible,
   choices?: ChoiceState,
   uuid?: string,
-  reader = read,
+  reader = madwizardRead,
   madwizardOptions?: MadWizardOptions
 ) {
   const file =
     typeof input === "string"
-      ? await reader(new VFile({ path: toRawGithubUserContent(expandHomeDir(input)) }))
+      ? await reader(new VFile({ path: toRawGithubUserContent(expandHomeDir(input)) }), true)
       : new VFile(input)
   return parse(file, choices, uuid, reader, madwizardOptions)
 }
