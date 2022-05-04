@@ -68,8 +68,9 @@ export async function cli<Writer extends (msg: string) => boolean>(
 ) {
   // TODO replace this with yargs or something like that
   const argv = _argv.filter((_, idx) => !/^-/.test(_) && (idx === 0 || !/^--/.test(_argv[idx - 1])))
-  const task = argv[1]
-  const input = argv[2]
+  const task = !argv[2] ? "guide" : argv[1]
+  const input = argv[2] || argv[1]
+
   const mkdocsIdx = _argv.findIndex((_) => _ === "--mkdocs")
   const mkdocs = mkdocsIdx < 0 ? undefined : _argv[mkdocsIdx + 1]
   const narrow = !!_argv.find((_) => _ === "--narrow" || _ === "-n")
