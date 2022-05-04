@@ -32,8 +32,14 @@ function updateTemplate(part: ChoicePart, choice: string, member = 0) {
   part.title = choice
   part.member = member
 
-  const pattern = /\$\{choice\}/gi
-  blocks(part.graph).forEach((_) => (_.body = _.body.replace(pattern, choice)))
+  const pattern = /\$\{?choice\}?/gi
+  blocks(part.graph).forEach((_) => {
+    _.body = _.body.replace(pattern, choice)
+
+    if (_.validate) {
+      _.validate = _.validate.replace(pattern, choice)
+    }
+  })
 
   if (part.description) {
     part.description = part.description.replace(pattern, choice)
