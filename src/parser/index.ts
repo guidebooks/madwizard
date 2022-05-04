@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { read } from "to-vfile"
 import { VFileCompatible } from "vfile"
 import { extname as pathExtname } from "path"
 
+import { madwizardRead } from "./markdown"
 import { ChoiceState, MadWizardOptions } from "../../"
 
 export * from "./markdown"
@@ -40,11 +40,11 @@ export async function parse(
   input: VFileCompatible,
   choices?: ChoiceState,
   uuid?: string,
-  reader?: typeof read,
+  reader?: typeof madwizardRead,
   madwizardOptions?: MadWizardOptions
 ) {
   const ext = extname(input)
-  if (ext === ".md") {
+  if (ext === ".md" || !ext) {
     return await import("./markdown").then((_) => _.blockify(input, choices, uuid, reader, madwizardOptions))
   } else {
     throw new Error(`Unsupported file type: ${String(input)}`)
