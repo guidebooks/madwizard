@@ -83,7 +83,7 @@ function tryParseInt(str: string): number {
   }
 }
 
-const tasks = ["tree", "wizard"]
+const tasks = ["plan", "wizard"]
 const suites = options.flatMap(({ suffix }) => tasks.map((task) => suite(`${task} ${suffix || "default options"}`)))
 /**
  * Assumption: test inputs are numbered directories. All other
@@ -104,7 +104,7 @@ readdirSync(inputDir)
           return true
         }
 
-        await cli(["test", "tree", join(input, "in.md")], write, options)
+        await cli(["test", "plan", join(input, "in.md")], write, options)
         const expectedTree = loadExpected(input, "tree", suffix)
         assert.equal(stripAnsi(actualTree.trim()), stripAnsi(expectedTree.trim()), "tree should match")
       })
