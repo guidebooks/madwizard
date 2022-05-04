@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
+export interface Validatable {
+  /**
+   * If given, this command line will be executed. If it exits with
+   * exit code 0, then the code block will be seen as "already
+   * executed", and thus represent a valid state. Non-zero exit
+   * codes will not be seen as errors, but rather as representative
+   * of a default state.
+   */
+  validate: string
+}
+
 export interface GroupMember {
   /**
    * This option names the group, to keep it distinct from other
@@ -67,6 +78,7 @@ export type Import = Source &
   Title &
   Partial<Description> &
   Partial<Barrier> &
+  Partial<Validatable> &
   Kind<"Import"> & {
     key: string
     filepath: string
@@ -113,12 +125,11 @@ export function isWizardStep(part: CodeBlockNestingParent): part is WizardStep {
   return hasKind(part, "WizardStep")
 }
 
-export interface CodeBlockProps {
+export type CodeBlockProps = Partial<Validatable> & {
   id: string
   body: string
   language: string
   optional?: boolean
-  validate?: string
   nesting?: CodeBlockNestingParent[]
 }
 

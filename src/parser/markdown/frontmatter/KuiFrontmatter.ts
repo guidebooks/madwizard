@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { Barrier, Validatable } from "../../../codeblock"
+
 export interface WizardSteps {
   /** An alternate way to define the steps of a wizard layout */
   wizard: {
@@ -37,35 +39,27 @@ interface Language {
   language?: string
 }
 
-export type CodeBlock = Partial<Language> & {
-  /**
-   * A string that will be interpreted as regular expression. Any
-   * markdown code blocks whose body matches this pattern will be seen
-   * as instances of the rules below (e.g. `language`, `validate`, etc.)
-   */
-  match: string
+export type CodeBlock = Partial<Language> &
+  Partial<Validatable> & {
+    /**
+     * A string that will be interpreted as regular expression. Any
+     * markdown code blocks whose body matches this pattern will be seen
+     * as instances of the rules below (e.g. `language`, `validate`, etc.)
+     */
+    match: string
 
-  /**
-   * If given, this command line will be executed. If it exits with
-   * exit code 0, then the code block will be seen as "already
-   * executed", and thus represent a valid state. Non-zero exit
-   * codes will not be seen as errors, but rather as representative
-   * of a default state.
-   */
-  validate?: string
+    /**
+     * If given, this command line will undo the effects of the code
+     * block body.
+     */
+    cleanup?: string
 
-  /**
-   * If given, this command line will undo the effects of the code
-   * block body.
-   */
-  cleanup?: string
-
-  /**
-   * Is successful execution of this code block seen as necessary
-   * for overall successful completion of the enclosing
-   * guidebook? */
-  optional?: boolean
-}
+    /**
+     * Is successful execution of this code block seen as necessary
+     * for overall successful completion of the enclosing
+     * guidebook? */
+    optional?: boolean
+  }
 
 interface CodeBlocks {
   codeblocks: CodeBlock[]
@@ -85,17 +79,14 @@ export function hasImports(attributes: any): attributes is Imports {
 }
 
 type KuiFrontmatter = Partial<WizardSteps> &
+  Partial<Barrier> &
   Partial<Imports> &
+  Partial<Validatable> &
   Partial<CodeBlocks> & {
     /** Title of the Notebook */
     title?: string
 
-    /**
-     * Does this guidebook need to be executed before subsequent
-     * choices even make sense? e.g. logging in to a cluster.
-     */
-    barrier?: boolean
-
+    /** Used internally */
     layoutCount?: Record<string, number>
 
     /**

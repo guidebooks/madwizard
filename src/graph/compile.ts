@@ -140,7 +140,8 @@ export async function compile(
         parent.filepath,
         isDeepest ? seq(block) : emptySequence(),
         parent.source,
-        parent.barrier
+        parent.barrier,
+        parent.validate
       )
     }
 

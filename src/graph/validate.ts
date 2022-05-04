@@ -15,7 +15,7 @@
  */
 
 import { spawn } from "child_process"
-import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask } from "."
+import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask, isValidatable } from "."
 
 export type ExecOptions = {
   /** Do not emit to console */
@@ -106,12 +106,28 @@ function union(A: Promise<Status[]>) {
 
 type Options = { validator?: ValidationExecutor; throwErrors?: boolean }
 
+/** This does an actual validation check */
+async function doValidate(validate: string, opts: Pick<Options, "validator" | "throwErrors">): Promise<Status> {
+  try {
+    await (opts.validator || shellExec)(validate, { quiet: true })
+    return "success"
+  } catch (err) {
+    if (opts.throwErrors) {
+      throw err
+    } else {
+      return "blank"
+    }
+  }
+}
+
 /**
  * Note: this code assumes that collapseMadeChoices has already been
  * applied to the `graph`.
  */
 async function validateGraph(graph: Graph, opts: Options): Promise<Status> {
-  if (isSequence(graph)) {
+  if (isValidatable(graph)) {
+    return doValidate(graph.validate, opts)
+  } else if (isSequence(graph)) {
     return intersection(Promise.all(graph.sequence.map((_) => validateGraph(_, opts))))
   } else if (isParallel(graph)) {
     return intersection(Promise.all(graph.parallel.map((_) => validateGraph(_, opts))))
@@ -125,17 +141,6 @@ async function validateGraph(graph: Graph, opts: Options): Promise<Status> {
     // here we treat optional blocks as ... non-blockers
     // w.r.t. overall success
     return "success"
-  } else if (graph.validate) {
-    try {
-      await (opts.validator || shellExec)(graph.validate, { quiet: true })
-      return "success"
-    } catch (err) {
-      if (opts.throwErrors) {
-        throw err
-      } else {
-        return "blank"
-      }
-    }
   } else {
     return "blank"
   }
