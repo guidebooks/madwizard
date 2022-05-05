@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { v4 } from "uuid"
+
 // TODO allow a ValidationExecutor to be passed in
 import {
   Graph,
@@ -28,22 +30,32 @@ import {
   shellExec,
 } from "../../graph"
 
-function updateTemplate(part: ChoicePart, choice: string, member = 0) {
-  part.title = choice
-  part.member = member
+function updateContent(part: ChoicePart, choice = "") {
+  const pattern1 = /\$\{?choice\}?/gi
+  const pattern2 = /\$\{?uuid\}?/gi
 
-  const pattern = /\$\{?choice\}?/gi
+  const uuid = v4()
+  const replace = (str: string) => str.replace(pattern1, choice).replace(pattern2, uuid)
+
   blocks(part.graph).forEach((_) => {
-    _.body = _.body.replace(pattern, choice)
+    _.body = replace(_.body)
 
     if (_.validate) {
-      _.validate = _.validate.replace(pattern, choice)
+      _.validate = replace(_.validate)
     }
   })
 
   if (part.description) {
-    part.description = part.description.replace(pattern, choice)
+    part.description = replace(part.description)
   }
+
+  return part
+}
+
+function updatePart(part: ChoicePart, choice: string, member = 0) {
+  part.title = choice
+  part.member = member
+  return updateContent(part, choice)
 }
 
 /** @return the pattern we use to denote a dynamic expansion expression */
@@ -59,26 +71,13 @@ function isExpansionGroup(graph: Choice) {
 
 /** Is the given Choice member (i.e. a tab) a dynamic expansion? */
 function isExpansion(part: ChoicePart) {
-  return part.title.match(expansionPattern())
+  const match = part.title.match(expansionPattern())
+  return match && match[1]
 }
 
 /** Replace any expansion parts with their dynamic expansion */
-function rewriteChoiceToIncludeExpansion(graph: Choice, names: string[]) {
-  graph.choices = graph.choices.flatMap((_) => {
-    if (!isExpansion(_)) {
-      // make sure to leave the non-expansion choices untouched
-      return _
-    } else {
-      return names.map((name, idx) => {
-        // clone the first choice, and smash in the template paramter
-        const choice = JSON.parse(JSON.stringify(_))
-        updateTemplate(choice, name, idx)
-
-        // and then add it to the list of choices
-        return choice
-      })
-    }
-  })
+function expandTemplate(template: ChoicePart, names: string[]) {
+  return names.map((name, idx) => updatePart(JSON.parse(JSON.stringify(template)), name, idx))
 }
 
 export async function expand(graph: Graph) {
@@ -87,19 +86,29 @@ export async function expand(graph: Graph) {
   } else if (isParallel(graph)) {
     await Promise.all(graph.parallel.map(expand))
   } else if (isChoice(graph)) {
-    const expansionExpr = isExpansionGroup(graph)
-    if (expansionExpr) {
-      // debug("expansion/expr", expansionExpr)
-
-      const opts = { capture: "", throwErrors: true }
-      try {
-        await shellExec(expansionExpr, opts)
-        // debug("expansion/response", opts.capture)
-        const response = opts.capture.split(/\n/).filter(Boolean)
-        rewriteChoiceToIncludeExpansion(graph, response)
-      } catch (err) {
-        // debug("expansion/error", err)
-      }
+    if (isExpansionGroup(graph)) {
+      graph.choices = (
+        await Promise.all(
+          graph.choices.map(async (part) => {
+            const expansionExpr = isExpansion(part)
+            if (!expansionExpr) {
+              return updateContent(part)
+            } else {
+              const opts = { capture: "", throwErrors: true }
+              try {
+                await shellExec(expansionExpr, opts)
+                // debug("expansion/response", opts.capture)
+                const response = opts.capture.split(/\n/).filter(Boolean)
+                return expandTemplate(part, response)
+              } catch (err) {
+                // then the expansion failed. make sure the users don't
+                // see the template
+                return []
+              }
+            }
+          })
+        )
+      ).flat()
     }
 
     await Promise.all(graph.choices.map((_) => expand(_.graph)))
