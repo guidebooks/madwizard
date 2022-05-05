@@ -56,7 +56,7 @@ export class Guide {
     const graph = await compile(this.blocks, this.choices, this.options)
     const wizard = await wizardify(graph, { validator: shellExec, previous })
 
-    const firstChoiceIdx = wizard.findIndex(isChoiceStep)
+    const firstChoiceIdx = wizard.findIndex((_) => isChoiceStep(_) && _.status !== "success")
     const preChoiceSteps = firstChoiceIdx < 0 ? [] : wizard.slice(0, firstChoiceIdx).filter(isTaskStep)
     // no: run all tasks up to the first barrier: .filter((_) => isBarrier(_.graph))
 
