@@ -17,7 +17,7 @@
     "build:test": "cross-env-shell tsc --project test",
     "test": "cross-env npm run build:test && cross-env concurrently --raw -n TYPES,TESTS 'tsc --noEmit' 'node --no-warnings --experimental-specifier-resolution=node test/dist'",
     "format": "cross-env prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",
-    "prepack": "npm test && npm run build",
+    "prepack": "npm run build && npm test",
     "prepare": "cross-env husky install"
   },
   "keywords": [
