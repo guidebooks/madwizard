@@ -1,0 +1,33 @@
+/*
+ * Copyright 2022 The Kubernetes Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { oraPromise as theRealOraPromise, PromiseOptions } from "ora"
+
+/** Fire of an `oraPromise` with a delay */
+export function oraPromise<T>(action: PromiseLike<T>, options?: string | PromiseOptions<T>, delayMs = 500): Promise<T> {
+  let isResolved = false
+  action.then(() => (isResolved = true))
+
+  if (!isResolved) {
+    setTimeout(() => {
+      if (!isResolved) {
+        theRealOraPromise(action, options)
+      }
+    }, delayMs)
+  }
+
+  return Promise.resolve(action)
+}

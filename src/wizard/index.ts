@@ -143,6 +143,22 @@ type Options = {
   previous: Wizard
 }
 
+interface OraLike {
+  succeed(): void
+  warn(): void
+}
+
+function emptyOra(): OraLike {
+  return {
+    succeed: () => {
+      /* noop */
+    },
+    warn: () => {
+      /* noop */
+    },
+  }
+}
+
 /**
  * Execute the `validate` property of the steps in the given `wizard`,
  * and stash the result in the `status` field of each step.
@@ -154,11 +170,22 @@ function validateWizard(wizard: Wizard, { previous, validator }: Partial<Options
       return previous ? previous.findIndex((_) => _.status === "success" && sameGraph(graph, _.graph)) : -1
     })
 
-    const spinners = wizard.map(({ step }, idx) => {
-      if (alreadyDone[idx] < 0) {
-        return ora(chalk.dim(`Validating ${chalk.blue(step.name)}`)).start()
-      }
-    })
+    const spinners = wizard.map(
+      ({ step }, idx) =>
+        new Promise<OraLike>((resolve) => {
+          if (alreadyDone[idx] < 0) {
+            setTimeout(() => {
+              if (alreadyDone[idx] < 0) {
+                resolve(ora(chalk.dim(`Validating ${chalk.blue(step.name)}`)).start())
+              } else {
+                resolve(emptyOra())
+              }
+            }, 500)
+          } else {
+            resolve(emptyOra())
+          }
+        })
+    )
 
     return Promise.all(
       wizard.map(async ({ step, graph }, idx) => {
@@ -173,15 +200,19 @@ function validateWizard(wizard: Wizard, { previous, validator }: Partial<Options
           const status = await validate(graph, { validator })
 
           if (status === "success") {
-            spinner.succeed()
+            (await spinner).succeed()
           } else {
-            spinner.warn()
+            (await spinner).warn()
           }
 
           return { step, graph, status }
         } catch (err) {
-          spinner.warn()
+          (await spinner).warn()
           return { step, graph, status: "blank" as const }
+        } finally {
+          // the value here doesn't matter, as long as it is > 0; to
+          // indicate to the delayed spinners that there's no need...
+          alreadyDone[idx] = 1
         }
       })
     )
