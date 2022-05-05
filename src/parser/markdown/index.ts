@@ -16,15 +16,14 @@
 
 import Debug from "debug"
 import { v4 } from "uuid"
-import needle from "needle"
 import expandHomeDir from "expand-home-dir"
-import { read as vfileRead } from "to-vfile"
 import { VFile, VFileCompatible } from "vfile"
 
 import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
 import { unified, PluggableList } from "unified"
 
+import { madwizardRead } from "./fetch"
 import { MadWizardOptions } from "../../"
 
 import { CodeBlockProps } from "../../codeblock"
@@ -57,6 +56,7 @@ import { rehypeCodeIndexer } from "./rehype-code-indexer"
 import { kuiFrontmatter } from "./frontmatter"
 
 export * from "./hack"
+export * from "./fetch"
 export * from "./rehype-tip"
 export * from "./rehype-tabbed"
 export * from "./rehype-code-indexer"
@@ -83,45 +83,6 @@ const rehypePlugins = (
   // rehypeRaw,
   // rehypeSlug,
 ]
-
-/** Fetch the contents of the given `VFile` */
-export async function madwizardRead(file: VFile, searchStore = false): Promise<VFile> {
-  if (/^https?:/.test(file.path)) {
-    // remote fetch
-    const { statusCode, body } = await needle("get", file.path)
-    file.value = body
-    if (statusCode !== 200) {
-      throw new Error(body)
-    } else {
-      return file
-    }
-  } else {
-    try {
-      // try reading from the local filesystem
-      return await vfileRead(file)
-    } catch (err) {
-      if (!searchStore) {
-        throw err
-      }
-
-      // see if the path is in the guidebooks store
-      const ext = /\..+$/.test(file.path) ? "" : "md"
-      const base = `https://github.com/guidebooks/store/blob/main/guidebooks/${file.path}`
-
-      try {
-        const path = toRawGithubUserContent(`${base}.${ext}`)
-        return await madwizardRead(new VFile({ path }))
-      } catch (err2) {
-        try {
-          const path = toRawGithubUserContent(`${base}/index.${ext}`)
-          return await madwizardRead(new VFile({ path }))
-        } catch (err3) {
-          throw err
-        }
-      }
-    }
-  }
-}
 
 /** Parse the given `input` into a `Graph` syntax tree. */
 async function parse(
