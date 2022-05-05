@@ -11,6 +11,6 @@ Sequence
 ├── EEE
 │   └── Option 1: TabE1
 │       └── echo EEE
-└── snippets-in-tab5.md
+└── AAA
     └── Option 2: Tab2
         └── echo XXX

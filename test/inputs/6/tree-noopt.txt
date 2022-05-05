@@ -6,7 +6,7 @@ Sequence
 │   │   └── echo AAA †
 │   └── Option 2: SubTab2
 │       └── echo BBB
-└── snippets-in-tab5.md
+└── AAA
     ├── importa.md
     │   └── echo AAA †
     ├── EEE
