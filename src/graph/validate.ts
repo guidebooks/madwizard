@@ -35,6 +35,14 @@ export async function shellExec(cmdline: string, opts: ExecOptions = { quiet: fa
       process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash"),
       ["-c", `set -o pipefail; ${cmdline}`],
       {
+        env: Object.assign(
+          {
+            HOMEBREW_NO_INSTALL_CLEANUP: "1",
+            HOMEBREW_NO_INSTALL_UPGRADE: "1",
+            HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1",
+          },
+          process.env
+        ),
         stdio: opts.quiet
           ? ["inherit", "ignore", "pipe"]
           : capture
