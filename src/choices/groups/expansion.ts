@@ -46,23 +46,39 @@ function updateTemplate(part: ChoicePart, choice: string, member = 0) {
   }
 }
 
-function rewriteChoiceToIncludeExpansion(graph: Choice, names: string[]) {
-  const firstChoice = graph.choices[0]
-  graph.choices = []
-
-  names.forEach((name, idx) => {
-    // clone the first choice, and smash in the template paramter
-    const choice = JSON.parse(JSON.stringify(firstChoice))
-    updateTemplate(choice, name, idx)
-
-    // and then add it to the list of choices
-    graph.choices.push(choice)
-  })
+/** @return the pattern we use to denote a dynamic expansion expression */
+function expansionPattern() {
+  return /expand\((.+)\)/
 }
 
+/** Does the given Choice (i.e. a tab group) include a dynamic expansion? */
 function isExpansionGroup(graph: Choice) {
-  const match = graph.group.match(/expand\((.+)\)/)
+  const match = graph.group.match(expansionPattern())
   return match && match[1]
+}
+
+/** Is the given Choice member (i.e. a tab) a dynamic expansion? */
+function isExpansion(part: ChoicePart) {
+  return part.title.match(expansionPattern())
+}
+
+/** Replace any expansion parts with their dynamic expansion */
+function rewriteChoiceToIncludeExpansion(graph: Choice, names: string[]) {
+  graph.choices = graph.choices.flatMap((_) => {
+    if (!isExpansion(_)) {
+      // make sure to leave the non-expansion choices untouched
+      return _
+    } else {
+      return names.map((name, idx) => {
+        // clone the first choice, and smash in the template paramter
+        const choice = JSON.parse(JSON.stringify(_))
+        updateTemplate(choice, name, idx)
+
+        // and then add it to the list of choices
+        return choice
+      })
+    }
+  })
 }
 
 export async function expand(graph: Graph) {
