@@ -21,7 +21,7 @@ import { isParent } from "../util/isElement"
 import { isImports } from "../remark-import"
 
 // const RE_TAB = /^(.|[\n\r])*===\s+"(.+)"\s*(\n(.|[\n\r])*)?$/
-const RE_TAB = /^===\s+"([^"]+)"/
+const RE_TAB = /^===\s+"(.+)/
 
 import { START_OF_TAB, END_OF_TAB, PUSH_TABS } from "."
 
@@ -131,7 +131,7 @@ export default function populateTabs(uuid: string, tree: Node): { tree: Node; ta
                   // here. something after us seems
                   // to join nested tabs together
                   properties: {
-                    title: startMatch[1],
+                    title: startMatch[1].replace(/"$/, ""),
                     depth: tabStack.length,
                     "data-kui-tab-index": currentTabs.length,
                   },
