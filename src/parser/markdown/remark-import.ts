@@ -98,6 +98,14 @@ export function visitImportContainers(
   })
 }
 
+function findFirstHeading(children: Node2[]) {
+  const headingIdx = children.findIndex(isHeading)
+  if (headingIdx >= 0) {
+    const heading = children[headingIdx]
+    return toString(heading).replace(/\s*\(\)\s*/g, "")
+  }
+}
+
 export function remarkImports() {
   return function transformer(tree /*: Root */) {
     const debug = Debug("madwizard/timing/parser:markdown/remark-import")
@@ -133,10 +141,7 @@ export function remarkImports() {
             "data-kui-is-barrier": frontmatter.barrier,
             "data-kui-filepath": filepath,
             "data-kui-provenance": provenance,
-            "data-kui-import-title":
-              title ||
-              (children[0] && isHeading(children[0]) ? toString(children[0]).replace(/\s*\(\)\s*/g, "") : "") ||
-              basename(filepath),
+            "data-kui-import-title": title || findFirstHeading(children) || basename(filepath),
           },
         }
       })
