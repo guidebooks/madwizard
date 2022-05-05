@@ -17,11 +17,11 @@
 import chalk from "chalk"
 import Debug from "debug"
 import { load } from "js-yaml"
-import { oraPromise } from "ora"
 import { mainSymbols } from "figures"
 import expandHomeDir from "expand-home-dir"
 import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin } from "path"
 
+import { oraPromise } from "./ora"
 import { isUrl, toRawGithubUserContent } from "./urls"
 
 import indent from "../util/indent"
