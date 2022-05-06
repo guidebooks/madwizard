@@ -41,6 +41,9 @@ function munge(wizard: Record<string, unknown>) {
         return "fakeit"
       } else if (key === "source" || key === "position") {
         return "placeholder"
+      } else if (key === "provenance" && Array.isArray(value) && value.every((_) => typeof _ === "string")) {
+        // eliminate any prefix paths on text input filepaths, e.g. /Users/starpit/...
+        return value.map((_) => _.replace(/^.+\/test\/inputs\/(.+)$/, "$1"))
       } else if (key === "description" && !value) {
         return undefined
       } else if (key === "source" || (key === "content" && typeof value === "string")) {

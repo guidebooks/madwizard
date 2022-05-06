@@ -1,16 +1,16 @@
 [
   {
     "graph": {
-      "key": "org.kubernetes-sigs.kui/choice/in-terminal",
+      "key": "Text versus HTML?",
       "title": "Text versus HTML?",
       "filepath": "",
       "graph": {
-        "key": "b0b1e7c1-f48e-46d7-9eea-8a2c7f71b87b",
+        "key": "874e5dd8-2cab-4a1d-be94-0fb5a8c1c086",
         "sequence": [
           {
             "body": "echo text",
             "language": "shell",
-            "id": "09dfda3e-78c4-4b0a-8760-0a5b8673edb7-0"
+            "id": "56d1f81f-006b-4cd8-987d-cbf69b2125b3-0"
           }
         ]
       },

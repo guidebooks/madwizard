@@ -5,13 +5,13 @@
       "title": "importa.md",
       "filepath": "",
       "graph": {
-        "key": "da12ced4-01f4-4883-919f-47bd918b8c51",
+        "key": "260611a8-5f68-4c84-a44f-c1a0d675e7ed",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "eb505d3d-1d96-46d7-8b98-fa30623ab6ed-0"
+            "id": "2fde8c80-c22e-4152-ae78-c5f64f02fcf8-0"
           }
         ]
       },
@@ -32,12 +32,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "185f50a0-931a-49bc-8770-aa9fa067aae2",
+            "key": "d89341f1-8ac1-4284-a865-12157c27ba9e",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "eb505d3d-1d96-46d7-8b98-fa30623ab6ed-1"
+                "id": "2fde8c80-c22e-4152-ae78-c5f64f02fcf8-1"
               }
             ]
           },
@@ -70,25 +70,25 @@
         {
           "member": 0,
           "graph": {
-            "key": "806b8583-0b11-4a7b-8592-a155d678a73e",
+            "key": "cceb2f98-7afc-4b95-8674-5f2f82d92318",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "eb505d3d-1d96-46d7-8b98-fa30623ab6ed-2"
+                "id": "2fde8c80-c22e-4152-ae78-c5f64f02fcf8-2"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "eb505d3d-1d96-46d7-8b98-fa30623ab6ed-3"
+                "id": "2fde8c80-c22e-4152-ae78-c5f64f02fcf8-3"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "eb505d3d-1d96-46d7-8b98-fa30623ab6ed-4"
+                "id": "2fde8c80-c22e-4152-ae78-c5f64f02fcf8-4"
               }
             ]
           },
@@ -97,13 +97,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "477c6458-e147-4ba7-b1d4-1b4a409dfc3e",
+            "key": "32335f29-f796-4488-9f3b-6e197db14d2d",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "eb505d3d-1d96-46d7-8b98-fa30623ab6ed-5"
+                "id": "2fde8c80-c22e-4152-ae78-c5f64f02fcf8-5"
               }
             ]
           },
@@ -140,20 +140,20 @@
         {
           "member": 1,
           "graph": {
-            "key": "99d35664-f8fd-4ab0-8503-34ecf6b67bb8",
+            "key": "12f7b531-eca1-4926-9729-e0eb8789874a",
             "sequence": [
               {
                 "key": "test/inputs/snippets/importc.md",
                 "title": "importc.md",
                 "filepath": "test/inputs/snippets/importc.md",
                 "graph": {
-                  "key": "f24a82fa-7e02-4fe3-9b17-f2ebe0aac750",
+                  "key": "92b15f77-0362-4f29-afaa-ee8c2afce271",
                   "sequence": [
                     {
                       "body": "echo CCC",
                       "language": "bash",
                       "validate": true,
-                      "id": "eb505d3d-1d96-46d7-8b98-fa30623ab6ed-10"
+                      "id": "2fde8c80-c22e-4152-ae78-c5f64f02fcf8-10"
                     }
                   ]
                 },

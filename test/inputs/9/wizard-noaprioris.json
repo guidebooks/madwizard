@@ -4,16 +4,17 @@
       "group": "MacOS####Linux####Windows",
       "title": "importg.md",
       "source": "placeholder",
+      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importg.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "5895c316-09ea-4c3a-88f1-771e0f9bc57b",
+            "key": "053844dc-acaf-440f-a2b3-c88261c87a04",
             "sequence": [
               {
                 "body": "echo MMM",
                 "language": "bash",
-                "id": "8fa6b88e-0d4d-4157-9bf2-0ca9c3bee918-0"
+                "id": "307f3afb-b428-4e73-93c6-104b686dafd7-0"
               }
             ]
           },
@@ -22,12 +23,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "9de6ab92-c5eb-44c9-b921-6e1dceac99f6",
+            "key": "772a575c-a6ba-4199-9f65-3304c70f5844",
             "sequence": [
               {
                 "body": "echo LLL",
                 "language": "bash",
-                "id": "8fa6b88e-0d4d-4157-9bf2-0ca9c3bee918-1"
+                "id": "307f3afb-b428-4e73-93c6-104b686dafd7-1"
               }
             ]
           },
@@ -36,12 +37,12 @@
         {
           "member": 2,
           "graph": {
-            "key": "9cf44221-2dde-412a-9e1b-1c7eab3a07d3",
+            "key": "bb841848-5a74-4abc-9d91-f95cec9d1993",
             "sequence": [
               {
                 "body": "echo WWW",
                 "language": "bash",
-                "id": "8fa6b88e-0d4d-4157-9bf2-0ca9c3bee918-2"
+                "id": "307f3afb-b428-4e73-93c6-104b686dafd7-2"
               }
             ]
           },
@@ -76,17 +77,17 @@
   },
   {
     "graph": {
-      "key": "test/inputs/snippets/importa.md",
+      "key": "importa.md",
       "title": "importa.md",
-      "filepath": "test/inputs/snippets/importa.md",
+      "filepath": "",
       "graph": {
-        "key": "021649b3-3075-4f36-a705-a3fa53b66078",
+        "key": "fe82316d-452a-4dd8-9906-fd0590352b48",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "8fa6b88e-0d4d-4157-9bf2-0ca9c3bee918-3"
+            "id": "307f3afb-b428-4e73-93c6-104b686dafd7-3"
           }
         ]
       },
@@ -102,29 +103,30 @@
       "group": "SubTab1####SubTab2",
       "title": "DDD",
       "source": "placeholder",
+      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "375ef5ba-a132-46e1-b7a6-ea4430a2fb0d",
+            "key": "59819f01-df1e-4a80-8d4a-dda0be5eb625",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "8fa6b88e-0d4d-4157-9bf2-0ca9c3bee918-4"
+                "id": "307f3afb-b428-4e73-93c6-104b686dafd7-4"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "8fa6b88e-0d4d-4157-9bf2-0ca9c3bee918-5"
+                "id": "307f3afb-b428-4e73-93c6-104b686dafd7-5"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "8fa6b88e-0d4d-4157-9bf2-0ca9c3bee918-6"
+                "id": "307f3afb-b428-4e73-93c6-104b686dafd7-6"
               }
             ]
           },
@@ -133,13 +135,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "4f030f46-35b4-4c0f-a98e-6934e7505c4e",
+            "key": "595e145b-9bb9-42c8-8a1d-03cc2e5422bf",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "8fa6b88e-0d4d-4157-9bf2-0ca9c3bee918-7"
+                "id": "307f3afb-b428-4e73-93c6-104b686dafd7-7"
               }
             ]
           },
