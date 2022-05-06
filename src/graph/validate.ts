@@ -15,6 +15,8 @@
  */
 
 import { spawn } from "child_process"
+
+import { Validatable } from "../codeblock/CodeBlockProps"
 import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask, isValidatable } from "."
 
 export type ExecOptions = {
@@ -112,10 +114,19 @@ function union(A: Promise<Status[]>) {
   return A.then((A) => A.slice(1).reduce(succeedFast, A[0]))
 }
 
-type Options = { validator?: ValidationExecutor; throwErrors?: boolean }
+export type ValidateOptions = { validator?: ValidationExecutor; throwErrors?: boolean }
 
 /** This does an actual validation check */
-async function doValidate(validate: string, opts: Pick<Options, "validator" | "throwErrors">): Promise<Status> {
+export async function doValidate(
+  validate: Validatable["validate"],
+  opts: Pick<ValidateOptions, "validator" | "throwErrors">
+): Promise<Status> {
+  if (validate === true) {
+    return "success"
+  } else if (typeof validate !== "string") {
+    return "blank"
+  }
+
   try {
     await (opts.validator || shellExec)(validate, { quiet: true })
     return "success"
@@ -132,15 +143,9 @@ async function doValidate(validate: string, opts: Pick<Options, "validator" | "t
  * Note: this code assumes that collapseMadeChoices has already been
  * applied to the `graph`.
  */
-async function validateGraph(graph: Graph, opts: Options): Promise<Status> {
+async function validateGraph(graph: Graph, opts: ValidateOptions): Promise<Status> {
   if (isValidatable(graph)) {
-    if (graph.validate === true) {
-      return "success"
-    } else if (typeof graph.validate !== "string") {
-      return "blank"
-    } else {
-      return doValidate(graph.validate, opts)
-    }
+    return doValidate(graph.validate, opts)
   } else if (isSequence(graph)) {
     return intersection(Promise.all(graph.sequence.map((_) => validateGraph(_, opts))))
   } else if (isParallel(graph)) {
@@ -160,6 +165,6 @@ async function validateGraph(graph: Graph, opts: Options): Promise<Status> {
   }
 }
 
-export async function validate(graph: Graph, opts: Options): Promise<Status> {
+export async function validate(graph: Graph, opts: ValidateOptions): Promise<Status> {
   return (await validateGraph(graph, opts)) || "blank"
 }

@@ -9,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "8bec5525-b17e-4777-94a2-3c0123d027ab",
+            "key": "dc4dbbdc-a83c-41bd-9f9a-548f93ce0b85",
             "sequence": [
               {
                 "body": "echo MMM",
                 "language": "bash",
-                "id": "3659a276-b255-4415-bb5d-9fc818187666-0"
+                "id": "e134f080-4ad2-4ac3-8ba3-3fcb23f34a90-0"
               }
             ]
           },
@@ -23,12 +23,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "793543f6-21e3-414f-bfa0-70cea2d538b4",
+            "key": "ef6e8a70-ddc0-480f-8265-17a41f9d4fda",
             "sequence": [
               {
                 "body": "echo LLL",
                 "language": "bash",
-                "id": "3659a276-b255-4415-bb5d-9fc818187666-1"
+                "id": "e134f080-4ad2-4ac3-8ba3-3fcb23f34a90-1"
               }
             ]
           },
@@ -37,12 +37,12 @@
         {
           "member": 2,
           "graph": {
-            "key": "c3806105-0426-4a6e-a2bf-b22b34dcd67e",
+            "key": "ee21600e-b03b-40d1-8557-02c02caf7bfc",
             "sequence": [
               {
                 "body": "echo WWW",
                 "language": "bash",
-                "id": "3659a276-b255-4415-bb5d-9fc818187666-2"
+                "id": "e134f080-4ad2-4ac3-8ba3-3fcb23f34a90-2"
               }
             ]
           },
@@ -71,99 +71,6 @@
           "group": "MacOS####Linux####Windows",
           "member": 2,
           "isFirstChoice": true
-        }
-      ]
-    }
-  },
-  {
-    "graph": {
-      "key": "importaa.md",
-      "title": "importaa.md",
-      "filepath": "",
-      "graph": {
-        "key": "d4581b7e-9f86-4252-b6f8-63c6459ced29",
-        "sequence": [
-          {
-            "body": "echo AAA",
-            "language": "bash",
-            "validate": true,
-            "id": "3659a276-b255-4415-bb5d-9fc818187666-3"
-          }
-        ]
-      },
-      "source": "placeholder"
-    },
-    "step": {
-      "name": "importaa.md",
-      "content": ""
-    }
-  },
-  {
-    "graph": {
-      "group": "SubTab1####SubTab2",
-      "title": "DDD",
-      "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importdd.md"],
-      "choices": [
-        {
-          "member": 0,
-          "graph": {
-            "key": "43236102-7a5c-405c-8cd8-4768b8ec6669",
-            "sequence": [
-              {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "3659a276-b255-4415-bb5d-9fc818187666-4"
-              },
-              {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "3659a276-b255-4415-bb5d-9fc818187666-5"
-              },
-              {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "3659a276-b255-4415-bb5d-9fc818187666-6"
-              }
-            ]
-          },
-          "title": "SubTab1"
-        },
-        {
-          "member": 1,
-          "graph": {
-            "key": "e5457fb3-1ba6-4b41-918c-3089918c9a83",
-            "sequence": [
-              {
-                "body": "echo BBB",
-                "language": "bash",
-                "validate": false,
-                "id": "3659a276-b255-4415-bb5d-9fc818187666-7"
-              }
-            ]
-          },
-          "title": "SubTab2"
-        }
-      ]
-    },
-    "step": {
-      "name": "DDD",
-      "description": "This step requires you to choose how to proceed",
-      "content": [
-        {
-          "title": "SubTab1",
-          "group": "SubTab1####SubTab2",
-          "member": 0,
-          "isFirstChoice": false
-        },
-        {
-          "title": "SubTab2",
-          "group": "SubTab1####SubTab2",
-          "member": 1,
-          "isFirstChoice": false
         }
       ]
     }

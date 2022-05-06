@@ -1,0 +1,69 @@
+[
+  {
+    "graph": {
+      "group": "Tab1",
+      "title": "MainTitle",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "87ad7f31-559d-4082-9276-a4c921b09ec4",
+            "sequence": [
+              {
+                "group": "SubTab1####SubTab2",
+                "title": "Tab1",
+                "source": "placeholder",
+                "choices": [
+                  {
+                    "member": 0,
+                    "graph": {
+                      "key": "92aecf42-a8b7-4f47-96b4-58e2934e50b4",
+                      "sequence": [
+                        {
+                          "body": "echo 111",
+                          "language": "shell",
+                          "id": "08be934a-a4eb-4f79-9ece-47a78815b210-0"
+                        }
+                      ]
+                    },
+                    "title": "SubTab1"
+                  },
+                  {
+                    "member": 1,
+                    "graph": {
+                      "key": "ab1f24d3-e1a2-4f35-8bb1-bc053d644aa2",
+                      "sequence": [
+                        {
+                          "body": "echo 222",
+                          "language": "shell",
+                          "id": "08be934a-a4eb-4f79-9ece-47a78815b210-1"
+                        }
+                      ]
+                    },
+                    "title": "SubTab2"
+                  }
+                ]
+              }
+            ]
+          },
+          "title": "Tab1",
+          "description": "Tab1Description\n"
+        }
+      ]
+    },
+    "step": {
+      "name": "MainTitle",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "Tab1Description\n"
+        }
+      ]
+    }
+  }
+]

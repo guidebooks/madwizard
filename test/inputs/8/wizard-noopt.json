@@ -1,69 +1,243 @@
 [
   {
     "graph": {
-      "group": "SubTab1####SubTab2",
-      "title": "DDD",
+      "group": "Tab1####Tab2####Tab3",
+      "title": "Chooser",
       "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
+      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/snippets-in-tab6.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "27dab915-eb4a-424f-8b23-66748f49aa0c",
+            "key": "b8a77025-2448-45df-b3ff-558d46e89954",
             "sequence": [
               {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "d232e8cc-e257-4ae1-8a1d-cb3fc6350e39-0"
-              },
-              {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "d232e8cc-e257-4ae1-8a1d-cb3fc6350e39-1"
-              },
-              {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "d232e8cc-e257-4ae1-8a1d-cb3fc6350e39-2"
+                "key": "test/inputs/snippets/importd.md",
+                "title": "DDD",
+                "filepath": "test/inputs/snippets/importd.md",
+                "graph": {
+                  "key": "042bd7a5-c37c-4a4f-b629-294095fc3452",
+                  "sequence": [
+                    {
+                      "group": "SubTab1####SubTab2",
+                      "title": "DDD",
+                      "source": "placeholder",
+                      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "3bec6ce7-38dd-4c05-bc8e-a15671f20e50",
+                            "sequence": [
+                              {
+                                "body": "echo AAA",
+                                "language": "bash",
+                                "validate": true,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-0"
+                              },
+                              {
+                                "body": "echo AAA",
+                                "language": "bash",
+                                "validate": true,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-1"
+                              },
+                              {
+                                "body": "echo AAA",
+                                "language": "bash",
+                                "validate": true,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-2"
+                              }
+                            ]
+                          },
+                          "title": "SubTab1"
+                        },
+                        {
+                          "member": 1,
+                          "graph": {
+                            "key": "854b2afc-600d-4de7-ade7-880999b7c5d4",
+                            "sequence": [
+                              {
+                                "body": "echo BBB",
+                                "language": "bash",
+                                "validate": false,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-3"
+                              }
+                            ]
+                          },
+                          "title": "SubTab2"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
               }
             ]
           },
-          "title": "SubTab1"
+          "title": "Tab1"
         },
         {
           "member": 1,
           "graph": {
-            "key": "fe867c75-c79e-439a-a236-9cab3873e096",
+            "key": "a5069ab0-4995-439d-9d6f-4dcf2313ea39",
             "sequence": [
               {
-                "body": "echo BBB",
-                "language": "bash",
-                "validate": false,
-                "id": "d232e8cc-e257-4ae1-8a1d-cb3fc6350e39-3"
+                "key": "test/inputs/snippets/importd.md",
+                "title": "DDD",
+                "filepath": "test/inputs/snippets/importd.md",
+                "graph": {
+                  "key": "9cdf169e-18a3-4de3-a2f9-0efbd340d8a7",
+                  "sequence": [
+                    {
+                      "group": "SubTab1####SubTab2",
+                      "title": "DDD",
+                      "source": "placeholder",
+                      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "538275e0-8cbe-4341-8fe0-f4cf3b55f850",
+                            "sequence": [
+                              {
+                                "body": "echo AAA",
+                                "language": "bash",
+                                "validate": true,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-4"
+                              },
+                              {
+                                "body": "echo AAA",
+                                "language": "bash",
+                                "validate": true,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-5"
+                              },
+                              {
+                                "body": "echo AAA",
+                                "language": "bash",
+                                "validate": true,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-6"
+                              }
+                            ]
+                          },
+                          "title": "SubTab1"
+                        },
+                        {
+                          "member": 1,
+                          "graph": {
+                            "key": "d089394d-e00c-4739-83c4-906eb1ce2a47",
+                            "sequence": [
+                              {
+                                "body": "echo BBB",
+                                "language": "bash",
+                                "validate": false,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-7"
+                              }
+                            ]
+                          },
+                          "title": "SubTab2"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
               }
             ]
           },
-          "title": "SubTab2"
+          "title": "Tab2"
+        },
+        {
+          "member": 2,
+          "graph": {
+            "key": "71fdcdfa-1122-4ba7-85f6-ebb7b70620c5",
+            "sequence": [
+              {
+                "key": "test/inputs/snippets/importd.md",
+                "title": "DDD",
+                "filepath": "test/inputs/snippets/importd.md",
+                "graph": {
+                  "key": "9e6e320a-e439-4416-b491-a0e8457eb932",
+                  "sequence": [
+                    {
+                      "group": "SubTab1####SubTab2",
+                      "title": "DDD",
+                      "source": "placeholder",
+                      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "c779a81b-59e7-4c19-8555-5d023c800fe6",
+                            "sequence": [
+                              {
+                                "body": "echo AAA",
+                                "language": "bash",
+                                "validate": true,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-8"
+                              },
+                              {
+                                "body": "echo AAA",
+                                "language": "bash",
+                                "validate": true,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-9"
+                              },
+                              {
+                                "body": "echo AAA",
+                                "language": "bash",
+                                "validate": true,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-10"
+                              }
+                            ]
+                          },
+                          "title": "SubTab1"
+                        },
+                        {
+                          "member": 1,
+                          "graph": {
+                            "key": "594d7584-8593-4b65-847d-15639e6d0ac5",
+                            "sequence": [
+                              {
+                                "body": "echo BBB",
+                                "language": "bash",
+                                "validate": false,
+                                "id": "80b2b9ff-aeb0-458b-8e3b-278fb0b5a376-11"
+                              }
+                            ]
+                          },
+                          "title": "SubTab2"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab3"
         }
       ]
     },
     "step": {
-      "name": "DDD",
+      "name": "Chooser",
       "description": "This step requires you to choose how to proceed",
       "content": [
         {
-          "title": "SubTab1",
-          "group": "SubTab1####SubTab2",
+          "title": "Tab1",
+          "group": "Tab1####Tab2####Tab3",
           "member": 0,
           "isFirstChoice": true
         },
         {
-          "title": "SubTab2",
-          "group": "SubTab1####SubTab2",
+          "title": "Tab2",
+          "group": "Tab1####Tab2####Tab3",
           "member": 1,
+          "isFirstChoice": true
+        },
+        {
+          "title": "Tab3",
+          "group": "Tab1####Tab2####Tab3",
+          "member": 2,
           "isFirstChoice": true
         }
       ]

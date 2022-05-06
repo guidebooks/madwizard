@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import ora from "ora"
-import chalk from "chalk"
 import Debug from "debug"
 
 import { Barrier } from "../codeblock"
@@ -33,8 +31,6 @@ import {
   isLeafNode,
   isBarrier,
   findChoiceFrontier,
-  sameGraph,
-  validate,
 } from "../graph"
 
 type Markdown = string
@@ -143,84 +139,6 @@ type Options = {
   previous: Wizard
 }
 
-interface OraLike {
-  succeed(): void
-  warn(): void
-}
-
-function emptyOra(): OraLike {
-  return {
-    succeed: () => {
-      /* noop */
-    },
-    warn: () => {
-      /* noop */
-    },
-  }
-}
-
-/**
- * Execute the `validate` property of the steps in the given `wizard`,
- * and stash the result in the `status` field of each step.
- */
-function validateWizard(wizard: Wizard, { previous, validator }: Partial<Options>) {
-  if (validator) {
-    // then update the Wizard model with real Status fields.
-    const alreadyDone = wizard.map(({ graph }) => {
-      return previous ? previous.findIndex((_) => _.status === "success" && sameGraph(graph, _.graph)) : -1
-    })
-
-    const spinners = wizard.map(
-      ({ step }, idx) =>
-        new Promise<OraLike>((resolve) => {
-          if (alreadyDone[idx] < 0) {
-            setTimeout(() => {
-              if (alreadyDone[idx] < 0) {
-                resolve(ora(chalk.dim(`Validating ${chalk.blue(step.name)}`)).start())
-              } else {
-                resolve(emptyOra())
-              }
-            }, 500)
-          } else {
-            resolve(emptyOra())
-          }
-        })
-    )
-
-    return Promise.all(
-      wizard.map(async ({ step, graph }, idx) => {
-        if (alreadyDone[idx] >= 0) {
-          // probably no need to re-compute status
-          const { status } = previous[alreadyDone[idx]]
-          return { step, graph, status }
-        }
-
-        const spinner = spinners[idx]
-        try {
-          const status = await validate(graph, { validator })
-
-          if (status === "success") {
-            (await spinner).succeed()
-          } else {
-            (await spinner).warn()
-          }
-
-          return { step, graph, status }
-        } catch (err) {
-          (await spinner).warn()
-          return { step, graph, status: "blank" as const }
-        } finally {
-          // the value here doesn't matter, as long as it is > 0; to
-          // indicate to the delayed spinners that there's no need...
-          alreadyDone[idx] = 1
-        }
-      })
-    )
-  } else {
-    return wizard
-  }
-}
-
 export async function wizardify(graph: Graph, options: Partial<Options> = {}): Promise<Wizard> {
   const debug = Debug("madwizard/timing/wizard:wizardify")
   debug("start")
@@ -243,7 +161,7 @@ export async function wizardify(graph: Graph, options: Partial<Options> = {}): P
         : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice)]),
     ])
 
-    return validateWizard(wizard, options)
+    return wizard
   } finally {
     debug("complete")
   }

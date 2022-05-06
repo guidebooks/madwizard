@@ -1,29 +1,6 @@
 [
   {
     "graph": {
-      "key": "importa.md",
-      "title": "importa.md",
-      "filepath": "",
-      "graph": {
-        "key": "bb4b3d27-d5a2-4ff1-8486-4bca1eb17d90",
-        "sequence": [
-          {
-            "body": "echo AAA",
-            "language": "bash",
-            "validate": true,
-            "id": "9ca9d4df-db33-4063-8ebd-6c325a9b87f9-0"
-          }
-        ]
-      },
-      "source": "placeholder"
-    },
-    "step": {
-      "name": "importa.md",
-      "content": ""
-    }
-  },
-  {
-    "graph": {
       "group": "TabE1",
       "title": "EEE",
       "source": "placeholder",
@@ -32,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "fa6f10f1-73ee-4a9b-ae21-7abbfa72b1f0",
+            "key": "6ad1d352-ca20-4dee-ad55-12d279887d65",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "9ca9d4df-db33-4063-8ebd-6c325a9b87f9-1"
+                "id": "429150d2-8633-475f-b468-0d7772967eba-1"
               }
             ]
           },
@@ -56,122 +33,6 @@
           "member": 0,
           "isFirstChoice": true,
           "description": "\nEEE1Content"
-        }
-      ]
-    }
-  },
-  {
-    "graph": {
-      "group": "Tab1####Tab2",
-      "title": "Main Tasks",
-      "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importe.md"],
-      "choices": [
-        {
-          "member": 0,
-          "graph": {
-            "key": "1de886a2-00cf-4bc0-9465-fca97720dd52",
-            "sequence": [
-              {
-                "key": "test/inputs/snippets/importd.md",
-                "title": "DDD",
-                "filepath": "test/inputs/snippets/importd.md",
-                "graph": {
-                  "key": "3d88a1ab-344b-48f1-bbc8-5d0e153443bc",
-                  "sequence": [
-                    {
-                      "group": "SubTab1####SubTab2",
-                      "title": "DDD",
-                      "source": "placeholder",
-                      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
-                      "choices": [
-                        {
-                          "member": 0,
-                          "graph": {
-                            "key": "ac27db68-5bb8-4514-98bf-40b516c7d1f5",
-                            "sequence": [
-                              {
-                                "body": "echo AAA",
-                                "language": "bash",
-                                "validate": true,
-                                "id": "9ca9d4df-db33-4063-8ebd-6c325a9b87f9-2"
-                              },
-                              {
-                                "body": "echo AAA",
-                                "language": "bash",
-                                "validate": true,
-                                "id": "9ca9d4df-db33-4063-8ebd-6c325a9b87f9-3"
-                              },
-                              {
-                                "body": "echo AAA",
-                                "language": "bash",
-                                "validate": true,
-                                "id": "9ca9d4df-db33-4063-8ebd-6c325a9b87f9-4"
-                              }
-                            ]
-                          },
-                          "title": "SubTab1"
-                        },
-                        {
-                          "member": 1,
-                          "graph": {
-                            "key": "ab798315-f649-4c1c-8bda-ea01de63bd33",
-                            "sequence": [
-                              {
-                                "body": "echo BBB",
-                                "language": "bash",
-                                "validate": false,
-                                "id": "9ca9d4df-db33-4063-8ebd-6c325a9b87f9-5"
-                              }
-                            ]
-                          },
-                          "title": "SubTab2"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                "source": "placeholder"
-              }
-            ]
-          },
-          "title": "Tab1",
-          "description": "imports:\n"
-        },
-        {
-          "member": 1,
-          "graph": {
-            "key": "c8354489-5561-4301-aabd-3200ec36e7a1",
-            "sequence": [
-              {
-                "body": "echo XXX",
-                "language": "bash",
-                "id": "9ca9d4df-db33-4063-8ebd-6c325a9b87f9-6"
-              }
-            ]
-          },
-          "title": "Tab2",
-          "description": "\nBBBoo"
-        }
-      ]
-    },
-    "step": {
-      "name": "Main Tasks",
-      "description": "This step requires you to choose how to proceed",
-      "content": [
-        {
-          "title": "Tab1",
-          "group": "Tab1####Tab2",
-          "member": 0,
-          "isFirstChoice": false,
-          "description": "imports:\n"
-        },
-        {
-          "title": "Tab2",
-          "group": "Tab1####Tab2",
-          "member": 1,
-          "isFirstChoice": false,
-          "description": "\nBBBoo"
         }
       ]
     }

@@ -15,20 +15,28 @@
  */
 
 import Debug from "debug"
-import { Graph } from "."
+
 import { ChoiceState } from "../choices"
+import { Graph, StatusMemo, ValidateOptions } from "."
 
 import hoistSubTasks from "./hoistSubTasks"
 import propagateTitles from "./propagateTitles"
+import collapseValidated from "./collapseValidated"
 import collapseMadeChoices from "./collapseMadeChoices"
 import deadCodeElimination from "./deadCodeElimination"
 
-export default function optimize(graph: Graph, choices: ChoiceState) {
+export default async function optimize(
+  graph: Graph,
+  choices: ChoiceState,
+  options?: ValidateOptions & Partial<StatusMemo>
+) {
   const debug = Debug("madwizard/timing/graph:optimize")
   debug("start")
 
   try {
-    return propagateTitles(deadCodeElimination(hoistSubTasks(collapseMadeChoices(graph, choices))))
+    return propagateTitles(
+      deadCodeElimination(hoistSubTasks(await collapseValidated(collapseMadeChoices(graph, choices), options)))
+    )
   } finally {
     debug("complete")
   }

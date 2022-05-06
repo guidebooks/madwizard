@@ -42,3 +42,5 @@ export function isStatus(status: string): status is Status {
 }
 
 export type StatusMap = Record<string, Status>
+
+export type StatusMemo = { statusMemo: StatusMap }

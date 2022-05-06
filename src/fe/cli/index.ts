@@ -79,10 +79,12 @@ export async function cli<Writer extends (msg: string) => boolean>(
   const mkdocsIdx = _argv.findIndex((_) => _ === "--mkdocs")
   const mkdocs = mkdocsIdx < 0 ? undefined : _argv[mkdocsIdx + 1]
   const narrow = !!_argv.find((_) => _ === "--narrow" || _ === "-n")
+
   const noOptimize = !!_argv.find((_) => _ === "-O0" || _ === "--optimize=0" || _ === "--no-optimize")
   const noAprioris = !!_argv.find((_) => _ === "--no-aprioris")
+  const noValidate = !!_argv.find((_) => _ === "--no-validate")
 
-  const optimize = noOptimize ? false : { aprioris: !noAprioris }
+  const optimize = noOptimize ? false : { aprioris: !noAprioris, validate: !noValidate }
   const options = Object.assign({}, { mkdocs, narrow, optimize }, providedOptions)
 
   if (!task || !input) {
@@ -123,7 +125,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
       }
 
       case "json": {
-        const graph = await compile(blocks, choices)
+        const graph = await compile(blocks, choices, options)
         const wizard = await wizardify(graph)
         ;(write || process.stdout.write.bind(process.stdout))(
           JSON.stringify(

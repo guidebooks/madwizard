@@ -1,99 +1,6 @@
 [
   {
     "graph": {
-      "group": "SubTab1####SubTab2",
-      "title": "DDD",
-      "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
-      "choices": [
-        {
-          "member": 0,
-          "graph": {
-            "key": "deb9c608-9071-4cfe-b770-0f08f572b22f",
-            "sequence": [
-              {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "e8c01ff9-1610-4cb2-8c02-ac8137f723be-0"
-              },
-              {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "e8c01ff9-1610-4cb2-8c02-ac8137f723be-1"
-              },
-              {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "e8c01ff9-1610-4cb2-8c02-ac8137f723be-2"
-              }
-            ]
-          },
-          "title": "SubTab1"
-        },
-        {
-          "member": 1,
-          "graph": {
-            "key": "995ed13f-0890-4f32-a1ac-ccf6d441412e",
-            "sequence": [
-              {
-                "body": "echo BBB",
-                "language": "bash",
-                "validate": false,
-                "id": "e8c01ff9-1610-4cb2-8c02-ac8137f723be-3"
-              }
-            ]
-          },
-          "title": "SubTab2"
-        }
-      ]
-    },
-    "step": {
-      "name": "DDD",
-      "description": "This step requires you to choose how to proceed",
-      "content": [
-        {
-          "title": "SubTab1",
-          "group": "SubTab1####SubTab2",
-          "member": 0,
-          "isFirstChoice": true
-        },
-        {
-          "title": "SubTab2",
-          "group": "SubTab1####SubTab2",
-          "member": 1,
-          "isFirstChoice": true
-        }
-      ]
-    }
-  },
-  {
-    "graph": {
-      "key": "importa.md",
-      "title": "importa.md",
-      "filepath": "",
-      "graph": {
-        "key": "cb84a511-3d8c-41a0-8af8-323c25e0f039",
-        "sequence": [
-          {
-            "body": "echo AAA",
-            "language": "bash",
-            "validate": true,
-            "id": "e8c01ff9-1610-4cb2-8c02-ac8137f723be-4"
-          }
-        ]
-      },
-      "source": "placeholder"
-    },
-    "step": {
-      "name": "importa.md",
-      "content": ""
-    }
-  },
-  {
-    "graph": {
       "group": "TabE1",
       "title": "EEE",
       "source": "placeholder",
@@ -102,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "6a872004-bc6d-41ed-aba5-8e2e11ac25c0",
+            "key": "0291a631-15f6-4a66-8bd4-a910573b7d8f",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "e8c01ff9-1610-4cb2-8c02-ac8137f723be-5"
+                "id": "be5895b7-49fe-40ee-9462-27630d3fb8a3-5"
               }
             ]
           },
@@ -124,46 +31,8 @@
           "title": "TabE1",
           "group": "TabE1",
           "member": 0,
-          "isFirstChoice": false,
+          "isFirstChoice": true,
           "description": "\nEEE1Content"
-        }
-      ]
-    }
-  },
-  {
-    "graph": {
-      "group": "Tab1####Tab2####Tab3",
-      "title": "AAA",
-      "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importe.md"],
-      "choices": [
-        {
-          "member": 1,
-          "graph": {
-            "key": "c22f4c27-6d81-4929-83ff-ac42f29296cf",
-            "sequence": [
-              {
-                "body": "echo XXX",
-                "language": "bash",
-                "id": "e8c01ff9-1610-4cb2-8c02-ac8137f723be-10"
-              }
-            ]
-          },
-          "title": "Tab2",
-          "description": "\nBBBoo"
-        }
-      ]
-    },
-    "step": {
-      "name": "AAA",
-      "description": "This step requires you to choose how to proceed",
-      "content": [
-        {
-          "title": "Tab2",
-          "group": "Tab1####Tab2####Tab3",
-          "member": 1,
-          "isFirstChoice": false,
-          "description": "\nBBBoo"
         }
       ]
     }

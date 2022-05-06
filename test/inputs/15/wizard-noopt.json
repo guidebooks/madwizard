@@ -8,22 +8,21 @@
         {
           "member": 0,
           "graph": {
-            "key": "d4a18b1b-639b-434b-af43-9924d21b3599",
+            "key": "13ef6a1f-fef5-4f89-b4df-2527beeb00de",
             "sequence": [
               {
                 "group": "SubTab1####SubTab2",
-                "title": "Tab1",
                 "source": "placeholder",
                 "choices": [
                   {
                     "member": 0,
                     "graph": {
-                      "key": "a4b925ff-e584-4174-9f32-b438100eb8c0",
+                      "key": "4dd86584-bbdc-4f41-be2c-33286c29c0d9",
                       "sequence": [
                         {
                           "body": "echo 111",
                           "language": "shell",
-                          "id": "c0122c71-95be-49da-8234-d144f3d78cf3-0"
+                          "id": "e9d62d1c-beba-4ac1-83db-cc07be72a7e7-0"
                         }
                       ]
                     },
@@ -32,12 +31,12 @@
                   {
                     "member": 1,
                     "graph": {
-                      "key": "9dc7b722-55c5-4eab-901b-0575cae86ef6",
+                      "key": "b36b2cf4-1dd8-43c1-8c3f-8f432ca74e98",
                       "sequence": [
                         {
                           "body": "echo 222",
                           "language": "shell",
-                          "id": "c0122c71-95be-49da-8234-d144f3d78cf3-1"
+                          "id": "e9d62d1c-beba-4ac1-83db-cc07be72a7e7-1"
                         }
                       ]
                     },
