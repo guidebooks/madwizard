@@ -192,7 +192,7 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
   graph: Sequence<T>,
   source: Source["source"] = () => "",
   barrier = false,
-  validate?: string
+  validate?: Validatable["validate"]
 ): SubTask<Unordered> {
   return {
     key,
@@ -391,5 +391,6 @@ export function isBarrier(graph: Graph): graph is Graph & Barrier & { barrier: t
 }
 
 export function isValidatable(graph: Graph): graph is Graph & Validatable {
-  return typeof (graph as Validatable).validate === "string"
+  const validate = (graph as Validatable).validate
+  return typeof validate === "string" || typeof validate === "number" || typeof validate === "boolean"
 }

@@ -27,7 +27,7 @@ export type ExecOptions = {
 
 export type ValidationExecutor = (cmdline: string, opts?: ExecOptions) => "success" | Promise<"success">
 
-export async function shellExec(cmdline: string, opts: ExecOptions = { quiet: false }): Promise<"success"> {
+export async function shellExec(cmdline: string | boolean, opts: ExecOptions = { quiet: false }): Promise<"success"> {
   const capture = typeof opts.capture === "string"
 
   return new Promise((resolve, reject) => {
@@ -134,7 +134,13 @@ async function doValidate(validate: string, opts: Pick<Options, "validator" | "t
  */
 async function validateGraph(graph: Graph, opts: Options): Promise<Status> {
   if (isValidatable(graph)) {
-    return doValidate(graph.validate, opts)
+    if (graph.validate === true) {
+      return "success"
+    } else if (typeof graph.validate !== "string") {
+      return "blank"
+    } else {
+      return doValidate(graph.validate, opts)
+    }
   } else if (isSequence(graph)) {
     return intersection(Promise.all(graph.sequence.map((_) => validateGraph(_, opts))))
   } else if (isParallel(graph)) {

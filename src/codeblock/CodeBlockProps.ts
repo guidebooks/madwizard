@@ -22,7 +22,7 @@ export interface Validatable {
    * codes will not be seen as errors, but rather as representative
    * of a default state.
    */
-  validate: string
+  validate: string | boolean | number
 }
 
 export interface GroupMember {
