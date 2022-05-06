@@ -30,22 +30,25 @@ import {
   shellExec,
 } from "../../graph"
 
-function updateContent(part: ChoicePart, choice = "") {
+function updateContent<Part extends { graph: Graph; description?: string }>(part: Part, choice = ""): Part {
   const pattern1 = /\$\{?choice\}?/gi
   const pattern2 = /\$\{?uuid\}?/gi
 
-  const uuid = v4()
-  const replace = (str: string) => str.replace(pattern1, choice).replace(pattern2, uuid)
+  let _uuid: string
+  const uuid = () => _uuid || (_uuid = v4())
+  const replace = (str: string) => str.replace(pattern1, choice).replace(pattern2, uuid())
 
   blocks(part.graph).forEach((_) => {
-    _.body = replace(_.body)
+    if (typeof _.body === "string") {
+      _.body = replace(_.body)
+    }
 
-    if (_.validate) {
+    if (typeof _.validate === "string") {
       _.validate = replace(_.validate)
     }
   })
 
-  if (part.description) {
+  if (typeof part.description === "string") {
     part.description = replace(part.description)
   }
 
@@ -109,6 +112,8 @@ export async function expand(graph: Graph) {
           })
         )
       ).flat()
+    } else {
+      graph.choices = graph.choices.map((_) => updateContent(_))
     }
 
     await Promise.all(graph.choices.map((_) => expand(_.graph)))
@@ -116,6 +121,8 @@ export async function expand(graph: Graph) {
     await expand(graph.graph)
   } else if (isTitledSteps(graph)) {
     await Promise.all(graph.steps.map((_) => expand(_.graph)))
+  } else {
+    updateContent({ graph })
   }
 
   return graph
