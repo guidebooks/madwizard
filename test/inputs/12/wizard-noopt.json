@@ -1,25 +1,13 @@
 [
   {
     "graph": {
-      "key": "Main Tasks",
-      "title": "Main Tasks",
-      "filepath": "",
-      "graph": {
-        "key": "e439a94b-63ff-46a3-b5dd-c1a9f85381e6",
-        "sequence": [
-          {
-            "body": "echo AAA",
-            "language": "shell",
-            "validate": "echo true",
-            "id": "75dddc29-5dab-4f09-9d55-f633d97e0e41-0"
-          }
-        ]
-      },
-      "source": "placeholder"
+      "body": "echo AAA",
+      "language": "shell",
+      "validate": "echo true",
+      "id": "06a506f9-b531-4527-b43c-4e30bac63a51-0"
     },
     "step": {
-      "name": "Main Tasks",
-      "content": ""
+      "content": "```shell\necho AAA\n```"
     }
   }
 ]

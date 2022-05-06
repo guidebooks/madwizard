@@ -1,0 +1,40 @@
+[
+  {
+    "graph": {
+      "group": "TabE1",
+      "title": "EEE",
+      "source": "placeholder",
+      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importe.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "59d44628-7630-42a5-8ff8-11a6e5f82be1",
+            "sequence": [
+              {
+                "body": "echo EEE",
+                "language": "bash",
+                "id": "b955b774-aa28-4964-abb5-5edfa7319ace-1"
+              }
+            ]
+          },
+          "title": "TabE1",
+          "description": "\nEEE1Content"
+        }
+      ]
+    },
+    "step": {
+      "name": "EEE",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "TabE1",
+          "group": "TabE1",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "\nEEE1Content"
+        }
+      ]
+    }
+  }
+]

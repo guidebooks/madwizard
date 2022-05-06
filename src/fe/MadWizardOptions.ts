@@ -22,7 +22,18 @@ export interface MadWizardOptions {
   optimize?:
     | boolean
     | {
+        /**
+         * Should we optimize away choices against known a priori
+         * truths, e.g. user's platform?
+         */
         aprioris?: boolean
+
+        /**
+         * Should we optimize away subgraphs of the plan known to be
+         * valid (using the `validate` attributes given by the
+         * source)?
+         */
+        validate?: boolean
       }
 
   /**

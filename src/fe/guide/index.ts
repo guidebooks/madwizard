@@ -31,7 +31,17 @@ import { CodeBlockProps } from "../../codeblock"
 import indent from "../../parser/markdown/util/indent"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"
 import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isTaskStep, wizardify } from "../../wizard"
-import { Graph, Status, blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
+import {
+  Graph,
+  Status,
+  StatusMap,
+  blocks,
+  compile,
+  extractTitle,
+  extractDescription,
+  shellExec,
+  validate,
+} from "../../graph"
 
 export class Guide {
   private readonly debug = Debug("madwizard/fe/guide")
@@ -40,6 +50,7 @@ export class Guide {
     private readonly blocks: CodeBlockProps[],
     private readonly choices: ChoiceState,
     private readonly options: MadWizardOptions,
+    private readonly statusMemo: StatusMap = {},
     private readonly prompt = inquirer.createPromptModule(),
     private readonly ui: UI<string> = new AnsiUI()
   ) {}
@@ -53,7 +64,11 @@ export class Guide {
    * @return the list of remaining questions
    */
   private async questions(iter: number, previous?: Wizard) {
-    const graph = await compile(this.blocks, this.choices, this.options)
+    const graph = await compile(
+      this.blocks,
+      this.choices,
+      Object.assign({}, this.options, { statusMemo: this.statusMemo })
+    )
     const wizard = await wizardify(graph, { validator: shellExec, previous })
 
     const firstChoiceIdx = wizard.findIndex((_) => isChoiceStep(_) && _.status !== "success")
@@ -280,8 +295,10 @@ export class Guide {
     const { graph, choices, preChoiceTasks, postChoiceTasks, questions, wizard } = qs
 
     if (iter === 0) {
-      // start a fresh screen before presenting the guide proper
-      console.clear()
+      if (questions.length > 0) {
+        // start a fresh screen before presenting the first question
+        console.clear()
+      }
 
       this.presentGuidebookTitle(graph)
     }

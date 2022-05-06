@@ -5,12 +5,12 @@
       "title": "importg.md",
       "filepath": "",
       "graph": {
-        "key": "07434575-898e-4040-80ff-0850f1437907",
+        "key": "6cd021ed-4b16-4768-bdc0-b150a65d33d1",
         "sequence": [
           {
             "body": "echo MMM",
             "language": "bash",
-            "id": "db589a81-8028-4642-9c34-7f7e32d76699-0"
+            "id": "42ef903f-2752-4fe5-aa0c-a1288b473043-0"
           }
         ]
       },
@@ -19,99 +19,6 @@
     "step": {
       "name": "importg.md",
       "content": ""
-    }
-  },
-  {
-    "graph": {
-      "key": "importa.md",
-      "title": "importa.md",
-      "filepath": "",
-      "graph": {
-        "key": "ba209e11-43cb-4194-a45f-99c93ebede68",
-        "sequence": [
-          {
-            "body": "echo AAA",
-            "language": "bash",
-            "validate": true,
-            "id": "db589a81-8028-4642-9c34-7f7e32d76699-3"
-          }
-        ]
-      },
-      "source": "placeholder"
-    },
-    "step": {
-      "name": "importa.md",
-      "content": ""
-    }
-  },
-  {
-    "graph": {
-      "group": "SubTab1####SubTab2",
-      "title": "DDD",
-      "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
-      "choices": [
-        {
-          "member": 0,
-          "graph": {
-            "key": "281a090f-8349-4e34-9b42-11e0deb017a7",
-            "sequence": [
-              {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "db589a81-8028-4642-9c34-7f7e32d76699-4"
-              },
-              {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "db589a81-8028-4642-9c34-7f7e32d76699-5"
-              },
-              {
-                "body": "echo AAA",
-                "language": "bash",
-                "validate": true,
-                "id": "db589a81-8028-4642-9c34-7f7e32d76699-6"
-              }
-            ]
-          },
-          "title": "SubTab1"
-        },
-        {
-          "member": 1,
-          "graph": {
-            "key": "62484929-02d5-4528-8769-d051b38aa7fa",
-            "sequence": [
-              {
-                "body": "echo BBB",
-                "language": "bash",
-                "validate": false,
-                "id": "db589a81-8028-4642-9c34-7f7e32d76699-7"
-              }
-            ]
-          },
-          "title": "SubTab2"
-        }
-      ]
-    },
-    "step": {
-      "name": "DDD",
-      "description": "This step requires you to choose how to proceed",
-      "content": [
-        {
-          "title": "SubTab1",
-          "group": "SubTab1####SubTab2",
-          "member": 0,
-          "isFirstChoice": true
-        },
-        {
-          "title": "SubTab2",
-          "group": "SubTab1####SubTab2",
-          "member": 1,
-          "isFirstChoice": true
-        }
-      ]
     }
   }
 ]

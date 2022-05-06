@@ -1,0 +1,64 @@
+[
+  {
+    "graph": {
+      "key": "barrier.md",
+      "title": "barrier.md",
+      "filepath": "",
+      "graph": {
+        "key": "c82af6e4-d3d9-48a8-9592-04a015e2ef76",
+        "sequence": [
+          {
+            "body": "echo barrier",
+            "language": "shell",
+            "id": "e893efa3-ed2d-418d-b61b-132b61753f67-1"
+          }
+        ]
+      },
+      "source": "placeholder",
+      "barrier": true
+    },
+    "step": {
+      "name": "barrier.md",
+      "barrier": true,
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "group": "TabE1",
+      "title": "EEE",
+      "source": "placeholder",
+      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importe.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "0de661b1-4832-4c40-9728-4f9aaa93b05d",
+            "sequence": [
+              {
+                "body": "echo EEE",
+                "language": "bash",
+                "id": "e893efa3-ed2d-418d-b61b-132b61753f67-2"
+              }
+            ]
+          },
+          "title": "TabE1",
+          "description": "\nEEE1Content"
+        }
+      ]
+    },
+    "step": {
+      "name": "EEE",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "TabE1",
+          "group": "TabE1",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "\nEEE1Content"
+        }
+      ]
+    }
+  }
+]

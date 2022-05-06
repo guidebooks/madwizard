@@ -1,0 +1,59 @@
+[
+  {
+    "graph": {
+      "group": "Tab1Title####Tab2Title",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "642d8704-83a0-4af1-a206-83c09923ba16",
+            "sequence": [
+              {
+                "body": "echo 111",
+                "language": "bash",
+                "id": "ff629276-1a93-4f9d-a903-154af746da91-0"
+              }
+            ]
+          },
+          "title": "Tab1Title",
+          "description": "\nTab1Content"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "f47df403-d2c2-4dfe-a756-e82a8fa5c368",
+            "sequence": [
+              {
+                "body": "echo 222",
+                "language": "bash",
+                "id": "ff629276-1a93-4f9d-a903-154af746da91-1"
+              }
+            ]
+          },
+          "title": "Tab2Title",
+          "description": "\nTab2Content"
+        }
+      ]
+    },
+    "step": {
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1Title",
+          "group": "Tab1Title####Tab2Title",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "\nTab1Content"
+        },
+        {
+          "title": "Tab2Title",
+          "group": "Tab1Title####Tab2Title",
+          "member": 1,
+          "isFirstChoice": true,
+          "description": "\nTab2Content"
+        }
+      ]
+    }
+  }
+]

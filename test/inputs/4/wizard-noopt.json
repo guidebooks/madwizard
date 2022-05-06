@@ -5,13 +5,13 @@
       "title": "importa.md",
       "filepath": "",
       "graph": {
-        "key": "13dafd28-bb0d-41d5-8c98-3f08fedd8c73",
+        "key": "f0357b81-d70d-479e-8e26-34a6a5e567d1",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "631bc2d9-b9d3-42ad-a282-a7d053e3bf2e-0"
+            "id": "5c6f902a-5834-401e-a21b-55c960b08317-0"
           }
         ]
       },
@@ -32,12 +32,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "895a91fb-9cba-49d7-a8de-ef6b327c3cf3",
+            "key": "08f12041-ea36-40a4-923f-b7b3651551a5",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "631bc2d9-b9d3-42ad-a282-a7d053e3bf2e-1"
+                "id": "5c6f902a-5834-401e-a21b-55c960b08317-1"
               }
             ]
           },
@@ -63,21 +63,20 @@
   {
     "graph": {
       "group": "Tab1####Tab2",
-      "title": "Main Tasks",
       "source": "placeholder",
       "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importe.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "fa781cee-acd5-4367-b5ec-3db45bdfbcdc",
+            "key": "1da9c17c-9a80-48d5-a72c-a071f2aaaf7b",
             "sequence": [
               {
                 "key": "test/inputs/snippets/importd.md",
                 "title": "DDD",
                 "filepath": "test/inputs/snippets/importd.md",
                 "graph": {
-                  "key": "442d51d1-589e-42e1-a3c6-284894a26ad1",
+                  "key": "c1e9c5bb-c40a-4d9f-bcc9-f63eb3a4dff3",
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
@@ -88,25 +87,25 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "e3f84d71-1b6a-41ae-b286-1f6d23d2b725",
+                            "key": "b474eaca-950f-4040-89d7-9d611855fea6",
                             "sequence": [
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "631bc2d9-b9d3-42ad-a282-a7d053e3bf2e-2"
+                                "id": "5c6f902a-5834-401e-a21b-55c960b08317-2"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "631bc2d9-b9d3-42ad-a282-a7d053e3bf2e-3"
+                                "id": "5c6f902a-5834-401e-a21b-55c960b08317-3"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "631bc2d9-b9d3-42ad-a282-a7d053e3bf2e-4"
+                                "id": "5c6f902a-5834-401e-a21b-55c960b08317-4"
                               }
                             ]
                           },
@@ -115,13 +114,13 @@
                         {
                           "member": 1,
                           "graph": {
-                            "key": "ce2a5278-539b-4de7-99e1-b82d5ffa776c",
+                            "key": "73293ed6-4f45-45a8-9c37-e2606717eb71",
                             "sequence": [
                               {
                                 "body": "echo BBB",
                                 "language": "bash",
                                 "validate": false,
-                                "id": "631bc2d9-b9d3-42ad-a282-a7d053e3bf2e-5"
+                                "id": "5c6f902a-5834-401e-a21b-55c960b08317-5"
                               }
                             ]
                           },
@@ -141,12 +140,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "50938516-7bf5-43c4-a95a-211ca77654ed",
+            "key": "59c85128-de3c-4fb3-892c-da7cc73f8050",
             "sequence": [
               {
                 "body": "echo XXX",
                 "language": "bash",
-                "id": "631bc2d9-b9d3-42ad-a282-a7d053e3bf2e-6"
+                "id": "5c6f902a-5834-401e-a21b-55c960b08317-6"
               }
             ]
           },
@@ -156,7 +155,6 @@
       ]
     },
     "step": {
-      "name": "Main Tasks",
       "description": "This step requires you to choose how to proceed",
       "content": [
         {
