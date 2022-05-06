@@ -31,6 +31,7 @@ import {
 } from "../codeblock/CodeBlockProps"
 
 import optimize from "./optimize"
+import provenanceOf from "./provenance"
 
 type ChoiceNesting = { parent: CodeBlockChoice; graph: Choice }
 type SubTaskNesting = { parent: CodeBlockImport; graph: SubTask }
@@ -73,6 +74,16 @@ export async function compile(
     const parts: Graph[] = []
     let currentNesting: Nesting[] = []
 
+    /** Find the nearest enclosing Import */
+    const currentProvenance = () => {
+      const provs = currentNesting.map((_) => (isImportNesting(_) ? provenanceOf(_.graph) : undefined)).filter(Boolean)
+      if (provs.length === 0) {
+        return undefined
+      } else {
+        return [provs[provs.length - 1]]
+      }
+    }
+
     const newChoice = (block: CodeBlockProps, parent: CodeBlockChoice, isDeepest: boolean) => ({
       member: parent.member,
       graph: isDeepest ? seq(block) : emptySequence(),
@@ -84,6 +95,7 @@ export async function compile(
       group: parent.group,
       title: parent.groupDetail.title,
       source: parent.groupDetail.source,
+      provenance: currentProvenance(),
       choices: [newChoice(block, parent, isDeepest)],
     })
 

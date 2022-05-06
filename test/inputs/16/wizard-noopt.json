@@ -8,7 +8,7 @@
         {
           "member": 0,
           "graph": {
-            "key": "0e4b1fb4-9275-437d-b671-24a8368636d6",
+            "key": "aa12f866-62ed-43e8-9f52-c1ad20c193c8",
             "sequence": [
               {
                 "group": "SubTab1####SubTab2",
@@ -18,12 +18,12 @@
                   {
                     "member": 0,
                     "graph": {
-                      "key": "feff6d1a-c8b0-47a5-b733-36de826a33aa",
+                      "key": "f6ab2fb1-bfeb-4924-b8aa-50a1c8429932",
                       "sequence": [
                         {
                           "body": "echo 111",
                           "language": "shell",
-                          "id": "cdbd8001-b00b-4e2f-bdd1-24b2b1364e1e-0"
+                          "id": "7045afe0-004c-4322-b135-f82f58cb0855-0"
                         }
                       ]
                     },
@@ -32,12 +32,12 @@
                   {
                     "member": 1,
                     "graph": {
-                      "key": "1173dd01-540e-4b24-b2a3-91ea2893f4a4",
+                      "key": "c76751c2-c31a-46c0-a8cf-c2da41e72edd",
                       "sequence": [
                         {
                           "body": "echo 222",
                           "language": "shell",
-                          "id": "cdbd8001-b00b-4e2f-bdd1-24b2b1364e1e-1"
+                          "id": "7045afe0-004c-4322-b135-f82f58cb0855-1"
                         }
                       ]
                     },
@@ -48,7 +48,7 @@
             ]
           },
           "title": "Tab1",
-          "description": "\nTab1Description"
+          "description": "Tab1Description\n"
         }
       ]
     },
@@ -61,7 +61,7 @@
           "group": "Tab1",
           "member": 0,
           "isFirstChoice": true,
-          "description": "\nTab1Description"
+          "description": "Tab1Description\n"
         }
       ]
     }

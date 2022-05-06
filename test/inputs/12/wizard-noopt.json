@@ -5,13 +5,13 @@
       "title": "Main Tasks",
       "filepath": "",
       "graph": {
-        "key": "65984c84-0d46-4f87-b70f-1dd186b0c256",
+        "key": "e439a94b-63ff-46a3-b5dd-c1a9f85381e6",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "shell",
             "validate": "echo true",
-            "id": "5900f06c-6c5e-4340-8761-73afaa8153ca-0"
+            "id": "75dddc29-5dab-4f09-9d55-f633d97e0e41-0"
           }
         ]
       },

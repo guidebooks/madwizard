@@ -125,6 +125,7 @@ export type Choice<T extends Unordered | Ordered = Unordered> = Source &
   Title & {
     group: ChoiceGroup
     choices: ChoicePart<T>[]
+    provenance: string[]
   }
 
 export type OrderedChoice = Choice<Ordered>

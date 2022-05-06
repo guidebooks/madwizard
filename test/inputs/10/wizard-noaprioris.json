@@ -4,16 +4,17 @@
       "group": "MacOS####Linux####Windows",
       "title": "importgg.md",
       "source": "placeholder",
+      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importgg.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "08d99f2a-5ebe-4ead-8f70-3d5287b2021d",
+            "key": "8bec5525-b17e-4777-94a2-3c0123d027ab",
             "sequence": [
               {
                 "body": "echo MMM",
                 "language": "bash",
-                "id": "be41a431-bd2a-44af-b3db-72f6f47163a8-0"
+                "id": "3659a276-b255-4415-bb5d-9fc818187666-0"
               }
             ]
           },
@@ -22,12 +23,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "f1a1cade-f5ce-4e62-97ce-6a27cca0aa39",
+            "key": "793543f6-21e3-414f-bfa0-70cea2d538b4",
             "sequence": [
               {
                 "body": "echo LLL",
                 "language": "bash",
-                "id": "be41a431-bd2a-44af-b3db-72f6f47163a8-1"
+                "id": "3659a276-b255-4415-bb5d-9fc818187666-1"
               }
             ]
           },
@@ -36,12 +37,12 @@
         {
           "member": 2,
           "graph": {
-            "key": "f88a8d8f-cb75-4a19-b0f1-aabe914bfb5e",
+            "key": "c3806105-0426-4a6e-a2bf-b22b34dcd67e",
             "sequence": [
               {
                 "body": "echo WWW",
                 "language": "bash",
-                "id": "be41a431-bd2a-44af-b3db-72f6f47163a8-2"
+                "id": "3659a276-b255-4415-bb5d-9fc818187666-2"
               }
             ]
           },
@@ -76,17 +77,17 @@
   },
   {
     "graph": {
-      "key": "test/inputs/snippets/importaa.md",
+      "key": "importaa.md",
       "title": "importaa.md",
-      "filepath": "test/inputs/snippets/importaa.md",
+      "filepath": "",
       "graph": {
-        "key": "0680c52f-9417-48ab-ba71-b813dd8ebc64",
+        "key": "d4581b7e-9f86-4252-b6f8-63c6459ced29",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "be41a431-bd2a-44af-b3db-72f6f47163a8-3"
+            "id": "3659a276-b255-4415-bb5d-9fc818187666-3"
           }
         ]
       },
@@ -102,29 +103,30 @@
       "group": "SubTab1####SubTab2",
       "title": "DDD",
       "source": "placeholder",
+      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importdd.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "ea7ac51c-0e26-401e-ba81-63e20804d2a9",
+            "key": "43236102-7a5c-405c-8cd8-4768b8ec6669",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "be41a431-bd2a-44af-b3db-72f6f47163a8-4"
+                "id": "3659a276-b255-4415-bb5d-9fc818187666-4"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "be41a431-bd2a-44af-b3db-72f6f47163a8-5"
+                "id": "3659a276-b255-4415-bb5d-9fc818187666-5"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "be41a431-bd2a-44af-b3db-72f6f47163a8-6"
+                "id": "3659a276-b255-4415-bb5d-9fc818187666-6"
               }
             ]
           },
@@ -133,13 +135,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "45ab97fd-3e31-49a5-bf79-292a6b5d85eb",
+            "key": "e5457fb3-1ba6-4b41-918c-3089918c9a83",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "be41a431-bd2a-44af-b3db-72f6f47163a8-7"
+                "id": "3659a276-b255-4415-bb5d-9fc818187666-7"
               }
             ]
           },
