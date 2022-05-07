@@ -22,15 +22,15 @@ import { basename } from "path"
 import { MadWizardOptions } from "../MadWizardOptions"
 
 import { Guide } from "../guide"
-import { parse, wizardify, compile, order, version } from "../.."
 import { prettyPrintUITreeFromBlocks, Treeifier, DevNullUI } from "../tree"
+import { parse, wizardify, compile, order, vetoesToString, version } from "../.."
 
 export { Guide }
 
-type Task = "plan" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "groups" | "version"
+type Task = "plan" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "groups" | "version" | "vetoes"
 
 function validTasks(): Task[] {
-  return ["plan", "json", "guide", "timing", "fetch", "topmatter", "groups", "version"]
+  return ["plan", "json", "guide", "timing", "fetch", "topmatter", "groups", "version", "vetoes"]
 }
 
 function isDebugTask(task: Task) {
@@ -114,6 +114,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
 
       case "groups":
       case "topmatter":
+        // these tasks depend only on `parse` having been called
         break
 
       case "timing":
@@ -125,10 +126,13 @@ export async function cli<Writer extends (msg: string) => boolean>(
         break
       }
 
-      case "plan": {
+      case "plan":
         await prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
         break
-      }
+
+      case "vetoes":
+        write(await vetoesToString(blocks, choices, options))
+        break
 
       case "json": {
         const graph = await compile(blocks, choices, options)

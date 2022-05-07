@@ -121,4 +121,6 @@ export async function prettyPrintUITreeFromBlocks(
   } else {
     prettyPrintUITree(options.root ? treeifier.treeOf(options.root, tree) : tree, options)
   }
+
+  return graph
 }

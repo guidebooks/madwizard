@@ -17,6 +17,10 @@
 import { relative } from "path"
 import { Graph, SubTask } from "."
 
+/**
+ * Usually this will be a representation of the underlying guidebook
+ * that contained a particular node in a `Graph`.`
+ */
 export interface Provenance {
   /** A set of canonical representations of the origin stories of a `Graph` */
   provenance: string[]
