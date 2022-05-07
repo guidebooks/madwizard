@@ -76,16 +76,22 @@ export async function cli<Writer extends (msg: string) => boolean>(
   const task = !argv[2] ? "guide" : argv[1]
   const input = argv[2] || argv[1]
 
-  const mkdocsIdx = _argv.findIndex((_) => _ === "--mkdocs")
-  const mkdocs = mkdocsIdx < 0 ? undefined : _argv[mkdocsIdx + 1]
+  const vetoIdx = _argv.findIndex((_) => new RegExp("^--veto=").test(_))
+  const vetoStr = vetoIdx < 0 ? undefined : _argv[vetoIdx].slice(_argv[vetoIdx].indexOf("=") + 1)
+  const veto = !vetoStr ? undefined : new Set(vetoStr.split(/,/))
+
+  const mkdocsIdx = _argv.findIndex((_) => new RegExp("^--mkdocs=").test(_))
+  const mkdocs = mkdocsIdx < 0 ? undefined : _argv[mkdocsIdx].slice(_argv[mkdocsIdx].indexOf("=") + 1)
+
   const narrow = !!_argv.find((_) => _ === "--narrow" || _ === "-n")
 
   const noOptimize = !!_argv.find((_) => _ === "-O0" || _ === "--optimize=0" || _ === "--no-optimize")
   const noAprioris = !!_argv.find((_) => _ === "--no-aprioris")
   const noValidate = !!_argv.find((_) => _ === "--no-validate")
-
   const optimize = noOptimize ? false : { aprioris: !noAprioris, validate: !noValidate }
-  const options = Object.assign({}, { mkdocs, narrow, optimize }, providedOptions)
+
+  const commandLineOptions: MadWizardOptions = { veto, mkdocs, narrow, optimize }
+  const options: MadWizardOptions = Object.assign(commandLineOptions, providedOptions)
 
   if (!task || !input) {
     return usage(argv)

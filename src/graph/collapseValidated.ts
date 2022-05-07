@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-import { MadWizardOptions } from "../../"
+import Debug from "debug"
+
+import { hasProvenance } from "./provenance"
 
 import {
+  CompileOptions,
   Graph,
-  StatusMemo,
   Ordered,
   Unordered,
   doValidate,
+  extractTitle,
   isSequence,
   isParallel,
   isChoice,
   isTitledSteps,
   isSubTask,
   isValidatable,
-  ValidateOptions,
 } from "."
 
 /*
@@ -56,7 +58,7 @@ function emptyOra(): OraLike {
 export default async function collapseValidated<
   T extends Unordered | Ordered = Unordered,
   G extends Graph<T> = Graph<T>
->(graph: G, options?: Pick<MadWizardOptions, "optimize"> & ValidateOptions & Partial<StatusMemo>): Promise<G> {
+>(graph: G, options?: CompileOptions): Promise<G> {
   /* const spinners = wizard.map(
       ({ step }, idx) =>
         new Promise<OraLike>((resolve) => {
@@ -73,13 +75,19 @@ export default async function collapseValidated<
           }
         })
         ) */
-  if (
-    options &&
-    options.optimize &&
-    (options.optimize === false || (options.optimize !== true && options.optimize.validate === false))
-  ) {
-    // then this optimization has been disabled
-    return graph
+
+  if (options) {
+    if (
+      options.optimize &&
+      (options.optimize === false || (options.optimize !== true && options.optimize.validate === false))
+    ) {
+      // then this optimization has been disabled
+      return graph
+    } else if (options.veto && hasProvenance(graph) && graph.provenance.find((_) => options.veto.has(_))) {
+      Debug("madwizard/graph/optimize/collapse-validated")("veto", extractTitle(graph))
+      // then this optimization has been vetoed
+      return graph
+    }
   }
 
   if (isValidatable(graph)) {

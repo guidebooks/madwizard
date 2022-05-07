@@ -28,7 +28,7 @@
       "group": "TabE1",
       "title": "EEE",
       "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importe.md"],
+      "provenance": ["test/inputs/snippets/importe.md"],
       "choices": [
         {
           "member": 0,

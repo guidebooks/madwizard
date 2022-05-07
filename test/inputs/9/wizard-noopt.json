@@ -3,7 +3,7 @@
     "graph": {
       "group": "MacOS####Linux####Windows",
       "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importg.md"],
+      "provenance": ["test/inputs/snippets/importg.md"],
       "choices": [
         {
           "member": 0,
@@ -101,7 +101,7 @@
       "group": "SubTab1####SubTab2",
       "title": "DDD",
       "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
+      "provenance": ["test/inputs/snippets/importd.md"],
       "choices": [
         {
           "member": 0,

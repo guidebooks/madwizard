@@ -1,0 +1,99 @@
+[
+  {
+    "graph": {
+      "group": "Tab1####Tab2",
+      "title": "Conditional Imports of Validated Code Blocks",
+      "source": "placeholder",
+      "provenance": ["test/inputs/18/snippet.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "d2392147-6b80-4634-a3de-e3864ddffd11",
+            "sequence": [
+              {
+                "key": "test/inputs/snippets/importa.md",
+                "title": "importa.md",
+                "filepath": "test/inputs/snippets/importa.md",
+                "graph": {
+                  "key": "2ab118be-ad9d-4b73-b296-f05bd45ce03a",
+                  "sequence": [
+                    {
+                      "body": "echo AAA",
+                      "language": "bash",
+                      "validate": true,
+                      "id": "b2a3e61b-aa53-4838-a1e3-faa0c56c7a57-0"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab1"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "e5a6e77c-7694-4a6c-9bcb-6962fd86a8e2",
+            "sequence": [
+              {
+                "key": "test/inputs/snippets/importe.md",
+                "title": "EEE",
+                "filepath": "test/inputs/snippets/importe.md",
+                "graph": {
+                  "key": "520de452-ccf1-48ef-9fee-27ba4efb40ba",
+                  "sequence": [
+                    {
+                      "group": "TabE1",
+                      "title": "EEE",
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/snippets/importe.md"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "1b7b81cc-69be-4c20-bf61-f50e291a431c",
+                            "sequence": [
+                              {
+                                "body": "echo EEE",
+                                "language": "bash",
+                                "id": "b2a3e61b-aa53-4838-a1e3-faa0c56c7a57-1"
+                              }
+                            ]
+                          },
+                          "title": "TabE1",
+                          "description": "\nEEE1Content"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab2"
+        }
+      ]
+    },
+    "step": {
+      "name": "Conditional Imports of Validated Code Blocks",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1####Tab2",
+          "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "Tab2",
+          "group": "Tab1####Tab2",
+          "member": 1,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  }
+]

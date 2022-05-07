@@ -14,18 +14,30 @@
  * limitations under the License.
  */
 
-import { resolve } from "path"
-import { SubTask } from "."
+import { relative } from "path"
+import { Graph, SubTask } from "."
 
+export interface Provenance {
+  /** A set of canonical representations of the origin stories of a `Graph` */
+  provenance: string[]
+}
+
+/** Does the given `graph` have a `Provenance`? */
+export function hasProvenance(graph: Graph): graph is Graph & Provenance {
+  const { provenance } = graph as Provenance
+  return Array.isArray(provenance) && provenance.length > 0 && provenance.every((_) => typeof _ === "string")
+}
+
+/** Determine the `Provenance` of the given `SubTask` */
 export default function provenanceOf(task: SubTask) {
   if (task.filepath) {
     const match = task.filepath.match(
-      /^https:\/\/raw.githubusercontent.com\/guidebooks\/store\/main\/guidebooks\/(.+).md$/
+      /^https:\/\/raw.githubusercontent.com\/guidebooks\/store\/main\/guidebooks\/(.+)\..+$/
     )
     if (match) {
       return match[1]
     } else {
-      return resolve(task.filepath)
+      return relative(process.cwd(), task.filepath)
     }
   }
 }
