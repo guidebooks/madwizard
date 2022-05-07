@@ -28,10 +28,28 @@ import { cli, MadWizardOptions } from "../.."
 const require = createRequire(import.meta.url)
 const inputDir = join(dirname(require.resolve(".")), "../inputs")
 
-const options: { suffix: string; options: MadWizardOptions }[] = [
+type Options = MadWizardOptions | ((input: string) => MadWizardOptions)
+
+const options: { suffix: string; options: Options }[] = [
   { suffix: "", options: {} },
   { suffix: "noaprioris", options: { optimize: { aprioris: false } } },
   { suffix: "noopt", options: { optimize: false } },
+  {
+    suffix: "veto",
+    options: (input: string) => {
+      try {
+        return {
+          veto: new Set(readFileSync(join(input, "veto.txt")).toString().trim().split(/,/)),
+        }
+      } catch (err) {
+        if (err.code === "ENOENT") {
+          return null
+        } else {
+          throw err
+        }
+      }
+    },
+  },
 ]
 
 function munge(wizard: Record<string, unknown>) {
@@ -41,9 +59,6 @@ function munge(wizard: Record<string, unknown>) {
         return "fakeit"
       } else if (key === "source" || key === "position") {
         return "placeholder"
-      } else if (key === "provenance" && Array.isArray(value) && value.every((_) => typeof _ === "string")) {
-        // eliminate any prefix paths on text input filepaths, e.g. /Users/starpit/...
-        return value.map((_) => _.replace(/^.+\/test\/inputs\/(.+)$/, "$1"))
       } else if (key === "description" && !value) {
         return undefined
       } else if (key === "source" || (key === "content" && typeof value === "string")) {
@@ -98,7 +113,7 @@ readdirSync(inputDir)
   .sort((a, b) => a - b)
   .map((_) => join(inputDir, String(_)))
   .forEach((input) => {
-    options.forEach(({ suffix, options }, idx) => {
+    options.forEach(({ suffix, options: _options }, idx) => {
       const test1 = suites[idx * tasks.length]
       test1(`tree for input ${input} options=${suffix || "default"}`, async () => {
         let actualTree = ""
@@ -107,7 +122,16 @@ readdirSync(inputDir)
           return true
         }
 
-        await cli(["test", "plan", join(input, "in.md")], write, options)
+        const filepath = join(input, "in.md")
+        const options = typeof _options === "function" ? _options(input) : _options
+
+        if (typeof _options === "function" && options === null) {
+          // then there are no tests to run for this variant, e.g. no
+          // veto.txt file for this input
+          return
+        }
+
+        await cli(["test", "plan", filepath], write, options)
         const expectedTree = loadExpected(input, "tree", suffix)
         assert.equal(stripAnsi(actualTree.trim()), stripAnsi(expectedTree.trim()), "tree should match")
       })
@@ -120,7 +144,10 @@ readdirSync(inputDir)
           return true
         }
 
-        await cli(["test", "json", join(input, "in.md")], write, options)
+        const filepath = join(input, "in.md")
+        const options = typeof _options === "function" ? _options(input) : _options
+
+        await cli(["test", "json", filepath], write, options)
         const expectedWizard = JSON.parse(loadExpected(input, "wizard", suffix))
         const diff = diffString(munge(JSON.parse(actualWizard)), munge(expectedWizard), { color: false })
         assert.is(diff, "", "wizard should match")

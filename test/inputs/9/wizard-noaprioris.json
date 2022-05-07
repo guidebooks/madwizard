@@ -4,7 +4,7 @@
       "group": "MacOS####Linux####Windows",
       "title": "importg.md",
       "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importg.md"],
+      "provenance": ["test/inputs/snippets/importg.md"],
       "choices": [
         {
           "member": 0,

@@ -4,30 +4,30 @@
       "group": "SubTab1####SubTab2",
       "title": "DDD",
       "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
+      "provenance": ["test/inputs/snippets/importd.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "bc4f9214-625a-4dd9-a642-3c4d885f7d3e",
+            "key": "5f610182-9236-4418-a239-d5786279429a",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-0"
+                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-0"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-1"
+                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-1"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-2"
+                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-2"
               }
             ]
           },
@@ -36,13 +36,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "deac542b-a883-423e-b60f-8baa14f699e4",
+            "key": "542b94f0-38dc-4bec-bdaa-4f65b7034121",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-3"
+                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-3"
               }
             ]
           },
@@ -75,13 +75,13 @@
       "title": "importa.md",
       "filepath": "",
       "graph": {
-        "key": "9553680b-d418-42c5-b77d-0a43e6ce9177",
+        "key": "7e3eb38d-e3df-4ad0-9d8a-6a923ef7c103",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-4"
+            "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-4"
           }
         ]
       },
@@ -97,17 +97,17 @@
       "group": "TabE1",
       "title": "EEE",
       "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importe.md"],
+      "provenance": ["test/inputs/snippets/importe.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "304f9fd0-2e90-491a-8c33-56db964d3289",
+            "key": "a87737ad-7db3-4bfd-827d-2f69ce339636",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-5"
+                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-5"
               }
             ]
           },
@@ -134,48 +134,48 @@
     "graph": {
       "group": "Tab1####Tab2####Tab3",
       "source": "placeholder",
-      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importe.md"],
+      "provenance": ["test/inputs/snippets/snippets-in-tab5.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "0f71ef75-aa4f-47dc-bbda-637655b008b0",
+            "key": "9bde467e-b633-4593-9ced-879428871624",
             "sequence": [
               {
                 "key": "test/inputs/snippets/importd.md",
                 "title": "DDD",
                 "filepath": "test/inputs/snippets/importd.md",
                 "graph": {
-                  "key": "519c8087-299c-45e4-9d86-80bcd3437365",
+                  "key": "039372fb-0157-4fe2-be52-265f455eb45c",
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
                       "title": "DDD",
                       "source": "placeholder",
-                      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
+                      "provenance": ["test/inputs/snippets/importd.md"],
                       "choices": [
                         {
                           "member": 0,
                           "graph": {
-                            "key": "7fff6eab-712e-4cf2-bc7d-ee174fb3d9dd",
+                            "key": "d263e04d-ec3d-4c7a-8513-22046879209b",
                             "sequence": [
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-6"
+                                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-6"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-7"
+                                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-7"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-8"
+                                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-8"
                               }
                             ]
                           },
@@ -184,13 +184,13 @@
                         {
                           "member": 1,
                           "graph": {
-                            "key": "a853c061-8ccb-4801-b94f-e24d2a739e4e",
+                            "key": "fc48faea-f319-40f7-9323-e6081cb49d0c",
                             "sequence": [
                               {
                                 "body": "echo BBB",
                                 "language": "bash",
                                 "validate": false,
-                                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-9"
+                                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-9"
                               }
                             ]
                           },
@@ -210,12 +210,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "0eac0016-2ded-4a3c-b4c8-b30d6d1c8ada",
+            "key": "390e4242-ccc6-4d00-aefb-ae2d01698a19",
             "sequence": [
               {
                 "body": "echo XXX",
                 "language": "bash",
-                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-10"
+                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-10"
               }
             ]
           },
@@ -225,43 +225,43 @@
         {
           "member": 2,
           "graph": {
-            "key": "fabf1ccd-386e-4e20-bda0-b324b8bfee1d",
+            "key": "56c2a1c5-247a-49f1-ae4c-96a279ad038e",
             "sequence": [
               {
                 "key": "test/inputs/snippets/importd.md",
                 "title": "DDD",
                 "filepath": "test/inputs/snippets/importd.md",
                 "graph": {
-                  "key": "a069bd5d-23ab-4115-9bbf-9f522cc2fd9e",
+                  "key": "bbfadca6-0694-4bfd-9b6b-031ce61bbb8a",
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
                       "title": "DDD",
                       "source": "placeholder",
-                      "provenance": ["/Users/nickm/git/guidebooks/madwizard/test/inputs/snippets/importd.md"],
+                      "provenance": ["test/inputs/snippets/importd.md"],
                       "choices": [
                         {
                           "member": 0,
                           "graph": {
-                            "key": "f1c57048-f5eb-4282-88e4-e0bf56219dd5",
+                            "key": "0b237866-241a-4878-a29c-81d48db390bf",
                             "sequence": [
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-11"
+                                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-11"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-12"
+                                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-12"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-13"
+                                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-13"
                               }
                             ]
                           },
@@ -270,13 +270,13 @@
                         {
                           "member": 1,
                           "graph": {
-                            "key": "55e168ae-d9cd-4382-a00d-6f0b139e2c10",
+                            "key": "2dec0e17-0f00-4cb2-8cad-30c0619782cd",
                             "sequence": [
                               {
                                 "body": "echo BBB",
                                 "language": "bash",
                                 "validate": false,
-                                "id": "fa62a0af-71ee-4b73-bb60-2555b8590640-14"
+                                "id": "5c9e8f98-b194-476b-81b5-bea8390925a0-14"
                               }
                             ]
                           },

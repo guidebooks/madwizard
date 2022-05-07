@@ -67,11 +67,13 @@ function isWizardStepNesting(nesting: Nesting): nesting is WizardStepNesting {
   return isCodeBlockWizardStep(nesting.parent)
 }
 
+export type CompileOptions = Pick<MadWizardOptions, "optimize" | "veto"> & ValidateOptions & Partial<StatusMemo>
+
 /** Take a list of code blocks and arrange them into a control flow dag */
 export async function compile(
   blocks: CodeBlockProps[],
   choices: ChoiceState,
-  options: Pick<MadWizardOptions, "optimize"> & ValidateOptions & Partial<StatusMemo> = {},
+  options: CompileOptions = {},
   ordering: "sequence" | "parallel" = "sequence",
   title?: string,
   description?: string
@@ -170,8 +172,15 @@ export async function compile(
       )
     }
 
-    const set = (idx: number, nesting: Nesting) => {
-      currentNesting = currentNesting.slice(0, idx).concat([nesting])
+    const set = (idx: number, nestingFn: () => Nesting) => {
+      currentNesting = currentNesting.slice(0, idx)
+
+      // important: get the nesting *after* having updated the
+      // `currentNesting` tree model. e.g. this is needed so that
+      // `currentProvenance` makes sense
+      const nesting = nestingFn()
+      currentNesting.push(nesting)
+
       if (idx === 0) {
         parts.push(nesting.graph)
       } else {
@@ -229,11 +238,11 @@ export async function compile(
                   }
                 } else {
                   // here we are at [1c]
-                  set(idx, { parent, graph: newChoices(block, parent, isDeepest) })
+                  set(idx, () => ({ parent, graph: newChoices(block, parent, isDeepest) }))
                 }
               } else {
                 // here we are at [2] and [3]
-                set(idx, { parent, graph: newChoices(block, parent, isDeepest) })
+                set(idx, () => ({ parent, graph: newChoices(block, parent, isDeepest) }))
               }
             } else if (isCodeBlockWizardStep(parent)) {
               // here we are at [4]
@@ -249,11 +258,11 @@ export async function compile(
                   }
                 } else {
                   // here we are at [4c]
-                  set(idx, { parent, graph: newWizard(block, parent, isDeepest) })
+                  set(idx, () => ({ parent, graph: newWizard(block, parent, isDeepest) }))
                 }
               } else {
                 // here we are at [5] and [6]
-                set(idx, { parent, graph: newWizard(block, parent, isDeepest) })
+                set(idx, () => ({ parent, graph: newWizard(block, parent, isDeepest) }))
               }
             } else if (isImportNesting(curNesting)) {
               // here we are at [7]
@@ -264,23 +273,23 @@ export async function compile(
                 }
               } else {
                 // here we are at [7b]
-                set(idx, { parent, graph: newSubTask(block, parent, isDeepest) })
+                set(idx, () => ({ parent, graph: newSubTask(block, parent, isDeepest) }))
               }
             } else {
               // here we are at [8] and [9]
-              set(idx, { parent, graph: newSubTask(block, parent, isDeepest) })
+              set(idx, () => ({ parent, graph: newSubTask(block, parent, isDeepest) }))
             }
           } else {
             // no graph node yet for this nesting depth
             if (isCodeBlockChoice(parent)) {
               // new graph node for choice
-              set(idx, { parent, graph: newChoices(block, parent, isDeepest) })
+              set(idx, () => ({ parent, graph: newChoices(block, parent, isDeepest) }))
             } else if (isCodeBlockWizardStep(parent)) {
               // new graph node for wizard
-              set(idx, { parent, graph: newWizard(block, parent, isDeepest) })
+              set(idx, () => ({ parent, graph: newWizard(block, parent, isDeepest) }))
             } else if (isCodeBlockImport(parent)) {
               // new graph node for import
-              set(idx, { parent, graph: newSubTask(block, parent, isDeepest) })
+              set(idx, () => ({ parent, graph: newSubTask(block, parent, isDeepest) }))
             } else {
               console.error("Missing handler in graph compilation", parent)
             }

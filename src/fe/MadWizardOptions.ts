@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
-export interface MadWizardOptions {
-  /** Shorten output of long or multi-line code blocks. */
-  narrow?: boolean
+interface VetoPower {
+  /**
+   * Ignore/veto any a priori choices that madwizard might think of as
+   * truth, and thus not needing user input. By vetoing one of these a
+   * prioris, users will be prompted to redo this choice.
+   */
+  veto: Set<string>
+}
 
+interface DisplayOptions {
+  /** Shorten output of long or multi-line code blocks. */
+  narrow: boolean
+}
+
+interface CompilerOptions {
   /** Selectively enable/disable optimizations */
-  optimize?:
+  optimize:
     | boolean
     | {
         /**
@@ -35,10 +46,17 @@ export interface MadWizardOptions {
          */
         validate?: boolean
       }
+}
 
+interface FetchOptions {
   /**
    * Path to an mkdocs.yml config. This may be used to assist in
    * finding snippet content when parsing markdown.
    */
-  mkdocs?: string
+  mkdocs: string
 }
+
+export type MadWizardOptions = Partial<VetoPower> &
+  Partial<CompilerOptions> &
+  Partial<DisplayOptions> &
+  Partial<FetchOptions>

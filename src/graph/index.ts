@@ -29,6 +29,7 @@ import { v4 } from "uuid"
 import { basename } from "path"
 
 import { ChoiceState } from "../choices"
+import { Provenance } from "./provenance"
 import { Barrier, Validatable, CodeBlockProps, Source, Title, Description } from "../codeblock/CodeBlockProps"
 
 export * from "./order"
@@ -122,10 +123,10 @@ export type ChoicePart<T extends Unordered | Ordered = Unordered> = Title &
 
 export type Choice<T extends Unordered | Ordered = Unordered> = Source &
   T &
-  Title & {
+  Title &
+  Partial<Provenance> & {
     group: ChoiceGroup
     choices: ChoicePart<T>[]
-    provenance: string[]
   }
 
 export type OrderedChoice = Choice<Ordered>

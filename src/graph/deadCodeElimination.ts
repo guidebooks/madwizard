@@ -18,12 +18,12 @@ import { Graph, Ordered, Unordered, emptySequence, isSequence, isParallel, isSub
 
 /** Remove any subgraphs that contain no code blocks */
 function dce<T extends Unordered | Ordered, G extends Graph<T>>(graph: G): G {
-  if (isSequence(graph)) {
+  if (isSequence<T>(graph)) {
     const sequence = graph.sequence.map(dce).filter(Boolean)
     if (sequence.length > 0) {
       return Object.assign({}, graph, { sequence })
     }
-  } else if (isParallel(graph)) {
+  } else if (isParallel<T>(graph)) {
     const parallel = graph.parallel.map(dce).filter(Boolean)
     if (parallel.length > 0) {
       return Object.assign({}, graph, { parallel })
@@ -45,7 +45,7 @@ function dce<T extends Unordered | Ordered, G extends Graph<T>>(graph: G): G {
     if (steps.length > 0) {
       return Object.assign({}, graph, { steps })
     }
-  } else if (isChoice(graph)) {
+  } else if (isChoice<T>(graph)) {
     const choices = graph.choices
       .map((_) => {
         const subgraph = dce(_.graph)

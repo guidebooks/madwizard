@@ -83,7 +83,7 @@ export function isTaskStep(step: WizardStepWithGraph): step is TaskStep {
  * @return a `WizardStep` for a non-choice prereq for a choice on the
  * choice frontier
  */
-function wizardStepForPrereq<G extends Graph>(graph: G): WizardStepWithGraph<G, Markdown> {
+function wizardStepForPrereq<T, G extends Graph<T>>(graph: G): WizardStepWithGraph<G, Markdown> {
   return {
     graph,
     status: "blank",
@@ -139,7 +139,7 @@ type Options = {
   previous: Wizard
 }
 
-export async function wizardify(graph: Graph, options: Partial<Options> = {}): Promise<Wizard> {
+export async function wizardify<T>(graph: Graph<T>, options: Partial<Options> = {}): Promise<Wizard> {
   const debug = Debug("madwizard/timing/wizard:wizardify")
   debug("start")
 
