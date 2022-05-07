@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import chalk from "chalk"
 import Debug from "debug"
 
 import { hasProvenance } from "./provenance"
+import { oraPromise } from "../util/ora-delayed-promise"
 
 import {
   CompileOptions,
@@ -25,6 +27,7 @@ import {
   Unordered,
   doValidate,
   extractTitle,
+  hasKey,
   isSequence,
   isParallel,
   isChoice,
@@ -58,7 +61,7 @@ function emptyOra(): OraLike {
 export default async function collapseValidated<
   T extends Unordered | Ordered = Unordered,
   G extends Graph<T> = Graph<T>
->(graph: G, options?: CompileOptions): Promise<G> {
+>(graph: G, options?: CompileOptions, nearestEnclosingTitle?: string): Promise<G> {
   /* const spinners = wizard.map(
       ({ step }, idx) =>
         new Promise<OraLike>((resolve) => {
@@ -91,56 +94,61 @@ export default async function collapseValidated<
   }
 
   if (isValidatable(graph)) {
-    if (options.statusMemo && options.statusMemo[graph.key] === "success") {
-      // this Validatable has been previously validated in this
-      // session (as indicated by its presence in the given
-      // `statusMemo`
+    const key: string = hasKey(graph) ? graph.key : graph.validate.toString()
+    if (graph.validate === true) {
       return undefined
-    } else {
-      // otherwise, attempt to validate this Validatable
-      const status = await doValidate(graph.validate, options)
-      if (options.statusMemo) {
-        // great, now memoize the result
-        options.statusMemo[graph.key] = status
-      }
-      if (status === "success") {
+    } else if (typeof graph.validate === "string") {
+      if (options.statusMemo && options.statusMemo[key] && options.statusMemo[key] === "success") {
+        // this Validatable has been previously validated in this
+        // session (as indicated by its presence in the given
+        // `statusMemo`
         return undefined
+      } else {
+        // otherwise, attempt to validate this Validatable
+        const status = await oraPromise(
+          doValidate(graph.validate, options),
+          chalk.dim(`Validating ${chalk.blue(nearestEnclosingTitle || key)}`)
+        )
+        if (options.statusMemo) {
+          // great, now memoize the result
+          options.statusMemo[key] = status
+        }
+        if (status === "success") {
+          return undefined
+        }
       }
     }
   }
 
+  const recurse = <T extends Unordered | Ordered, G extends Graph<T>>(graph: G) =>
+    collapseValidated(graph, options, extractTitle(graph) || nearestEnclosingTitle)
+
+  const recurse2 = <T extends Unordered | Ordered, G extends Graph<T>>({ graph }: { graph: G }) => recurse(graph)
+
   if (isSequence<T>(graph)) {
-    graph.sequence = await Promise.all(graph.sequence.map((_) => collapseValidated(_, options))).then((_) =>
-      _.filter(Boolean)
-    )
+    graph.sequence = await Promise.all(graph.sequence.map(recurse)).then((_) => _.filter(Boolean))
     if (graph.sequence.length > 0) {
       return graph
     }
   } else if (isParallel<T>(graph)) {
-    graph.parallel = await Promise.all(graph.parallel.map((_) => collapseValidated(_, options))).then((_) =>
-      _.filter(Boolean)
-    )
+    graph.parallel = await Promise.all(graph.parallel.map(recurse)).then((_) => _.filter(Boolean))
     if (graph.parallel.length > 0) {
       return graph
     }
   } else if (isChoice<T>(graph)) {
-    const parts = await Promise.all(graph.choices.map((_) => collapseValidated(_.graph, options))).then((_) =>
-      _.filter(Boolean)
-    )
+    const parts = await Promise.all(graph.choices.map(recurse2)).then((_) => _.filter(Boolean))
     if (parts.length === graph.choices.length) {
       // we haven't eliminated any choices...
       return graph
     }
   } else if (isTitledSteps<T>(graph)) {
-    const steps = await Promise.all(graph.steps.map((_) => collapseValidated(_.graph, options))).then((_) =>
-      _.filter(Boolean)
-    )
+    const steps = await Promise.all(graph.steps.map(recurse2)).then((_) => _.filter(Boolean))
     if (steps.length > 0) {
       graph.steps.forEach((_, idx) => (_.graph = steps[idx]))
       return graph
     }
   } else if (isSubTask<T>(graph)) {
-    graph.graph = await collapseValidated(graph.graph, options)
+    graph.graph = await recurse(graph.graph)
     if (graph.graph) {
       return graph
     }
