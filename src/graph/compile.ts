@@ -31,7 +31,6 @@ import {
   subtask,
 } from "."
 
-import { MadWizardOptions } from "../../"
 import { ValidateOptions } from "./validate"
 
 import {
@@ -67,7 +66,40 @@ function isWizardStepNesting(nesting: Nesting): nesting is WizardStepNesting {
   return isCodeBlockWizardStep(nesting.parent)
 }
 
-export type CompileOptions = Pick<MadWizardOptions, "optimize" | "veto"> & ValidateOptions & Partial<StatusMemo>
+export interface CompilerOptions {
+  /**
+   * Ignore/veto any a priori choices that madwizard might think of as
+   * truth, and thus not needing user input. By vetoing one of these a
+   * prioris, users will be prompted to redo this choice.
+   */
+  veto: Set<string>
+
+  /**
+   * Should we expand choice groups with dynamic expansion?
+   * [default: true]
+   */
+  expand?: boolean
+
+  /** Selectively enable/disable optimizations */
+  optimize:
+    | boolean
+    | {
+        /**
+         * Should we optimize away choices against known a priori
+         * truths, e.g. user's platform? [default: true]
+         */
+        aprioris?: boolean
+
+        /**
+         * Should we optimize away subgraphs of the plan known to be
+         * valid (using the `validate` attributes given by the
+         * source)? [default: true]
+         */
+        validate?: boolean
+      }
+}
+
+export type CompileOptions = Partial<CompilerOptions> & ValidateOptions & Partial<StatusMemo>
 
 /** Take a list of code blocks and arrange them into a control flow dag */
 export async function compile(
@@ -297,13 +329,18 @@ export async function compile(
         })
       }
     })
+    debug("graph formation done")
+
+    const doExpand: (graph: Graph) => Graph | Promise<Graph> = options.expand === false ? (x) => x : expand
 
     const unoptimized =
       parts.length === 0
         ? undefined
-        : await expand(parts.length === 1 ? parts[0] : ordering === "parallel" ? parallel(parts) : sequence(parts))
+        : await doExpand(parts.length === 1 ? parts[0] : ordering === "parallel" ? parallel(parts) : sequence(parts))
 
+    debug("optimizing")
     const optimized = options.optimize === false ? unoptimized : await optimize(unoptimized, choices, options)
+    debug("optimizing done")
 
     if (title && !extractTitle(optimized)) {
       return subtask(title, title, description, "", sequence([optimized]))

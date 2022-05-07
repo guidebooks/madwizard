@@ -14,38 +14,11 @@
  * limitations under the License.
  */
 
-interface VetoPower {
-  /**
-   * Ignore/veto any a priori choices that madwizard might think of as
-   * truth, and thus not needing user input. By vetoing one of these a
-   * prioris, users will be prompted to redo this choice.
-   */
-  veto: Set<string>
-}
+import { CompilerOptions } from "../graph/compile"
 
 interface DisplayOptions {
   /** Shorten output of long or multi-line code blocks. */
   narrow: boolean
-}
-
-interface CompilerOptions {
-  /** Selectively enable/disable optimizations */
-  optimize:
-    | boolean
-    | {
-        /**
-         * Should we optimize away choices against known a priori
-         * truths, e.g. user's platform?
-         */
-        aprioris?: boolean
-
-        /**
-         * Should we optimize away subgraphs of the plan known to be
-         * valid (using the `validate` attributes given by the
-         * source)?
-         */
-        validate?: boolean
-      }
 }
 
 interface FetchOptions {
@@ -56,7 +29,4 @@ interface FetchOptions {
   mkdocs: string
 }
 
-export type MadWizardOptions = Partial<VetoPower> &
-  Partial<CompilerOptions> &
-  Partial<DisplayOptions> &
-  Partial<FetchOptions>
+export type MadWizardOptions = Partial<CompilerOptions> & Partial<DisplayOptions> & Partial<FetchOptions>

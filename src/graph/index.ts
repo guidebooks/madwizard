@@ -33,6 +33,7 @@ import { Provenance } from "./provenance"
 import { Barrier, Validatable, CodeBlockProps, Source, Title, Description } from "../codeblock/CodeBlockProps"
 
 export * from "./order"
+export * from "./vetoes"
 export * from "./Status"
 export * from "./compile"
 export * from "./optional"
@@ -240,10 +241,12 @@ export function isLeafNode<T extends Unordered | Ordered = Unordered>(graph: Gra
   return typeof (graph as LeafNode<T>).body === "string"
 }
 
+/** The task graph model */
 export type Graph<T extends Unordered | Ordered = Unordered> = InteriorNode<T> | LeafNode<T>
 
 export type TitledGraph<T extends Unordered | Ordered = Unordered> = Graph<T> & Title
 
+/** The task graph model, with a DFS pre- and post-order number assigned to each graph node. */
 export type OrderedGraph = Graph<Ordered>
 
 export type OrderedCodeBlock = CodeBlockProps & Ordered

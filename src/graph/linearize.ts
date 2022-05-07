@@ -30,13 +30,39 @@ import { Ordered, Unordered, Graph, choose, isSequence, isParallel, isSubTask, i
 import { ChoiceState } from "../choices"
 import { CodeBlockProps } from "../codeblock"
 
+export function nodes<T extends Unordered | Ordered, F extends Graph<T>>(
+  graph: Graph<T>,
+  include: (node: Graph<T>) => node is F
+): F[] {
+  if (!graph) {
+    return []
+  }
+
+  const subnodes = (subgraph: Graph<T>) => nodes<T, F>(subgraph, include)
+  const list = include(graph) ? [graph] : []
+
+  if (isSequence(graph)) {
+    return list.concat(graph.sequence.flatMap(subnodes))
+  } else if (isParallel(graph)) {
+    return list.concat(graph.parallel.flatMap(subnodes))
+  } else if (isSubTask(graph)) {
+    return list.concat(subnodes(graph.graph))
+  } else if (isTitledSteps(graph)) {
+    return list.concat(graph.steps.map((_) => _.graph).flatMap(subnodes))
+  } else if (isChoice(graph)) {
+    return list.concat(graph.choices.map((_) => _.graph).flatMap(subnodes))
+  } else {
+    return []
+  }
+}
+
 /** @return A linearized set of code blocks in the given `graph` */
-export function blocks<T extends Unordered | Ordered = Unordered>(
+export function blocks<T extends Unordered | Ordered>(
   graph: Graph<T>,
   choices: "all" | "default-path" | ChoiceState = "default-path",
   includeOptional = false
 ): (CodeBlockProps & T)[] {
-  const subblocks = (subgraph: Graph<T>) => blocks(subgraph, choices)
+  const subblocks = (subgraph: Graph<T>) => blocks(subgraph, choices, includeOptional)
 
   if (!graph) {
     return []
@@ -45,7 +71,7 @@ export function blocks<T extends Unordered | Ordered = Unordered>(
   } else if (isParallel(graph)) {
     return graph.parallel.flatMap(subblocks)
   } else if (isSubTask(graph)) {
-    return blocks(graph.graph)
+    return subblocks(graph.graph)
   } else if (isTitledSteps(graph)) {
     return graph.steps.map((_) => _.graph).flatMap(subblocks)
   } else if (isChoice(graph)) {
