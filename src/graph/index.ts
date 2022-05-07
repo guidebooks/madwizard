@@ -395,7 +395,7 @@ export function isBarrier(graph: Graph): graph is Graph & Barrier & { barrier: t
   return isSubTask(graph) && graph.barrier
 }
 
-export function isValidatable(graph: Graph): graph is Graph & Validatable {
+export function isValidatable<T extends Ordered | Unordered, G extends Graph<T>>(graph: G): graph is G & Validatable {
   const validate = (graph as Validatable).validate
   return typeof validate === "string" || typeof validate === "number" || typeof validate === "boolean"
 }

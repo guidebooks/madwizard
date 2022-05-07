@@ -21,8 +21,8 @@ import { mainSymbols } from "figures"
 import expandHomeDir from "expand-home-dir"
 import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin } from "path"
 
-import { oraPromise } from "./ora"
 import { isUrl, toRawGithubUserContent } from "./urls"
+import { oraPromise } from "../../../util/ora-delayed-promise"
 
 import indent from "../util/indent"
 import { MadWizardOptions } from "../../.."

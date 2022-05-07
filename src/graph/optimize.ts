@@ -17,7 +17,7 @@
 import Debug from "debug"
 
 import { ChoiceState } from "../choices"
-import { CompileOptions, Graph } from "."
+import { CompileOptions, Graph, sequence } from "."
 
 import hoistSubTasks from "./hoistSubTasks"
 import propagateTitles from "./propagateTitles"
@@ -30,8 +30,12 @@ export default async function optimize(graph: Graph, choices: ChoiceState, optio
   debug("start")
 
   try {
-    return propagateTitles(
-      deadCodeElimination(hoistSubTasks(await collapseValidated(collapseMadeChoices(graph, choices), options)))
+    return (
+      propagateTitles(
+        deadCodeElimination(
+          hoistSubTasks(await collapseValidated(hoistSubTasks(collapseMadeChoices(graph, choices)), options))
+        )
+      ) || sequence([])
     )
   } finally {
     debug("complete")

@@ -15,9 +15,6 @@
  */
 
 export interface Validatable {
-  /** unique id */
-  key: string
-
   /**
    * If given, this command line will be executed. If it exits with
    * exit code 0, then the code block will be seen as "already

@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-import { v4 } from "uuid"
+/** TODO allow a ValidationExecutor to be passed in */
 
-// TODO allow a ValidationExecutor to be passed in
+import chalk from "chalk"
+import { v4 } from "uuid"
+import { oraPromise } from "../../util/ora-delayed-promise"
+
 import {
   Graph,
   Choice,
@@ -99,7 +102,7 @@ export async function expand(graph: Graph) {
             } else {
               const opts = { capture: "", throwErrors: true }
               try {
-                await shellExec(expansionExpr, opts)
+                await oraPromise(shellExec(expansionExpr, opts), chalk.dim(`Expanding ${chalk.blue(expansionExpr)}`))
                 // debug("expansion/response", opts.capture)
                 const response = opts.capture.split(/\n/).filter(Boolean)
                 return expandTemplate(part, response)
