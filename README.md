@@ -1,14 +1,17 @@
 [![Node.js CI](https://github.com/guidebooks/madwizard/actions/workflows/test.yml/badge.svg)](https://github.com/guidebooks/madwizard/actions/workflows/test.yml) [![npm version](https://badge.fury.io/js/madwizard.svg)](https://badge.fury.io/js/madwizard)
 
-<img src=".github/FREEANIMALREPTILEtrex003_generated.jpg" title="Fire Breathing Rainbow Trex Dinosaur Vectors by Vecteezy" align="right">
-
-# Turn Markdown into Wizards
+# <img src=".github/FREEANIMALREPTILEtrex003_generated.jpg" title="Fire Breathing Rainbow Trex Dinosaur Vectors by Vecteezy" height="32"> Turn Markdown into Wizards
 
 MadWizard is a library that scans a given markdown file and
 automatically constructs a task graph. It also includes a CLI client
 to allow interacting with the library, either to visualize the task
 graph (the `plan` command) or to step through the plan via an
 interactive wizard (the `guide` command).
+
+## Gallery
+
+<a target="_blank" href="https://asciinema.org/a/hHi083kqwjPoB5nP8Lar1Sw24"><img height="450" alt="ibm/cloud/ce/job/run" title="ibm/cloud/ce/job/run" src="https://asciinema.org/a/hHi083kqwjPoB5nP8Lar1Sw24.svg"></a>
+<a target="_blank" href="https://asciinema.org/a/JmEgEQEvdMvCDmiNFEUD8qGAa"><img height="450" alt="knative/provision/quickstart" title="knative/provision/quickstart" src="https://asciinema.org/a/JmEgEQEvdMvCDmiNFEUD8qGAa.svg"></a>
 
 ## Installation
 
