@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-/** TODO allow a ValidationExecutor to be passed in */
-
 import chalk from "chalk"
 import { v4 } from "uuid"
 import { oraPromise } from "../../util/ora-delayed-promise"
 
+import { Memos } from "../../memoization"
 import {
   Graph,
   Choice,
@@ -32,6 +31,8 @@ import {
   isSubTask,
   shellExec,
 } from "../../graph"
+
+export type ExpansionMap = Record<ReturnType<typeof isExpansion>, string[]>
 
 function updateContent<Part extends { graph: Graph; description?: string }>(part: Part, choice = ""): Part {
   const pattern1 = /\$\{?choice\}?/gi
@@ -87,15 +88,35 @@ function expandPart(template: ChoicePart, names: string[]): ChoicePart[] {
 }
 
 /**
+ * Do the actual expansion of the given `expansionExpr`.
+ *
+ * TODO allow a ValidationExecutor to be passed in.
+ */
+async function doExpand(expansionExpr: string): Promise<string[]> {
+  const opts = { capture: "", throwErrors: true }
+  try {
+    await oraPromise(shellExec(expansionExpr, opts), chalk.dim(`Expanding ${chalk.blue(expansionExpr)}`))
+    // debug("expansion/response", opts.capture)
+    return opts.capture.split(/\n/).filter(Boolean)
+  } catch (err) {
+    // then the expansion failed. make sure the users don't
+    // see the template
+    return []
+  }
+}
+
+/**
  * Visit the graph, expanding choice templates (via `expandPart`) and
  * updating content such as descriptions and code bodies (via
  * `updateContent`) as we go.
  */
-async function visit(graph: Graph) {
+async function visit(graph: Graph, options: Partial<Memos>) {
+  const recurse = (graph: Graph) => visit(graph, options)
+
   if (isSequence(graph)) {
-    return Promise.all(graph.sequence.map(visit))
+    return Promise.all(graph.sequence.map(recurse))
   } else if (isParallel(graph)) {
-    return Promise.all(graph.parallel.map(visit))
+    return Promise.all(graph.parallel.map(recurse))
   } else if (isChoice(graph)) {
     if (isExpansionGroup(graph)) {
       graph.choices = (
@@ -105,22 +126,21 @@ async function visit(graph: Graph) {
             if (!expansionExpr) {
               return updateContent(part)
             } else {
-              const opts = { capture: "", throwErrors: true }
-              try {
-                await oraPromise(shellExec(expansionExpr, opts), chalk.dim(`Expanding ${chalk.blue(expansionExpr)}`))
-                // debug("expansion/response", opts.capture)
-                const response = opts.capture.split(/\n/).filter(Boolean)
+              const response =
+                (options.expansionMemo && options.expansionMemo[expansionExpr]) || (await doExpand(expansionExpr))
+
+              if (response.length > 0) {
+                // memoize the expansion
+                if (options.expansionMemo) {
+                  options.expansionMemo[expansionExpr] = response
+                }
 
                 // expand the template, which yields Part -> Part[]
                 const parts = expandPart(part, response)
 
                 // recurse on the expanded parts
-                await Promise.all(parts.map((_) => visit(_.graph)))
+                await Promise.all(parts.map((_) => recurse(_.graph)))
                 return parts
-              } catch (err) {
-                // then the expansion failed. make sure the users don't
-                // see the template
-                return []
               }
             }
           })
@@ -128,12 +148,12 @@ async function visit(graph: Graph) {
       ).flat()
     } else {
       graph.choices = graph.choices.map((_) => updateContent(_))
-      return Promise.all(graph.choices.map((_) => visit(_.graph)))
+      return Promise.all(graph.choices.map((_) => recurse(_.graph)))
     }
   } else if (isSubTask(graph)) {
-    return visit(graph.graph)
+    return recurse(graph.graph)
   } else if (isTitledSteps(graph)) {
-    return Promise.all(graph.steps.map((_) => visit(_.graph)))
+    return Promise.all(graph.steps.map((_) => recurse(_.graph)))
   } else {
     updateContent({ graph })
   }
@@ -144,7 +164,7 @@ async function visit(graph: Graph) {
  * updating content such as descriptions and code bodies (via
  * `updateContent`) as we go.
  */
-export async function expand(graph: Graph) {
-  await visit(graph)
+export async function expand(graph: Graph, options: Partial<Memos> = {}) {
+  await visit(graph, options)
   return graph
 }
