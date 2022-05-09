@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
+/** The type definining the valid Tasks to run via the CLI client */
 export type Task = "plan" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "groups" | "version" | "vetoes"
 
+/** @return the list of valid Tasks to run via the CLI client */
 export function validTasks(): Task[] {
   return ["plan", "json", "guide", "timing", "fetch", "topmatter", "groups", "version", "vetoes"]
 }
 
+/** @return whether the given `task` is used for its debug output, not for any other effect */
 export function isDebugTask(task: Task) {
   return task === "timing" || task === "fetch" || task === "topmatter" || task === "groups"
 }
 
+/** @return whether the given `task` is an instance of the valid CLI `Task` types */
 export function isValidTask(task: string): task is Task {
   return validTasks().includes(task as Task)
 }
