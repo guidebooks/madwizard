@@ -28,20 +28,11 @@ import { taskRunner, Task } from "./taskrunner"
 import { MadWizardOptions } from "../../"
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
+import { Memos, Memoizer } from "../../memoization"
 import indent from "../../parser/markdown/util/indent"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"
 import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isTaskStep, wizardify } from "../../wizard"
-import {
-  Graph,
-  Status,
-  StatusMap,
-  blocks,
-  compile,
-  extractTitle,
-  extractDescription,
-  shellExec,
-  validate,
-} from "../../graph"
+import { Graph, Status, blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
 
 export class Guide {
   private readonly debug = Debug("madwizard/fe/guide")
@@ -50,7 +41,7 @@ export class Guide {
     private readonly blocks: CodeBlockProps[],
     private readonly choices: ChoiceState,
     private readonly options: MadWizardOptions,
-    private readonly statusMemo: StatusMap = {},
+    private readonly memos: Memos = new Memoizer(),
     private readonly prompt = inquirer.createPromptModule(),
     private readonly ui: UI<string> = new AnsiUI()
   ) {}
@@ -64,11 +55,7 @@ export class Guide {
    * @return the list of remaining questions
    */
   private async questions(iter: number, previous?: Wizard) {
-    const graph = await compile(
-      this.blocks,
-      this.choices,
-      Object.assign({}, this.options, { statusMemo: this.statusMemo })
-    )
+    const graph = await compile(this.blocks, this.choices, Object.assign({}, this.options, this.memos))
     const wizard = await wizardify(graph, { validator: shellExec, previous })
 
     const firstChoiceIdx = wizard.findIndex((_) => isChoiceStep(_) && _.status !== "success")

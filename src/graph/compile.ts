@@ -17,20 +17,9 @@
 import Debug from "debug"
 import { CodeBlockProps } from "../codeblock"
 import { ChoiceState, expand } from "../choices"
-import {
-  Choice,
-  Graph,
-  SubTask,
-  StatusMemo,
-  TitledSteps,
-  emptySequence,
-  extractTitle,
-  parallel,
-  seq,
-  sequence,
-  subtask,
-} from "."
+import { Choice, Graph, SubTask, TitledSteps, emptySequence, extractTitle, parallel, seq, sequence, subtask } from "."
 
+import { Memos } from "../memoization"
 import { ValidateOptions } from "./validate"
 
 import {
@@ -99,7 +88,7 @@ export interface CompilerOptions {
       }
 }
 
-export type CompileOptions = Partial<CompilerOptions> & ValidateOptions & Partial<StatusMemo>
+export type CompileOptions = Partial<CompilerOptions> & ValidateOptions & Partial<Memos>
 
 /** Take a list of code blocks and arrange them into a control flow dag */
 export async function compile(
@@ -331,12 +320,16 @@ export async function compile(
     })
     debug("graph formation done")
 
-    const doExpand: (graph: Graph) => Graph | Promise<Graph> = options.expand === false ? (x) => x : expand
+    const doExpand: (...params: Parameters<typeof expand>) => Graph | Promise<Graph> =
+      options.expand === false ? (x) => x : expand
 
     const unoptimized =
       parts.length === 0
         ? undefined
-        : await doExpand(parts.length === 1 ? parts[0] : ordering === "parallel" ? parallel(parts) : sequence(parts))
+        : await doExpand(
+            parts.length === 1 ? parts[0] : ordering === "parallel" ? parallel(parts) : sequence(parts),
+            options
+          )
 
     debug("optimizing")
     const optimized = options.optimize === false ? unoptimized : await optimize(unoptimized, choices, options)
