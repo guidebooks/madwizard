@@ -82,15 +82,20 @@ function isExpansion(part: ChoicePart) {
 }
 
 /** Replace any expansion parts with their dynamic expansion */
-function expandTemplate(template: ChoicePart, names: string[]) {
+function expandPart(template: ChoicePart, names: string[]): ChoicePart[] {
   return names.map((name, idx) => updatePart(JSON.parse(JSON.stringify(template)), name, idx))
 }
 
-export async function expand(graph: Graph) {
+/**
+ * Visit the graph, expanding choice templates (via `expandPart`) and
+ * updating content such as descriptions and code bodies (via
+ * `updateContent`) as we go.
+ */
+async function visit(graph: Graph) {
   if (isSequence(graph)) {
-    await Promise.all(graph.sequence.map(expand))
+    return Promise.all(graph.sequence.map(visit))
   } else if (isParallel(graph)) {
-    await Promise.all(graph.parallel.map(expand))
+    return Promise.all(graph.parallel.map(visit))
   } else if (isChoice(graph)) {
     if (isExpansionGroup(graph)) {
       graph.choices = (
@@ -105,7 +110,13 @@ export async function expand(graph: Graph) {
                 await oraPromise(shellExec(expansionExpr, opts), chalk.dim(`Expanding ${chalk.blue(expansionExpr)}`))
                 // debug("expansion/response", opts.capture)
                 const response = opts.capture.split(/\n/).filter(Boolean)
-                return expandTemplate(part, response)
+
+                // expand the template, which yields Part -> Part[]
+                const parts = expandPart(part, response)
+
+                // recurse on the expanded parts
+                await Promise.all(parts.map((_) => visit(_.graph)))
+                return parts
               } catch (err) {
                 // then the expansion failed. make sure the users don't
                 // see the template
@@ -117,16 +128,23 @@ export async function expand(graph: Graph) {
       ).flat()
     } else {
       graph.choices = graph.choices.map((_) => updateContent(_))
+      return Promise.all(graph.choices.map((_) => visit(_.graph)))
     }
-
-    await Promise.all(graph.choices.map((_) => expand(_.graph)))
   } else if (isSubTask(graph)) {
-    await expand(graph.graph)
+    return visit(graph.graph)
   } else if (isTitledSteps(graph)) {
-    await Promise.all(graph.steps.map((_) => expand(_.graph)))
+    return Promise.all(graph.steps.map((_) => visit(_.graph)))
   } else {
     updateContent({ graph })
   }
+}
 
+/**
+ * Visit the graph, expanding choice templates (via `expandPart`) and
+ * updating content such as descriptions and code bodies (via
+ * `updateContent`) as we go.
+ */
+export async function expand(graph: Graph) {
+  await visit(graph)
   return graph
 }
