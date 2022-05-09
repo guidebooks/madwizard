@@ -16,45 +16,19 @@
 
 import { EOL } from "os"
 import Debug from "debug"
-import chalk from "chalk"
-import { basename } from "path"
+
+import usage from "./usage"
+import { Task, isDebugTask, isValidTask } from "./tasks"
 
 import { MadWizardOptions } from "../MadWizardOptions"
 
-import { Guide } from "../guide"
-import { prettyPrintUITreeFromBlocks, Treeifier, DevNullUI } from "../tree"
-import { parse, wizardify, compile, order, vetoesToString, version } from "../.."
-
-export { Guide }
-
-type Task = "plan" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "groups" | "version" | "vetoes"
-
-function validTasks(): Task[] {
-  return ["plan", "json", "guide", "timing", "fetch", "topmatter", "groups", "version", "vetoes"]
-}
-
-function isDebugTask(task: Task) {
-  return task === "timing" || task === "fetch" || task === "topmatter" || task === "groups"
-}
-
-function isValidTask(task: string): task is Task {
-  return validTasks().includes(task as Task)
-}
+import { parse } from "../../parser"
+import { version } from "../../version"
+import { wizardify } from "../../wizard"
+import { compile, order, vetoesToString } from "../../graph"
 
 function assertExhaustive(value: never, message = "Reached unexpected case in exhaustive switch"): never {
   throw new Error(message)
-}
-
-function usage(argv: string[], msg?: string) {
-  if (msg) {
-    console.error(chalk.red(msg))
-  }
-  console.error(
-    `${chalk.bold.yellow("Usage:")} ${basename(argv[0]).replace(/\.js$/, "")} ${chalk.cyan(
-      validTasks().join("|")
-    )} <a filepath or url>`
-  )
-  process.exit(1)
 }
 
 function enableTracing(task: Task, subtask = "*") {
@@ -122,12 +96,15 @@ export async function cli<Writer extends (msg: string) => boolean>(
         // print out timing
         const graph = await compile(blocks, choices, options)
         wizardify(graph)
-        new Treeifier(new DevNullUI()).toTree(order(graph))
+
+        await import("../tree").then((_) => new _.Treeifier(new _.DevNullUI()).toTree(order(graph)))
         break
       }
 
       case "plan":
-        await prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
+        await import("../tree").then((_) =>
+          _.prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
+        )
         break
 
       case "vetoes":
@@ -161,9 +138,11 @@ export async function cli<Writer extends (msg: string) => boolean>(
         break
       }
 
-      case "guide":
+      case "guide": {
+        const Guide = await import("../guide").then((_) => _.Guide)
         await new Guide(blocks, choices, options).run()
         break
+      }
 
       default:
         // if our switch isn't exhaustive, you will see this typescript error:
