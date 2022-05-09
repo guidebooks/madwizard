@@ -4,7 +4,7 @@
 
 # Turn Markdown into Wizards
 
-Madwizard is a library that scans a given markdown file and
+MadWizard is a library that scans a given markdown file and
 automatically constructs a task graph. It also includes a CLI client
 to allow interacting with the library, either to visualize the task
 graph (the `plan` command) or to step through the plan via an
