@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-/** The type definining the valid Tasks to run via the CLI client */
-export type Task = "plan" | "json" | "guide" | "timing" | "fetch" | "topmatter" | "groups" | "version" | "vetoes"
+/** Subtype of valid Tasks that are used to debug madwizard */
+export type DebugTask = "debug:timing" | "debug:fetch" | "debug:topmatter" | "debug:groups" | "debug:graph"
 
 /** @return the list of valid Tasks to run via the CLI client */
-export function validTasks(): Task[] {
-  return ["plan", "json", "guide", "timing", "fetch", "topmatter", "groups", "version", "vetoes"]
+function validDebugTasks(): DebugTask[] {
+  return ["debug:timing", "debug:fetch", "debug:topmatter", "debug:groups", "debug:graph"]
 }
 
 /** @return whether the given `task` is used for its debug output, not for any other effect */
-export function isDebugTask(task: Task) {
-  return task === "timing" || task === "fetch" || task === "topmatter" || task === "groups"
+export function isDebugTask(task: Task): task is DebugTask {
+  return validDebugTasks().includes(task as DebugTask)
+}
+
+/** The type definining the valid Tasks to run via the CLI client */
+export type Task = "plan" | "json" | "guide" | "version" | "vetoes" | DebugTask
+
+/** @return the list of valid Tasks to run via the CLI client */
+export function validTasks(): Task[] {
+  const normalTasks: Task[] = ["plan", "json", "guide", "version", "vetoes"]
+  return normalTasks.concat(validDebugTasks())
 }
 
 /** @return whether the given `task` is an instance of the valid CLI `Task` types */

@@ -36,24 +36,6 @@ import {
   isValidatable,
 } from "."
 
-/*
-interface OraLike {
-  succeed(): void
-  warn(): void
-}
-
-function emptyOra(): OraLike {
-  return {
-    succeed: () => {
-      // noop
-    },
-    warn: () => {
-      // noop
-    },
-  }
-}
-*/
-
 /**
  * Execute the `validate` property of the steps in the given `wizard`,
  * and stash the result in the `status` field of each step.
@@ -62,23 +44,6 @@ export default async function collapseValidated<
   T extends Unordered | Ordered = Unordered,
   G extends Graph<T> = Graph<T>
 >(graph: G, options?: CompileOptions, nearestEnclosingTitle?: string): Promise<G> {
-  /* const spinners = wizard.map(
-      ({ step }, idx) =>
-        new Promise<OraLike>((resolve) => {
-          if (alreadyDone[idx] < 0) {
-            setTimeout(() => {
-              if (alreadyDone[idx] < 0) {
-                resolve(ora(chalk.dim(`Validating ${chalk.blue(step.name)}`)).start())
-              } else {
-                resolve(emptyOra())
-              }
-            }, 500)
-          } else {
-            resolve(emptyOra())
-          }
-        })
-        ) */
-
   if (options) {
     if (
       options.optimize &&
@@ -137,8 +102,8 @@ export default async function collapseValidated<
     }
   } else if (isChoice<T>(graph)) {
     const parts = await Promise.all(graph.choices.map(recurse2)).then((_) => _.filter(Boolean))
-    if (parts.length === graph.choices.length) {
-      // we haven't eliminated any choices...
+    if (graph.choices.length > 0) {
+      graph.choices.forEach((_, idx) => (_.graph = parts[idx]))
       return graph
     }
   } else if (isTitledSteps<T>(graph)) {
@@ -155,36 +120,4 @@ export default async function collapseValidated<
   } else {
     return graph
   }
-
-  /*return Promise.all(
-      wizard.map(async ({ step, graph }, idx) => {
-        if (alreadyDone[idx] >= 0) {
-          // probably no need to re-compute status
-          const { status } = previous[alreadyDone[idx]]
-          return { step, graph, status }
-        }
-
-        const spinner = spinners[idx]
-        try {
-          const status = await validate(graph, { validator })
-
-          if (status === "success") {
-            (await spinner).succeed()
-          } else {
-            (await spinner).warn()
-          }
-
-          return { step, graph, status }
-        } catch (err) {
-          (await spinner).warn()
-          return { step, graph, status: "blank" as const }
-        } finally {
-          // the value here doesn't matter, as long as it is > 0; to
-          // indicate to the delayed spinners that there's no need...
-          alreadyDone[idx] = 1
-        }
-      })
-    )
-
-  return graph*/
 }

@@ -127,8 +127,9 @@ function findNearestEnclosingTitle(grandparent: Parent, parent: Node, node: Node
  */
 export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
   const transformer: Transformer<Element> = (ast /*: Root */) => {
-    const debug = Debug("madwizard/timing/parser:markdown/rehype-code-indexer")
-    debug("start")
+    const timing = Debug("madwizard/timing/parser:markdown/rehype-code-indexer")
+    const debug = Debug("madwizard/graph/parser:markdown/rehype-code-indexer")
+    timing("start")
 
     try {
       let codeIdx = 0
@@ -288,11 +289,8 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                   attributes.nesting = attributes.nesting.reverse()
                   reserialize()
 
-                  if (
-                    !isOnAnImportChain(ancestors) &&
-                    !attributes.nesting.find((_) => _.kind === "WizardStep" || (_.kind === "Import" && _.filepath))
-                  ) {
-                    // try looking for an h1
+                  if (!isOnAnImportChain(ancestors)) {
+                    // try looking for an outermost h1
                     const grandparent = ancestors[0]
                     if (grandparent) {
                       const parent = grandparent.children[grandparent.children.length - 1]
@@ -316,30 +314,12 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                     }
                   }
 
-                  /* let parent = ancestors[ancestors.length - 1]
-                  let grandparent = ancestors[ancestors.length - 2]
-
-                  if (isTipWithoutFullTitle(grandparent)) {
-                    parent = grandparent
-                    grandparent = ancestors[ancestors.length - 3]
+                  if (debug.enabled) {
+                    debug(
+                      "nesting of " + body,
+                      attributes.nesting.map(({ kind, title }) => ({ kind, title }))
+                    )
                   }
-
-                  if (parent && grandparent && attributes.nesting.length === 1) {
-                    // Hmm, we don't have much context for this code
-                    // block. Try adding a bit more context by looking for
-                    // an enclosing heading.
-                    const parentHeading = findNearestEnclosingTitle(grandparent, parent)
-                    if (parentHeading && parentHeading.title) {
-                      const { title, source } = parentHeading
-                      addNesting(attributes, {
-                        kind: "Import",
-                        source,
-                        title,
-                        key: title,
-                        filepath: "",
-                      })
-                    }
-                  } */
                 }
 
                 // go from bottom to top stopping at the first import,
@@ -364,17 +344,6 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                   }
                 }
 
-                /*const root = ancestors.find(_ => _.type === 'root')
-              if (root) {
-                let properties: { containedCodeBlocks: string[] } = root['properties']
-                if (!properties) {
-                  properties = root['properties'] = { containedCodeBlocks: [] }
-                } else if (!properties.containedCodeBlocks) {
-                  properties.containedCodeBlocks = []
-                }
-
-                properties.containedCodeBlocks.push(codeBlockProps)
-                }*/
                 if (codeblocks) {
                   codeblocks.push(JSON.parse(Buffer.from(codeBlockProps, "base64").toString()))
                 }
@@ -384,7 +353,7 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
         }
       })
     } finally {
-      debug("complete")
+      timing("complete")
     }
   }
   return transformer

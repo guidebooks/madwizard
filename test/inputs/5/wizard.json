@@ -9,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "eb5ccdcd-e022-4657-a5a7-e21016c6c7a4",
+            "key": "d4861244-f92f-4fcd-9c6a-e10ef398c321",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "8510bd2b-b150-4879-afe5-1b326e0a19ec-1"
+                "id": "78211186-150a-4a22-a59c-37c922c7fb40-1"
               }
             ]
           },
@@ -33,6 +33,146 @@
           "member": 0,
           "isFirstChoice": true,
           "description": "\nEEE1Content"
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
+      "group": "Tab1####Tab2####Tab3",
+      "title": "Main Tasks",
+      "source": "placeholder",
+      "provenance": ["test/inputs/snippets/snippets-in-tab5.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "f1d3d113-b92d-4dad-842b-dadde7f9d7f7",
+            "sequence": [
+              {
+                "key": "test/inputs/snippets/importd.md",
+                "title": "DDD",
+                "filepath": "test/inputs/snippets/importd.md",
+                "graph": {
+                  "key": "1e78c092-9e51-4269-9ed5-5044b87af385",
+                  "sequence": [
+                    {
+                      "group": "SubTab1####SubTab2",
+                      "title": "DDD",
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/snippets/importd.md"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "25a1b718-154c-44a0-8ff2-307f71aad645",
+                            "sequence": [
+                              {
+                                "body": "echo BBB",
+                                "language": "bash",
+                                "validate": false,
+                                "id": "78211186-150a-4a22-a59c-37c922c7fb40-5"
+                              }
+                            ]
+                          },
+                          "title": "SubTab1"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab1",
+          "description": "imports:\n"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "fe545a3a-e2b7-42fd-ad66-ac081e72c314",
+            "sequence": [
+              {
+                "body": "echo XXX",
+                "language": "bash",
+                "id": "78211186-150a-4a22-a59c-37c922c7fb40-6"
+              }
+            ]
+          },
+          "title": "Tab2",
+          "description": "\nBBBoo"
+        },
+        {
+          "member": 2,
+          "graph": {
+            "key": "9f64b237-93c0-4237-b589-0e3ddb4e6e4e",
+            "sequence": [
+              {
+                "key": "test/inputs/snippets/importd.md",
+                "title": "DDD",
+                "filepath": "test/inputs/snippets/importd.md",
+                "graph": {
+                  "key": "83529f91-6f69-44a8-a1b3-536f5d0f0e93",
+                  "sequence": [
+                    {
+                      "group": "SubTab1####SubTab2",
+                      "title": "DDD",
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/snippets/importd.md"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "6505ba83-05a3-4512-9b07-fd5832fd7f91",
+                            "sequence": [
+                              {
+                                "body": "echo BBB",
+                                "language": "bash",
+                                "validate": false,
+                                "id": "78211186-150a-4a22-a59c-37c922c7fb40-10"
+                              }
+                            ]
+                          },
+                          "title": "SubTab1"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab3",
+          "description": "imports:\n"
+        }
+      ]
+    },
+    "step": {
+      "name": "Main Tasks",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1####Tab2####Tab3",
+          "member": 0,
+          "isFirstChoice": false,
+          "description": "imports:\n"
+        },
+        {
+          "title": "Tab2",
+          "group": "Tab1####Tab2####Tab3",
+          "member": 1,
+          "isFirstChoice": false,
+          "description": "\nBBBoo"
+        },
+        {
+          "title": "Tab3",
+          "group": "Tab1####Tab2####Tab3",
+          "member": 2,
+          "isFirstChoice": false,
+          "description": "imports:\n"
         }
       ]
     }

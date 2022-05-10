@@ -311,7 +311,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
       snippetDatas[0]
 
     if (isError(snippetData)) {
-      const msg = `Error: failed to fetch snippet content: ${snippetFileName} from ${srcFilePath}`
+      const msg = `failed to fetch snippet content: ${_snippetFileName} from ${srcFilePath}`
       debug(`${chalk.red(mainSymbols.cross)} ${_snippetFileName}`)
       if (failFast) {
         throw new Error(msg)

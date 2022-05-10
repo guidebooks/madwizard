@@ -18,7 +18,7 @@ import { EOL } from "os"
 import Debug from "debug"
 
 import usage from "./usage"
-import { Task, isDebugTask, isValidTask } from "./tasks"
+import { DebugTask, isDebugTask, isValidTask } from "./tasks"
 
 import { MadWizardOptions } from "../MadWizardOptions"
 
@@ -31,8 +31,8 @@ function assertExhaustive(value: never, message = "Reached unexpected case in ex
   throw new Error(message)
 }
 
-function enableTracing(task: Task, subtask = "*") {
-  Debug.enable(`madwizard/${task}/${subtask}`)
+function enableTracing(task: DebugTask, subtask = "*") {
+  Debug.enable(`madwizard/${task.replace(/^debug:/, "")}/${subtask}`)
 }
 
 export async function cli<Writer extends (msg: string) => boolean>(
@@ -86,13 +86,14 @@ export async function cli<Writer extends (msg: string) => boolean>(
       case "version":
         break
 
-      case "groups":
-      case "topmatter":
+      case "debug:graph":
+      case "debug:groups":
+      case "debug:topmatter":
         // these tasks depend only on `parse` having been called
         break
 
-      case "timing":
-      case "fetch": {
+      case "debug:timing":
+      case "debug:fetch": {
         // print out timing
         const graph = await compile(blocks, choices, options)
         wizardify(graph)

@@ -1,6 +1,43 @@
 [
   {
     "graph": {
+      "group": "SubTab1####SubTab2",
+      "title": "DDD",
+      "source": "placeholder",
+      "provenance": ["test/inputs/snippets/importd.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "6b2196ca-3547-4b05-8dc5-d1edda89956d",
+            "sequence": [
+              {
+                "body": "echo BBB",
+                "language": "bash",
+                "validate": false,
+                "id": "02ebe843-3914-44dc-98f6-012f0bdaaf7b-3"
+              }
+            ]
+          },
+          "title": "SubTab1"
+        }
+      ]
+    },
+    "step": {
+      "name": "DDD",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "SubTab1",
+          "group": "SubTab1####SubTab2",
+          "member": 0,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
       "group": "TabE1",
       "title": "EEE",
       "source": "placeholder",
@@ -9,12 +46,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "0291a631-15f6-4a66-8bd4-a910573b7d8f",
+            "key": "50b0f786-d726-4856-9901-d8eefd2a168d",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "be5895b7-49fe-40ee-9462-27630d3fb8a3-5"
+                "id": "02ebe843-3914-44dc-98f6-012f0bdaaf7b-5"
               }
             ]
           },
@@ -31,8 +68,46 @@
           "title": "TabE1",
           "group": "TabE1",
           "member": 0,
-          "isFirstChoice": true,
+          "isFirstChoice": false,
           "description": "\nEEE1Content"
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
+      "group": "Tab1####Tab2####Tab3",
+      "title": "AAA",
+      "source": "placeholder",
+      "provenance": ["test/inputs/snippets/snippets-in-tab5.md"],
+      "choices": [
+        {
+          "member": 1,
+          "graph": {
+            "key": "12560258-98b6-45e8-94fd-09d813a963f5",
+            "sequence": [
+              {
+                "body": "echo XXX",
+                "language": "bash",
+                "id": "02ebe843-3914-44dc-98f6-012f0bdaaf7b-10"
+              }
+            ]
+          },
+          "title": "Tab2",
+          "description": "\nBBBoo"
+        }
+      ]
+    },
+    "step": {
+      "name": "AAA",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab2",
+          "group": "Tab1####Tab2####Tab3",
+          "member": 1,
+          "isFirstChoice": false,
+          "description": "\nBBBoo"
         }
       ]
     }

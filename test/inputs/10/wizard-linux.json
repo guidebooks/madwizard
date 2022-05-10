@@ -5,12 +5,12 @@
       "title": "importgg.md",
       "filepath": "",
       "graph": {
-        "key": "d12ed101-5a10-446f-aca0-3d19e4a28a64",
+        "key": "42efe441-543c-455f-9144-fffd662d5788",
         "sequence": [
           {
             "body": "echo LLL",
             "language": "bash",
-            "id": "ff117f96-086c-4671-8eca-f872d0f17b0a-1"
+            "id": "e2baa6c4-9948-4abe-84a1-96448e1e8479-1"
           }
         ]
       },
@@ -19,6 +19,43 @@
     "step": {
       "name": "importgg.md",
       "content": ""
+    }
+  },
+  {
+    "graph": {
+      "group": "SubTab1####SubTab2",
+      "title": "DDD",
+      "source": "placeholder",
+      "provenance": ["test/inputs/snippets/importdd.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "49c09c5c-452b-42e4-9e44-eacaa0c79482",
+            "sequence": [
+              {
+                "body": "echo BBB",
+                "language": "bash",
+                "validate": false,
+                "id": "e2baa6c4-9948-4abe-84a1-96448e1e8479-7"
+              }
+            ]
+          },
+          "title": "SubTab1"
+        }
+      ]
+    },
+    "step": {
+      "name": "DDD",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "SubTab1",
+          "group": "SubTab1####SubTab2",
+          "member": 0,
+          "isFirstChoice": true
+        }
+      ]
     }
   }
 ]

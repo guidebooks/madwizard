@@ -9,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "dc4dbbdc-a83c-41bd-9f9a-548f93ce0b85",
+            "key": "3944be55-7fde-422c-9a5f-2e1480dfa9d1",
             "sequence": [
               {
                 "body": "echo MMM",
                 "language": "bash",
-                "id": "e134f080-4ad2-4ac3-8ba3-3fcb23f34a90-0"
+                "id": "a588bc26-ef11-4954-826c-6e4b9a25c20c-0"
               }
             ]
           },
@@ -23,12 +23,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "ef6e8a70-ddc0-480f-8265-17a41f9d4fda",
+            "key": "13df6053-3b71-434f-8652-560e115008c5",
             "sequence": [
               {
                 "body": "echo LLL",
                 "language": "bash",
-                "id": "e134f080-4ad2-4ac3-8ba3-3fcb23f34a90-1"
+                "id": "a588bc26-ef11-4954-826c-6e4b9a25c20c-1"
               }
             ]
           },
@@ -37,12 +37,12 @@
         {
           "member": 2,
           "graph": {
-            "key": "ee21600e-b03b-40d1-8557-02c02caf7bfc",
+            "key": "4ce78171-2aa5-4d5b-9e8e-91e35c99ec1d",
             "sequence": [
               {
                 "body": "echo WWW",
                 "language": "bash",
-                "id": "e134f080-4ad2-4ac3-8ba3-3fcb23f34a90-2"
+                "id": "a588bc26-ef11-4954-826c-6e4b9a25c20c-2"
               }
             ]
           },
@@ -71,6 +71,43 @@
           "group": "MacOS####Linux####Windows",
           "member": 2,
           "isFirstChoice": true
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
+      "group": "SubTab1####SubTab2",
+      "title": "DDD",
+      "source": "placeholder",
+      "provenance": ["test/inputs/snippets/importdd.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "dfd210e7-fef9-4456-bd4d-e297b6796176",
+            "sequence": [
+              {
+                "body": "echo BBB",
+                "language": "bash",
+                "validate": false,
+                "id": "a588bc26-ef11-4954-826c-6e4b9a25c20c-7"
+              }
+            ]
+          },
+          "title": "SubTab1"
+        }
+      ]
+    },
+    "step": {
+      "name": "DDD",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "SubTab1",
+          "group": "SubTab1####SubTab2",
+          "member": 0,
+          "isFirstChoice": false
         }
       ]
     }

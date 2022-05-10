@@ -1,1 +1,3 @@
-Sequence
+DDD
+└── Option 1: SubTab1
+    └── echo BBB
