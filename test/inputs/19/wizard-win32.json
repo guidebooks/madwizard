@@ -1,0 +1,115 @@
+[
+  {
+    "graph": {
+      "group": "Local Install####Kubernetes Install",
+      "title": "Install Ray",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "717bbda3-07d9-44f6-97f2-c63a85d2f129",
+            "sequence": [
+              {
+                "body": "pip install -U ray",
+                "language": "shell",
+                "id": "615d9665-fa57-4238-89d5-fe5466233845-1"
+              }
+            ]
+          },
+          "title": "Local Install",
+          "description": "\nThis will install Ray on your laptop."
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "afc73662-0acc-41a1-8831-3839b6e21781",
+            "sequence": [
+              {
+                "key": "test/inputs/19/snippets/kubectl.md",
+                "title": "Install kubectl",
+                "filepath": "test/inputs/19/snippets/kubectl.md",
+                "graph": {
+                  "key": "1c272a26-f5cc-4cea-9ed1-79a536bf1d83",
+                  "sequence": [
+                    {
+                      "key": "org.kubernetes-sigs.kui/choice/platform",
+                      "title": "Install kubectl",
+                      "filepath": "",
+                      "graph": {
+                        "key": "03de733a-8456-40c6-a512-bca654ec60f2",
+                        "sequence": [
+                          {
+                            "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe\"",
+                            "language": "bash",
+                            "id": "615d9665-fa57-4238-89d5-fe5466233845-15"
+                          }
+                        ]
+                      },
+                      "source": "placeholder"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              },
+              {
+                "key": "test/inputs/19/snippets/helm3.md",
+                "title": "Install Helm",
+                "filepath": "test/inputs/19/snippets/helm3.md",
+                "graph": {
+                  "key": "1aa9d25a-cddf-4f89-a15d-0cbe1143c935",
+                  "sequence": [
+                    {
+                      "key": "org.kubernetes-sigs.kui/choice/platform",
+                      "title": "Install Helm",
+                      "filepath": "",
+                      "graph": {
+                        "key": "10e992af-12d1-4a0b-9a7a-86e654acd807",
+                        "sequence": [
+                          {
+                            "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
+                            "language": "shell",
+                            "id": "615d9665-fa57-4238-89d5-fe5466233845-24"
+                          }
+                        ]
+                      },
+                      "source": "placeholder"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              },
+              {
+                "body": "helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/\nkubectl wait --for=condition=available --all rayclusters",
+                "language": "shell",
+                "id": "615d9665-fa57-4238-89d5-fe5466233845-25"
+              }
+            ]
+          },
+          "title": "Kubernetes Install",
+          "description": "This will install Ray on a Kubernetes context of your choosing.\n"
+        }
+      ]
+    },
+    "step": {
+      "name": "Install Ray",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Local Install",
+          "group": "Local Install####Kubernetes Install",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "\nThis will install Ray on your laptop."
+        },
+        {
+          "title": "Kubernetes Install",
+          "group": "Local Install####Kubernetes Install",
+          "member": 1,
+          "isFirstChoice": true,
+          "description": "This will install Ray on a Kubernetes context of your choosing.\n"
+        }
+      ]
+    }
+  }
+]

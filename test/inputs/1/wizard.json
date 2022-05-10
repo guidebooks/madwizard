@@ -7,12 +7,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "fcb3c0f0-f69a-4355-bd90-d5ee404b0219",
+            "key": "ea90d4a0-de44-4528-8cc6-f074d90a030e",
             "sequence": [
               {
                 "body": "echo 111",
                 "language": "bash",
-                "id": "1300e97f-9cf4-41fa-9c71-18ad923fec3e-0"
+                "id": "baed18c9-3ccf-4ed4-8cfc-f55ce61d9702-0"
               }
             ]
           },
@@ -22,12 +22,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "8c7e071d-f400-401e-a647-b1f71dcfb6b8",
+            "key": "20cf948b-68d4-48e1-9c39-459528ca33f1",
             "sequence": [
               {
                 "body": "echo 222",
                 "language": "bash",
-                "id": "1300e97f-9cf4-41fa-9c71-18ad923fec3e-1"
+                "id": "baed18c9-3ccf-4ed4-8cfc-f55ce61d9702-1"
               }
             ]
           },

@@ -1,0 +1,629 @@
+[
+  {
+    "graph": {
+      "group": "Local Install####Kubernetes Install",
+      "title": "Install Ray",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "c158e0e7-ce7a-47e8-b17c-4cfd50c35728",
+            "sequence": [
+              {
+                "group": "Linux####Windows####MacOS",
+                "source": "placeholder",
+                "choices": [
+                  {
+                    "member": 0,
+                    "graph": {
+                      "key": "0d1134dd-f32c-4b44-a5b8-471f2026d529",
+                      "sequence": [
+                        {
+                          "body": "pip install -U ray",
+                          "language": "shell",
+                          "id": "803beecf-1b48-461b-8ade-01aa1027447f-0"
+                        }
+                      ]
+                    },
+                    "title": "Linux"
+                  },
+                  {
+                    "member": 1,
+                    "graph": {
+                      "key": "0fd51364-706a-4bf2-b281-f3f1d96abb60",
+                      "sequence": [
+                        {
+                          "body": "pip install -U ray",
+                          "language": "shell",
+                          "id": "803beecf-1b48-461b-8ade-01aa1027447f-1"
+                        }
+                      ]
+                    },
+                    "title": "Windows"
+                  },
+                  {
+                    "member": 2,
+                    "graph": {
+                      "key": "de2c5f75-d3fa-410d-9d86-5beab43e356a",
+                      "sequence": [
+                        {
+                          "group": "Intel####Apple Silicon",
+                          "source": "placeholder",
+                          "choices": [
+                            {
+                              "member": 0,
+                              "graph": {
+                                "key": "fac2bc50-cd07-4983-995f-4cb77a8123e4",
+                                "sequence": [
+                                  {
+                                    "body": "pip install -U ray",
+                                    "language": "shell",
+                                    "id": "803beecf-1b48-461b-8ade-01aa1027447f-2"
+                                  }
+                                ]
+                              },
+                              "title": "Intel",
+                              "description": "\nIf you are running on x86/Intel hardware."
+                            },
+                            {
+                              "member": 1,
+                              "graph": {
+                                "key": "839ddd09-b4b4-4faa-8ad3-eb792af16761",
+                                "sequence": [
+                                  {
+                                    "key": "test/inputs/19/snippets/conda.md",
+                                    "title": "Conda: Installation",
+                                    "filepath": "test/inputs/19/snippets/conda.md",
+                                    "graph": {
+                                      "key": "58cc530c-f483-40cc-a92d-7d186fcc216f",
+                                      "sequence": [
+                                        {
+                                          "group": "Miniconda####Anaconda",
+                                          "title": "Installation Method",
+                                          "source": "placeholder",
+                                          "provenance": ["test/inputs/19/snippets/conda.md"],
+                                          "choices": [
+                                            {
+                                              "member": 0,
+                                              "graph": {
+                                                "key": "ed858ac1-19e7-466f-8764-83e0a48043dd",
+                                                "sequence": [
+                                                  {
+                                                    "group": "Windows####MacOS####Linux",
+                                                    "source": "placeholder",
+                                                    "provenance": ["test/inputs/19/snippets/conda.md"],
+                                                    "choices": [
+                                                      {
+                                                        "member": 0,
+                                                        "graph": {
+                                                          "key": "7ed16309-5f03-4097-aa14-87fc0734f823",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "echo windowsfake",
+                                                              "language": "shell",
+                                                              "id": "803beecf-1b48-461b-8ade-01aa1027447f-3"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "Windows"
+                                                      },
+                                                      {
+                                                        "member": 1,
+                                                        "graph": {
+                                                          "key": "8cce0817-87a2-42a5-b11c-856ece17c82c",
+                                                          "sequence": [
+                                                            {
+                                                              "group": "Intel####Apple Silicon",
+                                                              "source": "placeholder",
+                                                              "provenance": ["test/inputs/19/snippets/conda.md"],
+                                                              "choices": [
+                                                                {
+                                                                  "member": 0,
+                                                                  "graph": {
+                                                                    "key": "f9fb8935-ed89-42d1-8d9c-9b33f81cb077",
+                                                                    "sequence": [
+                                                                      {
+                                                                        "body": "bash <(curl -L https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)",
+                                                                        "language": "shell",
+                                                                        "id": "803beecf-1b48-461b-8ade-01aa1027447f-4"
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "title": "Intel",
+                                                                  "description": "\nIf you are running on x86/Intel hardware."
+                                                                },
+                                                                {
+                                                                  "member": 1,
+                                                                  "graph": {
+                                                                    "key": "c5e886a7-95a3-4a8e-b715-76d1acd1b55c",
+                                                                    "sequence": [
+                                                                      {
+                                                                        "body": "bash <(curl -L https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh)",
+                                                                        "language": "shell",
+                                                                        "id": "803beecf-1b48-461b-8ade-01aa1027447f-5"
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "title": "Apple Silicon",
+                                                                  "description": "\nIf you are running on Apple Silicon/ARM hardware."
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "MacOS"
+                                                      },
+                                                      {
+                                                        "member": 2,
+                                                        "graph": {
+                                                          "key": "97a60ad1-e1ef-476c-96c0-fbae8f732a96",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "echo linuxfake",
+                                                              "language": "shell",
+                                                              "id": "803beecf-1b48-461b-8ade-01aa1027447f-6"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "Linux"
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              "title": "Miniconda",
+                                              "description": "\nMiniconda is a free minimal installer for conda. It is a small, bootstrap version of Anaconda that includes only conda, Python, the packages they depend on, and a small number of other useful packages, including pip, zlib and a few others. "
+                                            },
+                                            {
+                                              "member": 1,
+                                              "graph": {
+                                                "key": "978a821e-fe9c-45a1-a6e4-5fc8a144f869",
+                                                "sequence": [
+                                                  {
+                                                    "group": "Windows####MacOS####Linux",
+                                                    "source": "placeholder",
+                                                    "provenance": ["test/inputs/19/snippets/conda.md"],
+                                                    "choices": [
+                                                      {
+                                                        "member": 0,
+                                                        "graph": {
+                                                          "key": "ac625004-856d-4c95-bff7-d531f9c256ca",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "echo windowsfake",
+                                                              "language": "shell",
+                                                              "id": "803beecf-1b48-461b-8ade-01aa1027447f-7"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "Windows"
+                                                      },
+                                                      {
+                                                        "member": 1,
+                                                        "graph": {
+                                                          "key": "8e28aee8-4c06-47ad-8959-f3d2c468e5a1",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh)",
+                                                              "language": "shell",
+                                                              "id": "803beecf-1b48-461b-8ade-01aa1027447f-8"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "MacOS"
+                                                      },
+                                                      {
+                                                        "member": 2,
+                                                        "graph": {
+                                                          "key": "b298bda4-8000-4d1d-85cb-4915cf0568f8",
+                                                          "sequence": [
+                                                            {
+                                                              "group": "x86####POWER8 and POWER9####AWS Graviton2/ARM64####IBM z/Linux and LinuxONE",
+                                                              "source": "placeholder",
+                                                              "provenance": ["test/inputs/19/snippets/conda.md"],
+                                                              "choices": [
+                                                                {
+                                                                  "member": 0,
+                                                                  "graph": {
+                                                                    "key": "de712c02-ae47-46e9-a0e2-a6a0d543f9df",
+                                                                    "sequence": [
+                                                                      {
+                                                                        "body": "bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh)",
+                                                                        "language": "shell",
+                                                                        "id": "803beecf-1b48-461b-8ade-01aa1027447f-9"
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "title": "x86"
+                                                                },
+                                                                {
+                                                                  "member": 1,
+                                                                  "graph": {
+                                                                    "key": "3dc9b45a-a167-4e83-a938-bdc220f9388c",
+                                                                    "sequence": [
+                                                                      {
+                                                                        "body": "bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-ppc64le.sh)",
+                                                                        "language": "shell",
+                                                                        "id": "803beecf-1b48-461b-8ade-01aa1027447f-10"
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "title": "POWER8 and POWER9"
+                                                                },
+                                                                {
+                                                                  "member": 2,
+                                                                  "graph": {
+                                                                    "key": "786b556f-5060-40bd-a8df-0c58b4f67bce",
+                                                                    "sequence": [
+                                                                      {
+                                                                        "body": "bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-aarch64.sh)",
+                                                                        "language": "shell",
+                                                                        "id": "803beecf-1b48-461b-8ade-01aa1027447f-11"
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "title": "AWS Graviton2/ARM64"
+                                                                },
+                                                                {
+                                                                  "member": 3,
+                                                                  "graph": {
+                                                                    "key": "52ff1137-8d96-4661-ace2-4e2a70cb48c7",
+                                                                    "sequence": [
+                                                                      {
+                                                                        "body": "bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-s390x.sh)",
+                                                                        "language": "shell",
+                                                                        "id": "803beecf-1b48-461b-8ade-01aa1027447f-12"
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "title": "IBM z/Linux and LinuxONE"
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "Linux"
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              "title": "Anaconda",
+                                              "description": "\nThis will install Miniconda plus hundreds of packages."
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    "source": "placeholder"
+                                  },
+                                  {
+                                    "body": "conda activate\npip uninstall grpcio\nconda install grpcio\npip install ray",
+                                    "language": "shell",
+                                    "id": "803beecf-1b48-461b-8ade-01aa1027447f-13"
+                                  }
+                                ]
+                              },
+                              "title": "Apple Silicon",
+                              "description": "\nIf you are running on Apple Silicon/ARM hardware."
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "title": "MacOS"
+                  }
+                ]
+              }
+            ]
+          },
+          "title": "Local Install",
+          "description": "\nThis will install Ray on your laptop."
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "d3dc12ad-087f-4c2f-98ea-94efbf23054d",
+            "sequence": [
+              {
+                "key": "test/inputs/19/snippets/kubectl.md",
+                "title": "Install kubectl",
+                "filepath": "test/inputs/19/snippets/kubectl.md",
+                "graph": {
+                  "key": "086aef04-188b-4b2b-b962-09dddf566fbd",
+                  "sequence": [
+                    {
+                      "group": "Linux####Windows####MacOS",
+                      "title": "Install kubectl",
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/19/snippets/kubectl.md"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "db7544cb-1e2c-496b-8f0f-60eef9858db4",
+                            "sequence": [
+                              {
+                                "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
+                                "language": "bash",
+                                "id": "803beecf-1b48-461b-8ade-01aa1027447f-14"
+                              }
+                            ]
+                          },
+                          "title": "Linux",
+                          "description": "Download the latest release with the command:\n"
+                        },
+                        {
+                          "member": 1,
+                          "graph": {
+                            "key": "d2f515a0-c479-407f-ac69-1556bad31799",
+                            "sequence": [
+                              {
+                                "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe\"",
+                                "language": "bash",
+                                "id": "803beecf-1b48-461b-8ade-01aa1027447f-15"
+                              }
+                            ]
+                          },
+                          "title": "Windows",
+                          "description": "Download the latest release:\n"
+                        },
+                        {
+                          "member": 2,
+                          "graph": {
+                            "key": "cd0ff85c-b0a6-48de-8f48-ac951effc2e3",
+                            "sequence": [
+                              {
+                                "group": "Homebrew####curl",
+                                "source": "placeholder",
+                                "provenance": ["test/inputs/19/snippets/kubectl.md"],
+                                "choices": [
+                                  {
+                                    "member": 0,
+                                    "graph": {
+                                      "key": "8f1ae703-c8be-4d72-9817-b8a9d277ffe8",
+                                      "sequence": [
+                                        {
+                                          "body": "brew install kubectl",
+                                          "language": "bash",
+                                          "id": "803beecf-1b48-461b-8ade-01aa1027447f-16"
+                                        }
+                                      ]
+                                    },
+                                    "title": "Homebrew",
+                                    "description": "\nIf you are on macOS and using Homebrew package manager, you can install kubectl with Homebrew."
+                                  },
+                                  {
+                                    "member": 1,
+                                    "graph": {
+                                      "key": "39e535d5-1849-4f24-9d74-8a884ae17bf3",
+                                      "sequence": [
+                                        {
+                                          "group": "Intel####Apple Silicon",
+                                          "source": "placeholder",
+                                          "provenance": ["test/inputs/19/snippets/kubectl.md"],
+                                          "choices": [
+                                            {
+                                              "member": 0,
+                                              "graph": {
+                                                "key": "8e6ee6dc-6fd7-471a-855c-d54b7aee71ed",
+                                                "sequence": [
+                                                  {
+                                                    "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl.sha256\"",
+                                                    "language": "bash",
+                                                    "id": "803beecf-1b48-461b-8ade-01aa1027447f-17"
+                                                  }
+                                                ]
+                                              },
+                                              "title": "Intel"
+                                            },
+                                            {
+                                              "member": 1,
+                                              "graph": {
+                                                "key": "59b345ed-e11b-4a65-be16-eaf2d54942e8",
+                                                "sequence": [
+                                                  {
+                                                    "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl.sha256\"",
+                                                    "language": "bash",
+                                                    "id": "803beecf-1b48-461b-8ade-01aa1027447f-18"
+                                                  }
+                                                ]
+                                              },
+                                              "title": "Apple Silicon"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "key": "Installing a Specific Version",
+                                          "title": "Installing a Specific Version",
+                                          "filepath": "",
+                                          "graph": {
+                                            "key": "c5ef02c6-2afe-4b80-87da-16dc589642c4",
+                                            "sequence": [
+                                              {
+                                                "group": "Intel####Apple Silicon",
+                                                "source": "placeholder",
+                                                "provenance": ["test/inputs/19/snippets/kubectl.md"],
+                                                "choices": [
+                                                  {
+                                                    "member": 0,
+                                                    "graph": {
+                                                      "key": "821c7c69-1382-454b-96de-c1a901ce7a8a",
+                                                      "sequence": [
+                                                        {
+                                                          "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/amd64/kubectl\"",
+                                                          "language": "bash",
+                                                          "id": "803beecf-1b48-461b-8ade-01aa1027447f-19",
+                                                          "optional": true
+                                                        }
+                                                      ]
+                                                    },
+                                                    "title": "Intel",
+                                                    "description": "\nFor example, to download version v1.23.0 on Intel macOS, type:"
+                                                  },
+                                                  {
+                                                    "member": 1,
+                                                    "graph": {
+                                                      "key": "9a3aec66-a6c0-46d6-9e46-199a3534ed05",
+                                                      "sequence": [
+                                                        {
+                                                          "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/arm64/kubectl\"",
+                                                          "language": "bash",
+                                                          "id": "803beecf-1b48-461b-8ade-01aa1027447f-20",
+                                                          "optional": true
+                                                        }
+                                                      ]
+                                                    },
+                                                    "title": "Apple Silicon",
+                                                    "description": "\nFor example, to download version v1.23.0 on Apple Silicon macOS, type:"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          "source": "placeholder"
+                                        }
+                                      ]
+                                    },
+                                    "title": "curl",
+                                    "description": "To download the latest release:\n"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "title": "MacOS",
+                          "description": "The following methods exist for installing kubectl on macOS:\n"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              },
+              {
+                "key": "test/inputs/19/snippets/helm3.md",
+                "title": "Install Helm",
+                "filepath": "test/inputs/19/snippets/helm3.md",
+                "graph": {
+                  "key": "82d33779-7755-4866-85c5-9af9cb935331",
+                  "sequence": [
+                    {
+                      "group": "MacOS####Linux####Windows",
+                      "title": "Install Helm",
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/19/snippets/helm3.md"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "6361c008-3704-45cc-9cea-9da2928d750b",
+                            "sequence": [
+                              {
+                                "group": "Homebrew####curl",
+                                "source": "placeholder",
+                                "provenance": ["test/inputs/19/snippets/helm3.md"],
+                                "choices": [
+                                  {
+                                    "member": 0,
+                                    "graph": {
+                                      "key": "cb14e9a1-8877-4e0c-8d60-03d3c7225887",
+                                      "sequence": [
+                                        {
+                                          "body": "brew install helm",
+                                          "language": "shell",
+                                          "id": "803beecf-1b48-461b-8ade-01aa1027447f-21"
+                                        }
+                                      ]
+                                    },
+                                    "title": "Homebrew"
+                                  },
+                                  {
+                                    "member": 1,
+                                    "graph": {
+                                      "key": "f5a51a76-4054-47a2-a1da-bd66e7ee3c3f",
+                                      "sequence": [
+                                        {
+                                          "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
+                                          "language": "shell",
+                                          "id": "803beecf-1b48-461b-8ade-01aa1027447f-22"
+                                        }
+                                      ]
+                                    },
+                                    "title": "curl"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "title": "MacOS"
+                        },
+                        {
+                          "member": 1,
+                          "graph": {
+                            "key": "d2a0f22e-f0bf-43f5-9688-f45058880702",
+                            "sequence": [
+                              {
+                                "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
+                                "language": "shell",
+                                "id": "803beecf-1b48-461b-8ade-01aa1027447f-23"
+                              }
+                            ]
+                          },
+                          "title": "Linux"
+                        },
+                        {
+                          "member": 2,
+                          "graph": {
+                            "key": "185b9a31-16af-4669-99e1-1622b1468e57",
+                            "sequence": [
+                              {
+                                "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
+                                "language": "shell",
+                                "id": "803beecf-1b48-461b-8ade-01aa1027447f-24"
+                              }
+                            ]
+                          },
+                          "title": "Windows"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              },
+              {
+                "body": "helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/\nkubectl wait --for=condition=available --all rayclusters",
+                "language": "shell",
+                "id": "803beecf-1b48-461b-8ade-01aa1027447f-25"
+              }
+            ]
+          },
+          "title": "Kubernetes Install",
+          "description": "This will install Ray on a Kubernetes context of your choosing.\n"
+        }
+      ]
+    },
+    "step": {
+      "name": "Install Ray",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Local Install",
+          "group": "Local Install####Kubernetes Install",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "\nThis will install Ray on your laptop."
+        },
+        {
+          "title": "Kubernetes Install",
+          "group": "Local Install####Kubernetes Install",
+          "member": 1,
+          "isFirstChoice": true,
+          "description": "This will install Ray on a Kubernetes context of your choosing.\n"
+        }
+      ]
+    }
+  }
+]

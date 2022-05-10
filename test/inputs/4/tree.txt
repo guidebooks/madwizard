@@ -1,3 +1,11 @@
-EEE
-└── Option 1: TabE1
-    └── echo EEE
+AAA
+├── EEE
+│   └── Option 1: TabE1
+│       └── echo EEE
+└── Main Tasks
+    ├── Option 1: Tab1
+    │   └── DDD
+    │       └── Option 1: SubTab1
+    │           └── echo BBB
+    └── Option 2: Tab2
+        └── echo XXX

@@ -1,1 +1,67 @@
-[]
+[
+  {
+    "graph": {
+      "group": "Tab1####Tab2",
+      "title": "Conditional Imports of Validated Code Blocks",
+      "source": "placeholder",
+      "provenance": ["test/inputs/18/snippet.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "cd146435-03c3-4253-a659-be490658824d",
+            "sequence": [
+              {
+                "key": "test/inputs/snippets/importe.md",
+                "title": "EEE",
+                "filepath": "test/inputs/snippets/importe.md",
+                "graph": {
+                  "key": "5ddfc432-027e-4de8-a9ef-7e8f0350d551",
+                  "sequence": [
+                    {
+                      "group": "TabE1",
+                      "title": "EEE",
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/snippets/importe.md"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "ab86b3fd-10fc-47ef-a36f-6589b10ab6a6",
+                            "sequence": [
+                              {
+                                "body": "echo EEE",
+                                "language": "bash",
+                                "id": "864b3bf4-207b-43eb-9d21-87980a560235-1"
+                              }
+                            ]
+                          },
+                          "title": "TabE1",
+                          "description": "\nEEE1Content"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab1"
+        }
+      ]
+    },
+    "step": {
+      "name": "Conditional Imports of Validated Code Blocks",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1####Tab2",
+          "member": 0,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  }
+]

@@ -9,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "d5f41573-039b-4d58-aab8-5306f63a2c80",
+            "key": "77116e51-b131-46b9-927b-78102ea1cc4d",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "29a688d1-be24-454c-a21a-22de81081e27-1"
+                "id": "50cd9863-dd6d-4a00-8c8a-c29b56b580a9-1"
               }
             ]
           },
@@ -33,6 +33,95 @@
           "member": 0,
           "isFirstChoice": true,
           "description": "\nEEE1Content"
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
+      "group": "Tab1####Tab2",
+      "title": "Main Tasks",
+      "source": "placeholder",
+      "provenance": ["test/inputs/snippets/snippets-in-tab4.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "e59fa9d0-50ce-422f-a1b8-8c2a669ed8f2",
+            "sequence": [
+              {
+                "key": "test/inputs/snippets/importd.md",
+                "title": "DDD",
+                "filepath": "test/inputs/snippets/importd.md",
+                "graph": {
+                  "key": "0f1da749-7ed7-43f7-b8a6-207b150924c4",
+                  "sequence": [
+                    {
+                      "group": "SubTab1####SubTab2",
+                      "title": "DDD",
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/snippets/importd.md"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "ba08c7f8-a2e0-4a8d-8d96-f8c316ccfc2b",
+                            "sequence": [
+                              {
+                                "body": "echo BBB",
+                                "language": "bash",
+                                "validate": false,
+                                "id": "50cd9863-dd6d-4a00-8c8a-c29b56b580a9-5"
+                              }
+                            ]
+                          },
+                          "title": "SubTab1"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab1",
+          "description": "imports:\n"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "1d42b50a-457a-4fe9-a5a1-6499da03df43",
+            "sequence": [
+              {
+                "body": "echo XXX",
+                "language": "bash",
+                "id": "50cd9863-dd6d-4a00-8c8a-c29b56b580a9-6"
+              }
+            ]
+          },
+          "title": "Tab2",
+          "description": "\nBBBoo"
+        }
+      ]
+    },
+    "step": {
+      "name": "Main Tasks",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1####Tab2",
+          "member": 0,
+          "isFirstChoice": false,
+          "description": "imports:\n"
+        },
+        {
+          "title": "Tab2",
+          "group": "Tab1####Tab2",
+          "member": 1,
+          "isFirstChoice": false,
+          "description": "\nBBBoo"
         }
       ]
     }

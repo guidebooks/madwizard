@@ -1,4 +1,10 @@
 Sequence
-└── EEE
-    └── Option 1: TabE1
-        └── echo EEE
+├── DDD
+│   └── Option 1: SubTab1
+│       └── echo BBB
+├── EEE
+│   └── Option 1: TabE1
+│       └── echo EEE
+└── AAA
+    └── Option 2: Tab2
+        └── echo XXX
