@@ -24,6 +24,9 @@ export interface Memos {
 
   /** the expanded choices for a given `Choice`, keyed by it's `key` property */
   expansionMemo: ExpansionMap
+
+  /** Any captured environment variable assignments. For example, a guidebook may want to update via `export FOO=bar` */
+  env: typeof process.env
 }
 
 /** Default implementation of `Memos` */
@@ -33,6 +36,9 @@ export class Memoizer implements Memos {
 
   /** the expanded choices for a given `ChoicePart`, keyed by it's `expansionExpr` property */
   public readonly expansionMemo: ExpansionMap = {}
+
+  /** Any captured environment variable assignments. For example, a guidebook may want to update via `export FOO=bar` */
+  public readonly env = {}
 }
 
 /** Percolate up any memoized status */
