@@ -29,8 +29,12 @@ export function isParagraph(node: Node): node is Element & { tagName: "p" } {
   return isElementWithProperties(node) && node.tagName === "p"
 }
 
+/** imports: is leftover from remark-import */
 export function isNonEmptyTextOrParagraph(node: Node): node is Text | Element {
-  return (isText(node) && !!node.value.trim()) || isParagraph(node)
+  return (
+    (isText(node) && !!node.value.trim()) ||
+    (isParagraph(node) && isText(node.children[0]) && !/imports:/.test(node.children[0].value))
+  )
 }
 
 export function isParent(node: Node): node is Parent {
