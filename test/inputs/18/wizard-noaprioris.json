@@ -9,14 +9,40 @@
         {
           "member": 0,
           "graph": {
-            "key": "62737066-64ff-4fb9-a866-444bbccd1a0c",
+            "key": "9f219828-2e75-4a3d-9f05-ddec25f150f4",
+            "sequence": [
+              {
+                "key": "test/inputs/snippets/importa.md",
+                "title": "importa.md",
+                "filepath": "test/inputs/snippets/importa.md",
+                "graph": {
+                  "key": "c39c0810-318c-4550-9b10-5c7e9090efbc",
+                  "sequence": [
+                    {
+                      "body": "echo AAA",
+                      "language": "bash",
+                      "validate": true,
+                      "id": "56ce8f59-63c0-4aba-8676-1dcb37f51404-0"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab1"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "d50cf448-bfcc-4a19-908c-5a4e747bbcd4",
             "sequence": [
               {
                 "key": "test/inputs/snippets/importe.md",
                 "title": "EEE",
                 "filepath": "test/inputs/snippets/importe.md",
                 "graph": {
-                  "key": "7b43c9c5-7be5-4066-9bd9-64613ce29dac",
+                  "key": "27db5c74-638b-4fe1-a4ff-24c15ee2ff9d",
                   "sequence": [
                     {
                       "group": "TabE1",
@@ -27,12 +53,12 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "8a5ce69a-2b11-43db-b204-07fdca2e26a8",
+                            "key": "d2537049-3386-4933-a4ad-d80617132b74",
                             "sequence": [
                               {
                                 "body": "echo EEE",
                                 "language": "bash",
-                                "id": "f70a6128-5577-450a-9a21-2311187ac69f-1"
+                                "id": "56ce8f59-63c0-4aba-8676-1dcb37f51404-1"
                               }
                             ]
                           },
@@ -47,7 +73,7 @@
               }
             ]
           },
-          "title": "Tab1"
+          "title": "Tab2"
         }
       ]
     },
@@ -59,6 +85,12 @@
           "title": "Tab1",
           "group": "Tab1####Tab2",
           "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "Tab2",
+          "group": "Tab1####Tab2",
+          "member": 1,
           "isFirstChoice": true
         }
       ]

@@ -5,7 +5,11 @@ AAA
 └── Main Tasks
     ├── Option 1: Tab1
     │   └── DDD
-    │       └── Option 1: SubTab1
+    │       ├── Option 1: SubTab1
+    │       │   ├── echo AAA †
+    │       │   ├── echo AAA †
+    │       │   └── echo AAA †
+    │       └── Option 2: SubTab2
     │           └── echo BBB
     └── Option 2: Tab2
         └── echo XXX

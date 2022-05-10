@@ -15,7 +15,7 @@
  */
 
 import { ExpansionMap } from "../choices/groups/expansion"
-import { Graph, Status, StatusMap, isLeafNode, partsOf } from "../graph"
+import { Graph, Status, StatusMap, isLeafNode, isChoice, partsOf } from "../graph"
 
 /** Optimize certain expensive or non-idempotent operations */
 export interface Memos {
@@ -44,11 +44,21 @@ export class Memoizer implements Memos {
 /** Percolate up any memoized status */
 export function statusOf(graph: Graph, statusMemo: StatusMap): Status {
   if (isLeafNode(graph)) {
-    return statusMemo[graph.body]
+    // either we have already executed it, or we have validated it as having been previously executed
+    return (
+      statusMemo[graph.body] ||
+      (graph.validate === true ? "success" : graph.validate !== false ? statusMemo[graph.validate] : "blank")
+    )
   } else {
     const parts = partsOf(graph)
 
     const statuses = parts.map((_) => statusOf(_, statusMemo))
-    return statuses.every((_) => _ === "success") ? "success" : statuses.includes("error") ? "error" : "blank"
+    if (isChoice(graph)) {
+      // is exactly one branch a success? then we can elect it, otherwise, be conservative
+      return statuses.filter((_) => _ === "success").length === 1 ? "success" : "blank"
+    } else {
+      // are all paths a success?
+      return statuses.every((_) => _ === "success") ? "success" : statuses.includes("error") ? "error" : "blank"
+    }
   }
 }

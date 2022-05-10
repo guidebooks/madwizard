@@ -1,0 +1,68 @@
+[
+  {
+    "graph": {
+      "key": "Export an env var",
+      "title": "Export an env var",
+      "filepath": "",
+      "graph": {
+        "key": "48af3a06-b63f-4708-b6a5-5872a0e6cd83",
+        "sequence": [
+          {
+            "body": "export FOO=3",
+            "language": "shell",
+            "id": "bd99bd51-c2f4-4675-8c19-c2f86fda02f5-0"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Export an env var",
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "key": "Export an env var",
+      "title": "Export an env var",
+      "filepath": "",
+      "graph": {
+        "key": "15972cdd-0803-4c28-b796-8bf9058052f6",
+        "sequence": [
+          {
+            "body": "export FOO=2:$FOO",
+            "language": "shell",
+            "id": "bd99bd51-c2f4-4675-8c19-c2f86fda02f5-1"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Export an env var",
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "key": "Then use it",
+      "title": "Then use it",
+      "filepath": "",
+      "graph": {
+        "key": "96212e68-b303-457b-a216-6ef39befecdb",
+        "sequence": [
+          {
+            "body": "echo \"This should be 2:3 --> $FOO\"",
+            "language": "shell",
+            "id": "bd99bd51-c2f4-4675-8c19-c2f86fda02f5-2"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Then use it",
+      "content": ""
+    }
+  }
+]

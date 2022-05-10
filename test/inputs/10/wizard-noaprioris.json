@@ -9,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "3944be55-7fde-422c-9a5f-2e1480dfa9d1",
+            "key": "27c15905-e292-4999-9045-cef0da7a8078",
             "sequence": [
               {
                 "body": "echo MMM",
                 "language": "bash",
-                "id": "a588bc26-ef11-4954-826c-6e4b9a25c20c-0"
+                "id": "b2bd5318-e28e-456a-a029-dbcc92861227-0"
               }
             ]
           },
@@ -23,12 +23,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "13df6053-3b71-434f-8652-560e115008c5",
+            "key": "565edb73-0039-4507-bb47-81314d032536",
             "sequence": [
               {
                 "body": "echo LLL",
                 "language": "bash",
-                "id": "a588bc26-ef11-4954-826c-6e4b9a25c20c-1"
+                "id": "b2bd5318-e28e-456a-a029-dbcc92861227-1"
               }
             ]
           },
@@ -37,12 +37,12 @@
         {
           "member": 2,
           "graph": {
-            "key": "4ce78171-2aa5-4d5b-9e8e-91e35c99ec1d",
+            "key": "c1f795cb-f640-4456-8b7d-d66ade708754",
             "sequence": [
               {
                 "body": "echo WWW",
                 "language": "bash",
-                "id": "a588bc26-ef11-4954-826c-6e4b9a25c20c-2"
+                "id": "b2bd5318-e28e-456a-a029-dbcc92861227-2"
               }
             ]
           },
@@ -85,17 +85,44 @@
         {
           "member": 0,
           "graph": {
-            "key": "dfd210e7-fef9-4456-bd4d-e297b6796176",
+            "key": "d183680b-6cc9-4e45-8932-28a290228e1f",
+            "sequence": [
+              {
+                "body": "echo AAA",
+                "language": "bash",
+                "validate": true,
+                "id": "b2bd5318-e28e-456a-a029-dbcc92861227-4"
+              },
+              {
+                "body": "echo AAA",
+                "language": "bash",
+                "validate": true,
+                "id": "b2bd5318-e28e-456a-a029-dbcc92861227-5"
+              },
+              {
+                "body": "echo AAA",
+                "language": "bash",
+                "validate": true,
+                "id": "b2bd5318-e28e-456a-a029-dbcc92861227-6"
+              }
+            ]
+          },
+          "title": "SubTab1"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "8cbf9164-aafa-4bd5-8144-805eefdaee9f",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "a588bc26-ef11-4954-826c-6e4b9a25c20c-7"
+                "id": "b2bd5318-e28e-456a-a029-dbcc92861227-7"
               }
             ]
           },
-          "title": "SubTab1"
+          "title": "SubTab2"
         }
       ]
     },
@@ -107,6 +134,12 @@
           "title": "SubTab1",
           "group": "SubTab1####SubTab2",
           "member": 0,
+          "isFirstChoice": false
+        },
+        {
+          "title": "SubTab2",
+          "group": "SubTab1####SubTab2",
+          "member": 1,
           "isFirstChoice": false
         }
       ]

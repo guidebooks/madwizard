@@ -5,12 +5,12 @@
       "title": "barrier.md",
       "filepath": "",
       "graph": {
-        "key": "83e0f855-fe4c-4828-abf2-f0208f082795",
+        "key": "03344a6f-981a-4d1a-bce1-a80275d75975",
         "sequence": [
           {
             "body": "echo barrier",
             "language": "shell",
-            "id": "fc2eced9-93c1-42e8-8781-f9c970bb750f-1"
+            "id": "b8416677-c541-4ecc-9c74-711163fd0280-1"
           }
         ]
       },
@@ -33,12 +33,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "be504e64-40d8-4282-870a-578652fd95c6",
+            "key": "8d0e03d5-6061-49c1-bd6f-90cb377744f5",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "fc2eced9-93c1-42e8-8781-f9c970bb750f-2"
+                "id": "b8416677-c541-4ecc-9c74-711163fd0280-2"
               }
             ]
           },

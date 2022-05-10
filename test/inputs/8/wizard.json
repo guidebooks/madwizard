@@ -9,17 +9,44 @@
         {
           "member": 0,
           "graph": {
-            "key": "985249c0-69d7-47c9-be86-5024c4658dd9",
+            "key": "c5d12a74-39fa-4bbe-ae9a-954e10cc797b",
+            "sequence": [
+              {
+                "body": "echo AAA",
+                "language": "bash",
+                "validate": true,
+                "id": "67b1924a-d015-450f-aadb-137a3519d1fa-0"
+              },
+              {
+                "body": "echo AAA",
+                "language": "bash",
+                "validate": true,
+                "id": "67b1924a-d015-450f-aadb-137a3519d1fa-1"
+              },
+              {
+                "body": "echo AAA",
+                "language": "bash",
+                "validate": true,
+                "id": "67b1924a-d015-450f-aadb-137a3519d1fa-2"
+              }
+            ]
+          },
+          "title": "SubTab1"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "9dcd2a6e-76df-4ece-b5db-8c34e979044d",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "85df110c-7ce1-4219-924f-7eddd726e2a4-3"
+                "id": "67b1924a-d015-450f-aadb-137a3519d1fa-3"
               }
             ]
           },
-          "title": "SubTab1"
+          "title": "SubTab2"
         }
       ]
     },
@@ -31,6 +58,12 @@
           "title": "SubTab1",
           "group": "SubTab1####SubTab2",
           "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "SubTab2",
+          "group": "SubTab1####SubTab2",
+          "member": 1,
           "isFirstChoice": true
         }
       ]

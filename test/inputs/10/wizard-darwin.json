@@ -5,12 +5,12 @@
       "title": "importgg.md",
       "filepath": "",
       "graph": {
-        "key": "8bd748c1-fad1-48d6-9113-de7ad6c4f209",
+        "key": "ff1c6a57-b1e3-467a-81cb-953563cd17bf",
         "sequence": [
           {
             "body": "echo MMM",
             "language": "bash",
-            "id": "5247e3b1-8fd2-40b9-afd8-e3d8d5a58572-0"
+            "id": "4a02dc59-1e52-4f7c-9f62-eae0e21ab8f0-0"
           }
         ]
       },
@@ -31,17 +31,44 @@
         {
           "member": 0,
           "graph": {
-            "key": "d09d603a-f398-4dae-95ca-eca1eebd5b28",
+            "key": "179e6e8d-7c7e-44e9-b973-c33385024a4b",
+            "sequence": [
+              {
+                "body": "echo AAA",
+                "language": "bash",
+                "validate": true,
+                "id": "4a02dc59-1e52-4f7c-9f62-eae0e21ab8f0-4"
+              },
+              {
+                "body": "echo AAA",
+                "language": "bash",
+                "validate": true,
+                "id": "4a02dc59-1e52-4f7c-9f62-eae0e21ab8f0-5"
+              },
+              {
+                "body": "echo AAA",
+                "language": "bash",
+                "validate": true,
+                "id": "4a02dc59-1e52-4f7c-9f62-eae0e21ab8f0-6"
+              }
+            ]
+          },
+          "title": "SubTab1"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "4fef3e9e-d457-44d7-a29b-9f905139b064",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "5247e3b1-8fd2-40b9-afd8-e3d8d5a58572-7"
+                "id": "4a02dc59-1e52-4f7c-9f62-eae0e21ab8f0-7"
               }
             ]
           },
-          "title": "SubTab1"
+          "title": "SubTab2"
         }
       ]
     },
@@ -53,6 +80,12 @@
           "title": "SubTab1",
           "group": "SubTab1####SubTab2",
           "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "SubTab2",
+          "group": "SubTab1####SubTab2",
+          "member": 1,
           "isFirstChoice": true
         }
       ]

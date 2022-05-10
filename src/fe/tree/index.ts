@@ -262,7 +262,9 @@ export class Treeifier<Content> {
               .filter(Boolean)
               .join(EOL),
             graph.optional,
-            !!graph.validate
+
+            // indicate this as having been validated?
+            graph.validate === true || (typeof graph.validate === "string" && this.status[graph.validate] === "success")
           ),
         },
       ]

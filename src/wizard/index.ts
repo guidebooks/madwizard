@@ -103,10 +103,14 @@ function wizardStepForPrereq<T, G extends Graph<T>>(
 /**
  * @return a `WizardStep` for a choice on the choice frontier
  */
-function wizardStepForChoiceOnFrontier(graph: Choice, isFirstChoice: boolean): WizardStepWithGraph<Choice, Tile[]> {
+function wizardStepForChoiceOnFrontier(
+  graph: Choice,
+  isFirstChoice: boolean,
+  options: Partial<Pick<Memos, "statusMemo">>
+): WizardStepWithGraph<Choice, Tile[]> {
   return {
     graph,
-    status: "blank",
+    status: (options.statusMemo && statusOf(graph, options.statusMemo)) || "blank",
     step: {
       name: graph.title,
       description: "This step requires you to choose how to proceed",
@@ -164,7 +168,7 @@ export async function wizardify<T>(graph: Graph<T>, options: Partial<Options> = 
         : prereqs.filter((_) => includeOptional || !isOptional(_)).map((_) => wizardStepForPrereq(_, options))),
       ...(!choice || (!includeOptional && isOptional(choice))
         ? []
-        : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice)]),
+        : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice, options)]),
     ])
 
     return wizard
