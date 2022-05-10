@@ -88,3 +88,21 @@ export function blocks<T extends Unordered | Ordered>(
     return []
   }
 }
+
+/**
+ * @return the top-level subgraphs of the given Graph. Do not
+ * recursively expand.
+ */
+export function partsOf<T extends Unordered | Ordered>(graph: Graph<T>) {
+  return isSequence(graph)
+    ? graph.sequence
+    : isParallel(graph)
+    ? graph.parallel
+    : isChoice(graph)
+    ? graph.choices.map((_) => _.graph)
+    : isTitledSteps(graph)
+    ? graph.steps.map((_) => _.graph)
+    : isSubTask(graph)
+    ? [graph.graph]
+    : [graph]
+}

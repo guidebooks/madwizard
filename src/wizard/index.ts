@@ -17,6 +17,7 @@
 import Debug from "debug"
 
 import { Barrier } from "../codeblock"
+import { Memos, statusOf } from "../memoization"
 
 import {
   Graph,
@@ -83,10 +84,13 @@ export function isTaskStep(step: WizardStepWithGraph): step is TaskStep {
  * @return a `WizardStep` for a non-choice prereq for a choice on the
  * choice frontier
  */
-function wizardStepForPrereq<T, G extends Graph<T>>(graph: G): WizardStepWithGraph<G, Markdown> {
+function wizardStepForPrereq<T, G extends Graph<T>>(
+  graph: G,
+  options: Partial<Pick<Memos, "statusMemo">>
+): WizardStepWithGraph<G, Markdown> {
   return {
     graph,
-    status: "blank",
+    status: (options.statusMemo && statusOf(graph, options.statusMemo)) || "blank",
     step: {
       name: extractTitle(graph),
       description: extractDescription(graph),
@@ -122,7 +126,7 @@ type Wizard = WizardStepWithGraph[]
 export { Wizard }
 
 /** Options to the graph->wizard transformer */
-type Options = {
+type Options = Partial<Pick<Memos, "statusMemo">> & {
   /** Include optional blocks in the wizard? */
   includeOptional: boolean
 
@@ -155,7 +159,9 @@ export async function wizardify<T>(graph: Graph<T>, options: Partial<Options> = 
     const { includeOptional } = options
 
     const wizard = frontier.flatMap(({ prereqs, choice }, idx) => [
-      ...(!prereqs ? [] : prereqs.filter((_) => includeOptional || !isOptional(_)).map((_) => wizardStepForPrereq(_))),
+      ...(!prereqs
+        ? []
+        : prereqs.filter((_) => includeOptional || !isOptional(_)).map((_) => wizardStepForPrereq(_, options))),
       ...(!choice || (!includeOptional && isOptional(choice))
         ? []
         : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice)]),

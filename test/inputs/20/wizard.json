@@ -1,0 +1,102 @@
+[
+  {
+    "graph": {
+      "key": "b.md",
+      "title": "b.md",
+      "filepath": "",
+      "graph": {
+        "key": "44a5512b-1c9f-4cbc-9cfd-e9d82dd8215b",
+        "sequence": [
+          {
+            "body": "echo BBB",
+            "language": "shell",
+            "id": "57f95e88-a93a-45af-a71f-beaf7a542fcc-2"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "b.md",
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "key": "a.md",
+      "title": "a.md",
+      "filepath": "",
+      "graph": {
+        "key": "1128660c-3d6b-4f0d-83db-497fed446e65",
+        "sequence": [
+          {
+            "body": "echo AAA",
+            "language": "shell",
+            "id": "57f95e88-a93a-45af-a71f-beaf7a542fcc-0"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "a.md",
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "group": "Tab1",
+      "title": "Conditional Inline of Imports",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "300ffc62-0d23-4a1a-abed-2c093ba9f96e",
+            "sequence": [
+              {
+                "body": "echo III",
+                "language": "shell",
+                "id": "57f95e88-a93a-45af-a71f-beaf7a542fcc-1"
+              },
+              {
+                "group": "ITab1",
+                "title": "Tab1",
+                "source": "placeholder",
+                "choices": [
+                  {
+                    "member": 0,
+                    "graph": {
+                      "key": "cc8740fb-7995-4588-88c1-cbe914766bb9",
+                      "sequence": [
+                        {
+                          "body": "echo III2",
+                          "language": "shell",
+                          "id": "57f95e88-a93a-45af-a71f-beaf7a542fcc-3"
+                        }
+                      ]
+                    },
+                    "title": "ITab1"
+                  }
+                ]
+              }
+            ]
+          },
+          "title": "Tab1"
+        }
+      ]
+    },
+    "step": {
+      "name": "Conditional Inline of Imports",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1",
+          "member": 0,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  }
+]

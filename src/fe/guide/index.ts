@@ -56,7 +56,7 @@ export class Guide {
    */
   private async questions(iter: number, previous?: Wizard) {
     const graph = await compile(this.blocks, this.choices, Object.assign({}, this.options, this.memos))
-    const wizard = await wizardify(graph, { validator: shellExec, previous })
+    const wizard = await wizardify(graph, { validator: shellExec, previous, statusMemo: this.memos.statusMemo })
 
     const firstChoiceIdx = wizard.findIndex((_) => isChoiceStep(_) && _.status !== "success")
     const preChoiceSteps = firstChoiceIdx < 0 ? [] : wizard.slice(0, firstChoiceIdx).filter(isTaskStep)
@@ -152,7 +152,13 @@ export class Guide {
                   if (!dryRun) {
                     subtask.commence()
                     await this.waitTillDone(taskIdx - 1)
-                    status = await shellExec(block.body)
+
+                    status =
+                      (this.memos.statusMemo && this.memos.statusMemo[block.body]) || (await shellExec(block.body))
+
+                    if (status == "success" && this.memos.statusMemo) {
+                      this.memos.statusMemo[block.body] = status
+                    }
                   }
                 } catch (err) {
                   status = "error"
