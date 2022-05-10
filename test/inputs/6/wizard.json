@@ -9,13 +9,13 @@
         {
           "member": 0,
           "graph": {
-            "key": "6b2196ca-3547-4b05-8dc5-d1edda89956d",
+            "key": "ac940e7f-aed9-4890-b29f-21e4a21e5b97",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "02ebe843-3914-44dc-98f6-012f0bdaaf7b-3"
+                "id": "113041f7-2143-494c-bfb5-029110a8b99c-3"
               }
             ]
           },
@@ -46,12 +46,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "50b0f786-d726-4856-9901-d8eefd2a168d",
+            "key": "8233de87-07d7-4e21-b184-6998413900be",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "02ebe843-3914-44dc-98f6-012f0bdaaf7b-5"
+                "id": "113041f7-2143-494c-bfb5-029110a8b99c-5"
               }
             ]
           },
@@ -84,12 +84,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "12560258-98b6-45e8-94fd-09d813a963f5",
+            "key": "87ed17c0-98b0-4cd1-9404-48a1880c600e",
             "sequence": [
               {
                 "body": "echo XXX",
                 "language": "bash",
-                "id": "02ebe843-3914-44dc-98f6-012f0bdaaf7b-10"
+                "id": "113041f7-2143-494c-bfb5-029110a8b99c-10"
               }
             ]
           },
