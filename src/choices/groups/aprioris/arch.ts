@@ -27,9 +27,12 @@ export class Arch {
   private readonly archs: Record<string, typeof process["arch"]> = {
     intel: "x64",
     x86: "x64",
+    "intel 64-bit": "x64",
+    "intel 64 bit": "x64",
 
     arm: "arm64",
     arm64: "arm64",
+    aarch64: "arm64",
     "apple silicon": "arm64",
     m1: "arm64",
     m2: "arm64",
