@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { StatusMap } from "../graph"
 import { ExpansionMap } from "../choices/groups/expansion"
+import { Graph, Status, StatusMap, isLeafNode, partsOf } from "../graph"
 
 /** Optimize certain expensive or non-idempotent operations */
 export interface Memos {
@@ -33,4 +33,16 @@ export class Memoizer implements Memos {
 
   /** the expanded choices for a given `ChoicePart`, keyed by it's `expansionExpr` property */
   public readonly expansionMemo: ExpansionMap = {}
+}
+
+/** Percolate up any memoized status */
+export function statusOf(graph: Graph, statusMemo: StatusMap): Status {
+  if (isLeafNode(graph)) {
+    return statusMemo[graph.body]
+  } else {
+    const parts = partsOf(graph)
+
+    const statuses = parts.map((_) => statusOf(_, statusMemo))
+    return statuses.every((_) => _ === "success") ? "success" : statuses.includes("error") ? "error" : "blank"
+  }
 }
