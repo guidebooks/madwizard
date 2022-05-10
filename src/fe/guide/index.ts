@@ -258,10 +258,12 @@ export class Guide {
     const dryRun = execution === "dryr"
 
     const taskPromise = taskRunner(
-      taskSteps.flatMap((_, idx, A) => [
-        this.listrTaskStep(_, stepIt ? idx * 2 + 1 : idx + 1, dryRun),
-        ...(stepIt && idx < A.length - 1 ? this.listrPauseStep(idx * 2 + 2) : []),
-      ]),
+      taskSteps
+        .filter((_) => _.status !== "success")
+        .flatMap((_, idx, A) => [
+          this.listrTaskStep(_, stepIt ? idx * 2 + 1 : idx + 1, dryRun),
+          ...(stepIt && idx < A.length - 1 ? this.listrPauseStep(idx * 2 + 2) : []),
+        ]),
       {
         /* options */
         quiet: !this.isGuided,

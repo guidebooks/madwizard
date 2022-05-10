@@ -91,31 +91,47 @@ export default async function collapseValidated<
   const recurse2 = <T extends Unordered | Ordered, G extends Graph<T>>({ graph }: { graph: G }) => recurse(graph)
 
   if (isSequence<T>(graph)) {
-    graph.sequence = await Promise.all(graph.sequence.map(recurse)).then((_) => _.filter(Boolean))
-    if (graph.sequence.length > 0) {
-      return graph
+    const sequence = await Promise.all(graph.sequence.map(recurse)).then((_) => _.filter(Boolean))
+    if (sequence.length > 0) {
+      return Object.assign({}, graph, { sequence })
     }
   } else if (isParallel<T>(graph)) {
-    graph.parallel = await Promise.all(graph.parallel.map(recurse)).then((_) => _.filter(Boolean))
-    if (graph.parallel.length > 0) {
-      return graph
+    const parallel = await Promise.all(graph.parallel.map(recurse)).then((_) => _.filter(Boolean))
+    if (parallel.length > 0) {
+      return Object.assign({}, graph, { parallel })
     }
   } else if (isChoice<T>(graph)) {
-    const parts = await Promise.all(graph.choices.map(recurse2)).then((_) => _.filter(Boolean))
-    if (graph.choices.length > 0) {
-      graph.choices.forEach((_, idx) => (_.graph = parts[idx]))
-      return graph
+    const parts = await Promise.all(graph.choices.map(recurse2))
+    if (parts.filter(Boolean).length > 0) {
+      return Object.assign({}, graph, {
+        choices: graph.choices
+          .map((_, idx) => {
+            if (parts[idx]) {
+              return Object.assign({}, _, { graph: parts[idx] })
+            }
+            return _
+          })
+          .filter(Boolean),
+      })
     }
   } else if (isTitledSteps<T>(graph)) {
-    const steps = await Promise.all(graph.steps.map(recurse2)).then((_) => _.filter(Boolean))
-    if (steps.length > 0) {
-      graph.steps.forEach((_, idx) => (_.graph = steps[idx]))
-      return graph
+    const steps = await Promise.all(graph.steps.map(recurse2))
+    if (steps.filter(Boolean).length > 0) {
+      return Object.assign({}, graph, {
+        steps: graph.steps
+          .map((_, idx) => {
+            if (steps[idx]) {
+              return Object.assign({}, _, { graph: steps[idx] })
+            }
+            return _
+          })
+          .filter(Boolean),
+      })
     }
   } else if (isSubTask<T>(graph)) {
-    graph.graph = await recurse(graph.graph)
-    if (graph.graph) {
-      return graph
+    const subgraph = await recurse(graph.graph)
+    if (subgraph) {
+      return Object.assign({}, graph, { graph: subgraph })
     }
   } else {
     return graph

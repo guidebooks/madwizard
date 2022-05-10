@@ -8,12 +8,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "d9db5077-6c04-458f-a61c-cfa92982cca3",
+            "key": "c1b5b115-8cdd-42ed-a706-0d5b17b0179e",
             "sequence": [
               {
                 "body": "echo \"3\"",
                 "language": "shell",
-                "id": "399ecf95-ab4d-4d31-a20c-399a03c511e3-0"
+                "id": "98131c9f-331c-4f65-b8e1-59c84e698837-0"
               }
             ]
           },
@@ -23,12 +23,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "d9db5077-6c04-458f-a61c-cfa92982cca3",
+            "key": "c1b5b115-8cdd-42ed-a706-0d5b17b0179e",
             "sequence": [
               {
                 "body": "echo \"4\"",
                 "language": "shell",
-                "id": "399ecf95-ab4d-4d31-a20c-399a03c511e3-0"
+                "id": "98131c9f-331c-4f65-b8e1-59c84e698837-0"
               }
             ]
           },
@@ -38,12 +38,12 @@
         {
           "member": 2,
           "graph": {
-            "key": "d9db5077-6c04-458f-a61c-cfa92982cca3",
+            "key": "c1b5b115-8cdd-42ed-a706-0d5b17b0179e",
             "sequence": [
               {
                 "body": "echo \"5\"",
                 "language": "shell",
-                "id": "399ecf95-ab4d-4d31-a20c-399a03c511e3-0"
+                "id": "98131c9f-331c-4f65-b8e1-59c84e698837-0"
               }
             ]
           },

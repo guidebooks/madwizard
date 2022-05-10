@@ -8,12 +8,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "1761a846-ab80-477b-8197-81902ef1d2f6",
+            "key": "89f74310-5530-46cf-b354-3511a3926709",
             "sequence": [
               {
                 "body": "echo \"3\"",
                 "language": "shell",
-                "id": "6d2254bd-35ba-4b23-b188-9a2d7b2e699a-0"
+                "id": "1daaaf36-e244-4351-aef8-a45615f339c6-0"
               }
             ]
           },
@@ -23,12 +23,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "1761a846-ab80-477b-8197-81902ef1d2f6",
+            "key": "89f74310-5530-46cf-b354-3511a3926709",
             "sequence": [
               {
                 "body": "echo \"4\"",
                 "language": "shell",
-                "id": "6d2254bd-35ba-4b23-b188-9a2d7b2e699a-0"
+                "id": "1daaaf36-e244-4351-aef8-a45615f339c6-0"
               }
             ]
           },
@@ -38,12 +38,12 @@
         {
           "member": 2,
           "graph": {
-            "key": "1761a846-ab80-477b-8197-81902ef1d2f6",
+            "key": "89f74310-5530-46cf-b354-3511a3926709",
             "sequence": [
               {
                 "body": "echo \"5\"",
                 "language": "shell",
-                "id": "6d2254bd-35ba-4b23-b188-9a2d7b2e699a-0"
+                "id": "1daaaf36-e244-4351-aef8-a45615f339c6-0"
               }
             ]
           },

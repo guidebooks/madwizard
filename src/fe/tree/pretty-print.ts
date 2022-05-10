@@ -17,6 +17,7 @@
 import { EOL } from "os"
 import chalk from "chalk"
 
+import { Memoizer } from "../../memoization"
 import { ChoiceState } from "../../choices"
 import { compile, order } from "../../graph"
 import { CodeBlockProps } from "../../codeblock"
@@ -106,9 +107,10 @@ export async function prettyPrintUITreeFromBlocks(
   choices: ChoiceState,
   options: PrettyPrintOptions & MadWizardOptions & { root?: string } = {}
 ) {
-  const graph = await compile(blocks, choices, options)
+  const memos = new Memoizer()
+  const graph = await compile(blocks, choices, Object.assign({}, memos, options))
 
-  const treeifier = new Treeifier(new AnsiUI())
+  const treeifier = new Treeifier(new AnsiUI(), memos.statusMemo)
   const tree = treeifier.toTree(order(graph))
 
   if (options.skipFirstTitle) {
