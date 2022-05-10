@@ -45,8 +45,8 @@ async function shellItOut(cmdline: string | boolean, opts: ExecOptions = { quiet
             HOMEBREW_NO_INSTALL_UPGRADE: "1",
             HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1",
           },
-          opts.env || {},
-          process.env
+          process.env,
+          opts.env || {}
         ),
         stdio: opts.quiet
           ? ["inherit", "ignore", "pipe"]
@@ -89,7 +89,7 @@ function execAsExport(cmdline: string | boolean, opts: ExecOptions) {
     const match = cmdline.match(/^\s*export\s+(.+)=(.+)$/)
     if (match) {
       const [, key, value] = match
-      const valueForUpdate = value.replace(/\${?([^:]+)}?/g, (_, p1) => opts.env[p1])
+      const valueForUpdate = value.replace(/\${?([^:]+)}?/g, (_, p1) => opts.env[p1] || process.env[p1])
       opts.env[key] = valueForUpdate
       return "success" as const
     }
