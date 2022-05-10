@@ -87,11 +87,11 @@ export async function cli<Writer extends (msg: string) => boolean>(
         break
 
       case "debug:graph":
-      case "debug:groups":
       case "debug:topmatter":
         // these tasks depend only on `parse` having been called
         break
 
+      case "debug:groups":
       case "debug:timing":
       case "debug:fetch": {
         // print out timing

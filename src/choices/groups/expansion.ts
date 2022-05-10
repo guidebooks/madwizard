@@ -18,6 +18,7 @@ import chalk from "chalk"
 import { v4 } from "uuid"
 import { oraPromise } from "../../util/ora-delayed-promise"
 
+import { Debug } from "./debug"
 import { Memos } from "../../memoization"
 import {
   Graph,
@@ -110,7 +111,7 @@ async function doExpand(expansionExpr: string): Promise<string[]> {
  * updating content such as descriptions and code bodies (via
  * `updateContent`) as we go.
  */
-async function visit(graph: Graph, options: Partial<Memos>) {
+async function visit(graph: Graph, options: Partial<Memos> & { debug: ReturnType<typeof Debug> }) {
   const recurse = (graph: Graph) => visit(graph, options)
 
   if (isSequence(graph)) {
@@ -128,6 +129,7 @@ async function visit(graph: Graph, options: Partial<Memos>) {
             } else {
               const response =
                 (options.expansionMemo && options.expansionMemo[expansionExpr]) || (await doExpand(expansionExpr))
+              options.debug(expansionExpr, response)
 
               if (response.length > 0) {
                 // memoize the expansion
@@ -165,6 +167,7 @@ async function visit(graph: Graph, options: Partial<Memos>) {
  * `updateContent`) as we go.
  */
 export async function expand(graph: Graph, options: Partial<Memos> = {}) {
-  await visit(graph, options)
+  const debug = Debug("expansion")
+  await visit(graph, Object.assign({ debug }, options))
   return graph
 }
