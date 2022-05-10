@@ -1,5 +1,6 @@
 Exports
 ├── Export an env var
-│   └── export FOO=3
+│   ├── export FOO=3
+│   └── export FOO=2:$FOO
 └── Then use it
-    └── echo "This should be 3: $FOO"
+    └── echo "This should be 2:3 --> $FOO"

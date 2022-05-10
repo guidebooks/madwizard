@@ -1,5 +1,0 @@
-Exports
-├── Export an env var
-│   └── export FOO=3
-└── Then use it
-    └── echo "This should be 3: $FOO"

@@ -6,8 +6,12 @@
 export FOO=3
 ```
 
+```shell
+export FOO=2:$FOO
+```
+
 ## Then use it
 
 ```shell
-echo "This should be 3: $FOO"
+echo "This should be 2:3 --> $FOO"
 ```
