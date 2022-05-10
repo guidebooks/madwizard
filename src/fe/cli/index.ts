@@ -75,83 +75,79 @@ export async function cli<Writer extends (msg: string) => boolean>(
     return usage(argv, `Invalid task: ${task}`)
   }
 
-  try {
-    if (isDebugTask(task)) {
-      enableTracing(task)
+  if (isDebugTask(task)) {
+    enableTracing(task)
+  }
+
+  const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)
+
+  switch (task) {
+    case "version":
+      break
+
+    case "debug:graph":
+    case "debug:topmatter":
+      // these tasks depend only on `parse` having been called
+      break
+
+    case "debug:groups":
+    case "debug:timing":
+    case "debug:fetch": {
+      // print out timing
+      const graph = await compile(blocks, choices, options)
+      wizardify(graph)
+
+      await import("../tree").then((_) => new _.Treeifier(new _.DevNullUI()).toTree(order(graph)))
+      break
     }
 
-    const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)
+    case "plan":
+      await import("../tree").then((_) =>
+        _.prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
+      )
+      break
 
-    switch (task) {
-      case "version":
-        break
+    case "vetoes":
+      write(await vetoesToString(blocks, choices, options))
+      break
 
-      case "debug:graph":
-      case "debug:topmatter":
-        // these tasks depend only on `parse` having been called
-        break
-
-      case "debug:groups":
-      case "debug:timing":
-      case "debug:fetch": {
-        // print out timing
-        const graph = await compile(blocks, choices, options)
-        wizardify(graph)
-
-        await import("../tree").then((_) => new _.Treeifier(new _.DevNullUI()).toTree(order(graph)))
-        break
-      }
-
-      case "plan":
-        await import("../tree").then((_) =>
-          _.prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
-        )
-        break
-
-      case "vetoes":
-        write(await vetoesToString(blocks, choices, options))
-        break
-
-      case "json": {
-        const graph = await compile(blocks, choices, options)
-        const wizard = await wizardify(graph)
-        ;(write || process.stdout.write.bind(process.stdout))(
-          JSON.stringify(
-            wizard,
-            (key, value) => {
-              if (key === "source" || key === "position") {
-                return "placeholder"
-              } else if (key === "description" && !value) {
-                return undefined
-              } else if (key === "nesting" && Array.isArray(value)) {
-                return undefined
-              } else if (key === "barrier" && value === false) {
-                return undefined
-              } else if (key === "status" && value === "blank") {
-                return undefined
-              } else {
-                return value
-              }
-            },
-            2
-          ) + EOL
-        )
-        break
-      }
-
-      case "guide": {
-        const Guide = await import("../guide").then((_) => _.Guide)
-        await new Guide(blocks, choices, options).run()
-        break
-      }
-
-      default:
-        // if our switch isn't exhaustive, you will see this typescript error:
-        // Argument of type 'string' is not assignable to parameter of type 'never'.
-        assertExhaustive(task)
+    case "json": {
+      const graph = await compile(blocks, choices, options)
+      const wizard = await wizardify(graph)
+      ;(write || process.stdout.write.bind(process.stdout))(
+        JSON.stringify(
+          wizard,
+          (key, value) => {
+            if (key === "source" || key === "position") {
+              return "placeholder"
+            } else if (key === "description" && !value) {
+              return undefined
+            } else if (key === "nesting" && Array.isArray(value)) {
+              return undefined
+            } else if (key === "barrier" && value === false) {
+              return undefined
+            } else if (key === "status" && value === "blank") {
+              return undefined
+            } else {
+              return value
+            }
+          },
+          2
+        ) + EOL
+      )
+      break
     }
-  } catch (err) {
-    console.log(err.message)
-    process.exit(1)
+
+    case "run":
+    case "guide": {
+      const Guide = await import("../guide").then((_) => _.Guide)
+      await new Guide(task, blocks, choices, options).run()
+      break
+    }
+
+    default:
+      // if our switch isn't exhaustive, you will see this typescript error:
+      // Argument of type 'string' is not assignable to parameter of type 'never'.
+      assertExhaustive(task)
   }
 }

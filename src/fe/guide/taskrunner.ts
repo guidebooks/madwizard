@@ -38,6 +38,9 @@ export interface Task {
 }
 
 export interface TaskRunnerOptions {
+  /** Only emit executions, no window dressings */
+  quiet?: boolean
+
   /** TODO Not yet supported */
   concurrent?: boolean
 }
@@ -106,23 +109,27 @@ class TaskWrapperImpl implements TaskWrapper {
 
 export async function taskRunner(tasks: Task[], options: TaskRunnerOptions = {}, stream = process.stdout, depth = 0) {
   await promiseEach(tasks, async ({ title, task, spinner }, idx) => {
-    if (idx > 0) {
+    if (idx > 0 && !options.quiet) {
       stream.write(EOL)
     }
 
-    if (!spinner) {
+    if (!spinner && title) {
       stream.write(elide(title))
     }
 
     if (Array.isArray(task)) {
       // subtasks
-      stream.write(EOL)
+      if (!options.quiet) {
+        stream.write(EOL)
+      }
       await taskRunner(task, options, stream, depth + 1)
     } else {
       const wrapper = new TaskWrapperImpl(title, stream, spinner ? ora(title).start() : undefined)
       const response = await task(wrapper)
       if (Array.isArray(response)) {
-        stream.write(EOL)
+        if (!options.quiet) {
+          stream.write(EOL)
+        }
         await taskRunner(response, options, stream, depth + 1)
       }
     }

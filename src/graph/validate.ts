@@ -16,10 +16,11 @@
 
 import { spawn } from "child_process"
 
+import { Memos } from "../memoization"
 import { Validatable } from "../codeblock/CodeBlockProps"
 import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask, isValidatable } from "."
 
-export type ExecOptions = {
+export type ExecOptions = Partial<Pick<Memos, "env">> & {
   /** Do not emit to console */
   quiet?: boolean
 
@@ -29,7 +30,8 @@ export type ExecOptions = {
 
 export type ValidationExecutor = (cmdline: string, opts?: ExecOptions) => "success" | Promise<"success">
 
-export async function shellExec(cmdline: string | boolean, opts: ExecOptions = { quiet: false }): Promise<"success"> {
+/** Shell out the execution of the given `cmdline` */
+async function shellItOut(cmdline: string | boolean, opts: ExecOptions = { quiet: false }): Promise<"success"> {
   const capture = typeof opts.capture === "string"
 
   return new Promise((resolve, reject) => {
@@ -43,6 +45,7 @@ export async function shellExec(cmdline: string | boolean, opts: ExecOptions = {
             HOMEBREW_NO_INSTALL_UPGRADE: "1",
             HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1",
           },
+          opts.env || {},
           process.env
         ),
         stdio: opts.quiet
@@ -78,6 +81,23 @@ export async function shellExec(cmdline: string | boolean, opts: ExecOptions = {
       child.stdout.on("data", (data) => (out += data.toString()))
     }
   })
+}
+
+/** See if we are being asked to execute `export FOO=bar` */
+function execAsExport(cmdline: string | boolean, opts: ExecOptions) {
+  if (opts.env && typeof cmdline === "string") {
+    const match = cmdline.match(/^\s*export\s+(.+)=(.+)$/)
+    if (match) {
+      const [, key, value] = match
+      opts.env[key] = value
+      return "success" as const
+    }
+  }
+}
+
+/** Shell out the execution of the given `cmdline` */
+export async function shellExec(cmdline: string | boolean, opts: ExecOptions = { quiet: false }): Promise<"success"> {
+  return execAsExport(cmdline, opts) || shellItOut(cmdline, opts)
 }
 
 /** Succeed only if all paths succeed, fail if any path fails */

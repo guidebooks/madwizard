@@ -28,11 +28,11 @@ export function isDebugTask(task: Task): task is DebugTask {
 }
 
 /** The type definining the valid Tasks to run via the CLI client */
-export type Task = "plan" | "json" | "guide" | "version" | "vetoes" | DebugTask
+export type Task = "plan" | "guide" | "run" | "json" | "version" | "vetoes" | DebugTask
 
 /** @return the list of valid Tasks to run via the CLI client */
 export function validTasks(): Task[] {
-  const normalTasks: Task[] = ["plan", "json", "guide", "version", "vetoes"]
+  const normalTasks: Task[] = ["plan", "guide", "run", "json", "version", "vetoes"]
   return normalTasks.concat(validDebugTasks())
 }
 

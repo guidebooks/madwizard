@@ -9,4 +9,9 @@
 
 const isNpx = process.env.npm_command === "exec"
 
-import(isNpx ? "madwizard" : "..").then((_) => _.cli(process.argv.slice(1)))
+import(isNpx ? "madwizard" : "..")
+  .then((_) => _.cli(process.argv.slice(1)))
+  .catch((err) => {
+    console.log(err.message)
+    process.exit(1)
+  })

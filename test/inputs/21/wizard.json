@@ -1,0 +1,46 @@
+[
+  {
+    "graph": {
+      "key": "Export an env var",
+      "title": "Export an env var",
+      "filepath": "",
+      "graph": {
+        "key": "e5123353-bbdc-48c7-a22f-8af8805f65fc",
+        "sequence": [
+          {
+            "body": "export FOO=3",
+            "language": "shell",
+            "id": "ebf520a5-ff6c-4a40-be59-93b84d1efbe7-0"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Export an env var",
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "key": "Then use it",
+      "title": "Then use it",
+      "filepath": "",
+      "graph": {
+        "key": "14a53f53-9bac-44a4-8db0-45e433165953",
+        "sequence": [
+          {
+            "body": "echo \"This should be 3: $FOO\"",
+            "language": "shell",
+            "id": "ebf520a5-ff6c-4a40-be59-93b84d1efbe7-1"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Then use it",
+      "content": ""
+    }
+  }
+]

@@ -38,6 +38,7 @@ export class Guide {
   private readonly debug = Debug("madwizard/fe/guide")
 
   public constructor(
+    private readonly task: "guide" | "run",
     private readonly blocks: CodeBlockProps[],
     private readonly choices: ChoiceState,
     private readonly options: MadWizardOptions,
@@ -45,6 +46,10 @@ export class Guide {
     private readonly prompt = inquirer.createPromptModule(),
     private readonly ui: UI<string> = new AnsiUI()
   ) {}
+
+  private get isGuided() {
+    return this.task === "guide"
+  }
 
   private format(str: string, indentation = "  ") {
     return indent(this.ui.markdown(str.trim()), indentation)
@@ -118,7 +123,9 @@ export class Guide {
     }
 
     return {
-      title: (dryRun ? chalk.yellow(mainSymbols.questionMarkPrefix) : chalk.green(mainSymbols.play)) + " " + step.name,
+      title: !this.isGuided
+        ? ""
+        : (dryRun ? chalk.yellow(mainSymbols.questionMarkPrefix) : chalk.green(mainSymbols.play)) + " " + step.name,
       task: () =>
         subtasks.map(
           (block): Task => ({
@@ -154,7 +161,8 @@ export class Guide {
                     await this.waitTillDone(taskIdx - 1)
 
                     status =
-                      (this.memos.statusMemo && this.memos.statusMemo[block.body]) || (await shellExec(block.body))
+                      (this.memos.statusMemo && this.memos.statusMemo[block.body]) ||
+                      (await shellExec(block.body, this.memos))
 
                     if (status == "success" && this.memos.statusMemo) {
                       this.memos.statusMemo[block.body] = status
@@ -256,6 +264,7 @@ export class Guide {
       ]),
       {
         /* options */
+        quiet: !this.isGuided,
         concurrent: dryRun,
       }
     )
@@ -288,12 +297,14 @@ export class Guide {
     const { graph, choices, preChoiceTasks, postChoiceTasks, questions, wizard } = qs
 
     if (iter === 0) {
-      if (questions.length > 0) {
+      if (questions.length > 0 && this.isGuided) {
         // start a fresh screen before presenting the first question
         console.clear()
       }
 
-      this.presentGuidebookTitle(graph)
+      if (this.isGuided) {
+        this.presentGuidebookTitle(graph)
+      }
     }
 
     if (questions.length === 0) {
@@ -301,6 +312,13 @@ export class Guide {
     } else if (preChoiceTasks.length > 0) {
       await this.runTasks(preChoiceTasks)
       return this.resolveChoices(iter + 1, wizard)
+    } else if (!this.isGuided) {
+      // we have unresolved questions, but were asked to run a non-guided execution :(
+      throw new Error(
+        `Unable to run this guidebook, due to ${questions.length} unresolved question${
+          questions.length === 1 ? "" : "s"
+        }`
+      )
     } else {
       // note that we ask one question at a time, because the answer
       // to the first question may influence what question we ask next
@@ -315,7 +333,7 @@ export class Guide {
       // await this.showPlan(true, true)
       const tasksWereRun = await this.runTasks(tasks)
 
-      if (tasksWereRun) {
+      if (tasksWereRun && this.isGuided) {
         if (this.allDoneSuccessfully()) {
           console.log(chalk.green(mainSymbols.tick) + " Guidebook successful")
         } else {
