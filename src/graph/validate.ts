@@ -89,7 +89,8 @@ function execAsExport(cmdline: string | boolean, opts: ExecOptions) {
     const match = cmdline.match(/^\s*export\s+(.+)=(.+)$/)
     if (match) {
       const [, key, value] = match
-      opts.env[key] = value
+      const valueForUpdate = value.replace(/\${?([^:]+)}?/g, (_, p1) => opts.env[p1])
+      opts.env[key] = valueForUpdate
       return "success" as const
     }
   }
