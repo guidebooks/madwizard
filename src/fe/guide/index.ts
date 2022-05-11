@@ -161,7 +161,7 @@ export class Guide {
                     await this.waitTillDone(taskIdx - 1)
 
                     status =
-                      (this.memos.statusMemo && this.memos.statusMemo[block.body]) ||
+                      (this.memos.statusMemo && this.memos.statusMemo[block.body] === "success" && "success") ||
                       (await shellExec(block.body, this.memos, block.language))
 
                     if (status == "success" && this.memos.statusMemo) {
