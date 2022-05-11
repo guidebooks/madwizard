@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { SupportedLanguage } from "./language"
+
 export interface Validatable {
   /**
    * If given, this command line will be executed. If it exits with
@@ -128,7 +130,7 @@ export function isWizardStep(part: CodeBlockNestingParent): part is WizardStep {
 export type CodeBlockProps = Partial<Validatable> & {
   id: string
   body: string
-  language: string
+  language: SupportedLanguage
   optional?: boolean
   nesting?: CodeBlockNestingParent[]
 }

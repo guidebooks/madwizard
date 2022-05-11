@@ -16,6 +16,7 @@
 
 import Debug from "debug"
 
+import { isExecutable } from "../../../codeblock"
 import { START_OF_TIP, END_OF_TIP } from "../rehype-tip"
 import { START_OF_TAB, END_OF_TAB, PUSH_TABS } from "."
 
@@ -141,7 +142,7 @@ export default function hackIndentation(source: string): string {
       } else if (/^\s*```/.test(line)) {
         const possibleEndOfTab = !inTab || inTab.test(line) ? "" : pop(line)
 
-        if (/(bash|sh|shell)/.test(line)) {
+        if (isExecutable(line)) {
           blockquoteOrCodeBlockIndent = line.search(/\S/)
           inCodeBlock = true
         } else if (inCodeBlock) {

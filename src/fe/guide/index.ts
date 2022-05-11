@@ -162,7 +162,7 @@ export class Guide {
 
                     status =
                       (this.memos.statusMemo && this.memos.statusMemo[block.body]) ||
-                      (await shellExec(block.body, this.memos))
+                      (await shellExec(block.body, this.memos, block.language))
 
                     if (status == "success" && this.memos.statusMemo) {
                       this.memos.statusMemo[block.body] = status

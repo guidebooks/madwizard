@@ -14,5 +14,6 @@
  * limitations under the License.
  */
 
+export * from "./language"
 export * from "./isCodeBlock"
 export * from "./CodeBlockProps"
