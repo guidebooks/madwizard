@@ -12,6 +12,7 @@ interactive wizard (the `guide` command).
 
 <a target="_blank" href="https://asciinema.org/a/hHi083kqwjPoB5nP8Lar1Sw24"><img height="450" alt="ibm/cloud/ce/job/run" title="ibm/cloud/ce/job/run" src="https://asciinema.org/a/hHi083kqwjPoB5nP8Lar1Sw24.svg"></a>
 <a target="_blank" href="https://asciinema.org/a/JmEgEQEvdMvCDmiNFEUD8qGAa"><img height="450" alt="knative/provision/quickstart" title="knative/provision/quickstart" src="https://asciinema.org/a/JmEgEQEvdMvCDmiNFEUD8qGAa.svg"></a>
+<a target="_blank" href="https://asciinema.org/a/HPdX1VMkIPXhhVrlLRBblOSTs"><img height="450" alt="knative/provision/quickstart" title="knative/provision/quickstart" src="https://asciinema.org/a/HPdX1VMkIPXhhVrlLRBblOSTs.svg"></a>
 
 ## Installation
 
