@@ -17,7 +17,7 @@
 import { spawn } from "child_process"
 
 import { Memos } from "../memoization"
-import { Validatable } from "../codeblock/CodeBlockProps"
+import { SupportedLanguage, Validatable, isPythonic, isShellish } from "../codeblock"
 import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask, isValidatable } from "."
 
 /** Environment variable state that might be mutated by the guidebook itself */
@@ -100,8 +100,24 @@ function execAsExport(cmdline: string | boolean, opts: ExecOptions) {
 }
 
 /** Shell out the execution of the given `cmdline` */
-export async function shellExec(cmdline: string | boolean, opts: ExecOptions = { quiet: false }): Promise<"success"> {
-  return execAsExport(cmdline, opts) || shellItOut(cmdline, opts)
+export async function shellExec(
+  cmdline: string | boolean,
+  opts: ExecOptions = { quiet: false },
+  language: SupportedLanguage = "shell"
+): Promise<"success"> {
+  if (isShellish(language)) {
+    return execAsExport(cmdline, opts) || shellItOut(cmdline, opts)
+  } else if (isPythonic(language)) {
+    return shellItOut(
+      `python3 <(cat <<EOF
+${cmdline}
+EOF
+)`,
+      opts
+    )
+  } else {
+    throw new Error("Unable to execute body in unsupported language: " + language)
+  }
 }
 
 /** Succeed only if all paths succeed, fail if any path fails */

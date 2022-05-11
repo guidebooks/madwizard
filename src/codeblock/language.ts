@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-import { Element } from "hast"
-import { SupportedLanguage } from "./language"
+type Shell = "shell" | "bash" | "sh"
+type Python = "py" | "python"
 
-export function isExecutable(language: string): language is SupportedLanguage {
-  return /bash|sh|shell|py|python/.test(language)
+/** Language we are being asked to execute */
+export type SupportedLanguage = Shell | Python
+
+export function isShellish(language: string): language is SupportedLanguage {
+  return /^bash|sh|shell$/.test(language)
 }
 
-export function isExecutableCodeBlock(node: Element) {
-  if (node.tagName === "code") {
-    // react-markdown v6+ places the language in the className
-    const match = node.properties.className ? /language-(\w+)/.exec(node.properties.className.toString()) : ""
-    const language = match ? match[1] : undefined
-
-    return isExecutable(language)
-  } else {
-    return false
-  }
+export function isPythonic(language: SupportedLanguage) {
+  return /py|python/.test(language)
 }
