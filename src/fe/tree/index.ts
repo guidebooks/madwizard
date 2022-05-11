@@ -258,7 +258,7 @@ export class Treeifier<Content> {
           name: this.ui.code(
             graph.body
               .split(/\n/)
-              .map((_) => _.replace(/#.*/, "").trim()) // remove comments
+              .map((_) => _.replace(/#.*/, "")) // remove comments
               .filter(Boolean)
               .join(EOL),
             graph.optional,
