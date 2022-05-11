@@ -3,14 +3,15 @@
     "graph": {
       "key": "Export an env var",
       "title": "Export an env var",
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "ba4ea5ec-6945-4554-ad78-cb79fbdb4ace",
+        "key": "9d893cd4-752b-4fd3-bb8b-ff62c12e8807",
         "sequence": [
           {
             "body": "export FOO=3",
             "language": "shell",
-            "id": "1e230bf7-11ba-4486-bfd7-3c59724abc28-0"
+            "id": "9fe8ad4b-ef8a-43c2-bf58-6bce9d93f1c8-0"
           }
         ]
       },
@@ -18,6 +19,7 @@
     },
     "step": {
       "name": "Export an env var",
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "content": ""
     }
   },
@@ -25,14 +27,15 @@
     "graph": {
       "key": "Export an env var",
       "title": "Export an env var",
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "fa25a92c-5729-4c00-a40f-aee29bd805d9",
+        "key": "0d689580-249f-44f6-8451-0f65951fc3ed",
         "sequence": [
           {
             "body": "export FOO=2:$FOO",
             "language": "shell",
-            "id": "1e230bf7-11ba-4486-bfd7-3c59724abc28-1"
+            "id": "9fe8ad4b-ef8a-43c2-bf58-6bce9d93f1c8-1"
           }
         ]
       },
@@ -40,6 +43,7 @@
     },
     "step": {
       "name": "Export an env var",
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "content": ""
     }
   },
@@ -47,14 +51,15 @@
     "graph": {
       "key": "Then use it",
       "title": "Then use it",
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "2669c41d-8be3-43c4-85ae-186145b752a0",
+        "key": "07e4db75-329e-49b8-82b0-e7c66798ce85",
         "sequence": [
           {
             "body": "echo \"This should be 2:3 --> $FOO\"",
             "language": "shell",
-            "id": "1e230bf7-11ba-4486-bfd7-3c59724abc28-2"
+            "id": "9fe8ad4b-ef8a-43c2-bf58-6bce9d93f1c8-2"
           }
         ]
       },
@@ -62,6 +67,32 @@
     },
     "step": {
       "name": "Then use it",
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "key": "Propagation check",
+      "title": "Propagation check",
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
+      "filepath": "",
+      "graph": {
+        "key": "447c9c16-d00a-4f00-93d2-acfb74b5900f",
+        "sequence": [
+          {
+            "body": "echo \"Bug if we get here\"",
+            "language": "shell",
+            "validate": "[ \"$FOO\" = \"2:3\" ]",
+            "id": "9fe8ad4b-ef8a-43c2-bf58-6bce9d93f1c8-3"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Propagation check",
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "content": ""
     }
   }
