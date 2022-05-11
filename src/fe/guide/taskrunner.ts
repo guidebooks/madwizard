@@ -19,8 +19,6 @@ import ora, { Ora } from "ora"
 import { mainSymbols } from "figures"
 import chalk, { ChalkInstance } from "chalk"
 
-import { elide } from "../tree"
-
 /** The API passed to the client, to give it some control points */
 interface TaskWrapper {
   skip(parentheticalMsg?: string, fullMsg?: string): void
@@ -114,7 +112,7 @@ export async function taskRunner(tasks: Task[], options: TaskRunnerOptions = {},
     }
 
     if (!spinner && title) {
-      stream.write(elide(title))
+      stream.write(title)
     }
 
     if (Array.isArray(task)) {
