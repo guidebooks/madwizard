@@ -51,8 +51,8 @@ export function statusOf(graph: Graph, statusMemo: StatusMap): Status {
     )
   } else {
     const parts = partsOf(graph)
+    const statuses = parts.flatMap((_) => statusOf(_, statusMemo))
 
-    const statuses = parts.map((_) => statusOf(_, statusMemo))
     if (isChoice(graph)) {
       // is exactly one branch a success? then we can elect it, otherwise, be conservative
       return statuses.filter((_) => _ === "success").length === 1 ? "success" : "blank"

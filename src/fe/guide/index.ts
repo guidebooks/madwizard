@@ -28,8 +28,8 @@ import { taskRunner, Task } from "./taskrunner"
 import { MadWizardOptions } from "../../"
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
-import { Memos, Memoizer } from "../../memoization"
 import indent from "../../parser/markdown/util/indent"
+import { Memos, Memoizer, statusOf } from "../../memoization"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"
 import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isTaskStep, wizardify } from "../../wizard"
 import { Graph, Status, blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
@@ -134,12 +134,12 @@ export class Guide {
               : chalk.magenta(block.body),
             spinner: !!block.validate,
             task: async (subtask) => {
-              let status: Status = "blank"
+              let status: Status = statusOf(block, this.memos.statusMemo)
 
               try {
-                if (block.validate) {
+                if (status !== "success" && block.validate) {
                   try {
-                    status = await validate(block, { throwErrors: dryRun })
+                    status = await validate(block, Object.assign({}, this.memos, { throwErrors: dryRun }))
                     if (status === "success") {
                       subtask.skip(dryRun ? "READY" : undefined)
                       return

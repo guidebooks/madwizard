@@ -20,7 +20,10 @@ import { Memos } from "../memoization"
 import { Validatable } from "../codeblock/CodeBlockProps"
 import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask, isValidatable } from "."
 
-export type ExecOptions = Partial<Pick<Memos, "env">> & {
+/** Environment variable state that might be mutated by the guidebook itself */
+type Env = Pick<Memos, "env">
+
+export type ExecOptions = Partial<Env> & {
   /** Do not emit to console */
   quiet?: boolean
 
@@ -140,7 +143,7 @@ export type ValidateOptions = { validator?: ValidationExecutor; throwErrors?: bo
 /** This does an actual validation check */
 export async function doValidate(
   validate: Validatable["validate"],
-  opts: Pick<ValidateOptions, "validator" | "throwErrors">
+  opts: Pick<ValidateOptions, "validator" | "throwErrors"> & Partial<Env>
 ): Promise<Status> {
   if (validate === true) {
     return "success"
@@ -149,7 +152,7 @@ export async function doValidate(
   }
 
   try {
-    await (opts.validator || shellExec)(validate, { quiet: true })
+    await (opts.validator || shellExec)(validate, { quiet: true, env: opts.env })
     return "success"
   } catch (err) {
     if (opts.throwErrors) {
