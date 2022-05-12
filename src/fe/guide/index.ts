@@ -337,7 +337,7 @@ export class Guide {
 
       if (tasksWereRun && this.isGuided) {
         if (this.allDoneSuccessfully()) {
-          console.log(chalk.green(mainSymbols.tick) + " Guidebook successful")
+          console.log("✨ Guidebook successful")
         } else {
           console.log(chalk.red("Guidebook incomplete"))
         }
