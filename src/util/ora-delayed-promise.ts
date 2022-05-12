@@ -17,17 +17,19 @@
 import { oraPromise as theRealOraPromise, PromiseOptions } from "ora"
 
 /** Fire of an `oraPromise` with a delay */
-export function oraPromise<T>(action: PromiseLike<T>, options?: string | PromiseOptions<T>, delayMs = 500): Promise<T> {
+export function oraPromise<T>(action: Promise<T>, options?: string | PromiseOptions<T>, delayMs = 500): Promise<T> {
   let isResolved = false
-  action.then(() => (isResolved = true))
+  action.then(() => (isResolved = true)).catch(() => (isResolved = true))
 
   if (!isResolved) {
     setTimeout(() => {
       if (!isResolved) {
-        theRealOraPromise(action, options)
+        theRealOraPromise(action, options).catch(() => {
+          /* the caller will be alerted by our `return action` */
+        })
       }
     }, delayMs)
   }
 
-  return Promise.resolve(action)
+  return action
 }

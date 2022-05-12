@@ -62,6 +62,7 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
 
     // otherwise, scan the subgraphs across the choices
     const subchoices = graph.choices
+      .filter(Boolean)
       .map((_) => {
         const subgraph = collapse(_.graph, choices)
         if (subgraph) {
