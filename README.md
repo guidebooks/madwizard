@@ -10,10 +10,13 @@ interactive wizard (the `guide` command).
 
 ## Gallery
 
+You may find the source for these [here](https://github.com/guidebooks/store/tree/main/guidebooks).
+
 <a target="_blank" href="https://asciinema.org/a/0jFdCBTs76MVzHXZ94FFHg2aR"><img width="410" alt="ibm/cloud/ce/job/run" title="ibm/cloud/ce/job/run" src="https://asciinema.org/a/0jFdCBTs76MVzHXZ94FFHg2aR.svg"></a>
 <a target="_blank" href="https://asciinema.org/a/KXm9iScAAwEzDi6WIxSMbxhwh"><img width="410" alt="ibm/cloud/ce/app/deploy" title="ibm/cloud/ce/app/deploy" src="https://asciinema.org/a/KXm9iScAAwEzDi6WIxSMbxhwh.svg"></a>
 <a target="_blank" href="https://asciinema.org/a/Pnbg3QnT9ujj0YAfEizOyNkzi"><img width="410" alt="knative/provision" title="knative/provision" src="https://asciinema.org/a/Pnbg3QnT9ujj0YAfEizOyNkzi.svg"></a>
-<a target="_blank" href="https://asciinema.org/a/15YAGJTT45us7FyBO5M3Xb0ot"><img width="410" alt="ml/ray/run" title="ml/run" src="https://asciinema.org/a/15YAGJTT45us7FyBO5M3Xb0ot.svg"></a>
+<a target="_blank" href="https://asciinema.org/a/15YAGJTT45us7FyBO5M3Xb0ot"><img width="410" alt="ml/ray/run" title="ml/ray/run" src="https://asciinema.org/a/15YAGJTT45us7FyBO5M3Xb0ot.svg"></a>
+<a target="_blank" href="https://asciinema.org/a/FdrDQaBUIIZiKPts9kwp6iogo"><img width="410" alt="test/iter8/load/http" title="test/iter8/load/http" src="https://asciinema.org/a/FdrDQaBUIIZiKPts9kwp6iogo.svg"></a>
 
 ## Installation
 
