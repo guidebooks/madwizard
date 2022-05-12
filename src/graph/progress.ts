@@ -60,7 +60,7 @@ export function progress(
     return progress
   } else if (isChoice(graph)) {
     // choice => consult choices? model, otherwise assume first choice (first tab is selected)
-    return subprogress(choose(graph, choices))
+    return graph.choices.length === 0 ? zero : subprogress(choose(graph, choices))
   } else {
     // individual code block
 

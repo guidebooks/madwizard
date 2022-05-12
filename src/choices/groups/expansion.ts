@@ -147,7 +147,9 @@ async function visit(graph: Graph, options: Partial<Memos> & { debug: ReturnType
             }
           })
         )
-      ).flat()
+      )
+        .flat()
+        .filter(Boolean)
     } else {
       graph.choices = graph.choices.map((_) => updateContent(_))
       return Promise.all(graph.choices.map((_) => recurse(_.graph)))
