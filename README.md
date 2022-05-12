@@ -10,9 +10,9 @@ interactive wizard (the `guide` command).
 
 ## Gallery
 
-<a target="_blank" href="https://asciinema.org/a/hHi083kqwjPoB5nP8Lar1Sw24"><img height="450" alt="ibm/cloud/ce/job/run" title="ibm/cloud/ce/job/run" src="https://asciinema.org/a/hHi083kqwjPoB5nP8Lar1Sw24.svg"></a>
-<a target="_blank" href="https://asciinema.org/a/Pnbg3QnT9ujj0YAfEizOyNkzi"><img height="450" alt="knative/provision" title="knative/provision" src="https://asciinema.org/a/Pnbg3QnT9ujj0YAfEizOyNkzi.svg"></a>
-<a target="_blank" href="https://asciinema.org/a/HPdX1VMkIPXhhVrlLRBblOSTs"><img height="450" alt="ml/ray/run" title="ml/run" src="https://asciinema.org/a/HPdX1VMkIPXhhVrlLRBblOSTs.svg"></a>
+<a target="_blank" href="https://asciinema.org/a/LsplARJePFuTDo7zkOPOe6QJj"><img width="410" alt="ibm/cloud/ce/job/run" title="ibm/cloud/ce/job/run" src="https://asciinema.org/a/LsplARJePFuTDo7zkOPOe6QJj.svg"></a>
+<a target="_blank" href="https://asciinema.org/a/Pnbg3QnT9ujj0YAfEizOyNkzi"><img width="410" alt="knative/provision" title="knative/provision" src="https://asciinema.org/a/Pnbg3QnT9ujj0YAfEizOyNkzi.svg"></a>
+<a target="_blank" href="https://asciinema.org/a/HPdX1VMkIPXhhVrlLRBblOSTs"><img width="410" alt="ml/ray/run" title="ml/run" src="https://asciinema.org/a/HPdX1VMkIPXhhVrlLRBblOSTs.svg"></a>
 
 ## Installation
 
