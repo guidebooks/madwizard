@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+import { write } from "fs"
 import { spawn } from "child_process"
+import { file as tmpFile } from "tmp"
 
 import { Memos } from "../memoization"
 import { SupportedLanguage, Validatable, isPythonic, isShellish } from "../codeblock"
@@ -108,13 +110,21 @@ export async function shellExec(
   if (isShellish(language)) {
     return execAsExport(cmdline, opts) || shellItOut(cmdline, opts)
   } else if (isPythonic(language)) {
-    return shellItOut(
-      `python3 <(cat <<EOF
-${cmdline}
-EOF
-)`,
-      opts
-    )
+    return new Promise((resolve, reject) => {
+      tmpFile({ postfix: ".py" }, (err, filepath, fd) => {
+        if (err) {
+          reject(err)
+        } else {
+          write(fd, cmdline.toString(), (err) => {
+            if (err) {
+              reject(err)
+            } else {
+              shellItOut(`python3 -u "${filepath}"`, opts).then(resolve, reject)
+            }
+          })
+        }
+      })
+    })
   } else {
     throw new Error("Unable to execute body in unsupported language: " + language)
   }
