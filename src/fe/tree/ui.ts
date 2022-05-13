@@ -15,6 +15,7 @@
  */
 
 import terminalLink from "terminal-link"
+import { highlight } from "cli-highlight"
 import chalk, { Modifiers, Color } from "chalk"
 
 import { Status } from "../../graph"
@@ -23,7 +24,7 @@ export type Decoration = Modifiers | Color
 
 export interface UI<Content> {
   span(body: string, ...decorations: Decoration[]): Content
-  code(body: string, optional?: boolean, hasValidation?: boolean): Content
+  code(body: string, language: string, optional?: boolean, hasValidation?: boolean): Content
   icon(cls: string): Content
   statusToIcon(status: Status): Content
   title(title: Content | string | (Content | string)[], status?: Status): Content
@@ -66,12 +67,13 @@ export class AnsiUI implements UI<string> {
     }
   }
 
-  public code(body: string, optional = false, hasValidation = false) {
+  public code(body: string, language: string, optional = false, hasValidation = false) {
     const outerSuffix = hasValidation ? chalk.bold.yellow(" †") : ""
     const innerSuffix = optional ? " [OPTIONAL]" : ""
     const color = optional ? chalk.magenta.dim : chalk.magenta
+    const bodyUI = highlight(body, { language })
 
-    return color(body + innerSuffix) + outerSuffix
+    return (language === "shell" ? color(bodyUI) : bodyUI) + color(innerSuffix) + outerSuffix
   }
 
   public icon(cls: string) {
@@ -104,6 +106,6 @@ export class AnsiUI implements UI<string> {
   public markdown(body: string) {
     return body
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, p1, p2) => terminalLink(p1, p2)) // links
-      .replace(/`([^`]+)`/g, (_, p1) => this.code(p1))
+      .replace(/`([^`]+)`/g, (_, p1) => this.code(p1, "markdown"))
   }
 }

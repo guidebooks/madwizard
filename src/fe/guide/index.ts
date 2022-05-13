@@ -131,7 +131,7 @@ export class Guide {
           (block): Task => ({
             title: block.validate
               ? chalk.dim("checking to see if this task has already been done\u2026")
-              : chalk.magenta(block.body),
+              : this.ui.code(block.body, block.language),
             spinner: !!block.validate,
             task: async (subtask) => {
               let status: Status = statusOf(block, this.memos.statusMemo)
