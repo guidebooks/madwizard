@@ -32,16 +32,18 @@ export function hasProvenance(graph: Graph): graph is Graph & Provenance {
   return Array.isArray(provenance) && provenance.length > 0 && provenance.every((_) => typeof _ === "string")
 }
 
+export function provenanceOfFilepath(filepath: string) {
+  const match = filepath.match(/^https:\/\/raw.githubusercontent.com\/guidebooks\/store\/main\/guidebooks\/(.+)\..+$/)
+  if (match) {
+    return match[1].replace(/\/index$/, "")
+  } else {
+    return relative(process.cwd(), filepath)
+  }
+}
+
 /** Determine the `Provenance` of the given `SubTask` */
 export default function provenanceOf(task: SubTask) {
   if (task.filepath) {
-    const match = task.filepath.match(
-      /^https:\/\/raw.githubusercontent.com\/guidebooks\/store\/main\/guidebooks\/(.+)\..+$/
-    )
-    if (match) {
-      return match[1]
-    } else {
-      return relative(process.cwd(), task.filepath)
-    }
+    return provenanceOfFilepath(task.filepath)
   }
 }

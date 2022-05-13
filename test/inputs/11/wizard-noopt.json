@@ -4,16 +4,17 @@
       "group": "Text####HTML",
       "title": "Text versus HTML?",
       "source": "placeholder",
+      "provenance": ["test/inputs/11/in.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "e84eb2ef-9de9-4dbe-9c08-6ed8ba6a044e",
+            "key": "95380c0d-a953-482c-a7ec-4937002fa8b0",
             "sequence": [
               {
                 "body": "echo text",
                 "language": "shell",
-                "id": "64d580e1-da2e-4414-a23d-2df69b196f89-0"
+                "id": "2595c59a-bb03-48e7-9a7f-a8fb8c238d06-0"
               }
             ]
           },
@@ -22,12 +23,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "95da6734-1e1e-45f3-af77-b4b0aacb8f94",
+            "key": "fb9e9389-4201-4f1e-98a9-37a021a82fd4",
             "sequence": [
               {
                 "body": "echo html",
                 "language": "shell",
-                "id": "64d580e1-da2e-4414-a23d-2df69b196f89-1"
+                "id": "2595c59a-bb03-48e7-9a7f-a8fb8c238d06-1"
               }
             ]
           },

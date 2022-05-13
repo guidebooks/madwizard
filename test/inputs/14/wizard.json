@@ -4,16 +4,17 @@
       "group": "expand(echo 3 ; echo 4 ; echo 5)",
       "title": "Testing tab expansion",
       "source": "placeholder",
+      "provenance": ["test/inputs/14/in.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "351d4f0d-8fee-4da4-b876-c7cc4490c316",
+            "key": "fa421aba-2deb-4552-869b-b22183a99eb4",
             "sequence": [
               {
                 "body": "echo \"3\"",
                 "language": "shell",
-                "id": "a6d5bfa6-23e1-4819-9b91-b8b4d60caa5a-0"
+                "id": "6fcb4141-15a8-4283-845c-427bd8e4f486-0"
               }
             ]
           },
@@ -23,12 +24,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "351d4f0d-8fee-4da4-b876-c7cc4490c316",
+            "key": "fa421aba-2deb-4552-869b-b22183a99eb4",
             "sequence": [
               {
                 "body": "echo \"4\"",
                 "language": "shell",
-                "id": "a6d5bfa6-23e1-4819-9b91-b8b4d60caa5a-0"
+                "id": "6fcb4141-15a8-4283-845c-427bd8e4f486-0"
               }
             ]
           },
@@ -38,12 +39,12 @@
         {
           "member": 2,
           "graph": {
-            "key": "351d4f0d-8fee-4da4-b876-c7cc4490c316",
+            "key": "fa421aba-2deb-4552-869b-b22183a99eb4",
             "sequence": [
               {
                 "body": "echo \"5\"",
                 "language": "shell",
-                "id": "a6d5bfa6-23e1-4819-9b91-b8b4d60caa5a-0"
+                "id": "6fcb4141-15a8-4283-845c-427bd8e4f486-0"
               }
             ]
           },

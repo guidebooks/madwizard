@@ -5,12 +5,12 @@
       "title": "b.md",
       "filepath": "",
       "graph": {
-        "key": "5836d878-159f-4dbf-9f76-dc20e9679ef5",
+        "key": "97f83b92-03be-4dcd-bef0-1756600a4e18",
         "sequence": [
           {
             "body": "echo BBB",
             "language": "shell",
-            "id": "d4ac71ef-86ca-48dc-b662-be942a1dd8cc-2"
+            "id": "827fcf59-f458-41bc-b166-bee3a24c7eb4-2"
           }
         ]
       },
@@ -27,12 +27,12 @@
       "title": "a.md",
       "filepath": "",
       "graph": {
-        "key": "bfd8b75d-9b51-458e-91cb-758bba297621",
+        "key": "cba2f114-4b00-4946-bb14-f4429f41c43f",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "shell",
-            "id": "d4ac71ef-86ca-48dc-b662-be942a1dd8cc-0"
+            "id": "827fcf59-f458-41bc-b166-bee3a24c7eb4-0"
           }
         ]
       },
@@ -48,31 +48,33 @@
       "group": "Tab1",
       "title": "Conditional Inline of Imports",
       "source": "placeholder",
+      "provenance": ["test/inputs/20/in.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "d4ad6dd5-d1e8-42f2-8a90-720d3684157e",
+            "key": "a7384f69-1c33-4952-b6c3-257db19e752b",
             "sequence": [
               {
                 "body": "echo III",
                 "language": "shell",
-                "id": "d4ac71ef-86ca-48dc-b662-be942a1dd8cc-1"
+                "id": "827fcf59-f458-41bc-b166-bee3a24c7eb4-1"
               },
               {
                 "group": "ITab1",
                 "title": "Tab1",
                 "source": "placeholder",
+                "provenance": ["test/inputs/20/in.md"],
                 "choices": [
                   {
                     "member": 0,
                     "graph": {
-                      "key": "8552ba93-95a1-425d-b808-f9d0916ea17d",
+                      "key": "190f567f-cb55-48ca-89fd-3fff8d201a88",
                       "sequence": [
                         {
                           "body": "echo III2",
                           "language": "shell",
-                          "id": "d4ac71ef-86ca-48dc-b662-be942a1dd8cc-3"
+                          "id": "827fcf59-f458-41bc-b166-bee3a24c7eb4-3"
                         }
                       ]
                     },

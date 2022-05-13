@@ -9,7 +9,7 @@
         {
           "member": 0,
           "graph": {
-            "key": "1f9544ec-ba4e-41e2-9383-4931878907c6",
+            "key": "dc64f192-985f-4561-8aaa-4b26d5935310",
             "sequence": [
               {
                 "group": "Intel####Apple Silicon",
@@ -20,12 +20,12 @@
                   {
                     "member": 0,
                     "graph": {
-                      "key": "c058fb15-2e55-455a-a2e2-cd2d4f73f07d",
+                      "key": "68879842-df68-4c95-a824-a8709fa682a5",
                       "sequence": [
                         {
                           "body": "pip install -U ray",
                           "language": "shell",
-                          "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-0"
+                          "id": "aa418ecc-6051-4523-835a-d478cdebcf56-0"
                         }
                       ]
                     },
@@ -35,14 +35,14 @@
                   {
                     "member": 1,
                     "graph": {
-                      "key": "ca6409af-4bdc-40f2-9294-f4eac64f4dac",
+                      "key": "7f39ee6f-476a-4c29-a923-c41b9995c414",
                       "sequence": [
                         {
                           "key": "test/inputs/23/python/conda/install.md",
                           "title": "Conda: Installation",
                           "filepath": "test/inputs/23/python/conda/install.md",
                           "graph": {
-                            "key": "102c1b83-a832-45c6-ba6e-c7abf6330925",
+                            "key": "6a4e6a68-3c2b-4510-bc62-8abd0616d5de",
                             "sequence": [
                               {
                                 "group": "Install Miniconda####Install Anaconda",
@@ -53,7 +53,7 @@
                                   {
                                     "member": 0,
                                     "graph": {
-                                      "key": "48fa5775-fbda-404e-b7fa-e8079d38e839",
+                                      "key": "ecde3aa8-eecd-4a07-a513-a51e30985c04",
                                       "sequence": [
                                         {
                                           "group": "Windows####Linux####MacOS",
@@ -64,7 +64,7 @@
                                             {
                                               "member": 1,
                                               "graph": {
-                                                "key": "ffd997a0-5616-4c2c-a3a6-d8b0e6da2b3e",
+                                                "key": "31881e59-b2e9-459d-8223-452f6ef0207c",
                                                 "sequence": [
                                                   {
                                                     "group": "Intel####ARM64",
@@ -75,12 +75,12 @@
                                                       {
                                                         "member": 0,
                                                         "graph": {
-                                                          "key": "5ce97bf9-5ce1-4d82-b5da-1a99c5a34f37",
+                                                          "key": "290b4e19-c683-4142-8f94-75167ad150b9",
                                                           "sequence": [
                                                             {
                                                               "body": "curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh\nbash Miniconda3-latest-Linux-x86_64.sh -b -p ~/miniconda",
                                                               "language": "shell",
-                                                              "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-1"
+                                                              "id": "aa418ecc-6051-4523-835a-d478cdebcf56-1"
                                                             }
                                                           ]
                                                         },
@@ -89,12 +89,12 @@
                                                       {
                                                         "member": 1,
                                                         "graph": {
-                                                          "key": "377b910d-96ad-43e9-91b3-18668fdc6898",
+                                                          "key": "30062ad7-ae4e-47a2-b7cc-b36beb8f8416",
                                                           "sequence": [
                                                             {
                                                               "body": "curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh\nbash Miniconda3-latest-Linux-aarch64.sh -b -p $HOME/miniconda",
                                                               "language": "shell",
-                                                              "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-2"
+                                                              "id": "aa418ecc-6051-4523-835a-d478cdebcf56-2"
                                                             }
                                                           ]
                                                         },
@@ -110,7 +110,7 @@
                                             {
                                               "member": 2,
                                               "graph": {
-                                                "key": "d75ac770-4a91-43d4-8d11-16cb9c1778d9",
+                                                "key": "1b3b0e84-e4ab-437f-930a-20c239ede967",
                                                 "sequence": [
                                                   {
                                                     "group": "Intel####Apple Silicon",
@@ -121,12 +121,12 @@
                                                       {
                                                         "member": 0,
                                                         "graph": {
-                                                          "key": "69900330-83e5-4f9d-ba06-5e6846e36d65",
+                                                          "key": "bec11732-a1d3-4976-b5c6-4193fef5daca",
                                                           "sequence": [
                                                             {
                                                               "body": "curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh\nbash Miniconda3-latest-MacOSX-x86_64.sh -b -p $HOME/miniconda",
                                                               "language": "shell",
-                                                              "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-3"
+                                                              "id": "aa418ecc-6051-4523-835a-d478cdebcf56-3"
                                                             }
                                                           ]
                                                         },
@@ -136,12 +136,12 @@
                                                       {
                                                         "member": 1,
                                                         "graph": {
-                                                          "key": "87fbdd1c-ed94-4aa5-a7c6-08342a2e423b",
+                                                          "key": "9a48daa9-a04d-4a06-8dc6-3feb58225f22",
                                                           "sequence": [
                                                             {
                                                               "body": "curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh\nbash Miniconda3-latest-MacOSX-arm64.sh -b -p $HOME/miniconda",
                                                               "language": "shell",
-                                                              "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-4"
+                                                              "id": "aa418ecc-6051-4523-835a-d478cdebcf56-4"
                                                             }
                                                           ]
                                                         },
@@ -165,7 +165,7 @@
                                   {
                                     "member": 1,
                                     "graph": {
-                                      "key": "5eee237a-2a1e-40f7-a266-bf7b41743f95",
+                                      "key": "fcbb97ec-6e23-4353-80b5-76fd45d5f71f",
                                       "sequence": [
                                         {
                                           "group": "MacOS####Linux",
@@ -176,12 +176,12 @@
                                             {
                                               "member": 0,
                                               "graph": {
-                                                "key": "cac82e29-3b15-4806-81a5-c11a8b7ae848",
+                                                "key": "0daf9806-fdaa-45e0-b9d6-41fe41f2341d",
                                                 "sequence": [
                                                   {
                                                     "body": "curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh\nbash Anaconda3-2021.11-MacOSX-x86_64.sh -b -p $HOME/miniconda",
                                                     "language": "shell",
-                                                    "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-5"
+                                                    "id": "aa418ecc-6051-4523-835a-d478cdebcf56-5"
                                                   }
                                                 ]
                                               },
@@ -190,7 +190,7 @@
                                             {
                                               "member": 1,
                                               "graph": {
-                                                "key": "7f2b9613-c002-4609-9ee5-4e5acdce06b6",
+                                                "key": "635df8d7-0844-4d01-b45f-46af7db9a0fd",
                                                 "sequence": [
                                                   {
                                                     "group": "x86####POWER8 and POWER9####AWS Graviton2/ARM64####IBM z/Linux and LinuxONE",
@@ -201,12 +201,12 @@
                                                       {
                                                         "member": 0,
                                                         "graph": {
-                                                          "key": "657fa49d-51c5-4f3d-82a7-5bb4a48ecc21",
+                                                          "key": "5ade077b-898d-4c89-b6e7-da93c22e00b4",
                                                           "sequence": [
                                                             {
                                                               "body": "curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh\nbash Anaconda3-2021.11-Linux-x86_64.sh -b -p $HOME/miniconda",
                                                               "language": "shell",
-                                                              "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-6"
+                                                              "id": "aa418ecc-6051-4523-835a-d478cdebcf56-6"
                                                             }
                                                           ]
                                                         },
@@ -215,12 +215,12 @@
                                                       {
                                                         "member": 1,
                                                         "graph": {
-                                                          "key": "2a68c42d-88dd-4162-9731-8d2faeaadf76",
+                                                          "key": "71f19af5-8e0f-499e-ba9b-498d0a9f2325",
                                                           "sequence": [
                                                             {
                                                               "body": "curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-ppc64le.sh\nbash Anaconda3-2021.11-Linux-ppc64le.sh -b -p $HOME/miniconda",
                                                               "language": "shell",
-                                                              "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-7"
+                                                              "id": "aa418ecc-6051-4523-835a-d478cdebcf56-7"
                                                             }
                                                           ]
                                                         },
@@ -229,12 +229,12 @@
                                                       {
                                                         "member": 2,
                                                         "graph": {
-                                                          "key": "01a627ef-b2d3-4204-8b5d-79a34f9363bc",
+                                                          "key": "0e8b88e4-8486-4957-9df5-66b47b813915",
                                                           "sequence": [
                                                             {
                                                               "body": "curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-aarch64.sh\nbash Anaconda3-2021.11-Linux-aarch64.sh -b -p $HOME/miniconda",
                                                               "language": "shell",
-                                                              "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-8"
+                                                              "id": "aa418ecc-6051-4523-835a-d478cdebcf56-8"
                                                             }
                                                           ]
                                                         },
@@ -243,12 +243,12 @@
                                                       {
                                                         "member": 3,
                                                         "graph": {
-                                                          "key": "4920a635-a85c-458f-bbf7-cea275d7feb2",
+                                                          "key": "3c5b05d6-7e7e-4bed-8fbe-a66639697904",
                                                           "sequence": [
                                                             {
                                                               "body": "curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-s390x.sh\nbash Anaconda3-2021.11-Linux-s390x.sh -b -p $HOME/miniconda",
                                                               "language": "shell",
-                                                              "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-9"
+                                                              "id": "aa418ecc-6051-4523-835a-d478cdebcf56-9"
                                                             }
                                                           ]
                                                         },
@@ -272,7 +272,7 @@
                               {
                                 "body": "export PATH=~/miniconda/bin:$PATH",
                                 "language": "shell",
-                                "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-10"
+                                "id": "aa418ecc-6051-4523-835a-d478cdebcf56-10"
                               }
                             ]
                           },
@@ -281,7 +281,7 @@
                         {
                           "body": "conda activate\npip uninstall grpcio\nconda install grpcio\npip install ray",
                           "language": "shell",
-                          "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-11"
+                          "id": "aa418ecc-6051-4523-835a-d478cdebcf56-11"
                         }
                       ]
                     },
@@ -298,14 +298,14 @@
         {
           "member": 1,
           "graph": {
-            "key": "41d10fd9-b8d9-45ed-a28d-970d87edca41",
+            "key": "750d90cb-0d62-4465-928d-c486449bd012",
             "sequence": [
               {
                 "key": "test/inputs/23/kubernetes/kubectl.md",
                 "title": "Install kubectl",
                 "filepath": "test/inputs/23/kubernetes/kubectl.md",
                 "graph": {
-                  "key": "a7518a4f-9722-4b89-a85f-5ae48712d653",
+                  "key": "bdae31fb-32a2-42a0-9e61-9e533f86aced",
                   "sequence": [
                     {
                       "group": "Linux####Windows####MacOS",
@@ -316,12 +316,12 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "7fe6cfd8-4374-4e3c-a5de-aaa6a98b691c",
+                            "key": "59cfb04f-d35f-426c-8969-b7faf672c973",
                             "sequence": [
                               {
                                 "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
                                 "language": "bash",
-                                "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-12"
+                                "id": "aa418ecc-6051-4523-835a-d478cdebcf56-12"
                               }
                             ]
                           },
@@ -331,12 +331,12 @@
                         {
                           "member": 1,
                           "graph": {
-                            "key": "951e4fed-0302-4d0f-bb2b-0361ace5790f",
+                            "key": "86386cfc-6625-4cdc-9aea-72b5cefb044f",
                             "sequence": [
                               {
                                 "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe\"",
                                 "language": "bash",
-                                "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-13"
+                                "id": "aa418ecc-6051-4523-835a-d478cdebcf56-13"
                               }
                             ]
                           },
@@ -346,7 +346,7 @@
                         {
                           "member": 2,
                           "graph": {
-                            "key": "73f94fd4-6e11-4af8-820b-899e83094127",
+                            "key": "1fae9f55-c6aa-4792-9495-5ee02b38a9d4",
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
@@ -357,12 +357,12 @@
                                   {
                                     "member": 0,
                                     "graph": {
-                                      "key": "e9d619be-9fcd-482d-8ca5-68bc532349fe",
+                                      "key": "59f799a5-a569-48df-9ae2-90e3b11abb81",
                                       "sequence": [
                                         {
                                           "body": "brew install kubectl",
                                           "language": "bash",
-                                          "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-14"
+                                          "id": "aa418ecc-6051-4523-835a-d478cdebcf56-14"
                                         }
                                       ]
                                     },
@@ -372,7 +372,7 @@
                                   {
                                     "member": 1,
                                     "graph": {
-                                      "key": "d055b6b2-d5ba-45ae-8a3c-c83bf989ae34",
+                                      "key": "dcf45ac6-e2c3-43d6-aa43-955029b9b2b6",
                                       "sequence": [
                                         {
                                           "group": "Intel####Apple Silicon",
@@ -383,12 +383,12 @@
                                             {
                                               "member": 0,
                                               "graph": {
-                                                "key": "319622b7-f753-43bb-ac47-4c300937e07b",
+                                                "key": "e7f2ff3f-abc5-4264-8862-9b8fa209e358",
                                                 "sequence": [
                                                   {
                                                     "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl.sha256\"",
                                                     "language": "bash",
-                                                    "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-15"
+                                                    "id": "aa418ecc-6051-4523-835a-d478cdebcf56-15"
                                                   }
                                                 ]
                                               },
@@ -397,12 +397,12 @@
                                             {
                                               "member": 1,
                                               "graph": {
-                                                "key": "05805212-3f37-4dc6-86d8-80a40a0ada71",
+                                                "key": "54c49da9-8b78-4e74-aae6-087f13a4b998",
                                                 "sequence": [
                                                   {
                                                     "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl.sha256\"",
                                                     "language": "bash",
-                                                    "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-16"
+                                                    "id": "aa418ecc-6051-4523-835a-d478cdebcf56-16"
                                                   }
                                                 ]
                                               },
@@ -413,7 +413,7 @@
                                         {
                                           "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/amd64/kubectl\"\nAnd for macOS on Apple Silicon, type:\n    \ncurl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/arm64/kubectl\"",
                                           "language": "bash",
-                                          "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-17"
+                                          "id": "aa418ecc-6051-4523-835a-d478cdebcf56-17"
                                         }
                                       ]
                                     },
@@ -438,7 +438,7 @@
                 "title": "Install Helm v3",
                 "filepath": "test/inputs/23/kubernetes/helm3.md",
                 "graph": {
-                  "key": "29d99a83-9ec4-45bd-a39f-29a4a92e684e",
+                  "key": "7a3af3c1-6736-4ad3-9e4f-99dc4209d9f1",
                   "sequence": [
                     {
                       "group": "MacOS####Linux####Windows",
@@ -449,7 +449,7 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "52f8eb3e-3bbc-42a4-a3b1-567a41ea72f5",
+                            "key": "768eb89e-43e9-4b2a-abe5-55786c0f9914",
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
@@ -460,12 +460,12 @@
                                   {
                                     "member": 0,
                                     "graph": {
-                                      "key": "ef42fc93-d88f-4a48-bd84-fc244bf2f5e1",
+                                      "key": "11e4f12e-f060-47ed-ae19-abb4817fea4d",
                                       "sequence": [
                                         {
                                           "body": "brew install helm",
                                           "language": "shell",
-                                          "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-18"
+                                          "id": "aa418ecc-6051-4523-835a-d478cdebcf56-18"
                                         }
                                       ]
                                     },
@@ -474,12 +474,12 @@
                                   {
                                     "member": 1,
                                     "graph": {
-                                      "key": "9cea889c-85db-4bb7-909b-e5802e9199fe",
+                                      "key": "0bf65bef-6a2c-4652-95bc-2dbe777cdfd7",
                                       "sequence": [
                                         {
                                           "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
                                           "language": "shell",
-                                          "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-19"
+                                          "id": "aa418ecc-6051-4523-835a-d478cdebcf56-19"
                                         }
                                       ]
                                     },
@@ -494,12 +494,12 @@
                         {
                           "member": 1,
                           "graph": {
-                            "key": "3c2f5ad0-e8c6-4ca9-a04f-2052e0097f0f",
+                            "key": "d8bf2fb6-22f0-4076-9273-24bc817569f5",
                             "sequence": [
                               {
                                 "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
                                 "language": "shell",
-                                "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-20"
+                                "id": "aa418ecc-6051-4523-835a-d478cdebcf56-20"
                               }
                             ]
                           },
@@ -508,12 +508,12 @@
                         {
                           "member": 2,
                           "graph": {
-                            "key": "b99a19e0-d5cf-47cb-b70c-1ca7a596237e",
+                            "key": "48a2603d-a5b5-4772-9699-cbaf1354456b",
                             "sequence": [
                               {
                                 "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
                                 "language": "shell",
-                                "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-21"
+                                "id": "aa418ecc-6051-4523-835a-d478cdebcf56-21"
                               }
                             ]
                           },
@@ -530,14 +530,14 @@
                 "title": "Choose a Kubernetes context",
                 "filepath": "test/inputs/23/kubernetes/context.md",
                 "graph": {
-                  "key": "1c823f94-2a98-4f49-8ae2-bcf9389196b0",
+                  "key": "986b3b0d-486a-4a2b-9426-43098a26de03",
                   "sequence": [
                     {
                       "key": "test/inputs/23/kubernetes/kubectl.md",
                       "title": "Install kubectl",
                       "filepath": "test/inputs/23/kubernetes/kubectl.md",
                       "graph": {
-                        "key": "a26db3a4-d845-4fd3-9526-972de00a5e1a",
+                        "key": "68181fdc-e1f8-4917-a296-34232e06fe78",
                         "sequence": [
                           {
                             "group": "Linux####Windows####MacOS",
@@ -548,12 +548,12 @@
                               {
                                 "member": 0,
                                 "graph": {
-                                  "key": "4868fae7-3db7-40e2-ac9c-efdea66019ad",
+                                  "key": "b79b516f-a683-47a5-ae4f-d49edd136e1b",
                                   "sequence": [
                                     {
                                       "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
                                       "language": "bash",
-                                      "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-22"
+                                      "id": "aa418ecc-6051-4523-835a-d478cdebcf56-22"
                                     }
                                   ]
                                 },
@@ -563,12 +563,12 @@
                               {
                                 "member": 1,
                                 "graph": {
-                                  "key": "db9efebe-31d9-41da-a962-72f9f5c6b0e5",
+                                  "key": "8e66ca0a-b47b-4dca-a0f4-acd9dfbe6fbe",
                                   "sequence": [
                                     {
                                       "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe\"",
                                       "language": "bash",
-                                      "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-23"
+                                      "id": "aa418ecc-6051-4523-835a-d478cdebcf56-23"
                                     }
                                   ]
                                 },
@@ -578,7 +578,7 @@
                               {
                                 "member": 2,
                                 "graph": {
-                                  "key": "7ba02bba-8cb3-445e-9d48-5b2fad85e857",
+                                  "key": "260b8f20-ea60-44b1-bf16-6ad055e680d7",
                                   "sequence": [
                                     {
                                       "group": "Homebrew####curl",
@@ -589,12 +589,12 @@
                                         {
                                           "member": 0,
                                           "graph": {
-                                            "key": "396866ae-2d12-437f-a004-fda732c8b425",
+                                            "key": "8cd94334-94fd-4754-8a38-835cc81e0f03",
                                             "sequence": [
                                               {
                                                 "body": "brew install kubectl",
                                                 "language": "bash",
-                                                "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-24"
+                                                "id": "aa418ecc-6051-4523-835a-d478cdebcf56-24"
                                               }
                                             ]
                                           },
@@ -604,7 +604,7 @@
                                         {
                                           "member": 1,
                                           "graph": {
-                                            "key": "dbfe9c08-1d9a-4e9d-8b86-652aef48d1e4",
+                                            "key": "930e73c7-615f-4b75-a117-b78f3a6ca3f6",
                                             "sequence": [
                                               {
                                                 "group": "Intel####Apple Silicon",
@@ -615,12 +615,12 @@
                                                   {
                                                     "member": 0,
                                                     "graph": {
-                                                      "key": "f83173fa-a2cf-489d-bc83-a0911ec97ce2",
+                                                      "key": "fb8c1d35-c1b1-4378-a3df-133adbad47fb",
                                                       "sequence": [
                                                         {
                                                           "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl.sha256\"",
                                                           "language": "bash",
-                                                          "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-25"
+                                                          "id": "aa418ecc-6051-4523-835a-d478cdebcf56-25"
                                                         }
                                                       ]
                                                     },
@@ -629,12 +629,12 @@
                                                   {
                                                     "member": 1,
                                                     "graph": {
-                                                      "key": "e3798074-4a27-445f-97d5-58ea6a7e0c5e",
+                                                      "key": "bde8fb36-9e15-4db1-bb5d-8fcf24add0a9",
                                                       "sequence": [
                                                         {
                                                           "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl.sha256\"",
                                                           "language": "bash",
-                                                          "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-26"
+                                                          "id": "aa418ecc-6051-4523-835a-d478cdebcf56-26"
                                                         }
                                                       ]
                                                     },
@@ -645,7 +645,7 @@
                                               {
                                                 "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/amd64/kubectl\"\nAnd for macOS on Apple Silicon, type:\n    \ncurl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/arm64/kubectl\"",
                                                 "language": "bash",
-                                                "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-27"
+                                                "id": "aa418ecc-6051-4523-835a-d478cdebcf56-27"
                                               }
                                             ]
                                           },
@@ -674,12 +674,12 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "32fee7c2-3648-450b-bb3e-6ad2ae3e51c9",
+                            "key": "84b5e398-178e-4be3-b65f-156f2e580887",
                             "sequence": [
                               {
                                 "body": "kubectl config set-context \"\"",
                                 "language": "shell",
-                                "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-28"
+                                "id": "aa418ecc-6051-4523-835a-d478cdebcf56-28"
                               }
                             ]
                           },
@@ -694,7 +694,7 @@
               {
                 "body": "helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/\nkubectl wait --for=condition=available --all rayclusters",
                 "language": "shell",
-                "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-29"
+                "id": "aa418ecc-6051-4523-835a-d478cdebcf56-29"
               }
             ]
           },
@@ -729,16 +729,17 @@
       "group": "Example: Using Ray Tasks to Parallelize a Function####Example: Using Ray Actors to Parallelize a Class####Example: Creating and Transforming Datasets",
       "title": "Run a Ray Job",
       "source": "placeholder",
+      "provenance": ["test/inputs/23/in.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "7a0744e4-4d22-43ff-9b8b-7f85aed56d04",
+            "key": "771088d0-9c4b-4fb6-82c4-94f8376c31ec",
             "sequence": [
               {
                 "body": "import ray\nray.init()\n\n@ray.remote\ndef f(x):\n    return x * x\n\nfutures = [f.remote(i) for i in range(4)]\nprint(ray.get(futures)) # [0, 1, 4, 9]",
                 "language": "python",
-                "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-30"
+                "id": "aa418ecc-6051-4523-835a-d478cdebcf56-30"
               }
             ]
           },
@@ -748,12 +749,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "0589882d-8045-482e-b391-0ded76a4c00b",
+            "key": "cbf4edea-1f98-4691-b32a-79b2b303478b",
             "sequence": [
               {
                 "body": "import ray\nray.init() # Only call this once.\n\n@ray.remote\nclass Counter(object):\n    def __init__(self):\n        self.n = 0\n\n    def increment(self):\n        self.n += 1\n\n    def read(self):\n        return self.n\n\ncounters = [Counter.remote() for i in range(4)]\n[c.increment.remote() for c in counters]\nfutures = [c.read.remote() for c in counters]\nprint(ray.get(futures)) # [1, 1, 1, 1]",
                 "language": "python",
-                "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-31"
+                "id": "aa418ecc-6051-4523-835a-d478cdebcf56-31"
               }
             ]
           },
@@ -763,33 +764,33 @@
         {
           "member": 2,
           "graph": {
-            "key": "a2aa016e-9244-43cd-bb44-b87533a30638",
+            "key": "6eedcb4d-a12c-4f35-a166-0f6a6a487d50",
             "sequence": [
               {
                 "key": "Creating and Transforming Datasets",
                 "title": "Creating and Transforming Datasets",
                 "filepath": "",
                 "graph": {
-                  "key": "71f14086-3adf-4685-ab61-a09ebe4fd2ae",
+                  "key": "62714773-54c8-43b3-8151-bcd3cb138a6c",
                   "sequence": [
                     {
                       "key": "Prerequisites",
                       "title": "Prerequisites",
                       "filepath": "",
                       "graph": {
-                        "key": "60a1935a-7e8c-4a0f-a0f8-329c09f51502",
+                        "key": "93fe0c4e-2d70-4b2d-ae9c-1ff2532e8e9b",
                         "sequence": [
                           {
                             "key": "test/inputs/23/data.md",
                             "title": "Install Ray Data",
                             "filepath": "test/inputs/23/data.md",
                             "graph": {
-                              "key": "6322379c-3655-4506-abe7-8f61bcf0cbbd",
+                              "key": "000b8160-4ad5-4b25-a6b2-08951221af57",
                               "sequence": [
                                 {
                                   "body": "pip install \"ray[data]\" dask",
                                   "language": "shell",
-                                  "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-32"
+                                  "id": "aa418ecc-6051-4523-835a-d478cdebcf56-32"
                                 }
                               ]
                             },
@@ -804,22 +805,23 @@
                       "title": "Main Tasks",
                       "filepath": "",
                       "graph": {
-                        "key": "7c51b5d9-9675-4953-952b-62871e709a9b",
+                        "key": "c1a4491a-689d-49e1-ada1-ef1ad2d7c2dd",
                         "sequence": [
                           {
                             "group": "New Dataset from Range####New Dataset from File",
                             "title": "Main Tasks",
                             "source": "placeholder",
+                            "provenance": ["test/inputs/23/in.md"],
                             "choices": [
                               {
                                 "member": 0,
                                 "graph": {
-                                  "key": "1a6384be-04e1-4678-b768-62f8c9ea962e",
+                                  "key": "52785816-07b3-4c9c-a412-b31ac75e1e34",
                                   "sequence": [
                                     {
                                       "body": "import ray\n\n# Create a Dataset of Python objects.\nds = ray.data.range(10000)\n# -> Dataset(num_blocks=200, num_rows=10000, schema=<class 'int'>)\n\nds.take(5)\n# -> [0, 1, 2, 3, 4]\n\nds.count()\n# -> 10000\n\n# Create a Dataset of Arrow records.\nds = ray.data.from_items([{\"col1\": i, \"col2\": str(i)} for i in range(10000)])\n# -> Dataset(num_blocks=200, num_rows=10000, schema={col1: int64, col2: string})\n\nds.show(5)\n# -> {'col1': 0, 'col2': '0'}\n# -> {'col1': 1, 'col2': '1'}\n# -> {'col1': 2, 'col2': '2'}\n# -> {'col1': 3, 'col2': '3'}\n# -> {'col1': 4, 'col2': '4'}\n\nds.schema()\n# -> col1: int64\n# -> col2: string",
                                       "language": "python",
-                                      "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-33"
+                                      "id": "aa418ecc-6051-4523-835a-d478cdebcf56-33"
                                     }
                                   ]
                                 },
@@ -829,12 +831,12 @@
                               {
                                 "member": 1,
                                 "graph": {
-                                  "key": "7a437dca-5a72-4948-9633-1d20dc0c7cdb",
+                                  "key": "27de5ae3-a62c-4290-a85f-08c35c8fdbd5",
                                   "sequence": [
                                     {
                                       "body": "import ray\nimport pandas as pd\nimport dask.dataframe as dd\n\n# Create a Dataset from a list of Pandas DataFrame objects.\npdf = pd.DataFrame({\"one\": [1, 2, 3], \"two\": [\"a\", \"b\", \"c\"]})\nds = ray.data.from_pandas([pdf])\n\n# Create a Dataset from a Dask-on-Ray DataFrame.\ndask_df = dd.from_pandas(pdf, npartitions=10)\nds = ray.data.from_dask(dask_df)\n\n# Transform the dataset using .map()\nds = ray.data.range(10000)\nds = ds.map(lambda x: x * 2)\n# -> Map Progress: 100%|████████████████████| 200/200 [00:00<00:00, 1123.54it/s]\n# -> Dataset(num_blocks=200, num_rows=10000, schema=<class 'int'>)\nds.take(5)\n# -> [0, 2, 4, 6, 8]\n\n# Transform the dataset using .filter()\nds.filter(lambda x: x > 5).take(5)\n# -> Map Progress: 100%|████████████████████| 200/200 [00:00<00:00, 1859.63it/s]\n# -> [6, 8, 10, 12, 14]\n\n# Transform the dataset using .flat_map()\nds.flat_map(lambda x: [x, -x]).take(5)\n# -> Map Progress: 100%|████████████████████| 200/200 [00:00<00:00, 1568.10it/s]\n# -> [0, 0, 2, -2, 4]",
                                       "language": "python",
-                                      "id": "1605f629-ac85-43c5-9822-c03ca68f6ce5-34"
+                                      "id": "aa418ecc-6051-4523-835a-d478cdebcf56-34"
                                     }
                                   ]
                                 },

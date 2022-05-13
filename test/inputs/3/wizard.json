@@ -9,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "c242586e-bb1b-49e2-bdf0-cec9e7bf21f6",
+            "key": "a08c4fe3-c676-45c8-8340-581597f013dd",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "f62e6ba0-2e99-4d45-bc6d-72fa8fd92f9e-1"
+                "id": "5e114d97-18aa-4624-8040-5e561940541a-1"
               }
             ]
           },
@@ -47,25 +47,25 @@
         {
           "member": 0,
           "graph": {
-            "key": "cf060f74-2d11-49e2-9c9d-77079d90303a",
+            "key": "d5996b2c-07a6-4228-887f-549bf776343a",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "f62e6ba0-2e99-4d45-bc6d-72fa8fd92f9e-2"
+                "id": "5e114d97-18aa-4624-8040-5e561940541a-2"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "f62e6ba0-2e99-4d45-bc6d-72fa8fd92f9e-3"
+                "id": "5e114d97-18aa-4624-8040-5e561940541a-3"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "f62e6ba0-2e99-4d45-bc6d-72fa8fd92f9e-4"
+                "id": "5e114d97-18aa-4624-8040-5e561940541a-4"
               }
             ]
           },
@@ -74,13 +74,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "9ac42edc-e35c-40b8-9645-ca2e0fd54843",
+            "key": "2606f33f-cbe3-40a6-8c44-6713c6d1eefe",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "f62e6ba0-2e99-4d45-bc6d-72fa8fd92f9e-5"
+                "id": "5e114d97-18aa-4624-8040-5e561940541a-5"
               }
             ]
           },

@@ -84,6 +84,7 @@ export type Import = Source &
   Kind<"Import"> & {
     key: string
     filepath: string
+    provenance?: string
   }
 
 type Kind<T extends string> = {

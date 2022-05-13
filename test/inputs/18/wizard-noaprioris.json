@@ -9,20 +9,20 @@
         {
           "member": 0,
           "graph": {
-            "key": "9f219828-2e75-4a3d-9f05-ddec25f150f4",
+            "key": "9437bacb-5dff-450c-a481-d6502e7b6ea6",
             "sequence": [
               {
                 "key": "test/inputs/snippets/importa.md",
                 "title": "importa.md",
                 "filepath": "test/inputs/snippets/importa.md",
                 "graph": {
-                  "key": "c39c0810-318c-4550-9b10-5c7e9090efbc",
+                  "key": "e4551006-a5d9-4315-a14f-4ad70a5225d2",
                   "sequence": [
                     {
                       "body": "echo AAA",
                       "language": "bash",
                       "validate": true,
-                      "id": "56ce8f59-63c0-4aba-8676-1dcb37f51404-0"
+                      "id": "62140a74-8f5f-453e-9b40-e193a87fec72-0"
                     }
                   ]
                 },
@@ -35,14 +35,14 @@
         {
           "member": 1,
           "graph": {
-            "key": "d50cf448-bfcc-4a19-908c-5a4e747bbcd4",
+            "key": "509ce04f-367f-4bee-bd6c-214292f64076",
             "sequence": [
               {
                 "key": "test/inputs/snippets/importe.md",
                 "title": "EEE",
                 "filepath": "test/inputs/snippets/importe.md",
                 "graph": {
-                  "key": "27db5c74-638b-4fe1-a4ff-24c15ee2ff9d",
+                  "key": "1dd8cff3-282b-424f-a5a2-a0a651bc7ca4",
                   "sequence": [
                     {
                       "group": "TabE1",
@@ -53,12 +53,12 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "d2537049-3386-4933-a4ad-d80617132b74",
+                            "key": "588e53ef-b4bc-4bdb-8b91-bd636945cc11",
                             "sequence": [
                               {
                                 "body": "echo EEE",
                                 "language": "bash",
-                                "id": "56ce8f59-63c0-4aba-8676-1dcb37f51404-1"
+                                "id": "62140a74-8f5f-453e-9b40-e193a87fec72-1"
                               }
                             ]
                           },
