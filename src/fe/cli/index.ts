@@ -37,7 +37,7 @@ function enableTracing(task: DebugTask, subtask = "*") {
 
 export async function cli<Writer extends (msg: string) => boolean>(
   _argv: string[],
-  write?: Writer,
+  write: Writer,
   providedOptions: MadWizardOptions = {}
 ) {
   // TODO replace this with yargs or something like that
@@ -108,7 +108,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
       break
 
     case "vetoes":
-      write(await vetoesToString(blocks, choices, options))
+      (write || process.stdout.write.bind(process.stdout))(await vetoesToString(blocks, choices, options))
       break
 
     case "json": {
