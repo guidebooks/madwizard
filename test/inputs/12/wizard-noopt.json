@@ -4,7 +4,7 @@
       "body": "echo AAA",
       "language": "shell",
       "validate": "echo true",
-      "id": "edc41a30-388c-4bc6-8f46-fc1a7e204255-0"
+      "id": "05baa4c9-90dc-4f49-acb0-9627353ecd4f-0"
     },
     "step": {
       "content": "```shell\necho AAA\n```"

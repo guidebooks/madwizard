@@ -72,16 +72,14 @@ const rehypePlugins = (
   uuid: string,
   choices: ChoiceState,
   codeblocks: CodeBlockProps[],
-  madwizardOptions: MadWizardOptions
+  madwizardOptions: MadWizardOptions,
+  filepath: string
 ): PluggableList => [
   wizard,
   [rehypeTabbed, uuid, choices, madwizardOptions],
   rehypeTip,
-  [rehypeCodeIndexer, uuid, codeblocks],
+  [rehypeCodeIndexer, uuid, filepath, codeblocks],
   rehypeImports,
-  // icons,
-  // rehypeRaw,
-  // rehypeSlug,
 ]
 
 /** Parse the given `input` into a `Graph` syntax tree. */
@@ -102,7 +100,7 @@ async function parse(
       .use(remarkParse)
       .use(remarkPlugins())
       .use(remarkRehype, { allowDangerousHtml: true })
-      .use(rehypePlugins(uuid, choices, blocks, madwizardOptions))
+      .use(rehypePlugins(uuid, choices, blocks, madwizardOptions, input.path))
 
     const fetcher = (filepath: string) => reader(new VFile({ path: filepath })).then((_) => _.value.toString())
 

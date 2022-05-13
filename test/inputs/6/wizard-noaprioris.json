@@ -9,25 +9,25 @@
         {
           "member": 0,
           "graph": {
-            "key": "a6d10fd0-b9ac-408b-a861-293291c4ac5a",
+            "key": "1632279e-ee3c-4180-87bc-1367490dfac6",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "fab35748-5051-46f3-9516-6b6baa0d8c40-0"
+                "id": "ed278146-21d6-4ba3-833a-1f0198ce21f5-0"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "fab35748-5051-46f3-9516-6b6baa0d8c40-1"
+                "id": "ed278146-21d6-4ba3-833a-1f0198ce21f5-1"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "fab35748-5051-46f3-9516-6b6baa0d8c40-2"
+                "id": "ed278146-21d6-4ba3-833a-1f0198ce21f5-2"
               }
             ]
           },
@@ -36,13 +36,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "03e7bb60-d06e-4965-a933-d7a1e0273a54",
+            "key": "09ad4bc9-fa18-4da6-9986-5ef695ef734f",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "fab35748-5051-46f3-9516-6b6baa0d8c40-3"
+                "id": "ed278146-21d6-4ba3-833a-1f0198ce21f5-3"
               }
             ]
           },
@@ -79,12 +79,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "3967bc20-1907-4963-9e3a-c77db8bae0ba",
+            "key": "c268d0e3-4419-4669-8501-d7d3db3fd3db",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "fab35748-5051-46f3-9516-6b6baa0d8c40-5"
+                "id": "ed278146-21d6-4ba3-833a-1f0198ce21f5-5"
               }
             ]
           },
@@ -117,12 +117,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "2b80bc62-11c0-4a00-9c35-37acdef566b9",
+            "key": "ce85fc99-8a6e-4c16-830c-193572aa3400",
             "sequence": [
               {
                 "body": "echo XXX",
                 "language": "bash",
-                "id": "fab35748-5051-46f3-9516-6b6baa0d8c40-10"
+                "id": "ed278146-21d6-4ba3-833a-1f0198ce21f5-10"
               }
             ]
           },

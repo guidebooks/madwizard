@@ -112,7 +112,9 @@ export async function compile(
 
     /** Find the nearest enclosing Import */
     const currentProvenance = () => {
-      const provs = currentNesting.map((_) => (isImportNesting(_) ? provenanceOf(_.graph) : undefined)).filter(Boolean)
+      const provs = currentNesting
+        .map((_) => (isImportNesting(_) ? _.parent.provenance || provenanceOf(_.graph) : undefined))
+        .filter(Boolean)
       if (provs.length === 0) {
         return undefined
       } else {

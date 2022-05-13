@@ -4,26 +4,28 @@
       "group": "Tab1",
       "title": "MainTitle",
       "source": "placeholder",
+      "provenance": ["test/inputs/15/in.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "96d464dd-d231-4ceb-9a7b-ff887f4b46fa",
+            "key": "4c8db03b-acdf-418f-aa1c-b55022c0a728",
             "sequence": [
               {
                 "group": "SubTab1####SubTab2",
                 "title": "Tab1",
                 "source": "placeholder",
+                "provenance": ["test/inputs/15/in.md"],
                 "choices": [
                   {
                     "member": 0,
                     "graph": {
-                      "key": "b03f2a38-8f58-4922-8f6d-fa45d6c6bddf",
+                      "key": "d4f76638-0a4d-423b-a309-ca831efeb4c4",
                       "sequence": [
                         {
                           "body": "echo 111",
                           "language": "shell",
-                          "id": "cf5075df-dc27-4824-ae03-bc322bbb70ee-0"
+                          "id": "f3e86389-832c-44e8-b028-3801d54ff10a-0"
                         }
                       ]
                     },
@@ -32,12 +34,12 @@
                   {
                     "member": 1,
                     "graph": {
-                      "key": "fc337cee-8ada-403b-8389-9c910ac2dd89",
+                      "key": "30d7ee73-011d-44dc-ad75-3b0067e3aff0",
                       "sequence": [
                         {
                           "body": "echo 222",
                           "language": "shell",
-                          "id": "cf5075df-dc27-4824-ae03-bc322bbb70ee-1"
+                          "id": "f3e86389-832c-44e8-b028-3801d54ff10a-1"
                         }
                       ]
                     },

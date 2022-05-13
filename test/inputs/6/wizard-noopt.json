@@ -9,25 +9,25 @@
         {
           "member": 0,
           "graph": {
-            "key": "b0cd2d39-7f1a-409d-8429-d213660ccbaf",
+            "key": "f7eb7dd5-9fab-4ba3-ba48-b5246f820b71",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-0"
+                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-0"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-1"
+                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-1"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-2"
+                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-2"
               }
             ]
           },
@@ -36,13 +36,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "320cc37b-1f9d-47c3-8356-c2fe13f4e8ba",
+            "key": "3250f0bf-5182-403a-8120-679a823c6531",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-3"
+                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-3"
               }
             ]
           },
@@ -75,13 +75,13 @@
       "title": "importa.md",
       "filepath": "",
       "graph": {
-        "key": "76cedd7c-3a2e-42a6-a5eb-d55d9c72bfff",
+        "key": "c5b9d762-7bfc-4c39-872f-c115a91f1574",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-4"
+            "id": "72db12c8-8f73-4338-a386-d2e359a50a40-4"
           }
         ]
       },
@@ -102,12 +102,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "11016b46-e5cd-4839-9b82-0ff6ba346a07",
+            "key": "2a1943ec-0ad4-40cf-8ed0-addff2c80c23",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-5"
+                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-5"
               }
             ]
           },
@@ -139,14 +139,14 @@
         {
           "member": 0,
           "graph": {
-            "key": "4a217d24-aca7-457e-9ce6-c105c75a9601",
+            "key": "962feb3e-8686-4abb-9036-53aa0de2bcb6",
             "sequence": [
               {
                 "key": "test/inputs/snippets/importd.md",
                 "title": "DDD",
                 "filepath": "test/inputs/snippets/importd.md",
                 "graph": {
-                  "key": "709b646a-2dbf-4dcd-8e08-b6c64d6f0855",
+                  "key": "3eb81a18-b90b-4fef-a464-dbcac6ff18cf",
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
@@ -157,25 +157,25 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "e114a4ef-5648-426d-998f-aec21a09d5ec",
+                            "key": "d8e4701b-d072-428c-9b5e-60e9307b14ef",
                             "sequence": [
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-6"
+                                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-6"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-7"
+                                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-7"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-8"
+                                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-8"
                               }
                             ]
                           },
@@ -184,13 +184,13 @@
                         {
                           "member": 1,
                           "graph": {
-                            "key": "5b026722-c636-4cd7-9c73-58ace3031be3",
+                            "key": "442c2fa0-16ec-4ac1-98f5-aa82082521d1",
                             "sequence": [
                               {
                                 "body": "echo BBB",
                                 "language": "bash",
                                 "validate": false,
-                                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-9"
+                                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-9"
                               }
                             ]
                           },
@@ -210,12 +210,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "4fba5faf-3ad7-4b02-b9e8-2e4ee52cc5a9",
+            "key": "cc1110df-c18b-436e-93eb-f497086813b8",
             "sequence": [
               {
                 "body": "echo XXX",
                 "language": "bash",
-                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-10"
+                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-10"
               }
             ]
           },
@@ -225,14 +225,14 @@
         {
           "member": 2,
           "graph": {
-            "key": "85e3afc2-6099-49d3-adbd-0c8eef7504b1",
+            "key": "cc88a9f7-02fd-4fb5-aec6-1a2e251b7687",
             "sequence": [
               {
                 "key": "test/inputs/snippets/importd.md",
                 "title": "DDD",
                 "filepath": "test/inputs/snippets/importd.md",
                 "graph": {
-                  "key": "1f9d42ce-2f20-4bf3-8b71-ae17d4f8c101",
+                  "key": "5a708f90-1423-4985-8f0a-c2efbc20c50b",
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
@@ -243,25 +243,25 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "e6cf4634-3968-4f8d-a0d2-74bd993c1c1b",
+                            "key": "676f64c8-1b60-4018-bff3-0736fb91a1e8",
                             "sequence": [
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-11"
+                                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-11"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-12"
+                                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-12"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-13"
+                                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-13"
                               }
                             ]
                           },
@@ -270,13 +270,13 @@
                         {
                           "member": 1,
                           "graph": {
-                            "key": "dea61320-1c2f-499a-aa3b-e3ebd7afb605",
+                            "key": "e6cdf0f1-43c4-4fb5-9d69-ff37dccea36d",
                             "sequence": [
                               {
                                 "body": "echo BBB",
                                 "language": "bash",
                                 "validate": false,
-                                "id": "74d1ac2a-ab1a-47ff-bad9-9b8cda6f4087-14"
+                                "id": "72db12c8-8f73-4338-a386-d2e359a50a40-14"
                               }
                             ]
                           },

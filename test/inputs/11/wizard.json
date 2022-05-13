@@ -5,12 +5,12 @@
       "title": "Text versus HTML?",
       "filepath": "",
       "graph": {
-        "key": "3d024f21-6448-490e-aad6-67223f5d080b",
+        "key": "8929755b-da27-4d2b-be50-c03b74dda26c",
         "sequence": [
           {
             "body": "echo text",
             "language": "shell",
-            "id": "2c074cba-4c63-434f-ae76-e831acf8da28-0"
+            "id": "4862731b-fc5d-4821-82a2-c800a5f59a3c-0"
           }
         ]
       },

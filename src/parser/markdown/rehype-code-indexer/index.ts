@@ -21,6 +21,8 @@ import { Transformer } from "unified"
 import { toString } from "hast-util-to-string"
 import { visitParents } from "unist-util-visit-parents"
 
+import { provenanceOfFilepath } from "../../../graph/provenance"
+
 import dump from "./dump"
 import { isTab } from "../rehype-tabbed"
 import { isExecutable } from "../../../codeblock/isCodeBlock"
@@ -124,8 +126,12 @@ function findNearestEnclosingTitle(grandparent: Parent, parent: Node, node: Node
 /**
  * This rehype plugin adds a unique codeIdx ordinal property to each
  * executable code block.
+ *
+ * @param uuid an identifier for this document
+ * @param filepath the origin filepath of this document
+ * @param codeblocks in case the caller wants us to smash in the codeblocks we find
  */
-export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
+export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: CodeBlockProps[]) {
   const transformer: Transformer<Element> = (ast /*: Root */) => {
     const timing = Debug("madwizard/timing/parser:markdown/rehype-code-indexer")
     const debug = Debug("madwizard/graph/parser:markdown/rehype-code-indexer")
@@ -304,8 +310,9 @@ export function rehypeCodeIndexer(uuid: string, codeblocks?: CodeBlockProps[]) {
                               source,
                               key: title,
                               title,
-                              description: extractFirstParagraph(grandparent, child),
                               filepath: "",
+                              provenance: provenanceOfFilepath(filepath),
+                              description: extractFirstParagraph(grandparent, child),
                             },
                             0
                           )

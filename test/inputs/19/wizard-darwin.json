@@ -4,16 +4,17 @@
       "group": "Local Install####Kubernetes Install",
       "title": "Install Ray",
       "source": "placeholder",
+      "provenance": ["test/inputs/19/in.md"],
       "choices": [
         {
           "member": 0,
           "graph": {
-            "key": "ec5f1c5e-8185-435e-83e3-48140c7014cf",
+            "key": "d7eba1b7-c7a7-400c-82f4-f60ef3686e43",
             "sequence": [
               {
                 "body": "pip install -U ray",
                 "language": "shell",
-                "id": "35c7f575-f9b2-436f-b809-8dec5d3db536-2"
+                "id": "43b5656d-a3fa-4a50-9d3e-5d53711c71b4-2"
               }
             ]
           },
@@ -23,26 +24,26 @@
         {
           "member": 1,
           "graph": {
-            "key": "352abe3b-dec9-4dfb-9472-e10a8a478c89",
+            "key": "af936d2c-9ab2-4871-ba74-2e5af5fd91ab",
             "sequence": [
               {
                 "key": "test/inputs/19/snippets/kubectl.md",
                 "title": "Install kubectl",
                 "filepath": "test/inputs/19/snippets/kubectl.md",
                 "graph": {
-                  "key": "4989998e-1b9f-4ddd-a174-cd6ebd2e7146",
+                  "key": "2e03cae2-2f9e-4566-88f8-22c4e4b8e77e",
                   "sequence": [
                     {
                       "key": "org.kubernetes-sigs.kui/choice/platform",
                       "title": "Install kubectl",
                       "filepath": "",
                       "graph": {
-                        "key": "ad835feb-be88-4399-a9c0-06fb50d7cf23",
+                        "key": "324b4206-8fca-44de-8bb0-efcd21a7424c",
                         "sequence": [
                           {
                             "body": "brew install kubectl",
                             "language": "bash",
-                            "id": "35c7f575-f9b2-436f-b809-8dec5d3db536-16"
+                            "id": "43b5656d-a3fa-4a50-9d3e-5d53711c71b4-16"
                           }
                         ]
                       },
@@ -57,19 +58,19 @@
                 "title": "Install Helm",
                 "filepath": "test/inputs/19/snippets/helm3.md",
                 "graph": {
-                  "key": "6b0fde49-9efc-4de3-bd36-503500c1cfff",
+                  "key": "58030172-a7c9-4c44-a28c-80020988d588",
                   "sequence": [
                     {
                       "key": "org.kubernetes-sigs.kui/choice/platform",
                       "title": "Install Helm",
                       "filepath": "",
                       "graph": {
-                        "key": "4a06a080-5722-4ed1-bf18-423c34895f98",
+                        "key": "8a94a30b-33a3-43d9-8894-596839bb0e22",
                         "sequence": [
                           {
                             "body": "brew install helm",
                             "language": "shell",
-                            "id": "35c7f575-f9b2-436f-b809-8dec5d3db536-21"
+                            "id": "43b5656d-a3fa-4a50-9d3e-5d53711c71b4-21"
                           }
                         ]
                       },
@@ -82,7 +83,7 @@
               {
                 "body": "helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/\nkubectl wait --for=condition=available --all rayclusters",
                 "language": "shell",
-                "id": "35c7f575-f9b2-436f-b809-8dec5d3db536-25"
+                "id": "43b5656d-a3fa-4a50-9d3e-5d53711c71b4-25"
               }
             ]
           },
