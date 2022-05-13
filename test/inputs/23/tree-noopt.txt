@@ -1,0 +1,147 @@
+Run a Ray Job
+├── Install Ray
+│   ├── Option 1: Local Install
+│   │   ├── Option 1: Intel
+│   │   │   └── pip install -U ray
+│   │   └── Option 2: Apple Silicon
+│   │       ├── Conda: Installation
+│   │       │   ├── Choose a Conda Installation Method
+│   │       │   │   ├── Option 1: Install Miniconda
+│   │       │   │   │   ├── Option 2: Linux
+│   │       │   │   │   │   ├── Option 1: Intel
+│   │       │   │   │   │   │   └── curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+│   │       │   │   │   │   │       bash Miniconda3-latest-Linux-x86_64.sh -b -p ~/miniconda
+│   │       │   │   │   │   └── Option 2: ARM64
+│   │       │   │   │   │       └── curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
+│   │       │   │   │   │           bash Miniconda3-latest-Linux-aarch64.sh -b -p $HOME/miniconda
+│   │       │   │   │   └── Option 3: MacOS
+│   │       │   │   │       ├── Option 1: Intel
+│   │       │   │   │       │   └── curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+│   │       │   │   │       │       bash Miniconda3-latest-MacOSX-x86_64.sh -b -p $HOME/miniconda
+│   │       │   │   │       └── Option 2: Apple Silicon
+│   │       │   │   │           └── curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
+│   │       │   │   │               bash Miniconda3-latest-MacOSX-arm64.sh -b -p $HOME/miniconda
+│   │       │   │   └── Option 2: Install Anaconda
+│   │       │   │       ├── Option 1: MacOS
+│   │       │   │       │   └── curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh
+│   │       │   │       │       bash Anaconda3-2021.11-MacOSX-x86_64.sh -b -p $HOME/miniconda
+│   │       │   │       └── Option 2: Linux
+│   │       │   │           ├── Option 1: x86
+│   │       │   │           │   └── curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
+│   │       │   │           │       bash Anaconda3-2021.11-Linux-x86_64.sh -b -p $HOME/miniconda
+│   │       │   │           ├── Option 2: POWER8 and POWER9
+│   │       │   │           │   └── curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-ppc64le.sh
+│   │       │   │           │       bash Anaconda3-2021.11-Linux-ppc64le.sh -b -p $HOME/miniconda
+│   │       │   │           ├── Option 3: AWS Graviton2/ARM64
+│   │       │   │           │   └── curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-aarch64.sh
+│   │       │   │           │       bash Anaconda3-2021.11-Linux-aarch64.sh -b -p $HOME/miniconda
+│   │       │   │           └── Option 4: IBM z/Linux and LinuxONE
+│   │       │   │               └── curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-s390x.sh
+│   │       │   │                   bash Anaconda3-2021.11-Linux-s390x.sh -b -p $HOME/miniconda
+│   │       │   └── export PATH=~/miniconda/bin:$PATH
+│   │       └── conda activate
+│   │           pip uninstall grpcio
+│   │           conda install grpcio
+│   │           pip install ray
+│   └── Option 2: Kubernetes Install
+│       ├── Install kubectl
+│       │   ├── Option 1: Linux
+│       │   │   └── curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+│       │   ├── Option 2: Windows
+│       │   │   └── curl -LO "https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe"
+│       │   └── Option 3: MacOS
+│       │       ├── Option 1: Homebrew
+│       │       │   └── brew install kubectl
+│       │       └── Option 2: curl
+│       │           ├── Missing heading for choice
+│       │           │   ├── Option 1: Intel
+│       │           │   │   └── curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl.sha256"
+│       │           │   └── Option 2: Apple Silicon
+│       │           │       └── curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl.sha256"
+│       │           └── curl -LO "https://dl.k8s.io/release/v1.23.0/bin/darwin/amd64/kubectl"
+│       │               And for macOS on Apple Silicon, type:
+│       │                   
+│       │               curl -LO "https://dl.k8s.io/release/v1.23.0/bin/darwin/arm64/kubectl"
+│       ├── Install Helm v3
+│       │   ├── Option 1: MacOS
+│       │   │   ├── Option 1: Homebrew
+│       │   │   │   └── brew install helm
+│       │   │   └── Option 2: curl
+│       │   │       └── bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)
+│       │   ├── Option 2: Linux
+│       │   │   └── bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)
+│       │   └── Option 3: Windows
+│       │       └── bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)
+│       ├── Choose a Kubernetes context
+│       │   ├── Install kubectl
+│       │   │   ├── Option 1: Linux
+│       │   │   │   └── curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+│       │   │   ├── Option 2: Windows
+│       │   │   │   └── curl -LO "https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe"
+│       │   │   └── Option 3: MacOS
+│       │   │       ├── Option 1: Homebrew
+│       │   │       │   └── brew install kubectl
+│       │   │       └── Option 2: curl
+│       │   │           ├── Missing heading for choice
+│       │   │           │   ├── Option 1: Intel
+│       │   │           │   │   └── curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl.sha256"
+│       │   │           │   └── Option 2: Apple Silicon
+│       │   │           │       └── curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl.sha256"
+│       │   │           └── curl -LO "https://dl.k8s.io/release/v1.23.0/bin/darwin/amd64/kubectl"
+│       │   │               And for macOS on Apple Silicon, type:
+│       │   │                   
+│       │   │               curl -LO "https://dl.k8s.io/release/v1.23.0/bin/darwin/arm64/kubectl"
+│       │   └── Choose a Kubernetes context
+│       │       └── Option 1: fakeit
+│       │           └── kubectl config set-context ""
+│       └── helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/
+│           kubectl wait --for=condition=available --all rayclusters
+└── Run a Ray Job
+    ├── Option 1: Example: Using Ray Tasks to Parallelize a Function
+    │   └── import ray
+    │       ray.init()
+    │       @ray.remote
+    │       def f(x):
+    │           return x * x
+    │       futures = [f.remote(i) for i in range(4)]
+    │       print(ray.get(futures)) 
+    ├── Option 2: Example: Using Ray Actors to Parallelize a Class
+    │   └── import ray
+    │       ray.init() 
+    │       @ray.remote
+    │       class Counter(object):
+    │           def __init__(self):
+    │               self.n = 0
+    │           def increment(self):
+    │               self.n += 1
+    │           def read(self):
+    │               return self.n
+    │       counters = [Counter.remote() for i in range(4)]
+    │       [c.increment.remote() for c in counters]
+    │       futures = [c.read.remote() for c in counters]
+    │       print(ray.get(futures)) 
+    └── Option 3: Example: Creating and Transforming Datasets
+        ├── Install Ray Data
+        │   └── pip install "ray[data]" dask
+        └── Creating and Transforming Datasets
+            ├── Option 1: New Dataset from Range
+            │   └── import ray
+            │       ds = ray.data.range(10000)
+            │       ds.take(5)
+            │       ds.count()
+            │       ds = ray.data.from_items([{"col1": i, "col2": str(i)} for i in range(10000)])
+            │       ds.show(5)
+            │       ds.schema()
+            └── Option 2: New Dataset from File
+                └── import ray
+                    import pandas as pd
+                    import dask.dataframe as dd
+                    pdf = pd.DataFrame({"one": [1, 2, 3], "two": ["a", "b", "c"]})
+                    ds = ray.data.from_pandas([pdf])
+                    dask_df = dd.from_pandas(pdf, npartitions=10)
+                    ds = ray.data.from_dask(dask_df)
+                    ds = ray.data.range(10000)
+                    ds = ds.map(lambda x: x * 2)
+                    ds.take(5)
+                    ds.filter(lambda x: x > 5).take(5)
+                    ds.flat_map(lambda x: [x, -x]).take(5)

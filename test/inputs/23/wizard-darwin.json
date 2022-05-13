@@ -1,0 +1,338 @@
+[
+  {
+    "graph": {
+      "group": "Local Install####Kubernetes Install",
+      "title": "Install Ray",
+      "source": "placeholder",
+      "provenance": ["test/inputs/23/install/index.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "5e4d5677-e949-4c82-b572-b2f7749c5206",
+            "sequence": [
+              {
+                "body": "pip install -U ray",
+                "language": "shell",
+                "id": "94f3eb3e-3a5b-4a90-b6ab-4961d1b6c99c-0"
+              }
+            ]
+          },
+          "title": "Local Install",
+          "description": "\nThis will install Ray on your laptop."
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "89d02be4-fb26-45df-a035-a66803ec5f95",
+            "sequence": [
+              {
+                "key": "test/inputs/23/kubernetes/kubectl.md",
+                "title": "Install kubectl",
+                "filepath": "test/inputs/23/kubernetes/kubectl.md",
+                "graph": {
+                  "key": "f84c2e33-3dfe-4c4e-ba3b-a32d317da2c5",
+                  "sequence": [
+                    {
+                      "key": "org.kubernetes-sigs.kui/choice/platform",
+                      "title": "Install kubectl",
+                      "filepath": "",
+                      "graph": {
+                        "key": "178b0fb4-b9b4-4fc2-b2ce-2d3e9c7c4090",
+                        "sequence": [
+                          {
+                            "body": "brew install kubectl",
+                            "language": "bash",
+                            "id": "94f3eb3e-3a5b-4a90-b6ab-4961d1b6c99c-14"
+                          }
+                        ]
+                      },
+                      "source": "placeholder"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              },
+              {
+                "key": "test/inputs/23/kubernetes/helm3.md",
+                "title": "Install Helm v3",
+                "filepath": "test/inputs/23/kubernetes/helm3.md",
+                "graph": {
+                  "key": "a99c24ed-d83e-4066-81e7-8e73c8fc1476",
+                  "sequence": [
+                    {
+                      "key": "org.kubernetes-sigs.kui/choice/platform",
+                      "title": "Install Helm v3",
+                      "filepath": "",
+                      "graph": {
+                        "key": "b947e513-ec94-423c-8c42-9217c7c9d6d7",
+                        "sequence": [
+                          {
+                            "body": "brew install helm",
+                            "language": "shell",
+                            "id": "94f3eb3e-3a5b-4a90-b6ab-4961d1b6c99c-18"
+                          }
+                        ]
+                      },
+                      "source": "placeholder"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              },
+              {
+                "key": "test/inputs/23/kubernetes/context.md",
+                "title": "Choose a Kubernetes context",
+                "filepath": "test/inputs/23/kubernetes/context.md",
+                "graph": {
+                  "key": "ba09f616-13fa-4e15-8165-3cba0e155063",
+                  "sequence": [
+                    {
+                      "key": "test/inputs/23/kubernetes/kubectl.md",
+                      "title": "Install kubectl",
+                      "filepath": "test/inputs/23/kubernetes/kubectl.md",
+                      "graph": {
+                        "key": "9ed29527-0ee9-4277-9cba-d91001a83f74",
+                        "sequence": [
+                          {
+                            "key": "org.kubernetes-sigs.kui/choice/platform",
+                            "title": "Install kubectl",
+                            "filepath": "",
+                            "graph": {
+                              "key": "3015470a-ab4d-4857-a6a4-61fd578aea2e",
+                              "sequence": [
+                                {
+                                  "body": "brew install kubectl",
+                                  "language": "bash",
+                                  "id": "94f3eb3e-3a5b-4a90-b6ab-4961d1b6c99c-24"
+                                }
+                              ]
+                            },
+                            "source": "placeholder"
+                          }
+                        ]
+                      },
+                      "source": "placeholder"
+                    },
+                    {
+                      "group": "fakeit",
+                      "title": "Choose a Kubernetes context",
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/23/kubernetes/context.md"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "d488724e-b6d0-4fd1-8cc6-7df18c8f56e7",
+                            "sequence": [
+                              {
+                                "body": "kubectl config set-context \"\"",
+                                "language": "shell",
+                                "id": "94f3eb3e-3a5b-4a90-b6ab-4961d1b6c99c-28"
+                              }
+                            ]
+                          },
+                          "title": "fakeit"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              },
+              {
+                "body": "helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/\nkubectl wait --for=condition=available --all rayclusters",
+                "language": "shell",
+                "id": "94f3eb3e-3a5b-4a90-b6ab-4961d1b6c99c-29"
+              }
+            ]
+          },
+          "title": "Kubernetes Install",
+          "description": "This will install Ray on a Kubernetes context of your choosing.\n"
+        }
+      ]
+    },
+    "step": {
+      "name": "Install Ray",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Local Install",
+          "group": "Local Install####Kubernetes Install",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "\nThis will install Ray on your laptop."
+        },
+        {
+          "title": "Kubernetes Install",
+          "group": "Local Install####Kubernetes Install",
+          "member": 1,
+          "isFirstChoice": true,
+          "description": "This will install Ray on a Kubernetes context of your choosing.\n"
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
+      "group": "Example: Using Ray Tasks to Parallelize a Function####Example: Using Ray Actors to Parallelize a Class####Example: Creating and Transforming Datasets",
+      "title": "Run a Ray Job",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "552a9f15-666b-42ad-b157-87c012fddd6d",
+            "sequence": [
+              {
+                "body": "import ray\nray.init()\n\n@ray.remote\ndef f(x):\n    return x * x\n\nfutures = [f.remote(i) for i in range(4)]\nprint(ray.get(futures)) # [0, 1, 4, 9]",
+                "language": "python",
+                "id": "94f3eb3e-3a5b-4a90-b6ab-4961d1b6c99c-30"
+              }
+            ]
+          },
+          "title": "Example: Using Ray Tasks to Parallelize a Function",
+          "description": "First, you import Ray and and initialize it with `ray.init()`. Then you decorate your function with `@ray.remote` to declare that you want to run this function remotely. Lastly, you call that function with `.remote()` instead of calling it normally. This remote call yields a future, a so-called Ray object reference, that you can then fetch with `ray.get`.\n"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "33a2c733-32c0-4aea-8d77-11394b16e7ba",
+            "sequence": [
+              {
+                "body": "import ray\nray.init() # Only call this once.\n\n@ray.remote\nclass Counter(object):\n    def __init__(self):\n        self.n = 0\n\n    def increment(self):\n        self.n += 1\n\n    def read(self):\n        return self.n\n\ncounters = [Counter.remote() for i in range(4)]\n[c.increment.remote() for c in counters]\nfutures = [c.read.remote() for c in counters]\nprint(ray.get(futures)) # [1, 1, 1, 1]",
+                "language": "python",
+                "id": "94f3eb3e-3a5b-4a90-b6ab-4961d1b6c99c-31"
+              }
+            ]
+          },
+          "title": "Example: Using Ray Actors to Parallelize a Class",
+          "description": "Ray provides actors to allow you to parallelize an instance of a class in Python or Java. When you instantiate a class that is a Ray actor, Ray will start a remote instance of that class in the cluster. This actor can then execute remote method calls and maintain its own internal state.\n"
+        },
+        {
+          "member": 2,
+          "graph": {
+            "key": "c5f6403b-5f4d-4885-9357-8128f3c07c37",
+            "sequence": [
+              {
+                "key": "Creating and Transforming Datasets",
+                "title": "Creating and Transforming Datasets",
+                "filepath": "",
+                "graph": {
+                  "key": "af948c6b-60f4-49f0-b033-566de658f292",
+                  "sequence": [
+                    {
+                      "key": "Prerequisites",
+                      "title": "Prerequisites",
+                      "filepath": "",
+                      "graph": {
+                        "key": "56769328-b844-49c1-bb49-9e9ad39bd291",
+                        "sequence": [
+                          {
+                            "key": "test/inputs/23/data.md",
+                            "title": "Install Ray Data",
+                            "filepath": "test/inputs/23/data.md",
+                            "graph": {
+                              "key": "eb9dcdab-4567-4e68-9e0c-3e8e4cf491ab",
+                              "sequence": [
+                                {
+                                  "body": "pip install \"ray[data]\" dask",
+                                  "language": "shell",
+                                  "id": "94f3eb3e-3a5b-4a90-b6ab-4961d1b6c99c-32"
+                                }
+                              ]
+                            },
+                            "source": "placeholder"
+                          }
+                        ]
+                      },
+                      "source": "placeholder"
+                    },
+                    {
+                      "key": "Creating and Transforming Datasets",
+                      "title": "Main Tasks",
+                      "filepath": "",
+                      "graph": {
+                        "key": "746cc211-0f54-48f9-af60-c727025078df",
+                        "sequence": [
+                          {
+                            "group": "New Dataset from Range####New Dataset from File",
+                            "title": "Main Tasks",
+                            "source": "placeholder",
+                            "choices": [
+                              {
+                                "member": 0,
+                                "graph": {
+                                  "key": "9e498580-95f0-4e52-89e7-f7dad0b1b929",
+                                  "sequence": [
+                                    {
+                                      "body": "import ray\n\n# Create a Dataset of Python objects.\nds = ray.data.range(10000)\n# -> Dataset(num_blocks=200, num_rows=10000, schema=<class 'int'>)\n\nds.take(5)\n# -> [0, 1, 2, 3, 4]\n\nds.count()\n# -> 10000\n\n# Create a Dataset of Arrow records.\nds = ray.data.from_items([{\"col1\": i, \"col2\": str(i)} for i in range(10000)])\n# -> Dataset(num_blocks=200, num_rows=10000, schema={col1: int64, col2: string})\n\nds.show(5)\n# -> {'col1': 0, 'col2': '0'}\n# -> {'col1': 1, 'col2': '1'}\n# -> {'col1': 2, 'col2': '2'}\n# -> {'col1': 3, 'col2': '3'}\n# -> {'col1': 4, 'col2': '4'}\n\nds.schema()\n# -> col1: int64\n# -> col2: string",
+                                      "language": "python",
+                                      "id": "94f3eb3e-3a5b-4a90-b6ab-4961d1b6c99c-33"
+                                    }
+                                  ]
+                                },
+                                "title": "New Dataset from Range",
+                                "description": "\nGet started by creating Datasets from synthetic data using\n"
+                              },
+                              {
+                                "member": 1,
+                                "graph": {
+                                  "key": "0724930a-98d2-4f0c-a49b-d565a27c6fe3",
+                                  "sequence": [
+                                    {
+                                      "body": "import ray\nimport pandas as pd\nimport dask.dataframe as dd\n\n# Create a Dataset from a list of Pandas DataFrame objects.\npdf = pd.DataFrame({\"one\": [1, 2, 3], \"two\": [\"a\", \"b\", \"c\"]})\nds = ray.data.from_pandas([pdf])\n\n# Create a Dataset from a Dask-on-Ray DataFrame.\ndask_df = dd.from_pandas(pdf, npartitions=10)\nds = ray.data.from_dask(dask_df)\n\n# Transform the dataset using .map()\nds = ray.data.range(10000)\nds = ds.map(lambda x: x * 2)\n# -> Map Progress: 100%|████████████████████| 200/200 [00:00<00:00, 1123.54it/s]\n# -> Dataset(num_blocks=200, num_rows=10000, schema=<class 'int'>)\nds.take(5)\n# -> [0, 2, 4, 6, 8]\n\n# Transform the dataset using .filter()\nds.filter(lambda x: x > 5).take(5)\n# -> Map Progress: 100%|████████████████████| 200/200 [00:00<00:00, 1859.63it/s]\n# -> [6, 8, 10, 12, 14]\n\n# Transform the dataset using .flat_map()\nds.flat_map(lambda x: [x, -x]).take(5)\n# -> Map Progress: 100%|████████████████████| 200/200 [00:00<00:00, 1568.10it/s]\n# -> [0, 0, 2, -2, 4]",
+                                      "language": "python",
+                                      "id": "94f3eb3e-3a5b-4a90-b6ab-4961d1b6c99c-34"
+                                    }
+                                  ]
+                                },
+                                "title": "New Dataset from File",
+                                "description": "\nDatasets can be created from files on local disk or remote datasources\nsuch as S3. Any filesystem "
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      "source": "placeholder"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Example: Creating and Transforming Datasets",
+          "description": "Ray Datasets are the standard way to load and exchange data in Ray libraries and applications. They provide basic distributed data transformations such as `map`, `filter`, and `repartition`, and are compatible with a variety of file formats, data sources, and distributed frameworks.\n"
+        }
+      ]
+    },
+    "step": {
+      "name": "Run a Ray Job",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Example: Using Ray Tasks to Parallelize a Function",
+          "group": "Example: Using Ray Tasks to Parallelize a Function####Example: Using Ray Actors to Parallelize a Class####Example: Creating and Transforming Datasets",
+          "member": 0,
+          "isFirstChoice": false,
+          "description": "First, you import Ray and and initialize it with `ray.init()`. Then you decorate your function with `@ray.remote` to declare that you want to run this function remotely. Lastly, you call that function with `.remote()` instead of calling it normally. This remote call yields a future, a so-called Ray object reference, that you can then fetch with `ray.get`.\n"
+        },
+        {
+          "title": "Example: Using Ray Actors to Parallelize a Class",
+          "group": "Example: Using Ray Tasks to Parallelize a Function####Example: Using Ray Actors to Parallelize a Class####Example: Creating and Transforming Datasets",
+          "member": 1,
+          "isFirstChoice": false,
+          "description": "Ray provides actors to allow you to parallelize an instance of a class in Python or Java. When you instantiate a class that is a Ray actor, Ray will start a remote instance of that class in the cluster. This actor can then execute remote method calls and maintain its own internal state.\n"
+        },
+        {
+          "title": "Example: Creating and Transforming Datasets",
+          "group": "Example: Using Ray Tasks to Parallelize a Function####Example: Using Ray Actors to Parallelize a Class####Example: Creating and Transforming Datasets",
+          "member": 2,
+          "isFirstChoice": false,
+          "description": "Ray Datasets are the standard way to load and exchange data in Ray libraries and applications. They provide basic distributed data transformations such as `map`, `filter`, and `repartition`, and are compatible with a variety of file formats, data sources, and distributed frameworks.\n"
+        }
+      ]
+    }
+  }
+]
