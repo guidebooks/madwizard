@@ -107,6 +107,7 @@
   },
   "dependencies": {
     "chalk": "^5.0.1",
+    "cli-highlight": "^2.1.11",
     "debug": "^4.3.4",
     "env-paths": "^3.0.0",
     "expand-home-dir": "^0.0.3",

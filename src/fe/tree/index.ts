@@ -261,6 +261,7 @@ export class Treeifier<Content> {
               .map((_) => _.replace(/#.*/, "")) // remove comments
               .filter(Boolean)
               .join(EOL),
+            graph.language,
             graph.optional,
 
             // indicate this as having been validated?
