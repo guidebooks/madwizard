@@ -209,11 +209,12 @@ function findAndHoistChoiceFrontier(graph: void | Graph, inheritedSubTasks: SubT
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     const recurse = graph.choices.map((_) => hoist(_.graph, inheritedSubTasks))
     return Object.assign({}, graph, {
-      choices: graph.choices.map((_, idx) =>
-        Object.assign({}, _, {
-          graph: recurse[idx],
+      choices: graph.choices.map((_, idx) => {
+        const subgraph = recurse[idx]
+        return Object.assign({}, _, {
+          graph: !subgraph || isSequence(subgraph) ? subgraph : sequence([subgraph]),
         })
-      ),
+      }),
     })
   } else if (isSubTask(graph)) {
     const recurse = findAndHoistChoiceFrontier(graph.graph, inheritedSubTasks)

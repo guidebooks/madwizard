@@ -1,0 +1,69 @@
+Run a Ray Job
+├── Prerequisites
+│   └── Install Ray
+│       ├── Option 1: Local Install
+│       │   └── pip install -U ray
+│       └── Option 2: Kubernetes Install
+│           ├── Install kubectl
+│           │   └── curl -LO "https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe"
+│           ├── Install Helm v3
+│           │   └── bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)
+│           ├── Choose a Kubernetes context
+│           │   ├── Install kubectl
+│           │   │   └── curl -LO "https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe"
+│           │   └── Choose a Kubernetes context
+│           │       └── Option 1: fakeit
+│           │           └── kubectl config set-context ""
+│           └── helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/
+│               kubectl wait --for=condition=available --all rayclusters
+└── Main Tasks
+    ├── Option 1: Example: Using Ray Tasks to Parallelize a Function
+    │   └── import ray
+    │       ray.init()
+    │       @ray.remote
+    │       def f(x):
+    │           return x * x
+    │       futures = [f.remote(i) for i in range(4)]
+    │       print(ray.get(futures)) 
+    ├── Option 2: Example: Using Ray Actors to Parallelize a Class
+    │   └── import ray
+    │       ray.init() 
+    │       @ray.remote
+    │       class Counter(object):
+    │           def __init__(self):
+    │               self.n = 0
+    │           def increment(self):
+    │               self.n += 1
+    │           def read(self):
+    │               return self.n
+    │       counters = [Counter.remote() for i in range(4)]
+    │       [c.increment.remote() for c in counters]
+    │       futures = [c.read.remote() for c in counters]
+    │       print(ray.get(futures)) 
+    └── Option 3: Example: Creating and Transforming Datasets
+        └── Creating and Transforming Datasets
+            ├── Prerequisites
+            │   └── Install Ray Data
+            │       └── pip install "ray[data]" dask
+            └── Main Tasks
+                ├── Option 1: New Dataset from Range
+                │   └── import ray
+                │       ds = ray.data.range(10000)
+                │       ds.take(5)
+                │       ds.count()
+                │       ds = ray.data.from_items([{"col1": i, "col2": str(i)} for i in range(10000)])
+                │       ds.show(5)
+                │       ds.schema()
+                └── Option 2: New Dataset from File
+                    └── import ray
+                        import pandas as pd
+                        import dask.dataframe as dd
+                        pdf = pd.DataFrame({"one": [1, 2, 3], "two": ["a", "b", "c"]})
+                        ds = ray.data.from_pandas([pdf])
+                        dask_df = dd.from_pandas(pdf, npartitions=10)
+                        ds = ray.data.from_dask(dask_df)
+                        ds = ray.data.range(10000)
+                        ds = ds.map(lambda x: x * 2)
+                        ds.take(5)
+                        ds.filter(lambda x: x > 5).take(5)
+                        ds.flat_map(lambda x: [x, -x]).take(5)
