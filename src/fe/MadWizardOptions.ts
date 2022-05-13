@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { CompilerOptions } from "../graph/compile"
+import type { CompilerOptions } from "../graph/compile"
 
 interface DisplayOptions {
   /** Shorten output of long or multi-line code blocks. */

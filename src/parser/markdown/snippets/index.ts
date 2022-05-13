@@ -25,8 +25,8 @@ import { isUrl, toRawGithubUserContent } from "./urls"
 import { oraPromise } from "../../../util/ora-delayed-promise"
 
 import indent from "../util/indent"
-import { MadWizardOptions } from "../../.."
 import { hasImports } from "../frontmatter/KuiFrontmatter"
+import { MadWizardOptions } from "../../../fe/MadWizardOptions"
 import { tryFrontmatter } from "../frontmatter/frontmatter-parser"
 
 const debug = Debug("madwizard/fetch/snippets")

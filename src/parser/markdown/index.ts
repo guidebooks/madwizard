@@ -24,7 +24,7 @@ import remarkRehype from "remark-rehype"
 import { unified, PluggableList } from "unified"
 
 import { madwizardRead } from "./fetch"
-import { MadWizardOptions } from "../../"
+import { MadWizardOptions } from "../../fe/MadWizardOptions"
 
 import { CodeBlockProps } from "../../codeblock"
 import { ChoiceState, newChoiceState } from "../../choices"

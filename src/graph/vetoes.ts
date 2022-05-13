@@ -17,10 +17,10 @@
 import { EOL } from "os"
 import chalk from "chalk"
 
-import { MadWizardOptions } from ".."
 import { ChoiceState } from "../choices"
 import { CodeBlockProps } from "../codeblock"
 import { Provenance, hasProvenance } from "./provenance"
+import { MadWizardOptions } from "../fe/MadWizardOptions"
 import { CompileOptions, Graph, compile, nodes } from "."
 
 /**

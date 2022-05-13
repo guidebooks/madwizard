@@ -17,15 +17,9 @@
 import { EOL } from "os"
 import Debug from "debug"
 
-import usage from "./usage"
-import { DebugTask, isDebugTask, isValidTask } from "./tasks"
-
-import { MadWizardOptions } from "../MadWizardOptions"
-
-import { parse } from "../../parser"
 import { version } from "../../version"
-import { wizardify } from "../../wizard"
-import { compile, order, vetoesToString } from "../../graph"
+import type { MadWizardOptions } from "../MadWizardOptions"
+import { DebugTask, isDebugTask, isValidTask } from "./tasks"
 
 function assertExhaustive(value: never, message = "Reached unexpected case in exhaustive switch"): never {
   throw new Error(message)
@@ -68,17 +62,18 @@ export async function cli<Writer extends (msg: string) => boolean>(
   const options: MadWizardOptions = Object.assign(commandLineOptions, providedOptions)
 
   if (!task || !input) {
-    return usage(argv)
+    return import("./usage").then((_) => _.default(argv))
   }
 
   if (!isValidTask(task)) {
-    return usage(argv, `Invalid task: ${task}`)
+    return import("./usage").then((_) => _.default(argv, `Invalid task: ${task}`))
   }
 
   if (isDebugTask(task)) {
     enableTracing(task)
   }
 
+  const { parse } = await import("../../parser")
   const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)
 
   switch (task) {
@@ -94,9 +89,9 @@ export async function cli<Writer extends (msg: string) => boolean>(
     case "debug:timing":
     case "debug:fetch": {
       // print out timing
+      const { order, compile } = await import("../../graph")
       const graph = await compile(blocks, choices, options)
-      wizardify(graph)
-
+      await import("../../wizard").then((_) => _.wizardify(graph))
       await import("../tree").then((_) => new _.Treeifier(new _.DevNullUI()).toTree(order(graph)))
       break
     }
@@ -107,13 +102,16 @@ export async function cli<Writer extends (msg: string) => boolean>(
       )
       break
 
-    case "vetoes":
-      (write || process.stdout.write.bind(process.stdout))(await vetoesToString(blocks, choices, options))
+    case "vetoes": {
+      const { vetoesToString } = await import("../../graph")
+      ;(write || process.stdout.write.bind(process.stdout))(await vetoesToString(blocks, choices, options))
       break
+    }
 
     case "json": {
+      const { compile } = await import("../../graph")
       const graph = await compile(blocks, choices, options)
-      const wizard = await wizardify(graph)
+      const wizard = await import("../../wizard").then((_) => _.wizardify(graph))
       ;(write || process.stdout.write.bind(process.stdout))(
         JSON.stringify(
           wizard,

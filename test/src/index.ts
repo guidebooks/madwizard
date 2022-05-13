@@ -24,7 +24,8 @@ import { diffString } from "json-diff"
 import { createRequire } from "module"
 import { readdirSync, readFileSync } from "fs"
 
-import { cli, MadWizardOptions } from "../.."
+import { cli } from "../../dist/cli"
+import { MadWizardOptions } from "../.."
 
 const require = createRequire(import.meta.url)
 const inputDir = join(dirname(require.resolve(".")), "../inputs")

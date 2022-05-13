@@ -3,13 +3,29 @@
   "version": "0.7.10",
   "description": "Turn Markdown into Wizards",
   "source": "src/index.ts",
-  "main": "dist/main.mjs",
+  "main": "dist/api/index.js",
   "type": "module",
   "types": "dist/types.d.ts",
   "sideEffects": false,
   "bin": {
     "mw": "./bin/madwizard.js",
     "madwizard": "./bin/madwizard.js"
+  },
+  "targets": {
+    "cli": {
+      "context": "node",
+      "isLibrary": true,
+      "optimize": true,
+      "outputFormat": "esmodule",
+      "source": "src/fe/cli/index.ts"
+    },
+    "api": {
+      "context": "node",
+      "optimize": true,
+      "isLibrary": true,
+      "outputFormat": "esmodule",
+      "source": "src/index.ts"
+    }
   },
   "scripts": {
     "lint": "cross-env eslint . --ext .js,.jsx,.ts,.tsx",
@@ -100,6 +116,7 @@
     "lint-staged": "^12.4.1",
     "parcel": "^2.5.0",
     "prettier": "^2.6.2",
+    "stream-http": "^3.2.0",
     "strip-ansi": "^7.0.1",
     "typedoc": "^0.22.15",
     "typedoc-plugin-markdown": "^3.12.1",

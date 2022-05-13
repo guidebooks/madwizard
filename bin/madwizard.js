@@ -9,7 +9,7 @@
 
 const isNpx = process.env.npm_command === "exec"
 
-import(isNpx ? "madwizard" : "..")
+import(isNpx ? "madwizard/dist/cli" : "../dist/cli")
   .then((_) => _.cli(process.argv.slice(1)))
   .catch((err) => {
     if (process.env.DEBUG) {

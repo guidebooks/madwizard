@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-// CLI
-export * from "./fe/cli"
-
 // UI support
 export * from "./fe/tree"
 

@@ -25,9 +25,9 @@ import inquirer, { Question, Answers } from "inquirer"
 
 import { taskRunner, Task } from "./taskrunner"
 
-import { MadWizardOptions } from "../../"
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
+import { MadWizardOptions } from "../MadWizardOptions"
 import indent from "../../parser/markdown/util/indent"
 import { Memos, Memoizer, statusOf } from "../../memoization"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"

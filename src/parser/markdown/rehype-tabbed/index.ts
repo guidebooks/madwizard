@@ -19,7 +19,8 @@ import { Transformer } from "unified"
 import { Element, ElementContent } from "hast"
 
 import isElementWithProperties from "../util/isElement"
-import { ChoiceState, MadWizardOptions } from "../../.."
+import { ChoiceState } from "../../../choices"
+import { MadWizardOptions } from "../../../fe/MadWizardOptions"
 import { identifyRecognizableTabGroups } from "../../../choices/groups"
 
 import populateTabs from "./populate"
