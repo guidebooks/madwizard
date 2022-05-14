@@ -112,6 +112,20 @@ function execAsWhich(cmdline: string | boolean) {
   }
 }
 
+/** Check if a python package is installed */
+function execAsPythonPackageCheck(cmdline: string | boolean, opts: ExecOptions) {
+  if (typeof cmdline === "string") {
+    const match = cmdline.match(/^\s*madwizard-python-package-installed\s+([^[]+)(\[(.+)\])?$/)
+    if (match) {
+      const packageName = `"${match[1]}"` + (match[3] ? `, "${match[3]}"` : "")
+      return shellItOut(
+        `python3 -c 'import sys; import os; import site; sys.exit(0) if os.path.isdir(os.path.join(site.getsitepackages()[0], ${packageName})) else sys.exit(1)'`,
+        opts
+      )
+    }
+  }
+}
+
 function pythonItOut(cmdline: string | boolean, opts: ExecOptions) {
   return new Promise<"success">((resolve, reject) => {
     tmpFile({ postfix: ".py" }, (err, filepath, fd) => {
@@ -137,7 +151,12 @@ export async function shellExec(
   language: SupportedLanguage = "shell"
 ): Promise<"success"> {
   if (isShellish(language)) {
-    return execAsExport(cmdline, opts) || execAsWhich(cmdline) || shellItOut(cmdline, opts)
+    return (
+      execAsExport(cmdline, opts) ||
+      execAsWhich(cmdline) ||
+      execAsPythonPackageCheck(cmdline, opts) ||
+      shellItOut(cmdline, opts)
+    )
   } else if (isPythonic(language)) {
     return pythonItOut(cmdline, opts)
   } else {
