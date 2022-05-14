@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import which from "which"
 import { write } from "fs"
 import { spawn } from "child_process"
 import { file as tmpFile } from "tmp"
@@ -101,6 +102,34 @@ function execAsExport(cmdline: string | boolean, opts: ExecOptions) {
   }
 }
 
+/** See if we are being asked to execute `which somethingSomething` */
+function execAsWhich(cmdline: string | boolean) {
+  if (typeof cmdline === "string") {
+    const match = cmdline.match(/^\s*which\s+([^$]\S*)$/)
+    if (match) {
+      return which(match[1]).then(() => "success" as const)
+    }
+  }
+}
+
+function pythonItOut(cmdline: string | boolean, opts: ExecOptions) {
+  return new Promise<"success">((resolve, reject) => {
+    tmpFile({ postfix: ".py" }, (err, filepath, fd) => {
+      if (err) {
+        reject(err)
+      } else {
+        write(fd, cmdline.toString(), (err) => {
+          if (err) {
+            reject(err)
+          } else {
+            shellItOut(`python3 -u "${filepath}"`, opts).then(resolve, reject)
+          }
+        })
+      }
+    })
+  })
+}
+
 /** Shell out the execution of the given `cmdline` */
 export async function shellExec(
   cmdline: string | boolean,
@@ -108,23 +137,9 @@ export async function shellExec(
   language: SupportedLanguage = "shell"
 ): Promise<"success"> {
   if (isShellish(language)) {
-    return execAsExport(cmdline, opts) || shellItOut(cmdline, opts)
+    return execAsExport(cmdline, opts) || execAsWhich(cmdline) || shellItOut(cmdline, opts)
   } else if (isPythonic(language)) {
-    return new Promise((resolve, reject) => {
-      tmpFile({ postfix: ".py" }, (err, filepath, fd) => {
-        if (err) {
-          reject(err)
-        } else {
-          write(fd, cmdline.toString(), (err) => {
-            if (err) {
-              reject(err)
-            } else {
-              shellItOut(`python3 -u "${filepath}"`, opts).then(resolve, reject)
-            }
-          })
-        }
-      })
-    })
+    return pythonItOut(cmdline, opts)
   } else {
     throw new Error("Unable to execute body in unsupported language: " + language)
   }
