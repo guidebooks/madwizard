@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { ChoiceState } from "../choices"
 import { ExpansionMap } from "../choices/groups/expansion"
 import { Graph, Status, StatusMap, isLeafNode, isChoice, partsOf } from "../graph"
 
@@ -42,7 +43,7 @@ export class Memoizer implements Memos {
 }
 
 /** Percolate up any memoized status */
-export function statusOf(graph: Graph, statusMemo: StatusMap): Status {
+export function statusOf(graph: Graph, statusMemo: StatusMap, choices: ChoiceState): Status {
   if (isLeafNode(graph)) {
     // either we have already executed it, or we have validated it as having been previously executed
     return (
@@ -51,11 +52,22 @@ export function statusOf(graph: Graph, statusMemo: StatusMap): Status {
     )
   } else {
     const parts = partsOf(graph)
-    const statuses = parts.flatMap((_) => statusOf(_, statusMemo))
+    const statuses = parts.map((_) => statusOf(_, statusMemo, choices))
 
     if (isChoice(graph)) {
       // is exactly one branch a success? then we can elect it, otherwise, be conservative
-      return statuses.filter((_) => _ === "success").length === 1 ? "success" : "blank"
+      const status = statuses.filter((_) => _ === "success").length === 1 ? "success" : "blank"
+      if (status === "success") {
+        if (choices) {
+          const goodIdx = statuses.findIndex((_) => _ === "success")
+          if (goodIdx >= 0) {
+            // and memoize that we elected it...
+            const chosenTitle = graph.choices[goodIdx].title
+            choices.set(graph.group, chosenTitle)
+          }
+        }
+        return "success"
+      }
     } else {
       // are all paths a success?
       return statuses.every((_) => _ === "success") ? "success" : statuses.includes("error") ? "error" : "blank"
