@@ -17,13 +17,13 @@
 import Debug from "debug"
 
 import { Barrier } from "../codeblock"
+import { Choices, ChoiceState } from "../choices"
 import { Memos, statusOf } from "../memoization"
 
 import {
   Graph,
   Choice,
   Status,
-  ValidationExecutor,
   bodySource,
   extractDescription,
   extractTitle,
@@ -86,11 +86,12 @@ export function isTaskStep(step: WizardStepWithGraph): step is TaskStep {
  */
 function wizardStepForPrereq<T, G extends Graph<T>>(
   graph: G,
-  options: Partial<Pick<Memos, "statusMemo">>
+  options: Partial<Pick<Memos, "statusMemo">>,
+  choices: ChoiceState
 ): WizardStepWithGraph<G, Markdown> {
   return {
     graph,
-    status: (options.statusMemo && statusOf(graph, options.statusMemo)) || "blank",
+    status: (options.statusMemo && statusOf(graph, options.statusMemo, choices)) || "blank",
     step: {
       name: extractTitle(graph),
       description: extractDescription(graph),
@@ -106,11 +107,13 @@ function wizardStepForPrereq<T, G extends Graph<T>>(
 function wizardStepForChoiceOnFrontier(
   graph: Choice,
   isFirstChoice: boolean,
-  options: Partial<Pick<Memos, "statusMemo">>
+  options: Partial<Pick<Memos, "statusMemo">>,
+  choices: ChoiceState
 ): WizardStepWithGraph<Choice, Tile[]> {
+  const status = (options.statusMemo && statusOf(graph, options.statusMemo, choices)) || "blank"
   return {
     graph,
-    status: (options.statusMemo && statusOf(graph, options.statusMemo)) || "blank",
+    status,
     step: {
       name: graph.title,
       description: "This step requires you to choose how to proceed",
@@ -130,22 +133,17 @@ type Wizard = WizardStepWithGraph[]
 export { Wizard }
 
 /** Options to the graph->wizard transformer */
-type Options = Partial<Pick<Memos, "statusMemo">> & {
-  /** Include optional blocks in the wizard? */
-  includeOptional: boolean
+type Options = Partial<Pick<Memos, "statusMemo">> &
+  Partial<Choices> & {
+    /** Include optional blocks in the wizard? */
+    includeOptional: boolean
 
-  /**
-   * If given, tasks in the wizard will be validated, and incomplete
-   * tasks will be returned as part of the `Wizard` model.
-   */
-  validator: ValidationExecutor
-
-  /**
-   * In order to avoid re-checking validity, callers may pass in the
-   * prior Wizard model.
-   */
-  previous: Wizard
-}
+    /**
+     * In order to avoid re-checking validity, callers may pass in the
+     * prior Wizard model.
+     */
+    previous: Wizard
+  }
 
 export async function wizardify<T>(graph: Graph<T>, options: Partial<Options> = {}): Promise<Wizard> {
   const debug = Debug("madwizard/timing/wizard:wizardify")
@@ -165,10 +163,12 @@ export async function wizardify<T>(graph: Graph<T>, options: Partial<Options> = 
     const wizard = frontier.flatMap(({ prereqs, choice }, idx) => [
       ...(!prereqs
         ? []
-        : prereqs.filter((_) => includeOptional || !isOptional(_)).map((_) => wizardStepForPrereq(_, options))),
+        : prereqs
+            .filter((_) => includeOptional || !isOptional(_))
+            .map((_) => wizardStepForPrereq(_, options, options.choices))),
       ...(!choice || (!includeOptional && isOptional(choice))
         ? []
-        : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice, options)]),
+        : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice, options, options.choices)]),
     ])
 
     return wizard
