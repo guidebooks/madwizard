@@ -1,6 +1,6 @@
 [![Node.js CI](https://github.com/guidebooks/madwizard/actions/workflows/test.yml/badge.svg)](https://github.com/guidebooks/madwizard/actions/workflows/test.yml) [![npm version](https://badge.fury.io/js/madwizard.svg)](https://badge.fury.io/js/madwizard)
 
-# <img src=".github/FREEANIMALREPTILEtrex003_generated.jpg" title="Fire Breathing Rainbow Trex Dinosaur Vectors by Vecteezy" height="32"> Turn Markdown into Wizards
+# <img src=".github/madwizard.gif" title="madwizard" height="32"> Turn Markdown into Wizards
 
 MadWizard is a library that scans a given markdown file and
 automatically constructs a task graph. It also includes a CLI client
@@ -59,7 +59,3 @@ madwizard [<command>] <input filepath or URL>.md
 - `json`: Emit the wizard model in JSON form.
 - `topmatter`: Show the progress of processing the topmatter of the given document (and its imports).
 - `groups`: Show how madwizard has modeled the choices represented by the given document.
-
----
-
-<a href="https://www.vecteezy.com/free-vector/teeth">Teeth Vectors by Vecteezy</a>
