@@ -118,10 +118,8 @@ function execAsPythonPackageCheck(cmdline: string | boolean, opts: ExecOptions) 
     const match = cmdline.match(/^\s*madwizard-python-package-installed\s+([^[]+)(\[(.+)\])?$/)
     if (match) {
       const packageName = `"${match[1]}"` + (match[3] ? `, "${match[3]}"` : "")
-      return shellItOut(
-        `python3 -c 'import sys; import os; import site; sys.exit(0) if os.path.isdir(os.path.join(site.getsitepackages()[0], ${packageName})) or os.path.isdir(os.path.join(site.USER_SITE, ${packageName})) else sys.exit(1)'`,
-        opts
-      )
+      const cmdline = `python3 -c 'import sys; import os; import site; sys.exit(0) if os.path.isdir(os.path.join(site.getsitepackages()[0], ${packageName})) or os.path.isfile(os.path.join(site.getsitepackages()[0], "${match[1]}.py")) or os.path.isdir(os.path.join(site.USER_SITE, ${packageName})) else sys.exit(1)'`
+      return shellItOut(cmdline, opts)
     }
   }
 }
