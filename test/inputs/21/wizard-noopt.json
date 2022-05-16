@@ -6,12 +6,12 @@
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "b449b280-e5b5-4252-a0c7-5e9fb57fb29a",
+        "key": "a7376595-c88f-4f59-8977-f7fa8c0e09d4",
         "sequence": [
           {
             "body": "export FOO=3",
             "language": "shell",
-            "id": "ed3186e1-c299-47fc-be07-9d8e95977daf-0"
+            "id": "842da7fe-4064-49be-bb61-9f01f4eb51af-0"
           }
         ]
       },
@@ -30,12 +30,12 @@
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "0e400542-0efc-4ad4-8deb-e1f25469bd52",
+        "key": "ba8a1e1a-ea3e-4295-8a77-40420d52ea3c",
         "sequence": [
           {
-            "body": "export FOO=2:$FOO",
+            "body": "export FOO=\"2:$FOO\"",
             "language": "shell",
-            "id": "ed3186e1-c299-47fc-be07-9d8e95977daf-1"
+            "id": "842da7fe-4064-49be-bb61-9f01f4eb51af-1"
           }
         ]
       },
@@ -54,12 +54,12 @@
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "52863da8-a257-40dc-9f5a-38674fe56fb1",
+        "key": "ca702de8-41f4-4197-a2e4-60abecc0fad1",
         "sequence": [
           {
             "body": "echo \"This should be 2:3 --> $FOO\"",
             "language": "shell",
-            "id": "ed3186e1-c299-47fc-be07-9d8e95977daf-2"
+            "id": "842da7fe-4064-49be-bb61-9f01f4eb51af-2"
           }
         ]
       },
@@ -78,13 +78,13 @@
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "28101543-c279-4c5d-8365-5ba7c332b238",
+        "key": "cabd30df-c1eb-4c54-92e6-f7960f7db2f7",
         "sequence": [
           {
             "body": "echo \"Bug if we get here\"",
             "language": "shell",
             "validate": "[ \"$FOO\" = \"2:3\" ]",
-            "id": "ed3186e1-c299-47fc-be07-9d8e95977daf-3"
+            "id": "842da7fe-4064-49be-bb61-9f01f4eb51af-3"
           }
         ]
       },
