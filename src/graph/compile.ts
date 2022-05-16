@@ -61,7 +61,7 @@ export interface CompilerOptions {
    * truth, and thus not needing user input. By vetoing one of these a
    * prioris, users will be prompted to redo this choice.
    */
-  veto: Set<string>
+  veto: RegExp
 
   /**
    * Should we expand choice groups with dynamic expansion?
