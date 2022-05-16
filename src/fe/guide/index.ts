@@ -73,7 +73,7 @@ export class Guide {
 
     const questions = choices.map(({ step }, stepIdx) => ({
       type: "list",
-      pageSize: 20,
+      pageSize: 40,
       name: step.name || chalk.red("Missing name"),
       message: chalk.yellow(`Choice ${iter + stepIdx + 1}:` + ` ${step.name || chalk.red("Missing name")}`),
       choices: step.content.map((tile, idx, A) => ({
