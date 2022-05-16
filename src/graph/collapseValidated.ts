@@ -51,7 +51,7 @@ export default async function collapseValidated<
     ) {
       // then this optimization has been disabled
       return graph
-    } else if (options.veto && hasProvenance(graph) && graph.provenance.find((_) => options.veto.has(_))) {
+    } else if (options.veto && hasProvenance(graph) && graph.provenance.find((_) => options.veto.test(_))) {
       Debug("madwizard/graph/optimize/collapse-validated")("veto", extractTitle(graph))
       // then this optimization has been vetoed
       return graph

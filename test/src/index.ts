@@ -40,7 +40,7 @@ const options: { suffix: string; options: Options }[] = [
     options: (input: string) => {
       try {
         return {
-          veto: new Set(readFileSync(join(input, "veto.txt")).toString().trim().split(/,/)),
+          veto: new RegExp(readFileSync(join(input, "veto.txt")).toString().trim()),
         }
       } catch (err) {
         if (err.code === "ENOENT") {

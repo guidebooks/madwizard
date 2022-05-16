@@ -42,6 +42,6 @@ export async function vetoesFromBlocks(blocks: CodeBlockProps[], choices: Choice
 
 export async function vetoesToString(blocks: CodeBlockProps[], choices: ChoiceState, options: MadWizardOptions = {}) {
   return (await vetoesFromBlocks(blocks, choices, Object.assign({}, options, { optimize: false })))
-    .map((_) => (options.veto && options.veto.has(_) ? `${_} ${chalk.red("[VETOED]")}` : _))
+    .map((_) => (options.veto && options.veto.test(_) ? `${_} ${chalk.red("[VETOED]")}` : _))
     .join(EOL)
 }

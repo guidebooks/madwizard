@@ -52,7 +52,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
 
   const vetoIdx = _argv.findIndex((_) => new RegExp("^--veto=").test(_))
   const vetoStr = vetoIdx < 0 ? undefined : _argv[vetoIdx].slice(_argv[vetoIdx].indexOf("=") + 1)
-  const veto = !vetoStr ? undefined : new Set(vetoStr.split(/,/))
+  const veto = !vetoStr ? undefined : new RegExp(vetoStr)
 
   const mkdocsIdx = _argv.findIndex((_) => new RegExp("^--mkdocs=").test(_))
   const mkdocs = mkdocsIdx < 0 ? undefined : _argv[mkdocsIdx].slice(_argv[mkdocsIdx].indexOf("=") + 1)
