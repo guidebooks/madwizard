@@ -13,7 +13,7 @@ Run a Ray Job
 │           │   │   └── brew install kubectl
 │           │   └── Choose a Kubernetes context
 │           │       └── Option 1: fakeit
-│           │           └── kubectl config set-context ""
+│           │           └── kubectl config set-context "${choice}"
 │           └── helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/
 │               kubectl wait --for=condition=available --all rayclusters
 └── Main Tasks

@@ -1,0 +1,8 @@
+Testing tab expansion
+└── Option 1: Tab1
+    ├── Option 1: 3
+    │   └── echo "3"
+    ├── Option 2: 4
+    │   └── echo "4"
+    └── Option 3: 5
+        └── echo "5"

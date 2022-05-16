@@ -93,7 +93,7 @@ Run a Ray Job
 │       │   │               curl -LO "https://dl.k8s.io/release/v1.23.0/bin/darwin/arm64/kubectl"
 │       │   └── Choose a Kubernetes context
 │       │       └── Option 1: fakeit
-│       │           └── kubectl config set-context ""
+│       │           └── kubectl config set-context "${choice}"
 │       └── helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/
 │           kubectl wait --for=condition=available --all rayclusters
 └── Run a Ray Job
