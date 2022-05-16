@@ -1,4 +1,4 @@
 export FOO=3
-export FOO=2:$FOO
+export FOO="2:$FOO"
 echo "This should be 2:3 --> $FOO"
 This should be 2:3 --> 2:3

@@ -7,7 +7,7 @@ export FOO=3
 ```
 
 ```shell
-export FOO=2:$FOO
+export FOO="2:$FOO"
 ```
 
 ## Then use it

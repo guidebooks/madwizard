@@ -92,7 +92,7 @@ async function shellItOut(cmdline: string | boolean, opts: ExecOptions = { quiet
 /** See if we are being asked to execute `export FOO=bar` */
 function execAsExport(cmdline: string | boolean, opts: ExecOptions) {
   if (opts.env && typeof cmdline === "string") {
-    const match = cmdline.match(/^\s*export\s+(.+)=(.+)$/)
+    const match = cmdline.match(/^\s*export\s+(.+)="?([^"]+)"?$/)
     if (match) {
       const [, key, value] = match
       const valueForUpdate = value.replace(/\${?([^:]+)}?/g, (_, p1) => opts.env[p1] || process.env[p1])
