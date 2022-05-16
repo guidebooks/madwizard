@@ -119,7 +119,7 @@ function execAsPythonPackageCheck(cmdline: string | boolean, opts: ExecOptions) 
     if (match) {
       const packageName = `"${match[1]}"` + (match[3] ? `, "${match[3]}"` : "")
       return shellItOut(
-        `python3 -c 'import sys; import os; import site; sys.exit(0) if os.path.isdir(os.path.join(site.getsitepackages()[0], ${packageName})) else sys.exit(1)'`,
+        `python3 -c 'import sys; import os; import site; sys.exit(0) if os.path.isdir(os.path.join(site.getsitepackages()[0], ${packageName})) or os.path.isdir(os.path.join(site.USER_SITE, ${packageName})) else sys.exit(1)'`,
         opts
       )
     }
