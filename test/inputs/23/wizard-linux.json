@@ -9,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "fdc74a88-7693-4e5d-8522-c51473c5c97c",
+            "key": "3111fc4a-ab08-48a3-8bad-7dc828b81fd8",
             "sequence": [
               {
                 "body": "pip install -U ray",
                 "language": "shell",
-                "id": "3a5b6e44-9ef6-41b8-8713-b09868b64f6a-0"
+                "id": "77086bed-517d-4475-a656-909246153ecc-0"
               }
             ]
           },
@@ -24,26 +24,26 @@
         {
           "member": 1,
           "graph": {
-            "key": "1a72c4d0-1dea-47ea-9d98-121d2c711968",
+            "key": "0af545e8-6a47-4c4a-aaf9-803f4722ffa2",
             "sequence": [
               {
                 "key": "test/inputs/23/kubernetes/kubectl.md",
                 "title": "Install kubectl",
                 "filepath": "test/inputs/23/kubernetes/kubectl.md",
                 "graph": {
-                  "key": "3b05eb2f-653d-438d-bd14-7a468cba3bf0",
+                  "key": "532e7c2e-09d8-44db-b5c3-abc7662dd07c",
                   "sequence": [
                     {
                       "key": "org.kubernetes-sigs.kui/choice/platform",
                       "title": "Install kubectl",
                       "filepath": "",
                       "graph": {
-                        "key": "dcd43c84-5104-44c4-abe1-145718c07c24",
+                        "key": "575c484a-15e2-4300-9677-7497bbdcb66b",
                         "sequence": [
                           {
                             "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
                             "language": "bash",
-                            "id": "3a5b6e44-9ef6-41b8-8713-b09868b64f6a-12"
+                            "id": "77086bed-517d-4475-a656-909246153ecc-12"
                           }
                         ]
                       },
@@ -58,19 +58,19 @@
                 "title": "Install Helm v3",
                 "filepath": "test/inputs/23/kubernetes/helm3.md",
                 "graph": {
-                  "key": "1cb62503-002b-4775-a7bd-8477a1da5fb7",
+                  "key": "0ce67e55-cc66-4f5a-b02c-aeaec0639459",
                   "sequence": [
                     {
                       "key": "org.kubernetes-sigs.kui/choice/platform",
                       "title": "Install Helm v3",
                       "filepath": "",
                       "graph": {
-                        "key": "595f33cc-4062-47ab-b902-704b4cf2f022",
+                        "key": "08b510ea-8186-4873-9e5e-51fc70143ba6",
                         "sequence": [
                           {
                             "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
                             "language": "shell",
-                            "id": "3a5b6e44-9ef6-41b8-8713-b09868b64f6a-20"
+                            "id": "77086bed-517d-4475-a656-909246153ecc-20"
                           }
                         ]
                       },
@@ -85,26 +85,26 @@
                 "title": "Choose a Kubernetes context",
                 "filepath": "test/inputs/23/kubernetes/context.md",
                 "graph": {
-                  "key": "82002b14-4fa1-4625-ae48-a0ee5b87a6f7",
+                  "key": "00d68f72-5f9e-48c5-869c-ff5ea95dde6c",
                   "sequence": [
                     {
                       "key": "test/inputs/23/kubernetes/kubectl.md",
                       "title": "Install kubectl",
                       "filepath": "test/inputs/23/kubernetes/kubectl.md",
                       "graph": {
-                        "key": "bf578506-baff-4c7f-814d-0b8b8a85682e",
+                        "key": "3384f5ea-6e92-4a5a-8e0f-45fc52ce35b0",
                         "sequence": [
                           {
                             "key": "org.kubernetes-sigs.kui/choice/platform",
                             "title": "Install kubectl",
                             "filepath": "",
                             "graph": {
-                              "key": "6af09a53-dcd3-4c2b-b239-5e3794902a62",
+                              "key": "440d5c2e-6611-483c-b5f2-39f8a9fc1c52",
                               "sequence": [
                                 {
                                   "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
                                   "language": "bash",
-                                  "id": "3a5b6e44-9ef6-41b8-8713-b09868b64f6a-22"
+                                  "id": "77086bed-517d-4475-a656-909246153ecc-22"
                                 }
                               ]
                             },
@@ -123,12 +123,12 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "f13d1765-0e43-456d-9f9c-1a15528d7cd1",
+                            "key": "72b04b5c-a014-4295-a367-577b16a831c8",
                             "sequence": [
                               {
-                                "body": "kubectl config set-context \"\"",
+                                "body": "kubectl config set-context \"${choice}\"",
                                 "language": "shell",
-                                "id": "3a5b6e44-9ef6-41b8-8713-b09868b64f6a-28"
+                                "id": "77086bed-517d-4475-a656-909246153ecc-28"
                               }
                             ]
                           },
@@ -143,7 +143,7 @@
               {
                 "body": "helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/\nkubectl wait --for=condition=available --all rayclusters",
                 "language": "shell",
-                "id": "3a5b6e44-9ef6-41b8-8713-b09868b64f6a-29"
+                "id": "77086bed-517d-4475-a656-909246153ecc-29"
               }
             ]
           },
@@ -183,12 +183,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "9f1e21be-f734-45e7-b174-b92e5ef6adf4",
+            "key": "dcae0a94-e4de-4006-9947-459aa441b5aa",
             "sequence": [
               {
                 "body": "import ray\nray.init()\n\n@ray.remote\ndef f(x):\n    return x * x\n\nfutures = [f.remote(i) for i in range(4)]\nprint(ray.get(futures)) # [0, 1, 4, 9]",
                 "language": "python",
-                "id": "3a5b6e44-9ef6-41b8-8713-b09868b64f6a-30"
+                "id": "77086bed-517d-4475-a656-909246153ecc-30"
               }
             ]
           },
@@ -198,12 +198,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "684f5555-18db-4652-b470-c049e0627964",
+            "key": "d737577a-0349-4496-ae95-57521d191038",
             "sequence": [
               {
                 "body": "import ray\nray.init() # Only call this once.\n\n@ray.remote\nclass Counter(object):\n    def __init__(self):\n        self.n = 0\n\n    def increment(self):\n        self.n += 1\n\n    def read(self):\n        return self.n\n\ncounters = [Counter.remote() for i in range(4)]\n[c.increment.remote() for c in counters]\nfutures = [c.read.remote() for c in counters]\nprint(ray.get(futures)) # [1, 1, 1, 1]",
                 "language": "python",
-                "id": "3a5b6e44-9ef6-41b8-8713-b09868b64f6a-31"
+                "id": "77086bed-517d-4475-a656-909246153ecc-31"
               }
             ]
           },
@@ -213,33 +213,33 @@
         {
           "member": 2,
           "graph": {
-            "key": "c5a85844-8aa7-4a9b-8deb-a1c03d9b919b",
+            "key": "c471e6fc-f1ab-482e-a22f-fe52481ddc59",
             "sequence": [
               {
                 "key": "Creating and Transforming Datasets",
                 "title": "Creating and Transforming Datasets",
                 "filepath": "",
                 "graph": {
-                  "key": "3cd8c79d-fb6c-451a-b7cc-f023f0ae9c94",
+                  "key": "51152c64-6a05-47ff-8371-b87128bb9737",
                   "sequence": [
                     {
                       "key": "Prerequisites",
                       "title": "Prerequisites",
                       "filepath": "",
                       "graph": {
-                        "key": "7f97bbb4-354c-4e09-85d0-dd5238fd6490",
+                        "key": "0e9bc530-249c-4b5b-9345-fff87b832ec2",
                         "sequence": [
                           {
                             "key": "test/inputs/23/data.md",
                             "title": "Install Ray Data",
                             "filepath": "test/inputs/23/data.md",
                             "graph": {
-                              "key": "4def2654-8977-4fa6-9152-df4228912b6d",
+                              "key": "90476ca3-7601-43f9-8595-38930c74e064",
                               "sequence": [
                                 {
                                   "body": "pip install \"ray[data]\" dask",
                                   "language": "shell",
-                                  "id": "3a5b6e44-9ef6-41b8-8713-b09868b64f6a-32"
+                                  "id": "77086bed-517d-4475-a656-909246153ecc-32"
                                 }
                               ]
                             },
@@ -254,7 +254,7 @@
                       "title": "Main Tasks",
                       "filepath": "",
                       "graph": {
-                        "key": "4f09c081-4eae-4e9b-a174-07c8580dd17d",
+                        "key": "0ce79040-ed27-485c-bd2a-b0e6965b9302",
                         "sequence": [
                           {
                             "group": "New Dataset from Range####New Dataset from File",
@@ -265,12 +265,12 @@
                               {
                                 "member": 0,
                                 "graph": {
-                                  "key": "0c89db90-f955-4ebe-9887-a3289edad7b9",
+                                  "key": "e21d0ca7-7c79-4081-b6a7-f38e2e315b70",
                                   "sequence": [
                                     {
                                       "body": "import ray\n\n# Create a Dataset of Python objects.\nds = ray.data.range(10000)\n# -> Dataset(num_blocks=200, num_rows=10000, schema=<class 'int'>)\n\nds.take(5)\n# -> [0, 1, 2, 3, 4]\n\nds.count()\n# -> 10000\n\n# Create a Dataset of Arrow records.\nds = ray.data.from_items([{\"col1\": i, \"col2\": str(i)} for i in range(10000)])\n# -> Dataset(num_blocks=200, num_rows=10000, schema={col1: int64, col2: string})\n\nds.show(5)\n# -> {'col1': 0, 'col2': '0'}\n# -> {'col1': 1, 'col2': '1'}\n# -> {'col1': 2, 'col2': '2'}\n# -> {'col1': 3, 'col2': '3'}\n# -> {'col1': 4, 'col2': '4'}\n\nds.schema()\n# -> col1: int64\n# -> col2: string",
                                       "language": "python",
-                                      "id": "3a5b6e44-9ef6-41b8-8713-b09868b64f6a-33"
+                                      "id": "77086bed-517d-4475-a656-909246153ecc-33"
                                     }
                                   ]
                                 },
@@ -280,12 +280,12 @@
                               {
                                 "member": 1,
                                 "graph": {
-                                  "key": "b7a93884-b72f-48cb-a11c-37e88a90a64f",
+                                  "key": "2ab50406-aed0-44f9-acc8-16db1aad12ef",
                                   "sequence": [
                                     {
                                       "body": "import ray\nimport pandas as pd\nimport dask.dataframe as dd\n\n# Create a Dataset from a list of Pandas DataFrame objects.\npdf = pd.DataFrame({\"one\": [1, 2, 3], \"two\": [\"a\", \"b\", \"c\"]})\nds = ray.data.from_pandas([pdf])\n\n# Create a Dataset from a Dask-on-Ray DataFrame.\ndask_df = dd.from_pandas(pdf, npartitions=10)\nds = ray.data.from_dask(dask_df)\n\n# Transform the dataset using .map()\nds = ray.data.range(10000)\nds = ds.map(lambda x: x * 2)\n# -> Map Progress: 100%|████████████████████| 200/200 [00:00<00:00, 1123.54it/s]\n# -> Dataset(num_blocks=200, num_rows=10000, schema=<class 'int'>)\nds.take(5)\n# -> [0, 2, 4, 6, 8]\n\n# Transform the dataset using .filter()\nds.filter(lambda x: x > 5).take(5)\n# -> Map Progress: 100%|████████████████████| 200/200 [00:00<00:00, 1859.63it/s]\n# -> [6, 8, 10, 12, 14]\n\n# Transform the dataset using .flat_map()\nds.flat_map(lambda x: [x, -x]).take(5)\n# -> Map Progress: 100%|████████████████████| 200/200 [00:00<00:00, 1568.10it/s]\n# -> [0, 0, 2, -2, 4]",
                                       "language": "python",
-                                      "id": "3a5b6e44-9ef6-41b8-8713-b09868b64f6a-34"
+                                      "id": "77086bed-517d-4475-a656-909246153ecc-34"
                                     }
                                   ]
                                 },

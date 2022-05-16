@@ -41,7 +41,7 @@ function updateContent<Part extends { graph: Graph; description?: string }>(part
 
   let _uuid: string
   const uuid = () => _uuid || (_uuid = v4())
-  const replace = (str: string) => str.replace(pattern1, choice).replace(pattern2, uuid())
+  const replace = (str: string) => (choice ? str.replace(pattern1, choice) : str).replace(pattern2, uuid())
 
   blocks(part.graph).forEach((_) => {
     if (typeof _.body === "string") {
