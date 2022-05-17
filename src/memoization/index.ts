@@ -28,6 +28,9 @@ export interface Memos {
 
   /** Any captured environment variable assignments. For example, a guidebook may want to update via `export FOO=bar` */
   env: typeof process.env
+
+  /** Any collected dependencies that need to be injected into the runtime */
+  dependencies: Record<string, string[]>
 }
 
 /** Default implementation of `Memos` */
@@ -40,6 +43,9 @@ export class Memoizer implements Memos {
 
   /** Any captured environment variable assignments. For example, a guidebook may want to update via `export FOO=bar` */
   public readonly env = {}
+
+  /** Any collected dependencies that need to be injected into the runtime */
+  public dependencies = {}
 }
 
 /** Percolate up any memoized status */

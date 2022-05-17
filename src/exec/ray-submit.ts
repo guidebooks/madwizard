@@ -42,7 +42,23 @@ export default function raySubmit(cmdline: string | boolean, opts: ExecOptions, 
       //
       // Note: in guidebook source, only one \" is needed.
       // Here, we need \\" just to make nodejs's parser happy.
-      const ourCustomExec = `ray job submit --runtime-env-json="{\\"working_dir\\": \\"$MWDIR\\"}" -- python3 "$MWFILENAME"`
+
+      // express any pip dependencies we have collected
+      const pips = new Set(!opts.dependencies || !opts.dependencies.pip ? [] : opts.dependencies.pip)
+      pips.delete("ray")
+      pips.delete("torch")
+      const pipsJson =
+        pips.size === 0
+          ? ""
+          : `, \\"pips\\": [${Array.from(pips)
+              .map((_) => `\\"${_}\\"`)
+              .join(",")}]`
+
+      // formulate a ray job submit command line; `custom` will
+      // assemble ` working directory `$MWDIR` and `$MWFILENAME`
+      const ourCustomExec = `ray job submit --runtime-env-json="{\\"working_dir\\": \\"$MWDIR\\"${pipsJson}}" -- python3 "$MWFILENAME"`
+
+      // and then execute it
       return custom(cmdline, opts, ourCustomExec)
     }
   }

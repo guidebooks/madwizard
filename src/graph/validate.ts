@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+import { Memos } from "../memoization"
 import { Validatable } from "../codeblock"
-import { Env, ExecOptions, shellExec } from "../exec"
+import { ExecOptions, shellExec } from "../exec"
 import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask, isValidatable } from "."
 
 export type ValidationExecutor = (cmdline: string, opts?: ExecOptions) => "success" | Promise<"success">
@@ -54,12 +55,12 @@ function union(A: Promise<Status[]>) {
   return A.then((A) => A.slice(1).reduce(succeedFast, A[0]))
 }
 
-export type ValidateOptions = { validator?: ValidationExecutor; throwErrors?: boolean }
+export type ValidateOptions = Partial<Memos> & { validator?: ValidationExecutor; throwErrors?: boolean }
 
 /** This does an actual validation check */
 export async function doValidate(
   validate: Validatable["validate"],
-  opts: Pick<ValidateOptions, "validator" | "throwErrors"> & Partial<Env>
+  opts: Pick<ValidateOptions, "validator" | "throwErrors" | "env" | "dependencies">
 ): Promise<Status> {
   if (validate === true) {
     return "success"
@@ -68,7 +69,7 @@ export async function doValidate(
   }
 
   try {
-    await (opts.validator || shellExec)(validate, { quiet: true, env: opts.env })
+    await (opts.validator || shellExec)(validate, { quiet: true, env: opts.env, dependencies: opts.dependencies })
     return "success"
   } catch (err) {
     if (opts.throwErrors) {
