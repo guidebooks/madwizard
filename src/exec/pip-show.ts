@@ -26,8 +26,27 @@ export default function execAsPythonPackageCheck(cmdline: string | boolean, opts
   if (typeof cmdline === "string") {
     const match = cmdline.match(/^\s*pip-show\s+([^[]+)(\[(.+)\])?$/)
     if (match) {
+      // pip-show packageName[subpackage]
+      //             \- match[1]   \- match[3]
       const packageName = `"${match[1]}"` + (match[3] ? `, "${match[3]}"` : "")
-      const cmdline = `python3 -c 'import sys; import os; import site; sys.exit(0) if os.path.isdir(os.path.join(site.getsitepackages()[0], ${packageName})) or os.path.isfile(os.path.join(site.getsitepackages()[0], "${match[1]}.py")) or os.path.isdir(os.path.join(site.USER_SITE, ${packageName})) else sys.exit(1)'`
+
+      // here, we look in the site packages directory for either a
+      // directory or a file of that name; then we look in USER_SITE
+      const imports = "import sys; import os; import site"
+      const isDirInSitePackages = `os.path.isdir(os.path.join(site.getsitepackages()[0], ${packageName}))`
+      const isFileInSitePackages = `os.path.isfile(os.path.join(site.getsitepackages()[0], "${match[1]}.py"))`
+      const isDirInUserSite = `os.path.isdir(os.path.join(site.USER_SITE, ${packageName}))`
+      const isFileInUserSite = `os.path.isfile(os.path.join(site.USER_SITE, ${match[1]}.py))`
+
+      const cmdline = `python3 -c '${imports}; sys.exit(0) if ${isDirInSitePackages} or ${isFileInSitePackages} or ${isDirInUserSite} or ${isFileInUserSite} else sys.exit(1)'`
+
+      if (opts.dependencies) {
+        if (!opts.dependencies.pip) {
+          opts.dependencies.pip = []
+        }
+        opts.dependencies.pip.push(match[1])
+      }
+
       return shellItOut(cmdline, opts)
     }
   }

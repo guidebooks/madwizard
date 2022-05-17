@@ -19,10 +19,11 @@ import { Memos } from "../memoization"
 /** Environment variable state that might be mutated by the guidebook itself */
 export type Env = Pick<Memos, "env">
 
-export type ExecOptions = Partial<Env> & {
-  /** Do not emit to console */
-  quiet?: boolean
+export type ExecOptions = Partial<Env> &
+  Partial<Pick<Memos, "dependencies">> & {
+    /** Do not emit to console */
+    quiet?: boolean
 
-  /** Capture stdout here */
-  capture?: string
-}
+    /** Capture stdout here */
+    capture?: string
+  }
