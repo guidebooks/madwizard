@@ -25,6 +25,7 @@ import inquirer, { Question, Answers } from "inquirer"
 
 import { taskRunner, Task } from "./taskrunner"
 
+import { shellExec } from "../../exec"
 import { MadWizardOptions } from "../../"
 import { ChoiceState } from "../../choices"
 import { CodeBlockProps } from "../../codeblock"
@@ -32,7 +33,7 @@ import indent from "../../parser/markdown/util/indent"
 import { Memos, Memoizer, statusOf } from "../../memoization"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"
 import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isTaskStep, wizardify } from "../../wizard"
-import { Graph, Status, blocks, compile, extractTitle, extractDescription, shellExec, validate } from "../../graph"
+import { Graph, Status, blocks, compile, extractTitle, extractDescription, validate } from "../../graph"
 
 export class Guide {
   private readonly debug = Debug("madwizard/fe/guide")
