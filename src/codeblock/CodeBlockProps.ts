@@ -27,6 +27,18 @@ export interface Validatable {
   validate: string | boolean | number
 }
 
+export interface CustomExecutable {
+  /**
+   * In some cases, it is useful to override the default
+   * interpretation of how to execute a code block. If the `exec`
+   * field is given, the code block `body` will be stored on disk in a
+   * temporary directory specified by `$MWDIR`, the filename specified
+   * by `$MWFILENAME`, and the full filepath `$MWFILEPATH`. It is up
+   * to you to form `exec` so that the execution works.
+   */
+  exec: string
+}
+
 export interface GroupMember {
   /**
    * This option names the group, to keep it distinct from other
@@ -128,13 +140,14 @@ export function isWizardStep(part: CodeBlockNestingParent): part is WizardStep {
   return hasKind(part, "WizardStep")
 }
 
-export type CodeBlockProps = Partial<Validatable> & {
-  id: string
-  body: string
-  language: SupportedLanguage
-  optional?: boolean
-  nesting?: CodeBlockNestingParent[]
-}
+export type CodeBlockProps = Partial<CustomExecutable> &
+  Partial<Validatable> & {
+    id: string
+    body: string
+    language: SupportedLanguage
+    optional?: boolean
+    nesting?: CodeBlockNestingParent[]
+  }
 
 export function addNesting(props: CodeBlockProps, nesting: CodeBlockNestingParent, insertIdx?: number) {
   if (!props.nesting) {

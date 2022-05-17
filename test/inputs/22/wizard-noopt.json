@@ -3,9 +3,10 @@
     "graph": {
       "body": "print(\"PPP\")",
       "language": "python",
-      "id": "61850d22-d82a-4472-9e36-2e82f45a16bf-0"
+      "id": "671b36d4-8314-4a59-9bb8-286e8aa96c80-0"
     },
     "step": {
+      "name": "Executing a step",
       "content": "```python\nprint(\"PPP\")\n```"
     }
   }

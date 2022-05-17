@@ -16,11 +16,12 @@
 
 import which from "which"
 import { write } from "fs"
+import { basename } from "path"
 import { spawn } from "child_process"
-import { file as tmpFile } from "tmp"
+import { dir as tmpDir, file as tmpFile } from "tmp"
 
 import { Memos } from "../memoization"
-import { SupportedLanguage, Validatable, isPythonic, isShellish } from "../codeblock"
+import { CustomExecutable, SupportedLanguage, Validatable, isPythonic, isShellish } from "../codeblock"
 import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask, isValidatable } from "."
 
 /** Environment variable state that might be mutated by the guidebook itself */
@@ -37,7 +38,11 @@ export type ExecOptions = Partial<Env> & {
 export type ValidationExecutor = (cmdline: string, opts?: ExecOptions) => "success" | Promise<"success">
 
 /** Shell out the execution of the given `cmdline` */
-async function shellItOut(cmdline: string | boolean, opts: ExecOptions = { quiet: false }): Promise<"success"> {
+async function shellItOut(
+  cmdline: string | boolean,
+  opts: ExecOptions = { quiet: false },
+  extraEnv: Record<string, string> = {}
+): Promise<"success"> {
   const capture = typeof opts.capture === "string"
 
   return new Promise((resolve, reject) => {
@@ -52,7 +57,8 @@ async function shellItOut(cmdline: string | boolean, opts: ExecOptions = { quiet
             HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1",
           },
           process.env,
-          opts.env || {}
+          opts.env || {},
+          extraEnv
         ),
         stdio: opts.quiet
           ? ["inherit", "ignore", "pipe"]
@@ -126,7 +132,7 @@ function execAsPythonPackageCheck(cmdline: string | boolean, opts: ExecOptions) 
 
 function pythonItOut(cmdline: string | boolean, opts: ExecOptions) {
   return new Promise<"success">((resolve, reject) => {
-    tmpFile({ postfix: ".py" }, (err, filepath, fd) => {
+    tmpFile({ postfix: ".py" }, (err, filepath, fd, cleanupCallback) => {
       if (err) {
         reject(err)
       } else {
@@ -134,8 +140,39 @@ function pythonItOut(cmdline: string | boolean, opts: ExecOptions) {
           if (err) {
             reject(err)
           } else {
-            shellItOut(`python3 -u "${filepath}"`, opts).then(resolve, reject)
+            shellItOut(`python3 -u "${filepath}"`, opts).then(resolve, reject).finally(cleanupCallback)
           }
+        })
+      }
+    })
+  })
+}
+
+/** Shell out the execution of the given `cmdline` using the custom `exec` */
+export async function execAsCustom(
+  cmdline: string | boolean,
+  opts: ExecOptions = { quiet: false },
+  exec: CustomExecutable["exec"]
+): Promise<"success"> {
+  return new Promise<"success">((resolve, reject) => {
+    tmpDir((err, dir, cleanupCallback1) => {
+      if (err) {
+        reject(err)
+      } else {
+        tmpFile({ dir }, (err, filepath, fd, cleanupCallback2) => {
+          // TODO use cleanupCallback
+          write(fd, cmdline.toString(), (err) => {
+            if (err) {
+              reject(err)
+            } else {
+              shellItOut(exec, opts, { MWDIR: dir, MWFILEPATH: filepath, MWFILENAME: basename(filepath) })
+                .then(resolve, reject)
+                .finally(() => {
+                  cleanupCallback2()
+                  cleanupCallback1()
+                })
+            }
+          })
         })
       }
     })
@@ -146,9 +183,12 @@ function pythonItOut(cmdline: string | boolean, opts: ExecOptions) {
 export async function shellExec(
   cmdline: string | boolean,
   opts: ExecOptions = { quiet: false },
-  language: SupportedLanguage = "shell"
+  language: SupportedLanguage = "shell",
+  exec?: CustomExecutable["exec"]
 ): Promise<"success"> {
-  if (isShellish(language)) {
+  if (exec) {
+    return execAsCustom(cmdline, opts, exec)
+  } else if (isShellish(language)) {
     return (
       execAsExport(cmdline, opts) ||
       execAsWhich(cmdline) ||

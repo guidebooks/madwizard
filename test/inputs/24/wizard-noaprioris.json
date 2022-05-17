@@ -1,0 +1,73 @@
+[
+  {
+    "graph": {
+      "key": "Using Default Exec",
+      "title": "Using Default Exec",
+      "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
+      "filepath": "",
+      "graph": {
+        "key": "a54dd78b-93e1-4c62-a58b-1319bfb9b89a",
+        "sequence": [
+          {
+            "body": "echo hi",
+            "language": "shell",
+            "id": "4e0326f3-b245-4bfc-b1c3-56c528cab037-0"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Using Default Exec",
+      "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "key": "Using Default Exec (again)",
+      "title": "Using Default Exec (again)",
+      "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
+      "filepath": "",
+      "graph": {
+        "key": "e1b3e804-6faa-472d-9d4d-36445ea7d84b",
+        "sequence": [
+          {
+            "body": "echo hi",
+            "language": "shell",
+            "id": "4e0326f3-b245-4bfc-b1c3-56c528cab037-1"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Using Default Exec (again)",
+      "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "key": "Using Custom Exec",
+      "title": "Using Custom Exec",
+      "filepath": "",
+      "graph": {
+        "key": "e086e8ce-d31c-4ca6-ba10-75b1ce443896",
+        "sequence": [
+          {
+            "body": "echo hi",
+            "language": "shell",
+            "exec": "$SHELL \"$MWFILEPATH\"",
+            "id": "4e0326f3-b245-4bfc-b1c3-56c528cab037-2"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Using Custom Exec",
+      "content": ""
+    }
+  }
+]
