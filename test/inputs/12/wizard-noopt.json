@@ -4,9 +4,10 @@
       "body": "echo AAA",
       "language": "shell",
       "validate": "echo true",
-      "id": "05baa4c9-90dc-4f49-acb0-9627353ecd4f-0"
+      "id": "505ff42e-6e46-48bd-9294-f92a99daa28d-0"
     },
     "step": {
+      "name": "Executing a step",
       "content": "```shell\necho AAA\n```"
     }
   }

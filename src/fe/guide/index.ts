@@ -160,12 +160,13 @@ export class Guide {
                     subtask.commence()
                     await this.waitTillDone(taskIdx - 1)
 
+                    const statusMemoKey = block.id
                     status =
-                      (this.memos.statusMemo && this.memos.statusMemo[block.body] === "success" && "success") ||
-                      (await shellExec(block.body, this.memos, block.language))
+                      (this.memos.statusMemo && this.memos.statusMemo[statusMemoKey] === "success" && "success") ||
+                      (await shellExec(block.body, this.memos, block.language, block.exec))
 
                     if (status == "success" && this.memos.statusMemo) {
-                      this.memos.statusMemo[block.body] = status
+                      this.memos.statusMemo[statusMemoKey] = status
                     }
                   }
                 } catch (err) {
@@ -337,8 +338,10 @@ export class Guide {
 
       if (tasksWereRun && this.isGuided) {
         if (this.allDoneSuccessfully()) {
+          console.log()
           console.log("✨ Guidebook successful")
         } else {
+          console.log()
           console.log(chalk.red("Guidebook incomplete"))
         }
       }

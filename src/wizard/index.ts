@@ -93,7 +93,7 @@ function wizardStepForPrereq<T, G extends Graph<T>>(
     graph,
     status: (options.statusMemo && statusOf(graph, options.statusMemo, choices)) || "blank",
     step: {
-      name: extractTitle(graph),
+      name: extractTitle(graph) || "Executing a step",
       description: extractDescription(graph),
       barrier: isBarrier(graph),
       content: hasSource(graph) ? graph.source() : isLeafNode(graph) ? bodySource(graph) : "",

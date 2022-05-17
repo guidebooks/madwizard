@@ -5,13 +5,13 @@
       "title": "importa.md",
       "filepath": "",
       "graph": {
-        "key": "57510e8f-e624-4822-b4d4-bfa40fcbe30b",
+        "key": "3b256302-04f3-49f0-8c23-492f93a97006",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "90e2da00-dc2e-4f16-9f23-6fa745488c16-0"
+            "id": "fddaafa5-c105-4bb3-a822-73f96a924d1e-0"
           }
         ]
       },
@@ -28,12 +28,12 @@
       "title": "barrier.md",
       "filepath": "",
       "graph": {
-        "key": "1feb58bd-b6e3-4825-9234-d257948cb209",
+        "key": "0a892461-ecbd-4361-a708-c00a4d1bb1be",
         "sequence": [
           {
             "body": "echo barrier",
             "language": "shell",
-            "id": "90e2da00-dc2e-4f16-9f23-6fa745488c16-1"
+            "id": "fddaafa5-c105-4bb3-a822-73f96a924d1e-1"
           }
         ]
       },
@@ -56,12 +56,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "1027cabf-7692-44fd-8f2a-fc9da37a5651",
+            "key": "5272db81-ce73-4a04-9d47-7d377aef62e2",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "90e2da00-dc2e-4f16-9f23-6fa745488c16-2"
+                "id": "fddaafa5-c105-4bb3-a822-73f96a924d1e-2"
               }
             ]
           },
@@ -89,9 +89,10 @@
       "body": "echo \"testing barrier imports\"",
       "language": "shell",
       "validate": true,
-      "id": "90e2da00-dc2e-4f16-9f23-6fa745488c16-3"
+      "id": "fddaafa5-c105-4bb3-a822-73f96a924d1e-3"
     },
     "step": {
+      "name": "Executing a step",
       "content": "```shell\necho \"testing barrier imports\"\n```"
     }
   }

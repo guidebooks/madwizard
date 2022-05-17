@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Barrier, Validatable } from "../../../codeblock"
+import { Barrier, CustomExecutable, Validatable } from "../../../codeblock"
 
 export interface WizardSteps {
   /** An alternate way to define the steps of a wizard layout */
@@ -40,6 +40,7 @@ interface Language {
 }
 
 export type CodeBlock = Partial<Language> &
+  Partial<CustomExecutable> &
   Partial<Validatable> & {
     /**
      * A string that will be interpreted as regular expression. Any

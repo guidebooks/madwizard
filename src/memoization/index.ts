@@ -47,7 +47,7 @@ export function statusOf(graph: Graph, statusMemo: StatusMap, choices: ChoiceSta
   if (isLeafNode(graph)) {
     // either we have already executed it, or we have validated it as having been previously executed
     return (
-      statusMemo[graph.body] ||
+      statusMemo[graph.id] ||
       (graph.validate === true ? "success" : graph.validate !== false ? statusMemo[graph.validate] : "blank")
     )
   } else {
