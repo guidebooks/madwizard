@@ -50,7 +50,7 @@ export default function raySubmit(cmdline: string | boolean, opts: ExecOptions, 
       const pipsJson =
         pips.size === 0
           ? ""
-          : `, \\"pips\\": [${Array.from(pips)
+          : `, \\"pip\\": [${Array.from(pips)
               .map((_) => `\\"${_}\\"`)
               .join(",")}]`
 
