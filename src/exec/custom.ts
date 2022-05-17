@@ -56,7 +56,6 @@ export default async function execAsCustom(
             if (err) {
               reject(err)
             } else {
-              console.error("!!!!!", exec)
               shellItOut(exec, opts, { MWDIR: dir, MWFILEPATH: filepath, MWFILENAME: basename(filepath) })
                 .then(resolve, reject)
                 .finally(() => {
