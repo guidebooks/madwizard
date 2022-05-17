@@ -19,6 +19,7 @@ import { v4 } from "uuid"
 import { oraPromise } from "../../util/ora-delayed-promise"
 
 import { Debug } from "./debug"
+import { shellExec } from "../../exec"
 import { Memos } from "../../memoization"
 import {
   Graph,
@@ -30,7 +31,6 @@ import {
   isChoice,
   isTitledSteps,
   isSubTask,
-  shellExec,
 } from "../../graph"
 
 export type ExpansionMap = Record<ReturnType<typeof isExpansion>, string[]>
