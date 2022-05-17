@@ -42,7 +42,7 @@ import { CustomExecutable } from "../codeblock"
  */
 export default async function execAsCustom(
   cmdline: string | boolean,
-  opts: ExecOptions = { quiet: false },
+  opts: ExecOptions,
   exec: CustomExecutable["exec"]
 ): Promise<"success"> {
   return new Promise<"success">((resolve, reject) => {
@@ -56,6 +56,7 @@ export default async function execAsCustom(
             if (err) {
               reject(err)
             } else {
+              console.error("!!!!!", exec)
               shellItOut(exec, opts, { MWDIR: dir, MWFILEPATH: filepath, MWFILENAME: basename(filepath) })
                 .then(resolve, reject)
                 .finally(() => {

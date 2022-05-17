@@ -19,10 +19,11 @@ import { CustomExecutable, SupportedLanguage, isPythonic, isShellish } from "../
 
 import shell from "./shell"
 import which from "./which"
-import custom from "./exec"
-import exporter from "./export"
+import custom from "./custom"
 import python from "./python"
-import madwizardPythonPackageInstalled from "./madwizard-python-package-installed"
+import exporter from "./export"
+import pipShow from "./pip-show"
+import raySubmit from "./ray-submit"
 
 export { Env, ExecOptions }
 
@@ -35,15 +36,15 @@ export async function shellExec(
 ): Promise<"success"> {
   if (exec) {
     // then the source has provided a custom executor
-    return custom(cmdline, opts, exec)
+    return raySubmit(cmdline, opts, exec) || custom(cmdline, opts, exec)
   } else if (isShellish(language)) {
     // then the code block has been declared with a `shell` or `bash`
     // or `sh` language
     return (
-      exporter(cmdline, opts) ||
-      which(cmdline) ||
-      madwizardPythonPackageInstalled(cmdline, opts) ||
-      shell(cmdline, opts)
+      exporter(cmdline, opts) || // export FOO=3
+      which(cmdline) || // which foo
+      pipShow(cmdline, opts) || // optimized pip show
+      shell(cmdline, opts) // vanilla shell exec
     )
   } else if (isPythonic(language)) {
     // then the code block has been declared with a `python` language
