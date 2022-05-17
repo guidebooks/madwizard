@@ -60,7 +60,7 @@ export class Guide {
    * @param iter How many questions have we asked so far?
    * @return the list of remaining questions
    */
-  private async questions(iter: number, previous?: Wizard) {
+  private async questions(choiceIter: number, previous?: Wizard) {
     const graph = await compile(this.blocks, this.choices, Object.assign({}, this.options, this.memos))
     const wizard = await wizardify(graph, { previous, statusMemo: this.memos.statusMemo, choices: this.choices })
 
@@ -76,7 +76,9 @@ export class Guide {
       type: "list",
       pageSize: 40,
       name: step.name || chalk.red("Missing name"),
-      message: chalk.yellow(`Choice ${iter + stepIdx + 1}:` + ` ${step.name || chalk.red("Missing name")}`),
+      message: chalk.yellow.inverse(
+        ` Choice ${choiceIter + stepIdx + 1}:` + ` ${step.name || chalk.red("Missing name")} `
+      ),
       choices: step.content.map((tile, idx, A) => ({
         value: tile.title,
         short: tile.title,
@@ -296,8 +298,8 @@ export class Guide {
   }
 
   /** Iterate until all choices have been resolved */
-  private async resolveChoices(iter = 0, previous?: Wizard) {
-    const qs = await this.questions(iter, previous)
+  private async resolveChoices(iter = 0, choiceIter = 0, previous?: Wizard) {
+    const qs = await this.questions(choiceIter, previous)
     const { graph, choices, preChoiceTasks, postChoiceTasks, questions, wizard } = qs
 
     if (iter === 0) {
@@ -315,7 +317,8 @@ export class Guide {
       return postChoiceTasks
     } else if (preChoiceTasks.length > 0) {
       await this.runTasks(preChoiceTasks)
-      return this.resolveChoices(iter + 1, wizard)
+      return this.resolveChoices(iter + 1, choiceIter, wizard)
+      // ^^^ same choice iter, since we asked no questions this time
     } else if (!this.isGuided) {
       // we have unresolved questions, but were asked to run a non-guided execution :(
       throw new Error(
@@ -327,7 +330,7 @@ export class Guide {
       // note that we ask one question at a time, because the answer
       // to the first question may influence what question we ask next
       await this.incorporateAnswers(choices, await this.ask(questions.slice(0, 1)))
-      return this.resolveChoices(iter + 1, wizard)
+      return this.resolveChoices(iter + 1, choiceIter + 1, wizard)
     }
   }
 
