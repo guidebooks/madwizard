@@ -22,7 +22,7 @@ import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
 export class Platform {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/platform"
+  public readonly choiceGroup = "madwizard/apriori/platform"
 
   private readonly platforms: Record<string, typeof process["platform"]> = {
     mac: "darwin",
@@ -68,7 +68,9 @@ export class Platform {
   public populateChoice(choices: ChoiceState) {
     const choice = process.platform
     debug("platform", "using choice " + choice)
-    choices.set(this.choiceGroup, choice, false)
+    if (!choices.contains(this.choiceGroup)) {
+      choices.set(this.choiceGroup, choice, false)
+    }
   }
 
   /** Check if the given `node` is a tab group that we can inform */

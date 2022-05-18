@@ -9,20 +9,20 @@
         {
           "member": 0,
           "graph": {
-            "key": "bf972a0f-4053-4bf2-a10f-7ddd5a72d2d8",
+            "key": "somekey",
             "sequence": [
               {
-                "key": "test/inputs/snippets/importa.md",
+                "key": "somekey",
                 "title": "importa.md",
                 "filepath": "test/inputs/snippets/importa.md",
                 "graph": {
-                  "key": "a71b76d7-5f39-435a-9ba2-3c9b3dc53cfb",
+                  "key": "somekey",
                   "sequence": [
                     {
                       "body": "echo AAA",
                       "language": "bash",
                       "validate": true,
-                      "id": "176ef9c2-2089-4c62-aba6-0b0869aa7bca-0"
+                      "id": "somekey"
                     }
                   ]
                 },
@@ -35,14 +35,14 @@
         {
           "member": 1,
           "graph": {
-            "key": "c945a84a-6c36-4cbb-a582-38a0c1d2a3bf",
+            "key": "somekey",
             "sequence": [
               {
-                "key": "test/inputs/snippets/importe.md",
+                "key": "somekey",
                 "title": "EEE",
                 "filepath": "test/inputs/snippets/importe.md",
                 "graph": {
-                  "key": "1d69ca8b-dd92-4895-a6ff-04c79088ea5e",
+                  "key": "somekey",
                   "sequence": [
                     {
                       "group": "TabE1",
@@ -53,12 +53,12 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "d8dbda09-6c26-4ff7-a87d-c8333bb21335",
+                            "key": "somekey",
                             "sequence": [
                               {
                                 "body": "echo EEE",
                                 "language": "bash",
-                                "id": "176ef9c2-2089-4c62-aba6-0b0869aa7bca-1"
+                                "id": "somekey"
                               }
                             ]
                           },

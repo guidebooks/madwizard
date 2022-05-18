@@ -25,6 +25,7 @@ import { MadWizardOptions } from "../MadWizardOptions"
 import { parse } from "../../parser"
 import { version } from "../../version"
 import { wizardify } from "../../wizard"
+import { newChoiceState } from "../../choices"
 import { compile, order, vetoesToString } from "../../graph"
 
 function assertExhaustive(value: never, message = "Reached unexpected case in exhaustive switch"): never {
@@ -63,8 +64,24 @@ export async function cli<Writer extends (msg: string) => boolean>(
   const noAprioris = !!_argv.find((_) => _ === "--no-aprioris")
   const noValidate = !!_argv.find((_) => _ === "--no-validate")
   const optimize = noOptimize ? false : { aprioris: !noAprioris, validate: !noValidate }
+
+  // base uri of guidebook store; this will allow users to type
+  // shortnames for books in the store
   const store = _argv.find((_) => _.startsWith("--store="))
     ? _argv.find((_) => _.startsWith("--store=")).replace(/^--store=/, "")
+    : undefined
+
+  // assert a choice to have a given value
+  const assertions = _argv.find((_) => _.startsWith("--assert="))
+    ? _argv
+        .find((_) => _.startsWith("--assert="))
+        .replace(/^--assert=/, "")
+        .split(/,/)
+        .map((_) => _.split(/=/))
+        .reduce((M, [key, value]) => {
+          M[key] = value
+          return M
+        }, {})
     : undefined
 
   const commandLineOptions: MadWizardOptions = { veto, mkdocs, narrow, optimize, store }
@@ -82,6 +99,8 @@ export async function cli<Writer extends (msg: string) => boolean>(
     enableTracing(task)
   }
 
+  const choices = newChoiceState(assertions)
+
   // build and mirror: these allow for static/ahead-of-time fetching
   // and inlining of content. This can be helpful to allow shipping
   // "frozen" forms of content with a build, and capturing remote
@@ -98,7 +117,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
     return
   }
 
-  const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)
+  const { blocks } = await parse(input, choices, undefined, undefined, options)
 
   switch (task) {
     case "version":
@@ -139,6 +158,8 @@ export async function cli<Writer extends (msg: string) => boolean>(
           (key, value) => {
             if (key === "source" || key === "position") {
               return "placeholder"
+            } else if (key === "key" || key === "id") {
+              return "somekey"
             } else if (key === "description" && !value) {
               return undefined
             } else if (key === "nesting" && Array.isArray(value)) {

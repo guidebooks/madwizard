@@ -1,17 +1,17 @@
 [
   {
     "graph": {
-      "key": "Using Default Exec",
+      "key": "somekey",
       "title": "Using Default Exec",
       "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
       "filepath": "",
       "graph": {
-        "key": "2e624881-314b-4f5f-9181-6ea635ab6b33",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo hi",
             "language": "shell",
-            "id": "143ed09e-06b1-4d4f-aa28-3716d1a40f31-0"
+            "id": "somekey"
           }
         ]
       },
@@ -25,17 +25,17 @@
   },
   {
     "graph": {
-      "key": "Using Default Exec (again)",
+      "key": "somekey",
       "title": "Using Default Exec (again)",
       "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
       "filepath": "",
       "graph": {
-        "key": "750fb922-0499-4d51-bb2b-bcaf54dc9b0d",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo hi",
             "language": "shell",
-            "id": "143ed09e-06b1-4d4f-aa28-3716d1a40f31-1"
+            "id": "somekey"
           }
         ]
       },
@@ -49,17 +49,17 @@
   },
   {
     "graph": {
-      "key": "Using Custom Exec",
+      "key": "somekey",
       "title": "Using Custom Exec",
       "filepath": "",
       "graph": {
-        "key": "bf182aa1-f5bb-48ab-8ed6-0743af35a139",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo hi",
             "language": "shell",
             "exec": "$SHELL \"$MWFILEPATH\"",
-            "id": "143ed09e-06b1-4d4f-aa28-3716d1a40f31-2"
+            "id": "somekey"
           }
         ]
       },

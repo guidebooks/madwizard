@@ -9,7 +9,7 @@
         {
           "member": 0,
           "graph": {
-            "key": "8ef0dad9-d6fb-44d0-bf5c-e46ea022bafa",
+            "key": "somekey",
             "sequence": [
               {
                 "group": "SubTab1####SubTab2",
@@ -19,12 +19,12 @@
                   {
                     "member": 0,
                     "graph": {
-                      "key": "d030fe61-86da-48d8-97e5-7a08558694e0",
+                      "key": "somekey",
                       "sequence": [
                         {
                           "body": "echo 111",
                           "language": "shell",
-                          "id": "2c2d4413-b37c-4acb-ad21-9939e683e977-0"
+                          "id": "somekey"
                         }
                       ]
                     },
@@ -33,12 +33,12 @@
                   {
                     "member": 1,
                     "graph": {
-                      "key": "b50b7701-eaab-4d81-a456-9c175286fa13",
+                      "key": "somekey",
                       "sequence": [
                         {
                           "body": "echo 222",
                           "language": "shell",
-                          "id": "2c2d4413-b37c-4acb-ad21-9939e683e977-1"
+                          "id": "somekey"
                         }
                       ]
                     },

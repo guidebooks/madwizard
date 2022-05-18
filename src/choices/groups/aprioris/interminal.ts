@@ -22,7 +22,7 @@ import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
 export class RunningInTerminal {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/in-terminal"
+  public readonly choiceGroup = "madwizard/apriori/in-terminal"
 
   /**
    * This code assumes the given `node` satisfies `import('..').isTabGroup`.

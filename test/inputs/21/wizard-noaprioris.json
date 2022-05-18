@@ -1,17 +1,17 @@
 [
   {
     "graph": {
-      "key": "Export an env var",
+      "key": "somekey",
       "title": "Export an env var",
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "c3007d0f-51fd-4efb-a330-434f93b7e046",
+        "key": "somekey",
         "sequence": [
           {
             "body": "export FOO=3",
             "language": "shell",
-            "id": "ce31ca92-0e5c-4802-81ff-97d0e15b0a85-0"
+            "id": "somekey"
           }
         ]
       },
@@ -25,17 +25,17 @@
   },
   {
     "graph": {
-      "key": "Export an env var",
+      "key": "somekey",
       "title": "Export an env var",
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "081cf9dd-ed34-4ed8-a8d7-cf0260003141",
+        "key": "somekey",
         "sequence": [
           {
             "body": "export FOO=\"2:$FOO\"",
             "language": "shell",
-            "id": "ce31ca92-0e5c-4802-81ff-97d0e15b0a85-1"
+            "id": "somekey"
           }
         ]
       },
@@ -49,17 +49,17 @@
   },
   {
     "graph": {
-      "key": "Then use it",
+      "key": "somekey",
       "title": "Then use it",
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "8134cbd1-ca87-4849-8a66-1e263494c63d",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo \"This should be 2:3 --> $FOO\"",
             "language": "shell",
-            "id": "ce31ca92-0e5c-4802-81ff-97d0e15b0a85-2"
+            "id": "somekey"
           }
         ]
       },
@@ -73,18 +73,18 @@
   },
   {
     "graph": {
-      "key": "Propagation check",
+      "key": "somekey",
       "title": "Propagation check",
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "11421c8b-c7e0-4e78-b671-341991977dee",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo \"Bug if we get here\"",
             "language": "shell",
             "validate": "[ \"$FOO\" = \"2:3\" ]",
-            "id": "ce31ca92-0e5c-4802-81ff-97d0e15b0a85-3"
+            "id": "somekey"
           }
         ]
       },

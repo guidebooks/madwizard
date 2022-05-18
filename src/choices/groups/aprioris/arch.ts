@@ -22,7 +22,7 @@ import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
 
 export class Arch {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = "org.kubernetes-sigs.kui/choice/arch"
+  public readonly choiceGroup = "madwizard/apriori/arch"
 
   private readonly archs: Record<string, typeof process["arch"]> = {
     intel: "x64",

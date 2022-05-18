@@ -4,7 +4,7 @@
       "body": "echo AAA",
       "language": "shell",
       "validate": "echo true",
-      "id": "d1fa28c1-ffa9-4281-8edf-cee838be6c1b-0"
+      "id": "somekey"
     },
     "step": {
       "name": "Executing a step",

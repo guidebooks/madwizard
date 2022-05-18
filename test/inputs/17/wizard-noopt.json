@@ -1,17 +1,17 @@
 [
   {
     "graph": {
-      "key": "importa.md",
+      "key": "somekey",
       "title": "importa.md",
       "filepath": "",
       "graph": {
-        "key": "7374f4eb-b91e-41e8-805e-48e3195ecbae",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "ca431773-63ec-478d-833d-3430adfe5ac5-0"
+            "id": "somekey"
           }
         ]
       },
@@ -24,16 +24,16 @@
   },
   {
     "graph": {
-      "key": "barrier.md",
+      "key": "somekey",
       "title": "barrier.md",
       "filepath": "",
       "graph": {
-        "key": "341278da-d51f-48f5-add5-d607d3cf7ace",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo barrier",
             "language": "shell",
-            "id": "ca431773-63ec-478d-833d-3430adfe5ac5-1"
+            "id": "somekey"
           }
         ]
       },
@@ -56,12 +56,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "1955911c-594b-4771-80c7-3b0dd972485e",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "ca431773-63ec-478d-833d-3430adfe5ac5-2"
+                "id": "somekey"
               }
             ]
           },
@@ -89,7 +89,7 @@
       "body": "echo \"testing barrier imports\"",
       "language": "shell",
       "validate": true,
-      "id": "ca431773-63ec-478d-833d-3430adfe5ac5-3"
+      "id": "somekey"
     },
     "step": {
       "name": "Executing a step",
