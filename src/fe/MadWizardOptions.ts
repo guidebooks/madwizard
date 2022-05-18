@@ -22,6 +22,9 @@ interface DisplayOptions {
 }
 
 interface FetchOptions {
+  /** Base URI of Guidebook store? */
+  store: string
+
   /**
    * Path to an mkdocs.yml config. This may be used to assist in
    * finding snippet content when parsing markdown.

@@ -29,8 +29,6 @@ import { MadWizardOptions } from "../../.."
 import { hasImports } from "../frontmatter/KuiFrontmatter"
 import { tryFrontmatter } from "../frontmatter/frontmatter-parser"
 
-const debug = Debug("madwizard/fetch/snippets")
-
 const RE_DOCS_URL = /^(https:\/\/([^/]+\/){4}docs)/
 
 const RE_INCLUDE = /^(\s*){%\s+include "([^"]+)"\s+%}/
@@ -62,7 +60,7 @@ function dirname(a: string) {
   }
 }
 
-function join(a: string, b: string) {
+export function join(a: string, b: string) {
   if (isUrl(a)) {
     const url = new URL(a)
     url.pathname = pathJoin(url.pathname, b)
@@ -175,6 +173,8 @@ function inlineSnippets(opts: Options & InternalOptions) {
     snippetMemo = {},
     altBasePaths = Promise.resolve([]),
   } = opts
+
+  const debug = Debug("madwizard/fetch/snippets")
 
   const _fetchRecursively = async (
     _snippetFileName: string,
