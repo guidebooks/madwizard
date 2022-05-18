@@ -1,16 +1,16 @@
 [
   {
     "graph": {
-      "key": "a.md",
+      "key": "somekey",
       "title": "a.md",
       "filepath": "",
       "graph": {
-        "key": "9f63fd04-d3ff-4380-8e9f-c63bc383a92f",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "shell",
-            "id": "9ef3c889-9b4d-4390-8dcd-6e106d40bc57-0"
+            "id": "somekey"
           }
         ]
       },
@@ -31,26 +31,26 @@
         {
           "member": 0,
           "graph": {
-            "key": "dc7cd67e-cfef-4f68-8abd-cb6d36d6a50b",
+            "key": "somekey",
             "sequence": [
               {
-                "key": "Prerequisites",
+                "key": "somekey",
                 "title": "Prerequisites",
                 "filepath": "",
                 "graph": {
-                  "key": "6e692036-2d96-47cf-8fe0-0421fcb3e782",
+                  "key": "somekey",
                   "sequence": [
                     {
-                      "key": "test/inputs/20/snippets/b.md",
+                      "key": "somekey",
                       "title": "b.md",
                       "filepath": "test/inputs/20/snippets/b.md",
                       "graph": {
-                        "key": "af623a13-9f4f-4a89-95d3-d00ca97b3ac3",
+                        "key": "somekey",
                         "sequence": [
                           {
                             "body": "echo BBB",
                             "language": "shell",
-                            "id": "9ef3c889-9b4d-4390-8dcd-6e106d40bc57-2"
+                            "id": "somekey"
                           }
                         ]
                       },
@@ -63,7 +63,7 @@
               {
                 "body": "echo III",
                 "language": "shell",
-                "id": "9ef3c889-9b4d-4390-8dcd-6e106d40bc57-1"
+                "id": "somekey"
               },
               {
                 "group": "ITab1",
@@ -74,12 +74,12 @@
                   {
                     "member": 0,
                     "graph": {
-                      "key": "b391fb91-7625-4d77-8952-32476fd4c308",
+                      "key": "somekey",
                       "sequence": [
                         {
                           "body": "echo III2",
                           "language": "shell",
-                          "id": "9ef3c889-9b4d-4390-8dcd-6e106d40bc57-3"
+                          "id": "somekey"
                         }
                       ]
                     },

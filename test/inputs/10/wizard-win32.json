@@ -1,16 +1,16 @@
 [
   {
     "graph": {
-      "key": "importgg.md",
+      "key": "somekey",
       "title": "importgg.md",
       "filepath": "",
       "graph": {
-        "key": "2c664b06-3414-4adf-bf4a-7a846dcc9e73",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo WWW",
             "language": "bash",
-            "id": "9712b4dd-c4df-4794-adb7-4af931e0c668-2"
+            "id": "somekey"
           }
         ]
       },
@@ -31,25 +31,25 @@
         {
           "member": 0,
           "graph": {
-            "key": "b1c2e778-3447-4ebb-9ed5-51fceb5478b2",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "9712b4dd-c4df-4794-adb7-4af931e0c668-4"
+                "id": "somekey"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "9712b4dd-c4df-4794-adb7-4af931e0c668-5"
+                "id": "somekey"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "9712b4dd-c4df-4794-adb7-4af931e0c668-6"
+                "id": "somekey"
               }
             ]
           },
@@ -58,13 +58,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "58b3c7b6-69d9-49c2-8000-a2ec7d5afa8c",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "9712b4dd-c4df-4794-adb7-4af931e0c668-7"
+                "id": "somekey"
               }
             ]
           },

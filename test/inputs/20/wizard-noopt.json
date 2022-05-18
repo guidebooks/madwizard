@@ -9,19 +9,19 @@
         {
           "member": 0,
           "graph": {
-            "key": "01ab6cec-fed9-4ba9-ab80-b09fc48760d2",
+            "key": "somekey",
             "sequence": [
               {
-                "key": "test/inputs/20/snippets/a.md",
+                "key": "somekey",
                 "title": "a.md",
                 "filepath": "test/inputs/20/snippets/a.md",
                 "graph": {
-                  "key": "c4305000-9cf2-43ad-8c71-1a55f18b23a9",
+                  "key": "somekey",
                   "sequence": [
                     {
                       "body": "echo AAA",
                       "language": "shell",
-                      "id": "6d836eec-e933-49bf-bbdd-ab6bfae2477f-0"
+                      "id": "somekey"
                     }
                   ]
                 },
@@ -30,7 +30,7 @@
               {
                 "body": "echo III",
                 "language": "shell",
-                "id": "6d836eec-e933-49bf-bbdd-ab6bfae2477f-1"
+                "id": "somekey"
               },
               {
                 "group": "ITab1",
@@ -40,19 +40,19 @@
                   {
                     "member": 0,
                     "graph": {
-                      "key": "90ccbc4d-4442-4c6c-8fca-856e378d86b7",
+                      "key": "somekey",
                       "sequence": [
                         {
-                          "key": "test/inputs/20/snippets/b.md",
+                          "key": "somekey",
                           "title": "b.md",
                           "filepath": "test/inputs/20/snippets/b.md",
                           "graph": {
-                            "key": "6265656e-c1fc-429e-b2e8-adaa2658cc24",
+                            "key": "somekey",
                             "sequence": [
                               {
                                 "body": "echo BBB",
                                 "language": "shell",
-                                "id": "6d836eec-e933-49bf-bbdd-ab6bfae2477f-2"
+                                "id": "somekey"
                               }
                             ]
                           },
@@ -61,7 +61,7 @@
                         {
                           "body": "echo III2",
                           "language": "shell",
-                          "id": "6d836eec-e933-49bf-bbdd-ab6bfae2477f-3"
+                          "id": "somekey"
                         }
                       ]
                     },

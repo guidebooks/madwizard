@@ -1,16 +1,16 @@
 [
   {
     "graph": {
-      "key": "barrier.md",
+      "key": "somekey",
       "title": "barrier.md",
       "filepath": "",
       "graph": {
-        "key": "93d61d79-7c2e-4756-a79f-847c19855373",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo barrier",
             "language": "shell",
-            "id": "bc679de4-349a-400d-a764-abb3d73f4f23-1"
+            "id": "somekey"
           }
         ]
       },
@@ -33,12 +33,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "6f021830-1ec1-41b4-a9fc-af69542a974b",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "bc679de4-349a-400d-a764-abb3d73f4f23-2"
+                "id": "somekey"
               }
             ]
           },

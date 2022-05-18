@@ -7,12 +7,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "6b9dd8e9-85dd-4764-a3e6-a87718638b3d",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo 111",
                 "language": "bash",
-                "id": "b53497fa-a738-46ce-9b1b-9381d552c1b7-0"
+                "id": "somekey"
               }
             ]
           },
@@ -22,12 +22,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "2379ff2c-e082-4694-875d-b008d5093502",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo 222",
                 "language": "bash",
-                "id": "b53497fa-a738-46ce-9b1b-9381d552c1b7-1"
+                "id": "somekey"
               }
             ]
           },

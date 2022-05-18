@@ -9,7 +9,7 @@
         {
           "member": 0,
           "graph": {
-            "key": "c6574ef6-6a17-4cad-9dc6-4b9d1c8b4b80",
+            "key": "somekey",
             "sequence": [
               {
                 "group": "Linux####Windows####MacOS",
@@ -20,12 +20,12 @@
                   {
                     "member": 0,
                     "graph": {
-                      "key": "dce34b50-3a90-4299-b087-e04e2cfbc1e0",
+                      "key": "somekey",
                       "sequence": [
                         {
                           "body": "pip install -U ray",
                           "language": "shell",
-                          "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-0"
+                          "id": "somekey"
                         }
                       ]
                     },
@@ -34,12 +34,12 @@
                   {
                     "member": 1,
                     "graph": {
-                      "key": "27122353-774c-4ffe-9b33-016dccb071e0",
+                      "key": "somekey",
                       "sequence": [
                         {
                           "body": "pip install -U ray",
                           "language": "shell",
-                          "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-1"
+                          "id": "somekey"
                         }
                       ]
                     },
@@ -48,7 +48,7 @@
                   {
                     "member": 2,
                     "graph": {
-                      "key": "310703be-3951-486b-ad4d-afc63523b1b7",
+                      "key": "somekey",
                       "sequence": [
                         {
                           "group": "Intel####Apple Silicon",
@@ -59,12 +59,12 @@
                             {
                               "member": 0,
                               "graph": {
-                                "key": "f87a3531-972c-4493-b1d4-4de145503416",
+                                "key": "somekey",
                                 "sequence": [
                                   {
                                     "body": "pip install -U ray",
                                     "language": "shell",
-                                    "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-2"
+                                    "id": "somekey"
                                   }
                                 ]
                               },
@@ -74,14 +74,14 @@
                             {
                               "member": 1,
                               "graph": {
-                                "key": "d64ba271-8438-41c5-9614-75e265193160",
+                                "key": "somekey",
                                 "sequence": [
                                   {
-                                    "key": "test/inputs/19/snippets/conda.md",
+                                    "key": "somekey",
                                     "title": "Conda: Installation",
                                     "filepath": "test/inputs/19/snippets/conda.md",
                                     "graph": {
-                                      "key": "5b556498-d566-4e7f-a8e4-2bbc303fd64e",
+                                      "key": "somekey",
                                       "sequence": [
                                         {
                                           "group": "Miniconda####Anaconda",
@@ -92,7 +92,7 @@
                                             {
                                               "member": 0,
                                               "graph": {
-                                                "key": "1f1eed36-b316-4c25-bc08-43b329009d4a",
+                                                "key": "somekey",
                                                 "sequence": [
                                                   {
                                                     "group": "Windows####MacOS####Linux",
@@ -103,12 +103,12 @@
                                                       {
                                                         "member": 0,
                                                         "graph": {
-                                                          "key": "4c97a541-6bce-4a83-8b54-65bd60415f8d",
+                                                          "key": "somekey",
                                                           "sequence": [
                                                             {
                                                               "body": "echo windowsfake",
                                                               "language": "shell",
-                                                              "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-3"
+                                                              "id": "somekey"
                                                             }
                                                           ]
                                                         },
@@ -117,7 +117,7 @@
                                                       {
                                                         "member": 1,
                                                         "graph": {
-                                                          "key": "79503c60-2297-44a1-92c4-876f01a3e2a5",
+                                                          "key": "somekey",
                                                           "sequence": [
                                                             {
                                                               "group": "Intel####Apple Silicon",
@@ -128,12 +128,12 @@
                                                                 {
                                                                   "member": 0,
                                                                   "graph": {
-                                                                    "key": "0aa39902-afd0-439c-a8fe-06ffe2cfc417",
+                                                                    "key": "somekey",
                                                                     "sequence": [
                                                                       {
                                                                         "body": "bash <(curl -L https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)",
                                                                         "language": "shell",
-                                                                        "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-4"
+                                                                        "id": "somekey"
                                                                       }
                                                                     ]
                                                                   },
@@ -143,12 +143,12 @@
                                                                 {
                                                                   "member": 1,
                                                                   "graph": {
-                                                                    "key": "3ab55eec-676b-4e58-b24e-4d94c792c3be",
+                                                                    "key": "somekey",
                                                                     "sequence": [
                                                                       {
                                                                         "body": "bash <(curl -L https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh)",
                                                                         "language": "shell",
-                                                                        "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-5"
+                                                                        "id": "somekey"
                                                                       }
                                                                     ]
                                                                   },
@@ -164,12 +164,12 @@
                                                       {
                                                         "member": 2,
                                                         "graph": {
-                                                          "key": "c34c4858-9b17-4bab-9a55-6831bce4d71b",
+                                                          "key": "somekey",
                                                           "sequence": [
                                                             {
                                                               "body": "echo linuxfake",
                                                               "language": "shell",
-                                                              "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-6"
+                                                              "id": "somekey"
                                                             }
                                                           ]
                                                         },
@@ -185,7 +185,7 @@
                                             {
                                               "member": 1,
                                               "graph": {
-                                                "key": "0f221609-52e7-41ca-bf44-54ad8dc43b9e",
+                                                "key": "somekey",
                                                 "sequence": [
                                                   {
                                                     "group": "Windows####MacOS####Linux",
@@ -196,12 +196,12 @@
                                                       {
                                                         "member": 0,
                                                         "graph": {
-                                                          "key": "e05e4406-2e26-4c5b-8925-382687fd0d88",
+                                                          "key": "somekey",
                                                           "sequence": [
                                                             {
                                                               "body": "echo windowsfake",
                                                               "language": "shell",
-                                                              "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-7"
+                                                              "id": "somekey"
                                                             }
                                                           ]
                                                         },
@@ -210,12 +210,12 @@
                                                       {
                                                         "member": 1,
                                                         "graph": {
-                                                          "key": "ba671e65-0e31-43e9-80bc-388f54e40f30",
+                                                          "key": "somekey",
                                                           "sequence": [
                                                             {
                                                               "body": "bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh)",
                                                               "language": "shell",
-                                                              "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-8"
+                                                              "id": "somekey"
                                                             }
                                                           ]
                                                         },
@@ -224,7 +224,7 @@
                                                       {
                                                         "member": 2,
                                                         "graph": {
-                                                          "key": "6cbebe5e-50b8-42ac-953f-e8c3b16fe768",
+                                                          "key": "somekey",
                                                           "sequence": [
                                                             {
                                                               "group": "x86####POWER8 and POWER9####AWS Graviton2/ARM64####IBM z/Linux and LinuxONE",
@@ -235,12 +235,12 @@
                                                                 {
                                                                   "member": 0,
                                                                   "graph": {
-                                                                    "key": "9efd40d1-9cd0-4f35-a82a-81b9cec180da",
+                                                                    "key": "somekey",
                                                                     "sequence": [
                                                                       {
                                                                         "body": "bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh)",
                                                                         "language": "shell",
-                                                                        "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-9"
+                                                                        "id": "somekey"
                                                                       }
                                                                     ]
                                                                   },
@@ -249,12 +249,12 @@
                                                                 {
                                                                   "member": 1,
                                                                   "graph": {
-                                                                    "key": "02697b3f-2557-4688-bf16-e5f4d98f0854",
+                                                                    "key": "somekey",
                                                                     "sequence": [
                                                                       {
                                                                         "body": "bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-ppc64le.sh)",
                                                                         "language": "shell",
-                                                                        "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-10"
+                                                                        "id": "somekey"
                                                                       }
                                                                     ]
                                                                   },
@@ -263,12 +263,12 @@
                                                                 {
                                                                   "member": 2,
                                                                   "graph": {
-                                                                    "key": "5c22d8cb-ea3a-4995-899c-cf9f42408753",
+                                                                    "key": "somekey",
                                                                     "sequence": [
                                                                       {
                                                                         "body": "bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-aarch64.sh)",
                                                                         "language": "shell",
-                                                                        "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-11"
+                                                                        "id": "somekey"
                                                                       }
                                                                     ]
                                                                   },
@@ -277,12 +277,12 @@
                                                                 {
                                                                   "member": 3,
                                                                   "graph": {
-                                                                    "key": "865e1d04-07b4-48a5-9ffb-43d6856c55a7",
+                                                                    "key": "somekey",
                                                                     "sequence": [
                                                                       {
                                                                         "body": "bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-s390x.sh)",
                                                                         "language": "shell",
-                                                                        "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-12"
+                                                                        "id": "somekey"
                                                                       }
                                                                     ]
                                                                   },
@@ -310,7 +310,7 @@
                                   {
                                     "body": "conda activate\npip uninstall grpcio\nconda install grpcio\npip install ray",
                                     "language": "shell",
-                                    "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-13"
+                                    "id": "somekey"
                                   }
                                 ]
                               },
@@ -333,14 +333,14 @@
         {
           "member": 1,
           "graph": {
-            "key": "5d25eb06-be1f-4161-9f9f-e8cccb5f8cb4",
+            "key": "somekey",
             "sequence": [
               {
-                "key": "test/inputs/19/snippets/kubectl.md",
+                "key": "somekey",
                 "title": "Install kubectl",
                 "filepath": "test/inputs/19/snippets/kubectl.md",
                 "graph": {
-                  "key": "72c2ab4c-fa18-45c4-b617-b7ffcaad651c",
+                  "key": "somekey",
                   "sequence": [
                     {
                       "group": "Linux####Windows####MacOS",
@@ -351,12 +351,12 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "edda2c99-bb99-41eb-8646-fbdd3b41c304",
+                            "key": "somekey",
                             "sequence": [
                               {
                                 "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
                                 "language": "bash",
-                                "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-14"
+                                "id": "somekey"
                               }
                             ]
                           },
@@ -366,12 +366,12 @@
                         {
                           "member": 1,
                           "graph": {
-                            "key": "a32466ce-a341-437d-9fbb-a38eb12ea7ee",
+                            "key": "somekey",
                             "sequence": [
                               {
                                 "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe\"",
                                 "language": "bash",
-                                "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-15"
+                                "id": "somekey"
                               }
                             ]
                           },
@@ -381,7 +381,7 @@
                         {
                           "member": 2,
                           "graph": {
-                            "key": "cbb2074c-af91-41ef-9b8a-9d036d8f299c",
+                            "key": "somekey",
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
@@ -392,12 +392,12 @@
                                   {
                                     "member": 0,
                                     "graph": {
-                                      "key": "2f984d44-4af3-4495-b6af-1f3a7b09b5e6",
+                                      "key": "somekey",
                                       "sequence": [
                                         {
                                           "body": "brew install kubectl",
                                           "language": "bash",
-                                          "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-16"
+                                          "id": "somekey"
                                         }
                                       ]
                                     },
@@ -407,7 +407,7 @@
                                   {
                                     "member": 1,
                                     "graph": {
-                                      "key": "d18b2b85-fb5f-4b3b-a652-aa0f1816f83b",
+                                      "key": "somekey",
                                       "sequence": [
                                         {
                                           "group": "Intel####Apple Silicon",
@@ -418,12 +418,12 @@
                                             {
                                               "member": 0,
                                               "graph": {
-                                                "key": "ccd5810a-61f0-40f5-ac8d-e9ee08ea81df",
+                                                "key": "somekey",
                                                 "sequence": [
                                                   {
                                                     "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl.sha256\"",
                                                     "language": "bash",
-                                                    "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-17"
+                                                    "id": "somekey"
                                                   }
                                                 ]
                                               },
@@ -432,12 +432,12 @@
                                             {
                                               "member": 1,
                                               "graph": {
-                                                "key": "9aa43a6e-04ef-4a90-99cf-a0d2b8a7f7bc",
+                                                "key": "somekey",
                                                 "sequence": [
                                                   {
                                                     "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl.sha256\"",
                                                     "language": "bash",
-                                                    "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-18"
+                                                    "id": "somekey"
                                                   }
                                                 ]
                                               },
@@ -446,11 +446,11 @@
                                           ]
                                         },
                                         {
-                                          "key": "Installing a Specific Version",
+                                          "key": "somekey",
                                           "title": "Installing a Specific Version",
                                           "filepath": "",
                                           "graph": {
-                                            "key": "5d6ca986-dc15-4f0a-b981-6101835a2eca",
+                                            "key": "somekey",
                                             "sequence": [
                                               {
                                                 "group": "Intel####Apple Silicon",
@@ -461,12 +461,12 @@
                                                   {
                                                     "member": 0,
                                                     "graph": {
-                                                      "key": "eb4444e7-579a-4750-b9a9-cf78176e15bf",
+                                                      "key": "somekey",
                                                       "sequence": [
                                                         {
                                                           "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/amd64/kubectl\"",
                                                           "language": "bash",
-                                                          "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-19",
+                                                          "id": "somekey",
                                                           "optional": true
                                                         }
                                                       ]
@@ -477,12 +477,12 @@
                                                   {
                                                     "member": 1,
                                                     "graph": {
-                                                      "key": "ccbbff03-38cc-4fdd-9090-d15ee104c1e1",
+                                                      "key": "somekey",
                                                       "sequence": [
                                                         {
                                                           "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/arm64/kubectl\"",
                                                           "language": "bash",
-                                                          "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-20",
+                                                          "id": "somekey",
                                                           "optional": true
                                                         }
                                                       ]
@@ -515,11 +515,11 @@
                 "source": "placeholder"
               },
               {
-                "key": "test/inputs/19/snippets/helm3.md",
+                "key": "somekey",
                 "title": "Install Helm",
                 "filepath": "test/inputs/19/snippets/helm3.md",
                 "graph": {
-                  "key": "9e2b7c7a-2ee0-41db-a014-8156b74318da",
+                  "key": "somekey",
                   "sequence": [
                     {
                       "group": "MacOS####Linux####Windows",
@@ -530,7 +530,7 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "7babc2c5-c784-4651-8bce-af06822002b8",
+                            "key": "somekey",
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
@@ -541,12 +541,12 @@
                                   {
                                     "member": 0,
                                     "graph": {
-                                      "key": "c1144eca-e054-4555-acef-b460fbf5d679",
+                                      "key": "somekey",
                                       "sequence": [
                                         {
                                           "body": "brew install helm",
                                           "language": "shell",
-                                          "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-21"
+                                          "id": "somekey"
                                         }
                                       ]
                                     },
@@ -555,12 +555,12 @@
                                   {
                                     "member": 1,
                                     "graph": {
-                                      "key": "b4c57eba-a0b9-4b4d-a299-750183786955",
+                                      "key": "somekey",
                                       "sequence": [
                                         {
                                           "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
                                           "language": "shell",
-                                          "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-22"
+                                          "id": "somekey"
                                         }
                                       ]
                                     },
@@ -575,12 +575,12 @@
                         {
                           "member": 1,
                           "graph": {
-                            "key": "c23de039-d03d-4e84-b465-a420511d443d",
+                            "key": "somekey",
                             "sequence": [
                               {
                                 "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
                                 "language": "shell",
-                                "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-23"
+                                "id": "somekey"
                               }
                             ]
                           },
@@ -589,12 +589,12 @@
                         {
                           "member": 2,
                           "graph": {
-                            "key": "461127d9-ca93-4508-9e32-bab37e6e55bf",
+                            "key": "somekey",
                             "sequence": [
                               {
                                 "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
                                 "language": "shell",
-                                "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-24"
+                                "id": "somekey"
                               }
                             ]
                           },
@@ -609,7 +609,7 @@
               {
                 "body": "helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/\nkubectl wait --for=condition=available --all rayclusters",
                 "language": "shell",
-                "id": "c8eb5c56-3b62-4476-a3a9-a15ebfaa2833-25"
+                "id": "somekey"
               }
             ]
           },

@@ -3,7 +3,7 @@
     "graph": {
       "body": "print(\"PPP\")",
       "language": "python",
-      "id": "a2f51cde-5ab9-4d47-a8d1-bc64f337511c-0"
+      "id": "somekey"
     },
     "step": {
       "name": "Executing a step",

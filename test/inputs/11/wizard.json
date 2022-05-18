@@ -1,16 +1,16 @@
 [
   {
     "graph": {
-      "key": "Text versus HTML?",
+      "key": "somekey",
       "title": "Text versus HTML?",
       "filepath": "",
       "graph": {
-        "key": "69f10ab3-bfcf-4cf9-a981-8a79f0cd1d91",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo text",
             "language": "shell",
-            "id": "a8cac911-d212-4535-a796-2d304735f7b7-0"
+            "id": "somekey"
           }
         ]
       },

@@ -1,17 +1,17 @@
 [
   {
     "graph": {
-      "key": "importa.md",
+      "key": "somekey",
       "title": "importa.md",
       "filepath": "",
       "graph": {
-        "key": "13b38830-b84a-435f-a741-76ac9f37a3a4",
+        "key": "somekey",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "bash",
             "validate": true,
-            "id": "8ffcdb35-06dc-4ced-a6d0-16a578611046-0"
+            "id": "somekey"
           }
         ]
       },
@@ -32,12 +32,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "cfbedb79-f2e7-44a9-a9fc-ea7403a21c80",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "8ffcdb35-06dc-4ced-a6d0-16a578611046-1"
+                "id": "somekey"
               }
             ]
           },
@@ -69,14 +69,14 @@
         {
           "member": 0,
           "graph": {
-            "key": "ce4a2738-ef17-4974-ac50-dfe7dd7ddde8",
+            "key": "somekey",
             "sequence": [
               {
-                "key": "test/inputs/snippets/importd.md",
+                "key": "somekey",
                 "title": "DDD",
                 "filepath": "test/inputs/snippets/importd.md",
                 "graph": {
-                  "key": "9976dfa2-212b-477c-9815-fe78c4e8d47a",
+                  "key": "somekey",
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
@@ -87,25 +87,25 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "e3fa6340-8e6f-499f-9a4d-89e139cfaf3c",
+                            "key": "somekey",
                             "sequence": [
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "8ffcdb35-06dc-4ced-a6d0-16a578611046-2"
+                                "id": "somekey"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "8ffcdb35-06dc-4ced-a6d0-16a578611046-3"
+                                "id": "somekey"
                               },
                               {
                                 "body": "echo AAA",
                                 "language": "bash",
                                 "validate": true,
-                                "id": "8ffcdb35-06dc-4ced-a6d0-16a578611046-4"
+                                "id": "somekey"
                               }
                             ]
                           },
@@ -114,13 +114,13 @@
                         {
                           "member": 1,
                           "graph": {
-                            "key": "1bdcce04-2fe3-4f72-a2a3-535abc02e975",
+                            "key": "somekey",
                             "sequence": [
                               {
                                 "body": "echo BBB",
                                 "language": "bash",
                                 "validate": false,
-                                "id": "8ffcdb35-06dc-4ced-a6d0-16a578611046-5"
+                                "id": "somekey"
                               }
                             ]
                           },
@@ -140,12 +140,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "6b9c1f43-bf54-45eb-b92c-70fdf68e442c",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo XXX",
                 "language": "bash",
-                "id": "8ffcdb35-06dc-4ced-a6d0-16a578611046-6"
+                "id": "somekey"
               }
             ]
           },

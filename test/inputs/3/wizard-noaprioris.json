@@ -9,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "adedd05d-bf77-42f1-a899-7de0bc62b1f4",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "af55b8c2-e69a-43f5-bdac-fe8853eb9f0c-1"
+                "id": "somekey"
               }
             ]
           },
@@ -47,25 +47,25 @@
         {
           "member": 0,
           "graph": {
-            "key": "7956434f-ea96-4178-a17b-4ccbadf907aa",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "af55b8c2-e69a-43f5-bdac-fe8853eb9f0c-2"
+                "id": "somekey"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "af55b8c2-e69a-43f5-bdac-fe8853eb9f0c-3"
+                "id": "somekey"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "af55b8c2-e69a-43f5-bdac-fe8853eb9f0c-4"
+                "id": "somekey"
               }
             ]
           },
@@ -74,13 +74,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "812e50c4-b6f2-4448-a019-5618a2c353fe",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "af55b8c2-e69a-43f5-bdac-fe8853eb9f0c-5"
+                "id": "somekey"
               }
             ]
           },

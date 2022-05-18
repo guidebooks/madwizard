@@ -9,25 +9,25 @@
         {
           "member": 0,
           "graph": {
-            "key": "4f52719d-227c-4b23-9e95-0d133e768120",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "9fca8884-446b-447b-ae0a-4ca449f34e8c-0"
+                "id": "somekey"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "9fca8884-446b-447b-ae0a-4ca449f34e8c-1"
+                "id": "somekey"
               },
               {
                 "body": "echo AAA",
                 "language": "bash",
                 "validate": true,
-                "id": "9fca8884-446b-447b-ae0a-4ca449f34e8c-2"
+                "id": "somekey"
               }
             ]
           },
@@ -36,13 +36,13 @@
         {
           "member": 1,
           "graph": {
-            "key": "364a394d-e5aa-4eed-96c6-f8b347ecc08e",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo BBB",
                 "language": "bash",
                 "validate": false,
-                "id": "9fca8884-446b-447b-ae0a-4ca449f34e8c-3"
+                "id": "somekey"
               }
             ]
           },
@@ -79,12 +79,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "b14bbfb7-5f9a-49ff-b1f1-5ae4408215dd",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo EEE",
                 "language": "bash",
-                "id": "9fca8884-446b-447b-ae0a-4ca449f34e8c-5"
+                "id": "somekey"
               }
             ]
           },
@@ -117,12 +117,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "3c0eeaa0-468f-4a2a-9f91-95a2c84e2592",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo XXX",
                 "language": "bash",
-                "id": "9fca8884-446b-447b-ae0a-4ca449f34e8c-10"
+                "id": "somekey"
               }
             ]
           },

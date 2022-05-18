@@ -1,16 +1,16 @@
 [
   {
     "graph": {
-      "key": "H1",
+      "key": "somekey",
       "title": "H1",
       "filepath": "",
       "graph": {
-        "key": "c396fd39-bed8-473c-a36e-8258d09879f7",
+        "key": "somekey",
         "sequence": [
           {
             "body": "111",
             "language": "shell",
-            "id": "2c7f7431-0bdb-4499-a40b-d287090f0dec-0"
+            "id": "somekey"
           }
         ]
       },

@@ -40,6 +40,6 @@ export type Choices = {
   choices: ChoiceState
 }
 
-export function newChoiceState(): ChoiceState {
-  return new ChoiceStateImpl()
+export function newChoiceState(assertions: ChoicesMap = {}): ChoiceState {
+  return new ChoiceStateImpl(assertions)
 }

@@ -9,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "7e3a8a01-c400-4b64-a995-5a2c51b40773",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo \"3\"",
                 "language": "shell",
-                "id": "d789f927-d739-4062-8369-b110200077ef-0"
+                "id": "somekey"
               }
             ]
           },
@@ -24,12 +24,12 @@
         {
           "member": 1,
           "graph": {
-            "key": "7e3a8a01-c400-4b64-a995-5a2c51b40773",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo \"4\"",
                 "language": "shell",
-                "id": "d789f927-d739-4062-8369-b110200077ef-0"
+                "id": "somekey"
               }
             ]
           },
@@ -39,12 +39,12 @@
         {
           "member": 2,
           "graph": {
-            "key": "7e3a8a01-c400-4b64-a995-5a2c51b40773",
+            "key": "somekey",
             "sequence": [
               {
                 "body": "echo \"5\"",
                 "language": "shell",
-                "id": "d789f927-d739-4062-8369-b110200077ef-0"
+                "id": "somekey"
               }
             ]
           },
