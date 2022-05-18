@@ -23,8 +23,8 @@ import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
 import { unified, PluggableList } from "unified"
 
-import { madwizardRead } from "./fetch"
 import { MadWizardOptions } from "../../"
+import { madwizardRead, fetcherFor } from "./fetch"
 
 import { CodeBlockProps } from "../../codeblock"
 import { ChoiceState, newChoiceState } from "../../choices"
@@ -102,7 +102,7 @@ async function parse(
       .use(remarkRehype, { allowDangerousHtml: true })
       .use(rehypePlugins(uuid, choices, blocks, madwizardOptions, input.path))
 
-    const fetcher = (filepath: string) => reader(new VFile({ path: filepath })).then((_) => _.value.toString())
+    const fetcher = fetcherFor(reader)
 
     debug("fetch start")
     const sourcePriorToInlining = input.value.toString()
@@ -137,7 +137,7 @@ export async function blockify(
 ) {
   const file =
     typeof input === "string"
-      ? await reader(new VFile({ path: toRawGithubUserContent(expandHomeDir(input)) }), true)
+      ? await reader(new VFile({ path: toRawGithubUserContent(expandHomeDir(input)) }), madwizardOptions.store, true)
       : new VFile(input)
   return parse(file, choices, uuid, reader, madwizardOptions)
 }

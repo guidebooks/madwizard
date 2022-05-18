@@ -20,6 +20,7 @@ import fetch from "make-fetch-happen"
 import { VFile } from "vfile"
 import { read as vfileRead } from "to-vfile"
 
+import { join } from "./snippets"
 import { toRawGithubUserContent } from "./snippets/urls"
 
 export function get(uri: string) {
@@ -27,7 +28,11 @@ export function get(uri: string) {
 }
 
 /** Fetch the contents of the given `VFile` */
-export async function madwizardRead(file: VFile, searchStore = false): Promise<VFile> {
+export async function madwizardRead(
+  file: VFile,
+  store = "https://github.com/guidebooks/store/blob/main/guidebooks",
+  searchStore = false
+): Promise<VFile> {
   if (/^https?:/.test(file.path)) {
     // remote fetch
     const res = await get(file.path)
@@ -47,15 +52,15 @@ export async function madwizardRead(file: VFile, searchStore = false): Promise<V
       }
 
       // see if the path is in the guidebooks store
-      const ext = /\..+$/.test(file.path) ? "" : "md"
-      const base = `https://github.com/guidebooks/store/blob/main/guidebooks/${file.path}`
+      const ext = /\..+$/.test(file.path) ? "" : ".md"
+      const base = join(store, file.path)
 
       try {
-        const path = toRawGithubUserContent(`${base}.${ext}`)
+        const path = toRawGithubUserContent(`${base}${ext}`)
         return await madwizardRead(new VFile({ path }))
       } catch (err2) {
         try {
-          const path = toRawGithubUserContent(`${base}/index.${ext}`)
+          const path = toRawGithubUserContent(`${base}/index${ext}`)
           return await madwizardRead(new VFile({ path }))
         } catch (err3) {
           throw err
@@ -63,4 +68,8 @@ export async function madwizardRead(file: VFile, searchStore = false): Promise<V
       }
     }
   }
+}
+
+export function fetcherFor(reader = madwizardRead) {
+  return (filepath: string) => reader(new VFile({ path: filepath })).then((_) => _.value.toString())
 }

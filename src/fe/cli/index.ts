@@ -63,8 +63,11 @@ export async function cli<Writer extends (msg: string) => boolean>(
   const noAprioris = !!_argv.find((_) => _ === "--no-aprioris")
   const noValidate = !!_argv.find((_) => _ === "--no-validate")
   const optimize = noOptimize ? false : { aprioris: !noAprioris, validate: !noValidate }
+  const store = _argv.find((_) => _.startsWith("--store="))
+    ? _argv.find((_) => _.startsWith("--store=")).replace(/^--store=/, "")
+    : undefined
 
-  const commandLineOptions: MadWizardOptions = { veto, mkdocs, narrow, optimize }
+  const commandLineOptions: MadWizardOptions = { veto, mkdocs, narrow, optimize, store }
   const options: MadWizardOptions = Object.assign(commandLineOptions, providedOptions)
 
   if (!task || !input) {
@@ -77,6 +80,22 @@ export async function cli<Writer extends (msg: string) => boolean>(
 
   if (isDebugTask(task)) {
     enableTracing(task)
+  }
+
+  // build and mirror: these allow for static/ahead-of-time fetching
+  // and inlining of content. This can be helpful to allow shipping
+  // "frozen" forms of content with a build, and capturing remote
+  // content at the same time. By inlining the content ("build", and
+  // mirror calls build over a directory tree), you can also amortize
+  // the cost of many file reads/remote fetches per run.
+  if (task === "build") {
+    const { inliner } = await import("../../parser/markdown/snippets/inliner")
+    await inliner(input, argv[3], argv[4])
+    return
+  } else if (task === "mirror") {
+    const { mirror } = await import("../../parser/markdown/snippets/mirror")
+    await mirror(input, argv[3])
+    return
   }
 
   const { blocks, choices } = await parse(input, undefined, undefined, undefined, options)

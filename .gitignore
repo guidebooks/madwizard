@@ -8,3 +8,6 @@ dist
 node_modules
 *.tgz
 .parcel-cache
+
+# mirrored guidebook store
+store
