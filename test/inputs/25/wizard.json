@@ -1,0 +1,68 @@
+[
+  {
+    "graph": {
+      "key": "a.md",
+      "title": "a.md",
+      "filepath": "",
+      "graph": {
+        "key": "d154608d-2be4-4127-9232-3ca8c39778f3",
+        "sequence": [
+          {
+            "body": "echo AAA",
+            "language": "shell",
+            "id": "0428baf8-6c02-4b10-8d22-aba6b023f074-0"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "a.md",
+      "content": ""
+    }
+  },
+  {
+    "graph": {
+      "group": "Tab1####Tab2",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "dbe71bef-4d9f-4c6d-8bb5-9d27e437148a",
+            "sequence": [
+              {
+                "key": "test/inputs/25/b.md",
+                "title": "b.md",
+                "filepath": "test/inputs/25/b.md",
+                "graph": {
+                  "key": "27096f97-4e51-48d7-897d-0bf0a847c689",
+                  "sequence": [
+                    {
+                      "body": "echo BBB",
+                      "language": "shell",
+                      "id": "0428baf8-6c02-4b10-8d22-aba6b023f074-1"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab1"
+        }
+      ]
+    },
+    "step": {
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1####Tab2",
+          "member": 0,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  }
+]

@@ -9,19 +9,19 @@
         {
           "member": 0,
           "graph": {
-            "key": "5067e5aa-348a-4dd5-9daf-cbcb1f1fb582",
+            "key": "01ab6cec-fed9-4ba9-ab80-b09fc48760d2",
             "sequence": [
               {
                 "key": "test/inputs/20/snippets/a.md",
                 "title": "a.md",
                 "filepath": "test/inputs/20/snippets/a.md",
                 "graph": {
-                  "key": "3d9a228d-636f-4e2d-a61e-c12a6a044b9f",
+                  "key": "c4305000-9cf2-43ad-8c71-1a55f18b23a9",
                   "sequence": [
                     {
                       "body": "echo AAA",
                       "language": "shell",
-                      "id": "96eff1ba-6616-4d6f-9335-06d1ec48aee7-0"
+                      "id": "6d836eec-e933-49bf-bbdd-ab6bfae2477f-0"
                     }
                   ]
                 },
@@ -30,7 +30,7 @@
               {
                 "body": "echo III",
                 "language": "shell",
-                "id": "96eff1ba-6616-4d6f-9335-06d1ec48aee7-1"
+                "id": "6d836eec-e933-49bf-bbdd-ab6bfae2477f-1"
               },
               {
                 "group": "ITab1",
@@ -40,19 +40,19 @@
                   {
                     "member": 0,
                     "graph": {
-                      "key": "98cf8474-5b01-4142-ac39-48d4de39ebbf",
+                      "key": "90ccbc4d-4442-4c6c-8fca-856e378d86b7",
                       "sequence": [
                         {
                           "key": "test/inputs/20/snippets/b.md",
                           "title": "b.md",
                           "filepath": "test/inputs/20/snippets/b.md",
                           "graph": {
-                            "key": "e9f06eb8-e6fa-4975-8c00-23272c60c94b",
+                            "key": "6265656e-c1fc-429e-b2e8-adaa2658cc24",
                             "sequence": [
                               {
                                 "body": "echo BBB",
                                 "language": "shell",
-                                "id": "96eff1ba-6616-4d6f-9335-06d1ec48aee7-2"
+                                "id": "6d836eec-e933-49bf-bbdd-ab6bfae2477f-2"
                               }
                             ]
                           },
@@ -61,7 +61,7 @@
                         {
                           "body": "echo III2",
                           "language": "shell",
-                          "id": "96eff1ba-6616-4d6f-9335-06d1ec48aee7-3"
+                          "id": "6d836eec-e933-49bf-bbdd-ab6bfae2477f-3"
                         }
                       ]
                     },

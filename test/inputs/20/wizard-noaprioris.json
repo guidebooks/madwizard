@@ -1,38 +1,16 @@
 [
   {
     "graph": {
-      "key": "b.md",
-      "title": "b.md",
-      "filepath": "",
-      "graph": {
-        "key": "97f83b92-03be-4dcd-bef0-1756600a4e18",
-        "sequence": [
-          {
-            "body": "echo BBB",
-            "language": "shell",
-            "id": "827fcf59-f458-41bc-b166-bee3a24c7eb4-2"
-          }
-        ]
-      },
-      "source": "placeholder"
-    },
-    "step": {
-      "name": "b.md",
-      "content": ""
-    }
-  },
-  {
-    "graph": {
       "key": "a.md",
       "title": "a.md",
       "filepath": "",
       "graph": {
-        "key": "cba2f114-4b00-4946-bb14-f4429f41c43f",
+        "key": "fa189db1-04c5-47f2-ae99-b696f899ac59",
         "sequence": [
           {
             "body": "echo AAA",
             "language": "shell",
-            "id": "827fcf59-f458-41bc-b166-bee3a24c7eb4-0"
+            "id": "9f4301a7-dc80-4a65-91e8-b01cc013e05a-0"
           }
         ]
       },
@@ -53,12 +31,39 @@
         {
           "member": 0,
           "graph": {
-            "key": "a7384f69-1c33-4952-b6c3-257db19e752b",
+            "key": "eedd2f91-de25-42de-acd3-0899e49ee25e",
             "sequence": [
+              {
+                "key": "Prerequisites",
+                "title": "Prerequisites",
+                "filepath": "",
+                "graph": {
+                  "key": "f6520fa8-2828-4b0b-b5d0-9970e967a3f8",
+                  "sequence": [
+                    {
+                      "key": "test/inputs/20/snippets/b.md",
+                      "title": "b.md",
+                      "filepath": "test/inputs/20/snippets/b.md",
+                      "graph": {
+                        "key": "c0a5d847-935e-4649-ac36-0da17c9833b2",
+                        "sequence": [
+                          {
+                            "body": "echo BBB",
+                            "language": "shell",
+                            "id": "9f4301a7-dc80-4a65-91e8-b01cc013e05a-2"
+                          }
+                        ]
+                      },
+                      "source": "placeholder"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              },
               {
                 "body": "echo III",
                 "language": "shell",
-                "id": "827fcf59-f458-41bc-b166-bee3a24c7eb4-1"
+                "id": "9f4301a7-dc80-4a65-91e8-b01cc013e05a-1"
               },
               {
                 "group": "ITab1",
@@ -69,12 +74,12 @@
                   {
                     "member": 0,
                     "graph": {
-                      "key": "190f567f-cb55-48ca-89fd-3fff8d201a88",
+                      "key": "75b12349-1a35-483b-a30c-3609efab2f4b",
                       "sequence": [
                         {
                           "body": "echo III2",
                           "language": "shell",
-                          "id": "827fcf59-f458-41bc-b166-bee3a24c7eb4-3"
+                          "id": "9f4301a7-dc80-4a65-91e8-b01cc013e05a-3"
                         }
                       ]
                     },

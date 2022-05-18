@@ -1,0 +1,8 @@
+Sequence
+├── Prerequisites
+│   └── a.md
+│       └── echo AAA
+└── Missing heading for choice
+    └── Option 1: Tab1
+        └── b.md
+            └── echo BBB
