@@ -33,9 +33,7 @@ export default async function optimize(graph: Graph, choices: ChoiceState, optio
     return (
       propagateTitles(
         deadCodeElimination(
-          hoistSubTasks(
-            await collapseValidated(deadCodeElimination(hoistSubTasks(collapseMadeChoices(graph, choices))), options)
-          )
+          await collapseValidated(deadCodeElimination(collapseMadeChoices(hoistSubTasks(graph), choices)), options)
         )
       ) || sequence([])
     )

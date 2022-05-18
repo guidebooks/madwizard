@@ -6,12 +6,12 @@
       "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
       "filepath": "",
       "graph": {
-        "key": "d0e53aa2-f5f3-4d59-88b7-0154e90ab6ed",
+        "key": "9035dadf-a490-437a-aea6-daf76418f4a3",
         "sequence": [
           {
             "body": "echo hi",
             "language": "shell",
-            "id": "5db97f15-5683-4caa-8283-4da605591e9f-0"
+            "id": "52bc3f5f-9332-434e-a2be-df6caa478201-0"
           }
         ]
       },
@@ -30,12 +30,12 @@
       "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
       "filepath": "",
       "graph": {
-        "key": "ccb672a4-d347-46a4-a956-df90f7610422",
+        "key": "b5604acb-0a83-492d-bf6f-02fa1f70b302",
         "sequence": [
           {
             "body": "echo hi",
             "language": "shell",
-            "id": "5db97f15-5683-4caa-8283-4da605591e9f-1"
+            "id": "52bc3f5f-9332-434e-a2be-df6caa478201-1"
           }
         ]
       },
@@ -53,13 +53,13 @@
       "title": "Using Custom Exec",
       "filepath": "",
       "graph": {
-        "key": "18d82798-b2c8-4e8d-8cb2-4447a31479be",
+        "key": "eaa5c9a3-5dc9-4b8f-9255-2ee62a878850",
         "sequence": [
           {
             "body": "echo hi",
             "language": "shell",
             "exec": "$SHELL \"$MWFILEPATH\"",
-            "id": "5db97f15-5683-4caa-8283-4da605591e9f-2"
+            "id": "52bc3f5f-9332-434e-a2be-df6caa478201-2"
           }
         ]
       },

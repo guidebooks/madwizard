@@ -9,12 +9,12 @@
         {
           "member": 0,
           "graph": {
-            "key": "f6f963a8-e4ce-403b-bdc6-7959ce108733",
+            "key": "ed0f4986-0e2c-4888-90f2-35fc613c2a42",
             "sequence": [
               {
                 "body": "pip install -U ray",
                 "language": "shell",
-                "id": "173fb32d-2c75-4a5e-b652-762800a024e0-0"
+                "id": "0128c711-5061-436d-92be-6cd687efb7c4-0"
               }
             ]
           },
@@ -24,26 +24,26 @@
         {
           "member": 1,
           "graph": {
-            "key": "766dade5-2bc5-40f6-a1fe-51cd6a15cc94",
+            "key": "3747acd2-b1db-417a-baa7-c254c32330ba",
             "sequence": [
               {
                 "key": "test/inputs/19/snippets/kubectl.md",
                 "title": "Install kubectl",
                 "filepath": "test/inputs/19/snippets/kubectl.md",
                 "graph": {
-                  "key": "b782a639-dde8-4652-a480-eb6e1961b30a",
+                  "key": "2d0c6825-6d83-4f1e-b361-ebac0d7cd7d4",
                   "sequence": [
                     {
                       "key": "org.kubernetes-sigs.kui/choice/platform",
                       "title": "Install kubectl",
                       "filepath": "",
                       "graph": {
-                        "key": "4b7a9057-b542-48d2-801a-6d198831432c",
+                        "key": "2431a1b3-fb6f-4340-a184-8ed84f6f3b8d",
                         "sequence": [
                           {
                             "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
                             "language": "bash",
-                            "id": "173fb32d-2c75-4a5e-b652-762800a024e0-14"
+                            "id": "0128c711-5061-436d-92be-6cd687efb7c4-14"
                           }
                         ]
                       },
@@ -58,19 +58,19 @@
                 "title": "Install Helm",
                 "filepath": "test/inputs/19/snippets/helm3.md",
                 "graph": {
-                  "key": "6abcc4f2-8a97-4e66-a143-73b8a0ed46b9",
+                  "key": "e10d4cac-e60b-40b0-84bd-4c98435ba5b1",
                   "sequence": [
                     {
                       "key": "org.kubernetes-sigs.kui/choice/platform",
                       "title": "Install Helm",
                       "filepath": "",
                       "graph": {
-                        "key": "52fd8aa6-8eb9-49c9-8333-6f2221f292c2",
+                        "key": "9a84accd-3204-4670-907b-47e1f8e0ce62",
                         "sequence": [
                           {
                             "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
                             "language": "shell",
-                            "id": "173fb32d-2c75-4a5e-b652-762800a024e0-23"
+                            "id": "0128c711-5061-436d-92be-6cd687efb7c4-23"
                           }
                         ]
                       },
@@ -83,7 +83,7 @@
               {
                 "body": "helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/\nkubectl wait --for=condition=available --all rayclusters",
                 "language": "shell",
-                "id": "173fb32d-2c75-4a5e-b652-762800a024e0-25"
+                "id": "0128c711-5061-436d-92be-6cd687efb7c4-25"
               }
             ]
           },

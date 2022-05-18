@@ -6,12 +6,12 @@
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "a40ee7d2-bbcb-48aa-b114-7a35875704a0",
+        "key": "9abe54af-46b4-46bb-8011-adb3839aaf00",
         "sequence": [
           {
             "body": "export FOO=3",
             "language": "shell",
-            "id": "bc27a784-dd10-4a5c-837d-63af17dd986d-0"
+            "id": "1ba13925-f570-41bb-b721-e45007ff153e-0"
           }
         ]
       },
@@ -30,12 +30,12 @@
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "078d85ba-6ffa-45ce-8992-d2d4e9bc34ff",
+        "key": "65c686f3-ebfe-4c6d-9a4f-6c6d6959c0e5",
         "sequence": [
           {
             "body": "export FOO=\"2:$FOO\"",
             "language": "shell",
-            "id": "bc27a784-dd10-4a5c-837d-63af17dd986d-1"
+            "id": "1ba13925-f570-41bb-b721-e45007ff153e-1"
           }
         ]
       },
@@ -54,12 +54,12 @@
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "ff91f659-b978-49e5-b743-1d3a3b714381",
+        "key": "582df9df-72bf-4504-b6ee-4c06b789e7c9",
         "sequence": [
           {
             "body": "echo \"This should be 2:3 --> $FOO\"",
             "language": "shell",
-            "id": "bc27a784-dd10-4a5c-837d-63af17dd986d-2"
+            "id": "1ba13925-f570-41bb-b721-e45007ff153e-2"
           }
         ]
       },
@@ -78,13 +78,13 @@
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
       "graph": {
-        "key": "7d61939f-90b5-4a1e-a8ea-27b3ae7da235",
+        "key": "3d942ca8-2fd4-4daa-98c3-a7d243e287a2",
         "sequence": [
           {
             "body": "echo \"Bug if we get here\"",
             "language": "shell",
             "validate": "[ \"$FOO\" = \"2:3\" ]",
-            "id": "bc27a784-dd10-4a5c-837d-63af17dd986d-3"
+            "id": "1ba13925-f570-41bb-b721-e45007ff153e-3"
           }
         ]
       },

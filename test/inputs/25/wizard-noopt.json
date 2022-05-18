@@ -1,0 +1,93 @@
+[
+  {
+    "graph": {
+      "group": "Tab1####Tab2",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "332de1cd-0f4c-4f63-b1bb-ae7e30ddc3ea",
+            "sequence": [
+              {
+                "key": "test/inputs/25/a.md",
+                "title": "a.md",
+                "filepath": "test/inputs/25/a.md",
+                "graph": {
+                  "key": "d163fc84-91f8-4c7d-83f6-ecc5131fdf58",
+                  "sequence": [
+                    {
+                      "body": "echo AAA",
+                      "language": "shell",
+                      "id": "3a007f0c-82e1-4907-8d34-aede04c5c0ef-0"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              },
+              {
+                "key": "test/inputs/25/b.md",
+                "title": "b.md",
+                "filepath": "test/inputs/25/b.md",
+                "graph": {
+                  "key": "b22df762-94d4-480f-aa49-21f5ac732366",
+                  "sequence": [
+                    {
+                      "body": "echo BBB",
+                      "language": "shell",
+                      "id": "3a007f0c-82e1-4907-8d34-aede04c5c0ef-1"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab1"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "3063cc25-f14a-44ac-95d0-14bc3fecddc8",
+            "sequence": [
+              {
+                "key": "test/inputs/25/a.md",
+                "title": "a.md",
+                "filepath": "test/inputs/25/a.md",
+                "graph": {
+                  "key": "4bbe51a3-7ee6-404d-8c28-3007f476f5dd",
+                  "sequence": [
+                    {
+                      "body": "echo AAA",
+                      "language": "shell",
+                      "id": "3a007f0c-82e1-4907-8d34-aede04c5c0ef-2"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab2"
+        }
+      ]
+    },
+    "step": {
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1####Tab2",
+          "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "Tab2",
+          "group": "Tab1####Tab2",
+          "member": 1,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  }
+]
