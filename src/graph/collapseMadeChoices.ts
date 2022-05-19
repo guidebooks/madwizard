@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ChoiceState } from "../choices"
+import { ChoiceState, updateContent } from "../choices"
 import {
   Graph,
   emptySequence,
@@ -56,6 +56,15 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
           )
         } else {
           return collapsed
+        }
+      } else {
+        const form = choices.form(graph.group)
+        if (form) {
+          // do we have values for every part?
+          if (graph.choices.every((_) => !!form[_.title])) {
+            // then unwrap the choice
+            return sequence(graph.choices.flatMap((_) => updateContent(_, form[_.title]).graph))
+          }
         }
       }
     }

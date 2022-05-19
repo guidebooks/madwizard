@@ -72,17 +72,16 @@ export async function cli<Writer extends (msg: string) => boolean>(
     : undefined
 
   // assert a choice to have a given value
-  const assertions = _argv.find((_) => _.startsWith("--assert="))
-    ? _argv
-        .find((_) => _.startsWith("--assert="))
-        .replace(/^--assert=/, "")
-        .split(/,/)
+  const assertions = !_argv.find((_) => _.startsWith("--assert="))
+    ? undefined
+    : _argv
+        .filter((_) => _.startsWith("--assert="))
+        .map((_) => _.replace(/^--assert=/, ""))
         .map((_) => _.split(/=/))
         .reduce((M, [key, value]) => {
           M[key] = value
           return M
         }, {})
-    : undefined
 
   const commandLineOptions: MadWizardOptions = { veto, mkdocs, narrow, optimize, store }
   const options: MadWizardOptions = Object.assign(commandLineOptions, providedOptions)

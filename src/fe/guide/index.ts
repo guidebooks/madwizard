@@ -17,11 +17,11 @@
 import Debug from "debug"
 import { EOL } from "os"
 import chalk from "chalk"
+import enquirer from "enquirer"
 import readline from "readline"
 import { Writable } from "stream"
 import { mainSymbols } from "figures"
 import { EventEmitter } from "events"
-import enquirer, { Answers } from "enquirer"
 
 import { taskRunner, Task } from "./taskrunner"
 
@@ -32,8 +32,10 @@ import { CodeBlockProps } from "../../codeblock"
 import indent from "../../parser/markdown/util/indent"
 import { Memos, Memoizer, statusOf } from "../../memoization"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"
-import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isTaskStep, wizardify } from "../../wizard"
+import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isForm, isTaskStep, wizardify } from "../../wizard"
 import { Graph, Status, blocks, compile, extractTitle, extractDescription, validate } from "../../graph"
+
+type Question = enquirer.prompt.SelectQuestionOptions | enquirer.prompt.FormQuestionOptions
 
 export class Guide {
   private readonly debug = Debug("madwizard/fe/guide")
@@ -71,21 +73,41 @@ export class Guide {
     const preChoiceTasks = preChoiceSteps.filter((_) => _.status !== "success")
     const postChoiceTasks = wizard.filter(isTaskStep).filter((_) => _.status !== "success")
 
-    const questions = choices.map(({ step }, stepIdx) => ({
-      name: step.name || chalk.red("Missing name"),
-      message: chalk.yellow.inverse.bold(
+    const questions: Question[] = choices.map(({ step }, stepIdx) => {
+      const name = step.name || chalk.red("Missing name")
+      const message = chalk.yellow.inverse.bold(
         ` Choice ${choiceIter + stepIdx + 1}:` + ` ${step.name || chalk.red("Missing name")} `
-      ),
-      choices: step.content.map((tile, idx, A) => ({
+      )
+
+      const { content } = step
+      const form = isForm(content)
+
+      const choices = content.map((tile, idx, A) => ({
         name: tile.title,
-        //short: tile.title,
+        initial: form ? tile.form.defaultValue.toString() : undefined,
         message:
           chalk.bold(tile.title) +
           (!tile.description
             ? ""
             : chalk.reset(EOL) + this.format(tile.description) + (idx === A.length - 1 ? "" : EOL)),
-      })),
-    }))
+      }))
+
+      if (form) {
+        return {
+          type: "form" as const,
+          name,
+          message,
+          choices,
+        }
+      } else {
+        return {
+          type: "select" as const,
+          name,
+          message,
+          choices,
+        }
+      }
+    })
 
     return {
       graph,
@@ -97,13 +119,21 @@ export class Guide {
     }
   }
 
-  private incorporateAnswers(choiceStep: ChoiceStep, answer: Answers[string]) {
-    this.choices.set(choiceStep.graph.group, answer.toString())
+  private incorporateAnswers(choiceStep: ChoiceStep, answer: string | enquirer.prompt.FormQuestion.Answer) {
+    if (typeof answer === "string") {
+      this.choices.set(choiceStep.graph.group, answer)
+    } else {
+      this.choices.formComplete(choiceStep.graph.group, answer)
+    }
   }
 
-  private ask(...question: ConstructorParameters<typeof enquirer.Select>) {
+  private isSelect(opts: Question): opts is enquirer.prompt.SelectQuestionOptions {
+    return opts.type === "select"
+  }
+
+  private ask(opts: Question) {
     console.clear()
-    const prompt = new enquirer.Select(...question)
+    const prompt = this.isSelect(opts) ? new enquirer.Select(opts) : new enquirer.Form(opts)
     return prompt.run()
   }
 

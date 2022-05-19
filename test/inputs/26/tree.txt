@@ -1,0 +1,3 @@
+Configure you Ray Resource Requirements
+├── export NUM_CPUS=4
+└── export NUM_GPUS=3

@@ -57,7 +57,7 @@ import {
   getImportTitle,
   getValidate,
 } from "../remark-import"
-import { CodeBlockProps, addNesting as addCodeBlockNesting } from "../../../codeblock/CodeBlockProps"
+import { CodeBlockProps, addNesting as addCodeBlockNesting, Choice } from "../../../codeblock/CodeBlockProps"
 
 /**
  * Heuristic: Code Blocks inside of closed "tips" (i.e. default-closed
@@ -221,7 +221,7 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                           // const nestingDepth = parseInt(parent.properties['data-kui-choice-nesting-depth'].toString(), 0)
 
                           const grandparent = ancestors[idx - 2]
-                          addNesting(attributes, {
+                          const nesting: Choice = {
                             kind: "Choice",
                             source: toMarkdownStringDelayed(_),
                             group,
@@ -229,7 +229,17 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                             description: extractFirstParagraph(_),
                             member,
                             groupDetail: findNearestEnclosingTitle(grandparent, parent, node),
-                          })
+                          }
+
+                          // are we part of a form?
+                          if (_.properties.formElementType && _.properties.formElementDefaultValue) {
+                            nesting.form = {
+                              type: _.properties.formElementType,
+                              defaultValue: _.properties.formElementDefaultValue,
+                            }
+                          }
+
+                          addNesting(attributes, nesting)
                         }
                       }
                     } else if (isWizardStep(_.properties)) {

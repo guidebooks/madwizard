@@ -35,7 +35,7 @@ import {
 
 export type ExpansionMap = Record<ReturnType<typeof isExpansion>, string[]>
 
-function updateContent<Part extends { graph: Graph; description?: string }>(part: Part, choice = ""): Part {
+export function updateContent<Part extends { graph: Graph; description?: string }>(part: Part, choice = ""): Part {
   const pattern1 = /\$\{?choice\}?/gi
   const pattern2 = /\$\{?uuid\}?/gi
 

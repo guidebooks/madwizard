@@ -30,7 +30,15 @@ import { basename } from "path"
 
 import { ChoiceState } from "../choices"
 import { Provenance } from "./provenance"
-import { Barrier, Validatable, CodeBlockProps, Source, Title, Description } from "../codeblock/CodeBlockProps"
+import {
+  Barrier,
+  Validatable,
+  CodeBlockProps,
+  Source,
+  Title,
+  Description,
+  FormElement,
+} from "../codeblock/CodeBlockProps"
 
 export * from "./order"
 export * from "./vetoes"
@@ -113,15 +121,21 @@ function sameSequence(A: Sequence = emptySequence(), B: Sequence = emptySequence
   )
 }
 
+/** identifier of a choice/question, i.e. "choose A or B or C" */
 type ChoiceGroup = string
+
+/** identifier of an answer to a choice, i.e. "I chose B" */
 type ChoiceMember = number
 
+/** An answer to a choice */
 export type ChoicePart<T extends Unordered | Ordered = Unordered> = Title &
-  Partial<Description> & {
+  Partial<Description> &
+  Partial<FormElement> & {
     member: ChoiceMember
     graph: Sequence<T>
   }
 
+/** An choice/question */
 export type Choice<T extends Unordered | Ordered = Unordered> = Source &
   T &
   Title &
