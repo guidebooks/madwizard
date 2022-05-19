@@ -18,7 +18,7 @@ import ChoiceStateImpl from "./impl"
 import { Choice as CodeBlockChoice } from "../codeblock/CodeBlockProps"
 import { ChoiceHandlerRegistration } from "./events"
 
-export { expand } from "./groups/expansion"
+export { expand, updateContent } from "./groups/expansion"
 
 /* map from choice group to selected choice member */
 export type ChoicesMap = Record<CodeBlockChoice["group"], CodeBlockChoice["title"]>
@@ -27,6 +27,12 @@ export interface ChoiceState {
   clone: () => ChoiceState
   onChoice: ChoiceHandlerRegistration
   offChoice: ChoiceHandlerRegistration
+
+  /** State representing form completion */
+  formComplete<K extends keyof ChoicesMap>(key: K, value: Record<string, string>): boolean
+
+  /** Extract form responses */
+  form<K extends keyof ChoicesMap>(key: K): Record<string, string>
 
   keys: () => ReturnType<typeof Object.keys>
   entries: () => ReturnType<typeof Object.entries>

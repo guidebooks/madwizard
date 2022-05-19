@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+import { FormElement } from "./form"
 import { SupportedLanguage } from "./language"
+
+export * from "./form"
 
 export interface Validatable {
   /**
@@ -75,6 +78,7 @@ export type Choice = GroupMember &
   Source &
   Title &
   Partial<Description> &
+  Partial<FormElement> &
   Kind<"Choice"> & {
     /** Title and Source for the choice group */
     groupDetail: Partial<Title> & Source

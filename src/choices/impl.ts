@@ -73,4 +73,21 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
       return false
     }
   }
+
+  /** State representing form completion */
+  public formComplete<K extends keyof ChoicesMap>(key: K, value: Record<string, string>) {
+    return this.set(key, JSON.stringify(value))
+  }
+
+  /** Extract form responses */
+  public form<K extends keyof ChoicesMap>(key: K): Record<string, string> {
+    const raw = this.get(key)
+    if (raw) {
+      try {
+        return JSON.parse(raw)
+      } catch (err) {
+        // fall-through
+      }
+    }
+  }
 }

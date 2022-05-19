@@ -102,6 +102,22 @@ function tryParseInt(str: string): number {
   }
 }
 
+/** Read the cli.txt file, treated as extra command line args */
+function getCLIOptions(input: string) {
+  try {
+    const asserts = readFileSync(join(input, "assert.txt")).toString()
+    if (asserts.length > 0) {
+      return asserts
+        .split(/\n/)
+        .filter(Boolean)
+        .map((_) => `--assert=${_}`)
+    }
+  } catch (err) {
+    // fall-through
+  }
+  return []
+}
+
 /** "madwizard plan" */
 function testPlanTask(test: Test, input: string, suffix: string, _options: Options) {
   test(`tree for input ${input} options=${suffix || "default"}`, async () => {
@@ -120,7 +136,7 @@ function testPlanTask(test: Test, input: string, suffix: string, _options: Optio
       return
     }
 
-    await cli(["test", "plan", filepath], write, options)
+    await cli(["test", "plan", filepath, ...getCLIOptions(input)], write, options)
     const expectedOutput = loadExpected(input, "tree", suffix)
     assert.equal(stripAnsi(actualOutput.trim()), stripAnsi(expectedOutput.trim()), "tree should match")
   })
@@ -138,7 +154,7 @@ function testJsonTask(test: Test, input: string, suffix: string, _options: Optio
     const filepath = join(input, "in.md")
     const options = typeof _options === "function" ? _options(input) : _options
 
-    await cli(["test", "json", filepath], write, options)
+    await cli(["test", "json", filepath, ...getCLIOptions(input)], write, options)
     const expectedOutput = JSON.parse(loadExpected(input, "wizard", suffix))
     const diff = diffString(munge(JSON.parse(actualOutput)), munge(expectedOutput), { color: false })
     assert.is(diff, "", "wizard should match")
@@ -165,7 +181,7 @@ function testRunTask(test: Test, input: string, suffix: string) {
     // `actualOutput`. This is far slower than invoking `cli()`
     // directly, but there's only so many hours in a day...
     await new Promise<void>((resolve, reject) => {
-      execFile("./bin/madwizard.js", ["run", filepath], (err, actualOutput) => {
+      execFile("./bin/madwizard.js", ["run", filepath, ...getCLIOptions(input)], (err, actualOutput) => {
         try {
           assert.equal(
             stripAnsi(actualOutput.toString().trim()),

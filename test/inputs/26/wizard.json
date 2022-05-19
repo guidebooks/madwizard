@@ -1,0 +1,24 @@
+[
+  {
+    "graph": {
+      "body": "export NUM_CPUS=4",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Executing a step",
+      "content": "```shell\nexport NUM_CPUS=4\n```"
+    }
+  },
+  {
+    "graph": {
+      "body": "export NUM_GPUS=3",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Executing a step",
+      "content": "```shell\nexport NUM_GPUS=3\n```"
+    }
+  }
+]

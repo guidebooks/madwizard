@@ -1,0 +1,74 @@
+[
+  {
+    "graph": {
+      "group": "Number of CPUs####Number of GPUs",
+      "title": "Configure you Ray Resource Requirements",
+      "source": "placeholder",
+      "provenance": ["test/inputs/26/in.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "export NUM_CPUS=${choice}",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Number of CPUs",
+          "form": {
+            "type": "string",
+            "defaultValue": "1"
+          }
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "export NUM_GPUS=${choice}",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Number of GPUs",
+          "form": {
+            "type": "string",
+            "defaultValue": "0"
+          }
+        }
+      ]
+    },
+    "step": {
+      "name": "Configure you Ray Resource Requirements",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Number of CPUs",
+          "group": "Number of CPUs####Number of GPUs",
+          "member": 0,
+          "isFirstChoice": true,
+          "form": {
+            "type": "string",
+            "defaultValue": "1"
+          }
+        },
+        {
+          "title": "Number of GPUs",
+          "group": "Number of CPUs####Number of GPUs",
+          "member": 1,
+          "isFirstChoice": true,
+          "form": {
+            "type": "string",
+            "defaultValue": "0"
+          }
+        }
+      ]
+    }
+  }
+]

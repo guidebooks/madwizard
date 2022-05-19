@@ -16,11 +16,12 @@
 
 import Debug from "debug"
 import { Transformer } from "unified"
-import { Element, ElementContent } from "hast"
+import { Element, ElementContent, Properties } from "hast"
 
 import isElementWithProperties from "../util/isElement"
 import { ChoiceState, MadWizardOptions } from "../../.."
 import { identifyRecognizableTabGroups } from "../../../choices/groups"
+import { AllowedFormElement, FormElementType } from "../../../codeblock"
 
 import populateTabs from "./populate"
 
@@ -28,25 +29,36 @@ export const START_OF_TAB = `<!-- ____KUI_START_OF_TAB____ -->`
 export const PUSH_TABS = `<!-- ____KUI_NESTED_TABS____ -->`
 export const END_OF_TAB = `<!-- ____KUI_END_OF_TAB____ -->`
 
-export interface TabProps {
-  depth: string
-  "data-kui-choice-group": string
-  children: any
+export type TabProps<T extends AllowedFormElement = string> = Properties & {
+  /** Is this tab part of a form group */
+  formElementType?: FormElementType
+  formElementDefaultValue?: T
 }
 
-export function getTabsDepth(props: TabProps) {
+export interface Tab extends Element {
+  properties: TabProps
+}
+
+/** Properties of a tab group */
+interface TabGroupProps {
+  depth: string
+  "data-kui-choice-group": string
+  children: Tab[]
+}
+
+export function getTabsDepth(props: TabGroupProps) {
   return typeof props.depth === "number" ? props.depth : parseInt(props.depth.toString(), 10)
 }
 
-/*export function getTabTitle(child: TabProps['children'][number]) {
+/*export function getTabTitle(child: TabGroupProps['children'][number]) {
   return (isElementWithProperties(child) && child.properties.title) || ''
 }*/
 
-export function isTabs(props: Partial<TabProps>): props is Required<TabProps> {
+export function isTabs(props: Partial<TabGroupProps>): props is Required<TabGroupProps> {
   return typeof props["data-kui-choice-group"] === "string"
 }
 
-export function isTab(elt: ElementContent): boolean {
+export function isTab(elt: ElementContent): elt is Tab {
   return isElementWithProperties(elt) && elt.properties["data-kui-tab-index"] !== undefined
 }
 

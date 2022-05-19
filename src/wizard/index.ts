@@ -16,9 +16,9 @@
 
 import Debug from "debug"
 
-import { Barrier } from "../codeblock"
 import { Choices, ChoiceState } from "../choices"
 import { Memos, statusOf } from "../memoization"
+import { Barrier, FormElement } from "../codeblock"
 
 import {
   Graph,
@@ -36,7 +36,7 @@ import {
 
 type Markdown = string
 
-export interface Tile {
+export type Tile = Partial<FormElement> & {
   title: string
   group: string
   member: number
@@ -44,6 +44,10 @@ export interface Tile {
 }
 
 type StepContent = Tile[] | Markdown
+
+export function isForm(content: Tile[]) {
+  return content.length > 0 && typeof content[0].form === "object"
+}
 
 export type WizardStep<C extends StepContent> = Partial<Barrier> & {
   name: string
@@ -124,6 +128,7 @@ function wizardStepForChoiceOnFrontier(
         member: _.member,
         isFirstChoice,
         description: _.description,
+        form: _.form,
       })),
     },
   }

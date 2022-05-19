@@ -16,7 +16,8 @@
 
 import { Node } from "hast"
 
-import { getTabTitle } from "."
+import withFormProperties from "./form"
+import { getTabTitle, Tab } from "."
 import { isParent } from "../util/isElement"
 import { isImports } from "../remark-import"
 
@@ -29,7 +30,7 @@ export default function populateTabs(uuid: string, tree: Node): { tree: Node; ta
   let tabgroupIdx = -1
 
   const tabStack = []
-  let currentTabs = []
+  let currentTabs: Tab[] = []
   const _flushTabs = (children) => {
     if (currentTabs.length > 0) {
       tabgroupIdx++
@@ -114,29 +115,19 @@ export default function populateTabs(uuid: string, tree: Node): { tree: Node; ta
                   })
                 }
 
+                const properties = withFormProperties(startMatch[1].replace(/"$/, ""), {
+                  depth: tabStack.length,
+                  "data-kui-tab-index": currentTabs.length,
+                })
                 const rest = pchild.value.slice(startMatch.index + startMatch[0].length)
-
-                const position = {
-                  start: {
-                    offset: child.position.start.offset + startMatch.index,
-                  },
-                  end: {
-                    offset: child.position.end.offset + startMatch.index,
-                  },
-                }
 
                 currentTabs.push({
                   type: "element",
                   tagName: "span", // do not use 'li'
                   // here. something after us seems
                   // to join nested tabs together
-                  properties: {
-                    title: startMatch[1].replace(/"$/, ""),
-                    depth: tabStack.length,
-                    "data-kui-tab-index": currentTabs.length,
-                  },
+                  properties,
                   children: rest ? [{ type: "text", value: rest }] : [],
-                  position,
                 })
                 return newChildren
               }

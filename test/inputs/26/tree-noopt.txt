@@ -1,0 +1,5 @@
+Configure you Ray Resource Requirements
+├── Option 1: Number of CPUs
+│   └── export NUM_CPUS=${choice}
+└── Option 2: Number of GPUs
+    └── export NUM_GPUS=${choice}

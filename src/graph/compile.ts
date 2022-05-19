@@ -127,6 +127,7 @@ export async function compile(
       graph: isDeepest ? seq(block) : emptySequence(),
       title: parent.title,
       description: parent.description,
+      form: parent.form,
     })
 
     const newChoices = (block: CodeBlockProps, parent: CodeBlockChoice, isDeepest: boolean): Choice => ({
