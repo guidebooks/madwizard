@@ -21,7 +21,7 @@ import readline from "readline"
 import { Writable } from "stream"
 import { mainSymbols } from "figures"
 import { EventEmitter } from "events"
-import inquirer, { Question, Answers } from "inquirer"
+import enquirer, { Answers } from "enquirer"
 
 import { taskRunner, Task } from "./taskrunner"
 
@@ -44,7 +44,6 @@ export class Guide {
     private readonly choices: ChoiceState,
     private readonly options: MadWizardOptions,
     private readonly memos: Memos = new Memoizer(),
-    private readonly prompt = inquirer.createPromptModule(),
     private readonly ui: UI<string> = new AnsiUI()
   ) {}
 
@@ -73,18 +72,18 @@ export class Guide {
     const postChoiceTasks = wizard.filter(isTaskStep).filter((_) => _.status !== "success")
 
     const questions = choices.map(({ step }, stepIdx) => ({
-      type: "list",
-      pageSize: 40,
       name: step.name || chalk.red("Missing name"),
-      message: chalk.yellow.inverse(
+      message: chalk.yellow.inverse.bold(
         ` Choice ${choiceIter + stepIdx + 1}:` + ` ${step.name || chalk.red("Missing name")} `
       ),
       choices: step.content.map((tile, idx, A) => ({
-        value: tile.title,
-        short: tile.title,
-        name:
+        name: tile.title,
+        //short: tile.title,
+        message:
           chalk.bold(tile.title) +
-          (!tile.description ? "" : EOL + this.format(tile.description) + (idx === A.length - 1 ? "" : EOL)),
+          (!tile.description
+            ? ""
+            : chalk.reset(EOL) + this.format(tile.description) + (idx === A.length - 1 ? "" : EOL)),
       })),
     }))
 
@@ -98,17 +97,14 @@ export class Guide {
     }
   }
 
-  private incorporateAnswers(choiceSteps: ChoiceStep[], answers: Answers) {
-    Object.values(answers).forEach((chosenTitle, stepIdx) => {
-      const { graph } = choiceSteps[stepIdx]
-      this.choices.set(graph.group, chosenTitle)
-    })
+  private incorporateAnswers(choiceStep: ChoiceStep, answer: Answers[string]) {
+    this.choices.set(choiceStep.graph.group, answer.toString())
   }
 
-  private ask(questions: Question[]) {
-    if (questions.length > 0) {
-      return this.prompt(questions)
-    }
+  private ask(...question: ConstructorParameters<typeof enquirer.Select>) {
+    console.clear()
+    const prompt = new enquirer.Select(...question)
+    return prompt.run()
   }
 
   private firstBitOf(msg: string) {
@@ -303,11 +299,6 @@ export class Guide {
     const { graph, choices, preChoiceTasks, postChoiceTasks, questions, wizard } = qs
 
     if (iter === 0) {
-      if (questions.length > 0 && this.isGuided) {
-        // start a fresh screen before presenting the first question
-        console.clear()
-      }
-
       if (this.isGuided) {
         this.presentGuidebookTitle(graph)
       }
@@ -329,7 +320,7 @@ export class Guide {
     } else {
       // note that we ask one question at a time, because the answer
       // to the first question may influence what question we ask next
-      await this.incorporateAnswers(choices, await this.ask(questions.slice(0, 1)))
+      await this.incorporateAnswers(choices[0], await this.ask(questions[0]))
       return this.resolveChoices(iter + 1, choiceIter + 1, wizard)
     }
   }
