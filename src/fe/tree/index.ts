@@ -247,6 +247,10 @@ export class Treeifier<Content> {
       this.validator(graph)
     }
 
+    if (!graph.body) {
+      return
+    }
+
     try {
       const id = graph.order.toString()
       // const myStatus = status[graph.id]

@@ -82,7 +82,7 @@ export function prettyPrintUITree(
   const nextPrefix = depth >= 1 ? (isLast ? symbols.INDENT : symbols.VERTICAL) : symbols.EMPTY
 
   graph.forEach((node) => {
-    const name = node.name || node.title
+    const name = node.name || node.title || ""
 
     if (narrow) {
       write(elide(name, indent.length + prefix.length) + EOL)
