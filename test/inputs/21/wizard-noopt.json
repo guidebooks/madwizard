@@ -19,8 +19,7 @@
     },
     "step": {
       "name": "Export an env var",
-      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
-      "content": ""
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n"
     }
   },
   {
@@ -43,8 +42,7 @@
     },
     "step": {
       "name": "Export an env var",
-      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
-      "content": ""
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n"
     }
   },
   {
@@ -67,8 +65,7 @@
     },
     "step": {
       "name": "Then use it",
-      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
-      "content": ""
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n"
     }
   },
   {
@@ -92,8 +89,7 @@
     },
     "step": {
       "name": "Propagation check",
-      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
-      "content": ""
+      "description": "This should be valid, if FOO is propagated correctly to the validator.\n"
     }
   }
 ]

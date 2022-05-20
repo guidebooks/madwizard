@@ -17,7 +17,19 @@
 import Debug from "debug"
 import { CodeBlockProps } from "../codeblock"
 import { ChoiceState, expand } from "../choices"
-import { Choice, Graph, SubTask, TitledSteps, emptySequence, extractTitle, parallel, seq, sequence, subtask } from "."
+import {
+  Choice,
+  Graph,
+  SubTask,
+  TitledSteps,
+  emptySequence,
+  extractTitle,
+  hasSource,
+  parallel,
+  seq,
+  sequence,
+  subtask,
+} from "."
 
 import { Memos } from "../memoization"
 import { ValidateOptions } from "./validate"
@@ -339,7 +351,14 @@ export async function compile(
     debug("optimizing done")
 
     if (title && !extractTitle(optimized)) {
-      return subtask(title, title, description, "", sequence([optimized]))
+      return subtask(
+        title,
+        title,
+        description,
+        "",
+        sequence([optimized]),
+        hasSource(unoptimized) ? unoptimized.source : undefined
+      )
     } else {
       return optimized
     }

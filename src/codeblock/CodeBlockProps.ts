@@ -16,6 +16,7 @@
 
 import { FormElement } from "./form"
 import { SupportedLanguage } from "./language"
+import { Something } from "../parser/markdown/util/toMarkdownString"
 
 export * from "./form"
 
@@ -67,7 +68,7 @@ export interface Description {
 }
 
 export type Source = {
-  source: () => string
+  source: Something
 }
 
 /**
