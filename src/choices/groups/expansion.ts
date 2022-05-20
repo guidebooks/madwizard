@@ -85,7 +85,9 @@ function isExpansion(part: ChoicePart) {
 
 /** Replace any expansion parts with their dynamic expansion */
 function expandPart(template: ChoicePart, names: string[]): ChoicePart[] {
-  return names.map((name, idx) => updatePart(JSON.parse(JSON.stringify(template)), name, idx))
+  return names.map((name, idx) =>
+    updatePart(JSON.parse(JSON.stringify(template, (key, value) => (key === "nesting" ? undefined : value))), name, idx)
+  )
 }
 
 /**
