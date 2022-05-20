@@ -28,11 +28,7 @@ import aprioris from "./aprioris"
  * priori knowledge, e.g. about what platform we are on.
  *
  */
-export async function identifyRecognizableTabGroups(
-  tree: Node,
-  choices: ChoiceState,
-  { optimize = true }: MadWizardOptions
-) {
+export function identifyRecognizableTabGroups(tree: Node, choices: ChoiceState, { optimize = true }: MadWizardOptions) {
   /* if (!Capabilities.inElectron()) {
     // I don't think this is a meaningful thing to do whilst running
     // in browser? TODO: maybe we should allow the providers a say?
@@ -59,23 +55,21 @@ export async function identifyRecognizableTabGroups(
     }
   })
 
-  await Promise.all(
-    nodesToVisit.map((node) => {
-      if (useAprioris) {
-        // re: the use of `find`
-        // Assumption: a given tab group can only have one match,
-        // e.g. it is either a platform choice (macos/linux/windows)
-        // or an download method choice (homebrew, curl)
-        if (aprioris.find((_) => _.checkAndSet(node))) {
-          return
-        }
+  nodesToVisit.forEach((node) => {
+    if (useAprioris) {
+      // re: the use of `find`
+      // Assumption: a given tab group can only have one match,
+      // e.g. it is either a platform choice (macos/linux/windows)
+      // or an download method choice (homebrew, curl)
+      if (aprioris.find((_) => _.checkAndSet(node))) {
+        return
       }
+    }
 
-      // if (await expand(node)) {
-      // return
-      // }
-    })
-  )
+    // if (await expand(node)) {
+    // return
+    // }
+  })
 
   return tree
 }
