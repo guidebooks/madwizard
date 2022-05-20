@@ -28,13 +28,11 @@ import aprioris from "./aprioris"
  * priori knowledge, e.g. about what platform we are on.
  *
  */
-export function identifyRecognizableTabGroups(tree: Node, choices: ChoiceState, { optimize = true }: MadWizardOptions) {
-  /* if (!Capabilities.inElectron()) {
-    // I don't think this is a meaningful thing to do whilst running
-    // in browser? TODO: maybe we should allow the providers a say?
-    return
-    } */
-
+export function identifyRecognizableTabGroups(
+  tree: Node,
+  choices: ChoiceState,
+  { optimize = true }: MadWizardOptions = {}
+) {
   if (!choices) {
     return
   }
