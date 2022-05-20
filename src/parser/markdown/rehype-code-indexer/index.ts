@@ -17,6 +17,7 @@
 import Debug from "debug"
 import { Element } from "hast"
 import { Parent } from "unist"
+import { u } from "unist-builder"
 import { Transformer } from "unified"
 import { toString } from "hast-util-to-string"
 import { visitParents } from "unist-util-visit-parents"
@@ -33,7 +34,7 @@ import isElementWithProperties, {
   isText,
   isNonEmptyTextOrParagraph,
 } from "../util/isElement"
-import toMarkdownStringDelayed, { toMarkdownString, Node } from "../util/toMarkdownString"
+import { toMarkdownString, Node } from "../util/toMarkdownString"
 
 import {
   isHeading,
@@ -106,12 +107,8 @@ function findNearestEnclosingTitle(grandparent: Parent, parent: Node, node: Node
           return {
             child,
             level,
+            source: u("element", { tagName: "div" }, grandparent.children.slice(idx, parentIdx + 1)),
             title: isHeading(child) ? toString(child) : isTipWithFullTitle(child) ? getTipTitle(child) : "",
-            source: () =>
-              grandparent.children
-                .slice(idx, parentIdx + 1)
-                .map(toMarkdownString)
-                .join("\n"),
           }
         }
       }
@@ -119,7 +116,7 @@ function findNearestEnclosingTitle(grandparent: Parent, parent: Node, node: Node
   }
 
   return {
-    source: toMarkdownStringDelayed(parent),
+    source: parent,
   }
 }
 
@@ -165,8 +162,8 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                   attributes.id = allocCodeBlockId(myCodeIdx)
                 }
 
-                const dumpCodeBlockProps = () =>
-                  Buffer.from(JSON.stringify(Object.assign({ body, language }, attributes))).toString("base64")
+                const dumpCodeBlockProps = () => Object.assign({ body, language }, attributes)
+                //Buffer.from(JSON.stringify(Object.assign({ body, language }, attributes))).toString("base64")
 
                 let codeBlockProps = dumpCodeBlockProps()
 
@@ -223,7 +220,7 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                           const grandparent = ancestors[idx - 2]
                           const nesting: Choice = {
                             kind: "Choice",
-                            source: toMarkdownStringDelayed(_),
+                            source: _,
                             group,
                             title,
                             description: extractFirstParagraph(_),
@@ -247,13 +244,13 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                       if (parent && isElementWithProperties(parent) && isWizard(parent.properties)) {
                         addNesting(attributes, {
                           kind: "WizardStep",
-                          source: toMarkdownStringDelayed(_),
+                          source: _,
                           group: getWizardGroup(_.properties),
                           member: getWizardStepMember(_.properties),
                           title: getTitle(_.properties),
                           description: getDescription(_.properties),
                           wizard: {
-                            source: toMarkdownStringDelayed(parent),
+                            source: parent,
                             title: getTitle(parent.properties),
                             description: parent.children[0] ? toMarkdownString(parent.children[0]) : undefined,
                           },
@@ -262,7 +259,7 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                     } else if (isImports(_.properties)) {
                       addNesting(attributes, {
                         kind: "Import",
-                        source: toMarkdownStringDelayed(_),
+                        source: _,
                         barrier: isBarrier(_.properties),
                         key: getImportKey(_.properties),
                         title: getImportTitle(_.properties),
@@ -273,7 +270,7 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                       const title = getTipTitle(_)
                       addNesting(attributes, {
                         kind: "Import",
-                        source: toMarkdownStringDelayed(_),
+                        source: _,
                         key: title,
                         title,
                         filepath: "",
@@ -334,7 +331,7 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                   if (debug.enabled) {
                     debug(
                       "nesting of " + body,
-                      attributes.nesting.map(({ kind, title }) => ({ kind, title }))
+                      attributes.nesting.map(({ kind, title, source }) => ({ kind, title, source }))
                     )
                   }
                 }
@@ -362,7 +359,7 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                 }
 
                 if (codeblocks) {
-                  codeblocks.push(JSON.parse(Buffer.from(codeBlockProps, "base64").toString()))
+                  codeblocks.push(codeBlockProps) //JSON.parse(Buffer.from(codeBlockProps, "base64").toString()))
                 }
               }
             }

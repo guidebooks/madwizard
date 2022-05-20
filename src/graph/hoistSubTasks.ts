@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { u } from "unist-builder"
 import {
   Choice,
   Graph,
@@ -22,6 +23,7 @@ import {
   emptySequence,
   extractTitle,
   extractDescription,
+  hasSource,
   hasTitle,
   hasTitleProperty,
   isSubTask,
@@ -34,6 +36,7 @@ import {
   sequence,
   subtask,
 } from "."
+import { Source } from "../codeblock"
 
 import { findChoicesOnFrontier as findChoiceFrontier } from "./choice-frontier"
 
@@ -260,10 +263,15 @@ function union(...Ts: SubTask[][]): SubTask[] {
 }
 
 function asPrereqs(content: Graph[]): SubTask {
-  return subtask("Prerequisites", "Prerequisites", "", "", sequence(content))
+  const source = u(
+    "element",
+    { tagName: "div" },
+    content.map((_) => hasSource(_) && _.source).filter(Boolean)
+  ) as Source["source"]
+  return subtask("Prerequisites", "Prerequisites", "", "", sequence(content), source)
 }
 
-function withTitle(title: string, description: string, content: Sequence) {
+function withTitle(title: string, description: string, content: Sequence, source: Source["source"]) {
   if (!title) {
     return content
   } else {
@@ -292,7 +300,7 @@ function withTitle(title: string, description: string, content: Sequence) {
       }
     }
 
-    return subtask(title, title, description, "", content)
+    return subtask(title, title, description, "", content, source)
   }
 }
 
@@ -306,8 +314,9 @@ function recombine(inputGraph: Graph, graph: Graph | void, subTasks1: SubTask[])
     const title = extractTitle(inputGraph)
     const description = extractDescription(inputGraph)
 
+    const source = graph && hasSource(graph) ? graph.source : hasSource(inputGraph) ? inputGraph.source : undefined
     if (!graph) {
-      return withTitle(title, description, sequence(subTasks))
+      return withTitle(title, description, sequence(subTasks), source)
     } else {
       const { toplevelSubTasks, residual } = extractTopLevelSubTasks(graph)
       const allSubTasks = union(toplevelSubTasks, subTasks)
@@ -315,7 +324,7 @@ function recombine(inputGraph: Graph, graph: Graph | void, subTasks1: SubTask[])
       const content = sequence([asPrereqs(allSubTasks), residual])
       const { title: titleAlt, description } = extractTitleForPrereqsPlusSubTask(content)
 
-      return withTitle(title || titleAlt, description, content)
+      return withTitle(title || titleAlt, description, content, source)
     }
   }
 }

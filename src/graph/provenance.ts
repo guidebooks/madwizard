@@ -33,11 +33,13 @@ export function hasProvenance(graph: Graph): graph is Graph & Provenance {
 }
 
 export function provenanceOfFilepath(filepath: string) {
-  const match = filepath.match(/^https:\/\/raw.githubusercontent.com\/guidebooks\/store\/main\/guidebooks\/(.+)\..+$/)
-  if (match) {
-    return match[1].replace(/\/index$/, "")
-  } else {
-    return relative(process.cwd(), filepath)
+  if (filepath) {
+    const match = filepath.match(/^https:\/\/raw.githubusercontent.com\/guidebooks\/store\/main\/guidebooks\/(.+)\..+$/)
+    if (match) {
+      return match[1].replace(/\/index$/, "")
+    } else {
+      return relative(process.cwd(), filepath)
+    }
   }
 }
 

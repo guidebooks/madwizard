@@ -19,6 +19,7 @@ import Debug from "debug"
 import { Choices, ChoiceState } from "../choices"
 import { Memos, statusOf } from "../memoization"
 import { Barrier, FormElement } from "../codeblock"
+import { toMarkdownString } from "../parser/markdown/util/toMarkdownString"
 
 import {
   Graph,
@@ -34,7 +35,7 @@ import {
   findChoiceFrontier,
 } from "../graph"
 
-type Markdown = string
+type Markdown = string | (() => string)
 
 export type Tile = Partial<FormElement> & {
   title: string
@@ -100,7 +101,7 @@ function wizardStepForPrereq<T, G extends Graph<T>>(
       name: extractTitle(graph) || "Executing a step",
       description: extractDescription(graph),
       barrier: isBarrier(graph),
-      content: hasSource(graph) ? graph.source() : isLeafNode(graph) ? bodySource(graph) : "",
+      content: hasSource(graph) ? () => toMarkdownString(graph.source) : isLeafNode(graph) ? bodySource(graph) : "",
     },
   }
 }

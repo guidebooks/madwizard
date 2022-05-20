@@ -19,8 +19,7 @@
     },
     "step": {
       "name": "Using Default Exec",
-      "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
-      "content": ""
+      "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n"
     }
   },
   {
@@ -43,8 +42,7 @@
     },
     "step": {
       "name": "Using Default Exec (again)",
-      "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
-      "content": ""
+      "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n"
     }
   },
   {
@@ -66,8 +64,7 @@
       "source": "placeholder"
     },
     "step": {
-      "name": "Using Custom Exec",
-      "content": ""
+      "name": "Using Custom Exec"
     }
   }
 ]

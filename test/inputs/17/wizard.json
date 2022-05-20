@@ -19,8 +19,7 @@
     },
     "step": {
       "name": "barrier.md",
-      "barrier": true,
-      "content": ""
+      "barrier": true
     }
   },
   {

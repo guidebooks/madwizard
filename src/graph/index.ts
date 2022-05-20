@@ -207,7 +207,7 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
   description: string,
   filepath: string,
   graph: Sequence<T>,
-  source: Source["source"] = () => "",
+  source: Source["source"],
   barrier = false,
   validate?: Validatable["validate"]
 ): SubTask<Unordered> {
@@ -223,8 +223,12 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
   }
 }
 
-export function withTitle(block: LeafNode, { title, description }: Title & Partial<Description>, barrier = false) {
-  return subtask(title, title, description, "", seq(block), undefined, barrier)
+export function withTitle(
+  block: LeafNode,
+  { title, description, source }: Title & Partial<Description> & Partial<Source>,
+  barrier = false
+) {
+  return subtask(title, title, description, "", seq(block), source, barrier)
 }
 
 export function asSubTask(step: TitledStep): SubTask {
@@ -361,7 +365,7 @@ ${graph.body}
 }
 
 export function hasSource(graph: Graph): graph is Graph & Source {
-  return typeof (graph as any).source === "string"
+  return typeof (graph as any).source !== "undefined"
 }
 
 export function hasKey(graph: Graph): graph is Graph & Key {
