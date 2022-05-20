@@ -150,7 +150,7 @@ type Options = Partial<Pick<Memos, "statusMemo">> &
     previous: Wizard
   }
 
-export async function wizardify<T>(graph: Graph<T>, options: Partial<Options> = {}): Promise<Wizard> {
+export function wizardify<T>(graph: Graph<T>, options: Partial<Options> = {}): Wizard {
   const debug = Debug("madwizard/timing/wizard:wizardify")
   debug("start")
 

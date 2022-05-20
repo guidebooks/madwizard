@@ -87,7 +87,7 @@ export function setTabTitle(elt: Element, title: string): string {
 } */
 
 export function rehypeTabbed(uuid: string, choices: ChoiceState, madwizardOptions: MadWizardOptions) {
-  return async function rehypeTabbedTransformer(tree: Parameters<Transformer>[0]): Promise<ReturnType<Transformer>> {
+  return function rehypeTabbedTransformer(tree: Parameters<Transformer>[0]): ReturnType<Transformer> {
     const debug = Debug("madwizard/timing/parser:markdown/rehype-tabbed")
     debug("start")
 
@@ -106,7 +106,7 @@ export function rehypeTabbed(uuid: string, choices: ChoiceState, madwizardOption
       // second, analyze the tabs to see if we can identify recognizable
       // tab groups, e.g. "choose your platform"
       const treeWithTabsInRecognizableGroups =
-        tabgroupIdx < 0 ? treeWithTabs : await identifyRecognizableTabGroups(treeWithTabs, choices, madwizardOptions)
+        tabgroupIdx < 0 ? treeWithTabs : identifyRecognizableTabGroups(treeWithTabs, choices, madwizardOptions)
 
       return treeWithTabsInRecognizableGroups
     } finally {
