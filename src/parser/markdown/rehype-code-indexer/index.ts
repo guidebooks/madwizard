@@ -128,7 +128,7 @@ function findNearestEnclosingTitle(grandparent: Parent, parent: Node, node: Node
  * @param filepath the origin filepath of this document
  * @param codeblocks in case the caller wants us to smash in the codeblocks we find
  */
-export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: CodeBlockProps[]) {
+export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: CodeBlockProps[], base64 = false) {
   const transformer: Transformer<Element> = (ast /*: Root */) => {
     const timing = Debug("madwizard/timing/parser:markdown/rehype-code-indexer")
     const debug = Debug("madwizard/graph/parser:markdown/rehype-code-indexer")
@@ -162,8 +162,9 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                   attributes.id = allocCodeBlockId(myCodeIdx)
                 }
 
-                const dumpCodeBlockProps = () => Object.assign({ body, language }, attributes)
-                //Buffer.from(JSON.stringify(Object.assign({ body, language }, attributes))).toString("base64")
+                const dumpCodeBlockProps = !base64
+                  ? () => Object.assign({ body, language }, attributes)
+                  : () => Buffer.from(JSON.stringify(Object.assign({ body, language }, attributes))).toString("base64")
 
                 let codeBlockProps = dumpCodeBlockProps()
 
@@ -359,7 +360,9 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                 }
 
                 if (codeblocks) {
-                  codeblocks.push(codeBlockProps) //JSON.parse(Buffer.from(codeBlockProps, "base64").toString()))
+                  codeblocks.push(
+                    !base64 ? codeBlockProps : JSON.parse(Buffer.from(codeBlockProps, "base64").toString())
+                  )
                 }
               }
             }
