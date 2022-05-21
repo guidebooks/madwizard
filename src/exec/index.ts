@@ -53,3 +53,13 @@ export async function shellExec(
     throw new Error("Unable to execute body in unsupported language: " + language)
   }
 }
+
+export async function shellExecToString(
+  cmdline: string | boolean,
+  language?: SupportedLanguage,
+  exec?: CustomExecutable["exec"]
+): Promise<string> {
+  const opts = { capture: "", throwErrors: true }
+  await shellExec(cmdline, opts, language, exec)
+  return opts.capture
+}

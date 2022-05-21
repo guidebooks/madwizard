@@ -17,6 +17,7 @@
 import Debug from "debug"
 import { CodeBlockProps } from "../codeblock"
 import { ChoiceState, expand } from "../choices"
+import { ExecutorOptions } from "../exec/Executor"
 import {
   Choice,
   Graph,
@@ -100,7 +101,7 @@ export interface CompilerOptions {
       }
 }
 
-export type CompileOptions = Partial<CompilerOptions> & ValidateOptions & Partial<Memos>
+export type CompileOptions = Partial<CompilerOptions> & ValidateOptions & Partial<Memos> & Partial<ExecutorOptions>
 
 /** Take a list of code blocks and arrange them into a control flow dag */
 export async function compile(

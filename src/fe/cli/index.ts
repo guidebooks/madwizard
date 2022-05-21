@@ -22,12 +22,6 @@ import { DebugTask, isDebugTask, isValidTask } from "./tasks"
 
 import { MadWizardOptions } from "../MadWizardOptions"
 
-import { parse } from "../../parser"
-import { version } from "../../version"
-import { wizardify } from "../../wizard"
-import { newChoiceState } from "../../choices"
-import { compile, order, vetoesToString } from "../../graph"
-
 function assertExhaustive(value: never, message = "Reached unexpected case in exhaustive switch"): never {
   throw new Error(message)
 }
@@ -41,6 +35,22 @@ export async function cli<Writer extends (msg: string) => boolean>(
   write: Writer,
   providedOptions: MadWizardOptions = {}
 ) {
+  const [
+    { parse },
+    { version },
+    { wizardify },
+    { newChoiceState },
+    { madwizardRead },
+    { compile, order, vetoesToString },
+  ] = await Promise.all([
+    import("../../parser"),
+    import("../../version"),
+    import("../../wizard"),
+    import("../../choices"),
+    import("./madwizardRead"),
+    import("../../graph"),
+  ])
+
   // TODO replace this with yargs or something like that
   const argv = _argv.filter((_, idx) => !/^-/.test(_) && (idx === 0 || !/^--/.test(_argv[idx - 1])))
 
@@ -116,7 +126,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
     return
   }
 
-  const { blocks } = await parse(input, choices, undefined, undefined, options)
+  const { blocks } = await parse(input, madwizardRead, choices, undefined, options)
 
   switch (task) {
     case "version":

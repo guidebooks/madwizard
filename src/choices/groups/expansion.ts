@@ -19,7 +19,7 @@ import { v4 } from "uuid"
 import { oraPromise } from "../../util/ora-delayed-promise"
 
 import { Debug } from "./debug"
-import { shellExec } from "../../exec"
+import { ExecutorOptions } from "../../exec/Executor"
 import { Memos } from "../../memoization"
 import {
   Graph,
@@ -95,12 +95,13 @@ function expandPart(template: ChoicePart, names: string[]): ChoicePart[] {
  *
  * TODO allow a ValidationExecutor to be passed in.
  */
-async function doExpand(expansionExpr: string): Promise<string[]> {
-  const opts = { capture: "", throwErrors: true }
+async function doExpand(expansionExpr: string, options: Partial<ExecutorOptions>): Promise<string[]> {
   try {
-    await oraPromise(shellExec(expansionExpr, opts), chalk.dim(`Expanding ${chalk.blue(expansionExpr)}`))
-    // debug("expansion/response", opts.capture)
-    return opts.capture.split(/\n/).filter(Boolean)
+    const response = await oraPromise(
+      (options.exec || (await import("../../exec").then((_) => _.shellExecToString)))(expansionExpr),
+      chalk.dim(`Expanding ${chalk.blue(expansionExpr)}`)
+    )
+    return response.split(/\n/).filter(Boolean)
   } catch (err) {
     // then the expansion failed. make sure the users don't
     // see the template
@@ -113,7 +114,10 @@ async function doExpand(expansionExpr: string): Promise<string[]> {
  * updating content such as descriptions and code bodies (via
  * `updateContent`) as we go.
  */
-async function visit(graph: Graph, options: Partial<Memos> & { debug: ReturnType<typeof Debug> }) {
+async function visit(
+  graph: Graph,
+  options: Partial<Memos> & Partial<ExecutorOptions> & { debug: ReturnType<typeof Debug> }
+) {
   const recurse = (graph: Graph) => visit(graph, options)
 
   if (isSequence(graph)) {
@@ -130,7 +134,8 @@ async function visit(graph: Graph, options: Partial<Memos> & { debug: ReturnType
               return updateContent(part)
             } else {
               const response =
-                (options.expansionMemo && options.expansionMemo[expansionExpr]) || (await doExpand(expansionExpr))
+                (options.expansionMemo && options.expansionMemo[expansionExpr]) ||
+                (await doExpand(expansionExpr, options))
               options.debug(expansionExpr, response)
 
               if (response.length > 0) {

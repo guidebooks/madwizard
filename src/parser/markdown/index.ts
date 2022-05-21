@@ -24,7 +24,7 @@ import remarkRehype from "remark-rehype"
 import { unified, PluggableList } from "unified"
 
 import { MadWizardOptions } from "../../"
-import { madwizardRead, fetcherFor } from "./fetch"
+import { Reader, fetcherFor } from "./fetch"
 
 import { CodeBlockProps } from "../../codeblock"
 import { ChoiceState, newChoiceState } from "../../choices"
@@ -85,9 +85,9 @@ const rehypePlugins = (
 /** Parse the given `input` into a `Graph` syntax tree. */
 async function parse(
   input: VFile,
+  reader: Reader,
   choices: ChoiceState = newChoiceState(),
   uuid = v4(),
-  reader = madwizardRead,
   madwizardOptions: MadWizardOptions = {}
 ) {
   const debug = Debug("madwizard/timing/parser:markdown")
@@ -130,14 +130,14 @@ async function parse(
 /** Parse the given `input` into a `Graph` syntax tree. */
 export async function blockify(
   input: VFileCompatible,
+  reader: Reader,
   choices?: ChoiceState,
   uuid?: string,
-  reader = madwizardRead,
   madwizardOptions?: MadWizardOptions
 ) {
   const file =
     typeof input === "string"
       ? await reader(new VFile({ path: toRawGithubUserContent(expandHomeDir(input)) }), madwizardOptions.store, true)
       : new VFile(input)
-  return parse(file, choices, uuid, reader, madwizardOptions)
+  return parse(file, reader, choices, uuid, madwizardOptions)
 }

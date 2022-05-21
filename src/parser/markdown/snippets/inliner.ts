@@ -19,6 +19,7 @@ import { dirname, join } from "path"
 
 import inlineSnippets from "."
 import { fetcherFor } from "../fetch"
+import { madwizardRead } from "../../../fe/cli/madwizardRead"
 
 /**
  * Fetch and inline all content in the given
@@ -30,7 +31,7 @@ import { fetcherFor } from "../fetch"
  */
 export async function inliner(srcDir: string, srcRelPath: string, targetDir: string) {
   const srcFilePath = join(srcDir, srcRelPath)
-  const fetcher = fetcherFor()
+  const fetcher = fetcherFor(madwizardRead)
   const data = await fetcher(srcFilePath)
   const inlined = await inlineSnippets({ fetcher })(data, srcFilePath)
 
