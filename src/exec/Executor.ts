@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-import { VFile } from "vfile"
+export type Executor = (cmdline: string) => Promise<string>
 
-export type Reader = (file: VFile, store?: string, searchStore?: boolean) => Promise<VFile>
-
-export function fetcherFor(reader: Reader) {
-  return (filepath: string) => reader(new VFile({ path: filepath })).then((_) => _.value.toString())
+export type ExecutorOptions = {
+  exec: Executor
 }

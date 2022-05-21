@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import { write } from "fs"
-import { file as tmpFile } from "tmp"
-
 import shellItOut from "./shell"
 import { ExecOptions } from "./options"
 
 /** Execute a python script in a subprocess */
-export default function pythonItOut(cmdline: string | boolean, opts: ExecOptions) {
+export default async function pythonItOut(cmdline: string | boolean, opts: ExecOptions) {
+  const [{ write }, { file: tmpFile }] = await Promise.all([import("fs"), import("tmp")])
+
   return new Promise<"success">((resolve, reject) => {
     tmpFile({ postfix: ".py" }, (err, filepath, fd, cleanupCallback) => {
       if (err) {

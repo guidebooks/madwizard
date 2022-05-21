@@ -16,7 +16,7 @@
 
 import { Memos } from "../memoization"
 import { Validatable } from "../codeblock"
-import { ExecOptions, shellExec } from "../exec"
+import { ExecOptions } from "../exec"
 import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask, isValidatable } from "."
 
 export type ValidationExecutor = (cmdline: string, opts?: ExecOptions) => "success" | Promise<"success">
@@ -69,7 +69,11 @@ export async function doValidate(
   }
 
   try {
-    await (opts.validator || shellExec)(validate, { quiet: true, env: opts.env, dependencies: opts.dependencies })
+    await (opts.validator || (await import("../exec").then((_) => _.shellExec)))(validate, {
+      quiet: true,
+      env: opts.env,
+      dependencies: opts.dependencies,
+    })
     return "success"
   } catch (err) {
     if (opts.throwErrors) {

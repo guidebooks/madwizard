@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import { write } from "fs"
 import { basename } from "path"
-import { dir as tmpDir, file as tmpFile } from "tmp"
 
 import shellItOut from "./shell"
 import { ExecOptions } from "./options"
@@ -45,6 +43,8 @@ export default async function execAsCustom(
   opts: ExecOptions,
   exec: CustomExecutable["exec"]
 ): Promise<"success"> {
+  const [{ write }, { dir: tmpDir, file: tmpFile }] = await Promise.all([import("fs"), import("tmp")])
+
   return new Promise<"success">((resolve, reject) => {
     tmpDir((err, dir, cleanupCallback1) => {
       if (err) {
