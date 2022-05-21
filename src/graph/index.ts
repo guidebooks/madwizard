@@ -223,11 +223,8 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
   }
 }
 
-export function withTitle(
-  block: LeafNode,
-  { title, description, source }: Title & Partial<Description> & Partial<Source>,
-  barrier = false
-) {
+/** @return a `Graph` that inherits the given `EnTitled` properties */
+export function withTitle(block: LeafNode, { title, description, source }: EnTitled, barrier = false) {
   return subtask(title, title, description, "", seq(block), source, barrier)
 }
 
@@ -235,6 +232,7 @@ export function asSubTask(step: TitledStep): SubTask {
   return subtask(v4(), step.title, step.description, "", step.graph, step.source)
 }
 
+/** @return whether `A` and `B` are identical `Graph` */
 function sameSubTask(A: SubTask, B: SubTask) {
   return (
     /* A.key === B.key &&*/ A.title === B.title &&
@@ -262,7 +260,8 @@ export function isLeafNode<T extends Unordered | Ordered = Unordered>(graph: Gra
 /** The task graph model */
 export type Graph<T extends Unordered | Ordered = Unordered> = InteriorNode<T> | LeafNode<T>
 
-export type TitledGraph<T extends Unordered | Ordered = Unordered> = Graph<T> & Title
+/** A way of titling a task or choice */
+export type EnTitled = Title & Partial<Description> & Partial<Source>
 
 /** The task graph model, with a DFS pre- and post-order number assigned to each graph node. */
 export type OrderedGraph = Graph<Ordered>

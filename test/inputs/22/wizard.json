@@ -6,7 +6,7 @@
       "id": "somekey"
     },
     "step": {
-      "name": "Executing a step",
+      "name": "Missing title",
       "content": "```python\nprint(\"PPP\")\n```"
     }
   }

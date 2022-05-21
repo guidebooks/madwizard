@@ -1,0 +1,71 @@
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "Step1Title",
+      "description": "Step1Description",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo aaa",
+            "language": "bash",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Step1Title",
+      "description": "Step1Description"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "Step2Title",
+      "description": "Step2Description",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo bbb",
+            "language": "bash",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Step2Title",
+      "description": "Step2Description"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "Step2Title",
+      "description": "Step2Description",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo ccc",
+            "language": "bash",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Step2Title",
+      "description": "Step2Description"
+    }
+  }
+]
