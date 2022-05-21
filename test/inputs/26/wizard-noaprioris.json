@@ -6,7 +6,7 @@
       "id": "somekey"
     },
     "step": {
-      "name": "Executing a step",
+      "name": "Missing title",
       "content": "```shell\nexport NUM_CPUS=4\n```"
     }
   },
@@ -17,7 +17,7 @@
       "id": "somekey"
     },
     "step": {
-      "name": "Executing a step",
+      "name": "Missing title",
       "content": "```shell\nexport NUM_GPUS=3\n```"
     }
   }

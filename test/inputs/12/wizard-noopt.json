@@ -7,7 +7,7 @@
       "id": "somekey"
     },
     "step": {
-      "name": "Executing a step",
+      "name": "Missing title",
       "content": "```shell\necho AAA\n```"
     }
   }

@@ -17,7 +17,7 @@
 import {
   Choice,
   Graph,
-  TitledGraph,
+  EnTitled,
   LeafNode,
   hasTitle,
   isBarrier,
@@ -30,7 +30,7 @@ import {
 } from "."
 
 /** Choose `A` if it has a title, else `B` */
-function titlest(A: Graph, B?: TitledGraph) {
+function titlest(A: Graph, B?: EnTitled) {
   return hasTitle(A) ? A : B
 }
 
@@ -40,7 +40,7 @@ function titlest(A: Graph, B?: TitledGraph) {
  * presentation, so we have some explanation for what the `LeafNode`
  * code block is doing.
  */
-function pushWithTitle(S: Graph[], A: LeafNode, B?: TitledGraph, isPartOfBarrier = false) {
+function pushWithTitle(S: Graph[], A: LeafNode, B?: EnTitled, isPartOfBarrier = false) {
   if (B) {
     S.push(withTitle(A, B, isPartOfBarrier))
   } else {
@@ -58,16 +58,18 @@ function pushWithTitle(S: Graph[], A: LeafNode, B?: TitledGraph, isPartOfBarrier
 export function _findChoiceFrontier(
   graph: Graph,
   prereqs: Graph[],
-  nearestEnclosingTitledSubgraph?: TitledGraph,
+  nearestEnclosingTitle?: EnTitled,
   isPartOfBarrier = false
 ): { prereqs?: Graph[]; choice: Choice }[] {
-  const recurse = (graph: Graph) =>
+  const recurse = (graph: Graph, title?: EnTitled) =>
     _findChoiceFrontier(
       graph,
       prereqs,
-      titlest(graph, nearestEnclosingTitledSubgraph),
+      title || titlest(graph, nearestEnclosingTitle),
       isPartOfBarrier || isBarrier(graph)
     )
+
+  const recurse2 = (graph: Graph) => recurse(graph)
 
   if (isChoice(graph)) {
     // user has not yet made a choice. stop here and consume all
@@ -78,14 +80,14 @@ export function _findChoiceFrontier(
   } else if (isSubTask(graph)) {
     return recurse(graph.graph)
   } else if (isSequence(graph)) {
-    return graph.sequence.flatMap(recurse)
+    return graph.sequence.flatMap(recurse2)
   } else if (isParallel(graph)) {
-    return graph.parallel.flatMap(recurse)
+    return graph.parallel.flatMap(recurse2)
   } else if (isTitledSteps(graph)) {
-    return graph.steps.flatMap((_) => recurse(_.graph))
+    return graph.steps.flatMap((_) => recurse(_.graph, _))
   } else {
     // leaf-most code blocks. no choices here.
-    pushWithTitle(prereqs, graph, nearestEnclosingTitledSubgraph, isPartOfBarrier)
+    pushWithTitle(prereqs, graph, nearestEnclosingTitle, isPartOfBarrier)
     return []
   }
 }
