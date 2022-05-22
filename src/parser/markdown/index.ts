@@ -43,7 +43,7 @@ import frontmatter from "remark-frontmatter"
 import { rehypeTip } from "./rehype-tip"
 import { rehypeTabbed } from "./rehype-tabbed"
 
-import wizard from "./rehype-wizard"
+import { rehypeWizard } from "./rehype-wizard"
 import rehypeImports, { remarkImports } from "./remark-import"
 
 import { rehypeCodeIndexer } from "./rehype-code-indexer"
@@ -59,6 +59,7 @@ export * from "./hack"
 export * from "./fetch"
 export * from "./rehype-tip"
 export * from "./rehype-tabbed"
+export * from "./rehype-wizard"
 export * from "./rehype-code-indexer"
 
 const remarkPlugins = (): PluggableList => [
@@ -75,7 +76,7 @@ const rehypePlugins = (
   madwizardOptions: MadWizardOptions,
   filepath: string
 ): PluggableList => [
-  wizard,
+  rehypeWizard,
   [rehypeTabbed, uuid, choices, madwizardOptions],
   rehypeTip,
   [rehypeCodeIndexer, uuid, filepath, codeblocks],

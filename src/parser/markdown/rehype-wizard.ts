@@ -251,6 +251,6 @@ export function isWizardStep(props: Partial<WizardStepProps>): props is WizardSt
   return typeof stepProps["data-kui-title"] === "string" && typeof stepProps["data-kui-split-count"] === "number"
 }
 
-export default function wizard() {
+export function rehypeWizard() {
   return transformer
 }
