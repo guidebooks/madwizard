@@ -164,7 +164,12 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
 
                 const dumpCodeBlockProps = !base64
                   ? () => Object.assign({ body, language }, attributes)
-                  : () => Buffer.from(JSON.stringify(Object.assign({ body, language }, attributes))).toString("base64")
+                  : () =>
+                      Buffer.from(
+                        JSON.stringify(Object.assign({ body, language }, attributes), (key, value) =>
+                          key === "nesting" || key === "source" ? undefined : value
+                        )
+                      ).toString("base64")
 
                 let codeBlockProps = dumpCodeBlockProps()
 
