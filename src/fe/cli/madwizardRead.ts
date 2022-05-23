@@ -63,7 +63,6 @@ export async function madwizardRead(
           const path = toRawGithubUserContent(`${base}/index${ext}`)
           return await madwizardRead(new VFile({ path }))
         } catch (err3) {
-          console.error("!!!!!!", err3)
           throw err
         }
       }
