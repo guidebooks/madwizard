@@ -31,3 +31,8 @@ export * from "./fe/MadWizardOptions"
 
 // Version
 export * from "./version"
+
+// Reader
+export async function reader() {
+  return import("./fe/cli/madwizardRead").then((_) => _.madwizardRead)
+}
