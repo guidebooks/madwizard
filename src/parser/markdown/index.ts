@@ -134,7 +134,7 @@ export async function blockify(
   reader: Reader,
   choices?: ChoiceState,
   uuid?: string,
-  madwizardOptions?: MadWizardOptions
+  madwizardOptions: MadWizardOptions = {}
 ) {
   const file =
     typeof input === "string"
