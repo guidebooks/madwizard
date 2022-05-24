@@ -19,5 +19,5 @@ import { VFile } from "vfile"
 export type Reader = (file: VFile, store?: string, searchStore?: boolean) => Promise<VFile>
 
 export function fetcherFor(reader: Reader) {
-  return (filepath: string) => reader(new VFile({ path: filepath })).then((_) => _.value.toString())
+  return (filepath: string) => reader(new VFile({ cwd: process.cwd(), path: filepath })).then((_) => _.value.toString())
 }
