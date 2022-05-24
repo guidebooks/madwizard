@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { VFile } from "vfile"
 import envPaths from "env-paths"
 
@@ -59,10 +60,12 @@ export async function madwizardRead(
         const path = toRawGithubUserContent(`${base}${ext}`)
         return await madwizardRead(new VFile({ path }))
       } catch (err2) {
+        Debug("madwizard/read")(err2)
         try {
           const path = toRawGithubUserContent(`${base}/index${ext}`)
           return await madwizardRead(new VFile({ path }))
         } catch (err3) {
+          Debug("madwizard/read")(err3)
           throw err
         }
       }

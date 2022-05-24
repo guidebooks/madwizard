@@ -138,7 +138,11 @@ export async function blockify(
 ) {
   const file =
     typeof input === "string"
-      ? await reader(new VFile({ path: toRawGithubUserContent(expandHomeDir(input)) }), madwizardOptions.store, true)
+      ? await reader(
+          new VFile({ cwd: process.cwd(), path: toRawGithubUserContent(expandHomeDir(input)) }),
+          madwizardOptions.store,
+          true
+        )
       : new VFile(input)
   return parse(file, reader, choices, uuid, madwizardOptions)
 }
