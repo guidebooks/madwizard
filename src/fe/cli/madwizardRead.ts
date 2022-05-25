@@ -48,7 +48,11 @@ export async function madwizardRead(
       // try reading from the local filesystem
       return await vfileRead(file)
     } catch (err) {
-      if (!searchStore) {
+      if (err.code === "EISDIR") {
+        const nFile = new VFile(file)
+        nFile.path = join(file.path, "index.md")
+        return await madwizardRead(nFile, store, searchStore)
+      } else if (!searchStore) {
         throw err
       }
 
@@ -58,12 +62,16 @@ export async function madwizardRead(
 
       try {
         const path = toRawGithubUserContent(`${base}${ext}`)
-        return await madwizardRead(new VFile({ path }))
+        const nFile = new VFile(file)
+        nFile.path = path
+        return await madwizardRead(nFile)
       } catch (err2) {
         Debug("madwizard/read")(err2)
         try {
           const path = toRawGithubUserContent(`${base}/index${ext}`)
-          return await madwizardRead(new VFile({ path }))
+          const nFile = new VFile(file)
+          nFile.path = path
+          return await madwizardRead(nFile)
         } catch (err3) {
           Debug("madwizard/read")(err3)
           throw err
