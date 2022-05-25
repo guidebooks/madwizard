@@ -3,9 +3,9 @@
   "version": "0.7.27",
   "description": "Turn Markdown into Wizards",
   "source": "src/index.ts",
-  "main": "dist/main.mjs",
+  "main": "dist/index.js",
   "type": "module",
-  "types": "dist/types.d.ts",
+  "types": "dist/index.d.ts",
   "sideEffects": false,
   "bin": {
     "mw": "./bin/madwizard.js",
@@ -14,8 +14,8 @@
   "scripts": {
     "lint": "cross-env eslint . --ext .js,.jsx,.ts,.tsx",
     "devhack": "cross-env cp .github/enquirer-index.d.ts node_modules/enquirer/index.d.ts",
-    "watch": "npm run devhack && cross-env concurrently -n CORE,TYPES,TEST 'parcel watch' 'tsc --noEmit --watch' 'cd test && tsc --build . --watch'",
-    "build": "npm run devhack && cross-env parcel build --no-content-hash",
+    "watch": "npm run devhack && cross-env concurrently -n CORE,TEST 'tsc --build . --watch' 'cd test && tsc --build . --watch'",
+    "build": "npm run devhack && tsc --build .",
     "build:test": "cross-env-shell tsc --project test",
     "test": "cross-env npm run build:test && cross-env concurrently --raw -n TYPES,TESTS 'tsc --noEmit' 'node --no-warnings --experimental-specifier-resolution=node test/dist'",
     "format": "cross-env prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",
@@ -79,8 +79,6 @@
     }
   },
   "devDependencies": {
-    "@parcel/packager-ts": "^2.5.0",
-    "@parcel/transformer-typescript-types": "^2.5.0",
     "@types/debug": "^4.1.7",
     "@types/hast": "^2.3.4",
     "@types/js-yaml": "^4.0.5",
@@ -101,7 +99,6 @@
     "husky": "^8.0.1",
     "json-diff": "^0.7.4",
     "lint-staged": "^12.4.2",
-    "parcel": "^2.5.0",
     "prettier": "^2.6.2",
     "strip-ansi": "^7.0.1",
     "typedoc": "^0.22.15",

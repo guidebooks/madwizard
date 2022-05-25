@@ -35,28 +35,19 @@ export async function cli<Writer extends (msg: string) => boolean>(
   write?: Writer,
   providedOptions: MadWizardOptions = {}
 ) {
-  const [
-    { parse },
-    { version },
-    { wizardify },
-    { newChoiceState },
-    { madwizardRead },
-    { compile, order, vetoesToString },
-  ] = await Promise.all([
-    import("../../parser"),
-    import("../../version"),
-    import("../../wizard"),
-    import("../../choices"),
-    import("./madwizardRead"),
-    import("../../graph"),
-  ])
-
   // TODO replace this with yargs or something like that
   const argv = _argv.filter((_, idx) => !/^-/.test(_) && (idx === 0 || !/^--/.test(_argv[idx - 1])))
 
   if (argv[1] === "version") {
-    return version()
+    return import("../../version").then((_) => _.version())
   }
+
+  const [{ parse }, { newChoiceState }, { madwizardRead }, { compile, order, vetoesToString }] = await Promise.all([
+    import("../../parser"),
+    import("../../choices"),
+    import("./madwizardRead"),
+    import("../../graph"),
+  ])
 
   const task = !argv[2] ? "guide" : argv[1]
   const input = argv[2] || argv[1]
@@ -142,7 +133,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
     case "debug:fetch": {
       // print out timing
       const graph = await compile(blocks, choices, options)
-      wizardify(graph)
+      await import("../../wizard").then((_) => _.wizardify(graph))
 
       await import("../tree").then((_) => new _.Treeifier(new _.DevNullUI()).toTree(order(graph)))
       break
@@ -160,7 +151,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
 
     case "json": {
       const graph = await compile(blocks, choices, options)
-      const wizard = await wizardify(graph)
+      const wizard = await import("../../wizard").then((_) => _.wizardify(graph))
       ;(write || process.stdout.write.bind(process.stdout))(
         JSON.stringify(
           wizard,

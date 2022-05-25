@@ -17,8 +17,9 @@
 import { VFileCompatible } from "vfile"
 import { extname as pathExtname } from "path"
 
+import { ChoiceState } from "../choices"
+import { MadWizardOptions } from "../fe"
 import { Reader } from "./markdown/fetch"
-import { ChoiceState, MadWizardOptions } from "../../"
 
 export * from "./markdown"
 

@@ -24,7 +24,7 @@ import { diffString } from "json-diff"
 import { createRequire } from "module"
 import { readdirSync, readFileSync } from "fs"
 
-import { cli, MadWizardOptions } from "../.."
+import { CLI, MadWizardOptions } from "../.."
 
 const require = createRequire(import.meta.url)
 const inputDir = join(dirname(require.resolve(".")), "../inputs")
@@ -136,7 +136,7 @@ function testPlanTask(test: Test, input: string, suffix: string, _options: Optio
       return
     }
 
-    await cli(["test", "plan", filepath, ...getCLIOptions(input)], write, options)
+    await CLI.cli(["test", "plan", filepath, ...getCLIOptions(input)], write, options)
     const expectedOutput = loadExpected(input, "tree", suffix)
     assert.equal(stripAnsi(actualOutput.trim()), stripAnsi(expectedOutput.trim()), "tree should match")
   })
@@ -154,7 +154,7 @@ function testJsonTask(test: Test, input: string, suffix: string, _options: Optio
     const filepath = join(input, "in.md")
     const options = typeof _options === "function" ? _options(input) : _options
 
-    await cli(["test", "json", filepath, ...getCLIOptions(input)], write, options)
+    await CLI.cli(["test", "json", filepath, ...getCLIOptions(input)], write, options)
     const expectedOutput = JSON.parse(loadExpected(input, "wizard", suffix))
     const diff = diffString(munge(JSON.parse(actualOutput)), munge(expectedOutput), { color: false })
     assert.is(diff, "", "wizard should match")

@@ -20,7 +20,7 @@ const store =
     : process.env.MWSTORE || join(dirname(require.resolve(madwizard)), "store")
 const argv = process.argv.slice(1).concat(["--store=" + store])
 
-import(madwizard)
+import(madwizard + "/dist/fe/cli")
   .then((_) => _.cli(argv))
   .catch((err) => {
     if (process.env.DEBUG) {

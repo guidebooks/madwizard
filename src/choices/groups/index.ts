@@ -17,7 +17,8 @@
 import { Node, Element } from "hast"
 import { visit } from "unist-util-visit"
 
-import { ChoiceState, MadWizardOptions } from "../.."
+import { ChoiceState } from ".."
+import { MadWizardOptions } from "../../fe"
 import { isTabGroup } from "../../parser/markdown/rehype-tabbed"
 export { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "../../parser/markdown/rehype-tabbed"
 

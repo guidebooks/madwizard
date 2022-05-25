@@ -14,26 +14,4 @@
  * limitations under the License.
  */
 
-// CLI
-export * as CLI from "./fe/cli"
-
-// UI support
-export * as Tree from "./fe/tree"
-
-// APIs
-export * as Graph from "./graph"
-export * as Parser from "./parser"
-export * as Choices from "./choices"
-export * as Wizard from "./wizard"
-export * as CodeBlock from "./codeblock"
-
-// Options
-export * from "./fe"
-
-// Version
-export * from "./version"
-
-// Reader
-export async function reader() {
-  return import("./fe/cli/madwizardRead").then((_) => _.madwizardRead)
-}
+export * from "./MadWizardOptions"
