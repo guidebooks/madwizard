@@ -1,6 +1,6 @@
 === "Tab1"
-    :import{a.md}
-    :import{b.md}
+    :import{./a.md}
+    :import{./b.md}
 
 === "Tab2"
-    :import{a.md}
+    :import{./a.md}

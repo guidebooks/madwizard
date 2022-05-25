@@ -1,6 +1,6 @@
 ---
 imports:
-    - ../data.md
+    - ../../data.md
 ---
 
 # Creating and Transforming Datasets
@@ -8,7 +8,7 @@ imports:
 --8<-- "../../../glossary/dataset.md"
 
 === "New Dataset from Range"
-    --8<-- "create/from-range.md"
+    --8<-- "./create/from-range.md"
 
 === "New Dataset from File"
-    --8<-- "create/from-file.md"
+    --8<-- "./create/from-file.md"

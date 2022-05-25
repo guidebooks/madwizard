@@ -1,7 +1,7 @@
 ---
 imports:
-    - kubectl.md
-    - helm3.md
+    - ./kubectl.md
+    - ./helm3.md
 ---
 
 # Install Ray on a Kubernetes Cluster

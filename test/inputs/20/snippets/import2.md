@@ -1,6 +1,6 @@
 ---
 imports:
-    - b.md
+    - ./b.md
 ---
 
 ```shell

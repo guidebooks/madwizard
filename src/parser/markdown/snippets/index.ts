@@ -19,7 +19,7 @@ import Debug from "debug"
 import { load } from "js-yaml"
 import { mainSymbols } from "figures"
 import expandHomeDir from "expand-home-dir"
-import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin } from "path"
+import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin, relative } from "path"
 
 import { isUrl, toRawGithubUserContent } from "./urls.js"
 import { oraPromise } from "../../../util/ora-delayed-promise.js"
@@ -154,7 +154,7 @@ type InternalOptions = {
 }
 
 /** Small wrapper that rewrites regular github urls to raw "githubusercontent" urls */
-async function doFetch(filepath: string, fetcher: (filepath: string) => Promise<string | Error>) {
+function doFetch(filepath: string, fetcher: (filepath: string) => Promise<string | Error>) {
   return fetcher(toRawGithubUserContent(filepath))
 }
 
@@ -207,7 +207,11 @@ function inlineSnippets(opts: Options & InternalOptions) {
       }
     }
 
-    const snippetFileName = expandHomeDir(_snippetFileName)
+    // is this an "absolute" reference to a base store path?
+    const isStoreRef = !!opts.madwizardOptions && !!opts.madwizardOptions.store && !/^\./.test(_snippetFileName)
+
+    // the resolved filepath of the snippet
+    const snippetFileName = isStoreRef ? _snippetFileName : expandHomeDir(_snippetFileName)
 
     const getBasePath = (snippetBasePath: string) => {
       if (!snippetBasePath) return ""
@@ -242,6 +246,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
         inImport,
         snippetMemo,
         altBasePaths,
+        madwizardOptions: opts.madwizardOptions,
       })(rerouteLinks(base, data), recursedSnippetFileName, provenance)
     }
 
@@ -249,8 +254,8 @@ function inlineSnippets(opts: Options & InternalOptions) {
       (await altBasePaths).length > 0
         ? await altBasePaths
         : [
-            // process.cwd(),
             snippetBasePath,
+            snippetBasePath && relative(snippetBasePath, srcFilePath), // chained relative imports/includes
             snippetBasePath && RE_DOCS_URL.test(snippetBasePath)
               ? dirname(snippetBasePath.match(RE_DOCS_URL)[1])
               : undefined,
@@ -265,13 +270,15 @@ function inlineSnippets(opts: Options & InternalOptions) {
           ].filter(Boolean)
 
     const snippetDatas =
-      isUrl(snippetFileName) || isAbsolute(snippetFileName)
+      isStoreRef || isUrl(snippetFileName) || isAbsolute(snippetFileName)
         ? [
             await fetch(snippetFileName)
               .then(async (data) => ({
                 filepath: snippetFileName,
                 snippetData: await recurse(
-                  snippetBasePath || dirname(snippetFileName),
+                  isStoreRef
+                    ? join(opts.madwizardOptions.store, snippetFileName)
+                    : snippetBasePath || dirname(snippetFileName),
                   snippetFileName,
                   toString(data)
                 ),
@@ -343,8 +350,17 @@ ${indent(errorMessage)}`
   }
 
   const processImport = async (snippetFileName: string, srcFilePath: string, provenance: string[]) => {
+    const src =
+      !opts.madwizardOptions ||
+      !opts.madwizardOptions.store ||
+      !/^\./.test(snippetFileName) ||
+      !/\//.test(snippetFileName) ||
+      isAbsolute(snippetFileName) ||
+      /^\./.test(snippetFileName)
+        ? snippetFileName
+        : join(opts.madwizardOptions.store, snippetFileName)
     const { filepath, snippetData } = await fetchRecursively(
-      snippetFileName,
+      src,
       srcFilePath,
       provenance.concat([snippetFileName]),
       nestingDepth + 1,

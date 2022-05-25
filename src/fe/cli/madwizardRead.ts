@@ -65,11 +65,23 @@ export async function madwizardRead(
       // normal file read, without any store/ prefixing
       return await vfileRead(file)
     } catch (err) {
-      if (err.code === "EISDIR") {
-        const nFile = new VFile(file)
-        nFile.path = join(file.path, "index.md")
-        return await madwizardRead(nFile, store, searchStore)
-      } else if (!searchStore) {
+      if (err.code === "EISDIR" || (err.code === "ENOENT" && !/\.md/.test(file.path))) {
+        try {
+          const nFile = new VFile(file)
+          nFile.path = err.code === "EISDIR" ? join(file.path, "index.md") : file.path + ".md"
+          return await vfileRead(nFile)
+        } catch (err2) {
+          try {
+            const nFile = new VFile(file)
+            nFile.path = file.path + ".md"
+            return await vfileRead(nFile)
+          } catch (err3) {
+            if (!searchStore) {
+              throw err
+            }
+          }
+        }
+      } else if (!searchStore || /^\//.test(file.path)) {
         throw err
       }
 

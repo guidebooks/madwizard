@@ -1,4 +1,4 @@
 # Conditional Inline of Imports
 
 === "Tab1"
-    --8<-- "import.md"
+    --8<-- "./snippets/import.md"

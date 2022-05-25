@@ -1,8 +1,8 @@
 ---
 imports:
-    - importa.md
-    - barrier.md
-    - importe.md
+    - ../snippets/importa.md
+    - ../snippets/barrier.md
+    - ../snippets/importe.md
 ---
 
 ```shell

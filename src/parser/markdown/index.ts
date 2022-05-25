@@ -103,7 +103,7 @@ async function parse(
       .use(remarkRehype, { allowDangerousHtml: true })
       .use(rehypePlugins(uuid, choices, blocks, madwizardOptions, input.path))
 
-    const fetcher = fetcherFor(reader)
+    const fetcher = fetcherFor(reader, madwizardOptions.store, true)
 
     debug("fetch start")
     const sourcePriorToInlining = input.value.toString()
