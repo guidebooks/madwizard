@@ -25,7 +25,7 @@ import { ExecOptions } from "./options"
  *
  * ```python
  * ---
- * exec: ray-submit
+ * exec: ray-submit --job-id ${uuid}
  * ---
  * someFancyPythonCode()
  * ```
@@ -33,7 +33,7 @@ import { ExecOptions } from "./options"
  */
 export default function raySubmit(cmdline: string | boolean, opts: ExecOptions, exec: string) {
   if (typeof cmdline === "string") {
-    const match = /^\s*ray-submit\s*$/.test(exec)
+    const match = exec.match(/^\s*ray-submit(.*)$/)
     if (match) {
       // authors could have `exec: ...ourCustomExec...`, but that's
       // long and tedious to maintain in every guidebook; this
@@ -42,6 +42,10 @@ export default function raySubmit(cmdline: string | boolean, opts: ExecOptions, 
       //
       // Note: in guidebook source, only one \" is needed.
       // Here, we need \\" just to make nodejs's parser happy.
+
+      // anything after `ray-submit` will be tacked on to the `ray
+      // submit` command line
+      const extraArgs = match[1] || ""
 
       // express any pip dependencies we have collected
       const pips = new Set(!opts.dependencies || !opts.dependencies.pip ? [] : opts.dependencies.pip)
@@ -56,7 +60,7 @@ export default function raySubmit(cmdline: string | boolean, opts: ExecOptions, 
 
       // formulate a ray job submit command line; `custom` will
       // assemble ` working directory `$MWDIR` and `$MWFILENAME`
-      const ourCustomExec = `ray job submit --runtime-env-json="{\\"working_dir\\": \\"$MWDIR\\"${pipsJson}}" -- python3 "$MWFILENAME"`
+      const ourCustomExec = `ray job submit --runtime-env-json="{\\"working_dir\\": \\"$MWDIR\\"${pipsJson}}" ${extraArgs} -- python3 "$MWFILENAME"`
 
       // and then execute it
       return custom(cmdline, opts, ourCustomExec)
