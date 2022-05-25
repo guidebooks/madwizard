@@ -1,4 +1,4 @@
 ---
 imports:
-    - snippet.md
+    - ./snippet.md
 ---

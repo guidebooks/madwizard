@@ -25,4 +25,4 @@
         hello
 
 === "Kubernetes Install"
-    --8<-- "kubernetes.md"
+    --8<-- "./kubernetes.md"

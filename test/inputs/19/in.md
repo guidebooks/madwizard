@@ -24,7 +24,7 @@
         === "Apple Silicon"
             If you are running on Apple Silicon/ARM hardware.
         
-            :import{conda.md}
+            :import{./snippets/conda.md}
 
         
             ```shell
@@ -35,4 +35,4 @@
             ```
         
 === "Kubernetes Install"
-    --8<-- "kubernetes.md"
+    --8<-- "./snippets/kubernetes.md"

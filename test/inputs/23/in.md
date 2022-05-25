@@ -1,8 +1,8 @@
 ---
 imports:
-    - install/index.md
+    - ./install/index.md
 ---
 
 # Run a Ray Job
 
---8<-- "examples/index.md"
+--8<-- "./examples/index.md"

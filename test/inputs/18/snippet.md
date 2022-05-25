@@ -1,7 +1,7 @@
 # Conditional Imports of Validated Code Blocks
 
 === "Tab1"
-    :import{importa.md}
+    :import{../snippets/importa.md}
 
 === "Tab2"
-    :import{importe.md}
+    :import{../snippets/importe.md}

@@ -1,6 +1,6 @@
 # Conda: Installation
 
---8<-- "what-is-conda.md"
+--8<-- "./what-is-conda.md"
 
 ## Installation Method
 
