@@ -18,8 +18,9 @@ import Debug from "debug"
 import { Transformer } from "unified"
 import { Element, ElementContent, Properties } from "hast"
 
+import { ChoiceState } from "../../../choices"
+import { MadWizardOptions } from "../../../fe"
 import isElementWithProperties from "../util/isElement"
-import { ChoiceState, MadWizardOptions } from "../../.."
 import { identifyRecognizableTabGroups } from "../../../choices/groups"
 import { AllowedFormElement, FormElementType } from "../../../codeblock"
 
