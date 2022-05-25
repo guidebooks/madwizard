@@ -51,6 +51,10 @@ export function updateContent<Part extends { graph: Graph; description?: string 
     if (typeof _.validate === "string") {
       _.validate = replace(_.validate)
     }
+
+    if (typeof _.exec === "string") {
+      _.exec = replace(_.exec)
+    }
   })
 
   if (typeof part.description === "string") {
