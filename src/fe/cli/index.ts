@@ -32,7 +32,7 @@ function enableTracing(task: DebugTask, subtask = "*") {
 
 export async function cli<Writer extends (msg: string) => boolean>(
   _argv: string[],
-  write: Writer,
+  write?: Writer,
   providedOptions: MadWizardOptions = {}
 ) {
   const [
