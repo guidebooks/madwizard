@@ -20,8 +20,8 @@
           },
           "title": "Number of CPUs",
           "form": {
-            "type": "string",
-            "defaultValue": "1"
+            "type": "number",
+            "defaultValue": 1
           }
         },
         {
@@ -38,8 +38,8 @@
           },
           "title": "Number of GPUs",
           "form": {
-            "type": "string",
-            "defaultValue": "0"
+            "type": "number",
+            "defaultValue": 0
           }
         }
       ]
@@ -54,8 +54,8 @@
           "member": 0,
           "isFirstChoice": true,
           "form": {
-            "type": "string",
-            "defaultValue": "1"
+            "type": "number",
+            "defaultValue": 1
           }
         },
         {
@@ -64,8 +64,8 @@
           "member": 1,
           "isFirstChoice": true,
           "form": {
-            "type": "string",
-            "defaultValue": "0"
+            "type": "number",
+            "defaultValue": 0
           }
         }
       ]

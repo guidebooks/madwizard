@@ -22,7 +22,7 @@ export default function withFormProperties(title: string, props: Properties): Ta
   if (formMatch) {
     const formDefaultValue = formMatch[2]
     const formDefaultValueAsNumber = Number(formDefaultValue)
-    const isNumber = isNaN(formDefaultValueAsNumber)
+    const isNumber = !isNaN(formDefaultValueAsNumber)
 
     title = formMatch[1]
     props.formElementType = !isNumber ? "string" : "number"
