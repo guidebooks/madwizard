@@ -102,7 +102,7 @@ function expandPart(template: ChoicePart, names: string[]): ChoicePart[] {
 async function doExpand(expansionExpr: string, options: Partial<ExecutorOptions>): Promise<string[]> {
   try {
     const response = await oraPromise(
-      (options.exec || (await import("../../exec").then((_) => _.shellExecToString)))(expansionExpr),
+      (options.exec || (await import("../../exec").then((_) => _.shellExecToString)))(expansionExpr, options),
       chalk.dim(`Expanding ${chalk.blue(expansionExpr)}`)
     )
     return response.split(/\n/).filter(Boolean)

@@ -36,7 +36,7 @@ export async function shellExec(
 ): Promise<"success"> {
   if (exec) {
     // then the source has provided a custom executor
-    return raySubmit(cmdline, opts, exec) || custom(cmdline, opts, exec)
+    return (await raySubmit(cmdline, opts, exec)) || custom(cmdline, opts, exec)
   } else if (isShellish(language)) {
     // then the code block has been declared with a `shell` or `bash`
     // or `sh` language
@@ -56,10 +56,11 @@ export async function shellExec(
 
 export async function shellExecToString(
   cmdline: string | boolean,
+  _opts: ExecOptions = { quiet: false },
   language?: SupportedLanguage,
   exec?: CustomExecutable["exec"]
 ): Promise<string> {
-  const opts = { capture: "", throwErrors: true }
+  const opts = Object.assign({}, _opts, { capture: "", throwErrors: true })
   await shellExec(cmdline, opts, language, exec)
   return opts.capture
 }
