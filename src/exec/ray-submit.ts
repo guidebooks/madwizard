@@ -125,11 +125,15 @@ export default async function raySubmit(cmdline: string | boolean, opts: ExecOpt
 
         const envFile = await saveEnvToFile(parsedOptions, opts, customEnv)
 
+        // ./custom.ts will populate this env var
+        const inputFile = customEnv.MWFILENAME
+
+        // arguments after the --
+        const dashDash = parsedOptions["--"] ? parsedOptions["--"].join(" ") : ""
+
         // formulate a ray job submit command line; `custom` will
         // assemble ` working directory `$MWDIR` and `$MWFILENAME`
-        const cmdline = `ray job submit --runtime-env=${envFile} ${extraArgs} -- python3 ${
-          customEnv.MWFILENAME
-        } ${parsedOptions["--"].join(" ")}`
+        const cmdline = `ray job submit --runtime-env=${envFile} ${extraArgs} -- python3 ${inputFile} ${dashDash}`
         Debug("madwizard/exec/ray-submit")("options", parsedOptions)
         Debug("madwizard/exec/ray-submit")("cmdline", cmdline)
         return cmdline
