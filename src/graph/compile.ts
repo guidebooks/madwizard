@@ -15,9 +15,9 @@
  */
 
 import Debug from "debug"
-import { CodeBlockProps } from "../codeblock"
-import { ChoiceState, expand } from "../choices"
-import { ExecutorOptions } from "../exec/Executor"
+import { CodeBlockProps } from "../codeblock/index.js"
+import { ChoiceState, expand } from "../choices/index.js"
+import { ExecutorOptions } from "../exec/Executor.js"
 import {
   Choice,
   Graph,
@@ -30,10 +30,10 @@ import {
   seq,
   sequence,
   subtask,
-} from "."
+} from "./index.js"
 
-import { Memos } from "../memoization"
-import { ValidateOptions } from "./validate"
+import { Memos } from "../memoization/index.js"
+import { ValidateOptions } from "./validate.js"
 
 import {
   Import as CodeBlockImport,
@@ -42,10 +42,10 @@ import {
   isChoice as isCodeBlockChoice,
   isImport as isCodeBlockImport,
   isWizardStep as isCodeBlockWizardStep,
-} from "../codeblock/CodeBlockProps"
+} from "../codeblock/CodeBlockProps.js"
 
-import optimize from "./optimize"
-import provenanceOf from "./provenance"
+import optimize from "./optimize.js"
+import provenanceOf from "./provenance.js"
 
 type ChoiceNesting = { parent: CodeBlockChoice; graph: Choice }
 type SubTaskNesting = { parent: CodeBlockImport; graph: SubTask }

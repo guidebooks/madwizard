@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ExecOptions } from "./options"
+import { ExecOptions } from "./options.js"
 
 /** See if we are being asked to execute `export FOO=bar` */
 export default function execAsExport(cmdline: string | boolean, opts: ExecOptions) {

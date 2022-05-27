@@ -16,10 +16,10 @@
 
 import Debug from "debug"
 
-import { Choices, ChoiceState } from "../choices"
-import { Memos, statusOf } from "../memoization"
-import { Barrier, FormElement } from "../codeblock"
-import { toMarkdownString } from "../parser/markdown/util/toMarkdownString"
+import { Choices, ChoiceState } from "../choices/index.js"
+import { Memos, statusOf } from "../memoization/index.js"
+import { Barrier, FormElement } from "../codeblock/index.js"
+import { toMarkdownString } from "../parser/markdown/util/toMarkdownString.js"
 
 import {
   Graph,
@@ -33,7 +33,7 @@ import {
   isLeafNode,
   isBarrier,
   findChoiceFrontier,
-} from "../graph"
+} from "../graph/index.js"
 
 type Markdown = string | (() => string)
 

@@ -16,9 +16,9 @@
 
 import { basename } from "path"
 
-import shellItOut from "./shell"
-import { ExecOptions } from "./options"
-import { CustomExecutable } from "../codeblock"
+import shellItOut from "./shell.js"
+import { ExecOptions } from "./options.js"
+import { CustomExecutable } from "../codeblock/index.js"
 
 export interface CustomEnv {
   /** Directory in which the custom executable will be executed */

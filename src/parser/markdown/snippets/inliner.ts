@@ -17,9 +17,9 @@
 import { writeFile } from "fs"
 import { dirname, join } from "path"
 
-import inlineSnippets from "."
-import { fetcherFor } from "../fetch"
-import { madwizardRead } from "../../../fe/cli/madwizardRead"
+import inlineSnippets from "./index.js"
+import { fetcherFor } from "../fetch.js"
+import { madwizardRead } from "../../../fe/cli/madwizardRead.js"
 
 /**
  * Fetch and inline all content in the given

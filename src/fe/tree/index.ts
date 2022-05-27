@@ -35,15 +35,15 @@ import {
   isSequence,
   isParallel,
   progress,
-} from "../../graph"
+} from "../../graph/index.js"
 
-import { UI } from "./ui"
-import TreeTransformer from "./xform"
-import { UINode, UITree } from "./props"
+import { UI } from "./ui.js"
+import TreeTransformer from "./xform.js"
+import { UINode, UITree } from "./props.js"
 
-export * from "./ui"
-export * from "./props"
-export * from "./pretty-print"
+export * from "./ui.js"
+export * from "./props.js"
+export * from "./pretty-print.js"
 
 type Progress = { nDone: number; nError: number; nTotal: number }
 

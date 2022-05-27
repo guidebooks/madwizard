@@ -17,12 +17,17 @@
 import { Node, Element } from "hast"
 import { visit } from "unist-util-visit"
 
-import { ChoiceState } from ".."
-import { MadWizardOptions } from "../../fe"
-import { isTabGroup } from "../../parser/markdown/rehype-tabbed"
-export { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "../../parser/markdown/rehype-tabbed"
+import { ChoiceState } from "../index.js"
+import { MadWizardOptions } from "../../fe/index.js"
+import { isTabGroup } from "../../parser/markdown/rehype-tabbed/index.js"
+export {
+  getTabTitle,
+  isTabWithProperties,
+  setTabGroup,
+  setTabTitle,
+} from "../../parser/markdown/rehype-tabbed/index.js"
 
-import aprioris from "./aprioris"
+import aprioris from "./aprioris/index.js"
 
 /**
  * Scan tab groups to see if we can squash down the choice given our a

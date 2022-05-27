@@ -17,10 +17,10 @@
 import { EOL } from "os"
 import Debug from "debug"
 
-import usage from "./usage"
-import { DebugTask, isDebugTask, isValidTask } from "./tasks"
+import usage from "./usage.js"
+import { DebugTask, isDebugTask, isValidTask } from "./tasks.js"
 
-import { MadWizardOptions } from "../MadWizardOptions"
+import { MadWizardOptions } from "../MadWizardOptions.js"
 
 function assertExhaustive(value: never, message = "Reached unexpected case in exhaustive switch"): never {
   throw new Error(message)
@@ -39,14 +39,14 @@ export async function cli<Writer extends (msg: string) => boolean>(
   const argv = _argv.filter((_, idx) => !/^-/.test(_) && (idx === 0 || !/^--/.test(_argv[idx - 1])))
 
   if (argv[1] === "version") {
-    return import("../../version").then((_) => _.version())
+    return import("../../version.js").then((_) => _.version())
   }
 
   const [{ parse }, { newChoiceState }, { madwizardRead }, { compile, order, vetoesToString }] = await Promise.all([
-    import("../../parser"),
-    import("../../choices"),
-    import("./madwizardRead"),
-    import("../../graph"),
+    import("../../parser/index.js"),
+    import("../../choices/index.js"),
+    import("./madwizardRead.js"),
+    import("../../graph/index.js"),
   ])
 
   const task = !argv[2] ? "guide" : argv[1]
@@ -108,11 +108,11 @@ export async function cli<Writer extends (msg: string) => boolean>(
   // mirror calls build over a directory tree), you can also amortize
   // the cost of many file reads/remote fetches per run.
   if (task === "build") {
-    const { inliner } = await import("../../parser/markdown/snippets/inliner")
+    const { inliner } = await import("../../parser/markdown/snippets/inliner.js")
     await inliner(input, argv[3], argv[4])
     return
   } else if (task === "mirror") {
-    const { mirror } = await import("../../parser/markdown/snippets/mirror")
+    const { mirror } = await import("../../parser/markdown/snippets/mirror.js")
     await mirror(input, argv[3])
     return
   }
@@ -133,14 +133,14 @@ export async function cli<Writer extends (msg: string) => boolean>(
     case "debug:fetch": {
       // print out timing
       const graph = await compile(blocks, choices, options)
-      await import("../../wizard").then((_) => _.wizardify(graph))
+      await import("../../wizard/index.js").then((_) => _.wizardify(graph))
 
-      await import("../tree").then((_) => new _.Treeifier(new _.DevNullUI()).toTree(order(graph)))
+      await import("../tree/index.js").then((_) => new _.Treeifier(new _.DevNullUI()).toTree(order(graph)))
       break
     }
 
     case "plan":
-      await import("../tree").then((_) =>
+      await import("../tree/index.js").then((_) =>
         _.prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
       )
       break
@@ -151,7 +151,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
 
     case "json": {
       const graph = await compile(blocks, choices, options)
-      const wizard = await import("../../wizard").then((_) => _.wizardify(graph))
+      const wizard = await import("../../wizard/index.js").then((_) => _.wizardify(graph))
       ;(write || process.stdout.write.bind(process.stdout))(
         JSON.stringify(
           wizard,
@@ -180,7 +180,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
 
     case "run":
     case "guide": {
-      const Guide = await import("../guide").then((_) => _.Guide)
+      const Guide = await import("../guide/index.js").then((_) => _.Guide)
       await new Guide(task, blocks, choices, options).run()
       break
     }

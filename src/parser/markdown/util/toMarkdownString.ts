@@ -21,11 +21,11 @@ import { Content, Element, Parent } from "hast"
 import { visit, CONTINUE, SKIP } from "unist-util-visit"
 import { toMarkdown } from "mdast-util-to-markdown"
 
-import { isTip } from "../rehype-tip"
-import { isImports } from "../remark-import"
-import indent, { indentAll } from "./indent"
-import isElementWithProperties from "./isElement"
-import { isTabs, isTabWithProperties, getTabTitle, getTabsDepth } from "../rehype-tabbed"
+import { isTip } from "../rehype-tip/index.js"
+import { isImports } from "../remark-import.js"
+import indent, { indentAll } from "./indent.js"
+import isElementWithProperties from "./isElement.js"
+import { isTabs, isTabWithProperties, getTabTitle, getTabsDepth } from "../rehype-tabbed/index.js"
 
 type Node = Parameters<typeof toMdast>[0]
 export { Node }

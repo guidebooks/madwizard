@@ -17,8 +17,8 @@
 import chalk from "chalk"
 import Debug from "debug"
 
-import { hasProvenance } from "./provenance"
-import { oraPromise } from "../util/ora-delayed-promise"
+import { hasProvenance } from "./provenance.js"
+import { oraPromise } from "../util/ora-delayed-promise.js"
 
 import {
   CompileOptions,
@@ -34,7 +34,7 @@ import {
   isTitledSteps,
   isSubTask,
   isValidatable,
-} from "."
+} from "./index.js"
 
 /**
  * Execute the `validate` property of the steps in the given `wizard`,

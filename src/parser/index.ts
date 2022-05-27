@@ -17,11 +17,11 @@
 import { VFileCompatible } from "vfile"
 import { extname as pathExtname } from "path"
 
-import { ChoiceState } from "../choices"
-import { MadWizardOptions } from "../fe"
-import { Reader } from "./markdown/fetch"
+import { ChoiceState } from "../choices/index.js"
+import { MadWizardOptions } from "../fe/index.js"
+import { Reader } from "./markdown/fetch.js"
 
-export * from "./markdown"
+export * from "./markdown/index.js"
 
 /** @return the file extension for the given `input` */
 function extname(input: VFileCompatible) {
@@ -46,7 +46,7 @@ export async function parse(
 ) {
   const ext = extname(input)
   if (ext === ".md" || !ext) {
-    return await import("./markdown").then((_) => _.blockify(input, reader, choices, uuid, madwizardOptions))
+    return await import("./markdown/index.js").then((_) => _.blockify(input, reader, choices, uuid, madwizardOptions))
   } else {
     throw new Error(`Unsupported file type: ${String(input)}`)
   }

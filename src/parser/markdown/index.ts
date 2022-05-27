@@ -23,44 +23,44 @@ import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
 import { unified, PluggableList } from "unified"
 
-import { MadWizardOptions } from "../../"
-import { Reader, fetcherFor } from "./fetch"
+import { MadWizardOptions } from "../../fe/index.js"
+import { Reader, fetcherFor } from "./fetch.js"
 
-import { CodeBlockProps } from "../../codeblock"
-import { ChoiceState, newChoiceState } from "../../choices"
+import { CodeBlockProps } from "../../codeblock/index.js"
+import { ChoiceState, newChoiceState } from "../../choices/index.js"
 
-import { hackMarkdownSource } from "./hack"
+import { hackMarkdownSource } from "./hack.js"
 
 // parses out ::import{filepath} as node.type === 'leafDirective', but
 // does not create any DOM elements
 import remarkDirective from "remark-directive"
 
-import inlineSnippets from "./snippets"
-import { toRawGithubUserContent } from "./snippets/urls"
+import inlineSnippets from "./snippets/index.js"
+import { toRawGithubUserContent } from "./snippets/urls.js"
 
 import frontmatter from "remark-frontmatter"
 
-import { rehypeTip } from "./rehype-tip"
-import { rehypeTabbed } from "./rehype-tabbed"
+import { rehypeTip } from "./rehype-tip/index.js"
+import { rehypeTabbed } from "./rehype-tabbed/index.js"
 
-import { rehypeWizard } from "./rehype-wizard"
-import rehypeImports, { remarkImports } from "./remark-import"
+import { rehypeWizard } from "./rehype-wizard.js"
+import rehypeImports, { remarkImports } from "./remark-import.js"
 
-import { rehypeCodeIndexer } from "./rehype-code-indexer"
+import { rehypeCodeIndexer } from "./rehype-code-indexer/index.js"
 
 // react-markdown v6+ now require use of these to support html
 // import rehypeRaw from "rehype-raw"
 // import rehypeSlug from "rehype-slug"
 
 // import icons from "./rehype-icons"
-import { kuiFrontmatter } from "./frontmatter"
+import { kuiFrontmatter } from "./frontmatter/index.js"
 
-export * from "./hack"
-export * from "./fetch"
-export * from "./rehype-tip"
-export * from "./rehype-tabbed"
-export * from "./rehype-wizard"
-export * from "./rehype-code-indexer"
+export * from "./hack.js"
+export * from "./fetch.js"
+export * from "./rehype-tip/index.js"
+export * from "./rehype-tabbed/index.js"
+export * from "./rehype-wizard.js"
+export * from "./rehype-code-indexer/index.js"
 
 const remarkPlugins = (): PluggableList => [
   remarkDirective,

@@ -25,10 +25,20 @@
  *
  */
 
-import { Ordered, Unordered, Graph, choose, isSequence, isParallel, isSubTask, isTitledSteps, isChoice } from "."
+import {
+  Ordered,
+  Unordered,
+  Graph,
+  choose,
+  isSequence,
+  isParallel,
+  isSubTask,
+  isTitledSteps,
+  isChoice,
+} from "./index.js"
 
-import { ChoiceState } from "../choices"
-import { CodeBlockProps } from "../codeblock"
+import { ChoiceState } from "../choices/index.js"
+import { CodeBlockProps } from "../codeblock/index.js"
 
 export function nodes<T extends Unordered | Ordered, F extends Graph<T>>(
   graph: Graph<T>,

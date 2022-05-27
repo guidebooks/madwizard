@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import shellItOut from "./shell"
-import { ExecOptions } from "./options"
+import shellItOut from "./shell.js"
+import { ExecOptions } from "./options.js"
 
 /**
  * This is purely an optimization, since `pip show` is muy slow. The

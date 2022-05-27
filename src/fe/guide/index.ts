@@ -23,17 +23,17 @@ import { Writable } from "stream"
 import { mainSymbols } from "figures"
 import { EventEmitter } from "events"
 
-import { taskRunner, Task } from "./taskrunner"
+import { taskRunner, Task } from "./taskrunner.js"
 
-import { shellExec } from "../../exec"
-import { MadWizardOptions } from "../../"
-import { ChoiceState } from "../../choices"
-import { CodeBlockProps } from "../../codeblock"
-import indent from "../../parser/markdown/util/indent"
-import { Memos, Memoizer, statusOf } from "../../memoization"
-import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree"
-import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isForm, isTaskStep, wizardify } from "../../wizard"
-import { Graph, Status, blocks, compile, extractTitle, extractDescription, validate } from "../../graph"
+import { shellExec } from "../../exec/index.js"
+import { MadWizardOptions } from "../../index.js"
+import { ChoiceState } from "../../choices/index.js"
+import { CodeBlockProps } from "../../codeblock/index.js"
+import indent from "../../parser/markdown/util/indent.js"
+import { Memos, Memoizer, statusOf } from "../../memoization/index.js"
+import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree/index.js"
+import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isForm, isTaskStep, wizardify } from "../../wizard/index.js"
+import { Graph, Status, blocks, compile, extractTitle, extractDescription, validate } from "../../graph/index.js"
 
 type Question = enquirer.prompt.SelectQuestionOptions | enquirer.prompt.FormQuestionOptions
 

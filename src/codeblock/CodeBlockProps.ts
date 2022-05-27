@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { FormElement } from "./form"
-import { SupportedLanguage } from "./language"
-import { Something } from "../parser/markdown/util/toMarkdownString"
+import { FormElement } from "./form.js"
+import { SupportedLanguage } from "./language.js"
+import { Something } from "../parser/markdown/util/toMarkdownString.js"
 
-export * from "./form"
+export * from "./form.js"
 
 export interface Validatable {
   /**

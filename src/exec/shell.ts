@@ -15,7 +15,7 @@
  */
 
 import { spawn } from "child_process"
-import { ExecOptions } from "./options"
+import { ExecOptions } from "./options.js"
 
 /** Shell out the execution of the given `cmdline` */
 export default async function shellItOut(

@@ -35,10 +35,10 @@ import {
   parallel,
   sequence,
   subtask,
-} from "."
-import { Source } from "../codeblock"
+} from "./index.js"
+import { Source } from "../codeblock/index.js"
 
-import { findChoicesOnFrontier as findChoiceFrontier } from "./choice-frontier"
+import { findChoicesOnFrontier as findChoiceFrontier } from "./choice-frontier.js"
 
 type LookupTable = Record<SubTask["key"], SubTask>
 

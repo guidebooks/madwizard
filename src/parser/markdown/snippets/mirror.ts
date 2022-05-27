@@ -18,7 +18,7 @@ import { join } from "path"
 import { readdir } from "fs"
 import { oraPromise } from "ora"
 
-import { inliner } from "./inliner"
+import { inliner } from "./inliner.js"
 
 export async function mirror(srcDir: string, targetDir: string, srcRelPath = "") {
   // Debug.enable("madwizard/fetch/snippets")

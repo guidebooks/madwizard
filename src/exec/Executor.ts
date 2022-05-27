@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ExecOptions } from "./options"
+import { ExecOptions } from "./options.js"
 
 export type Executor = (cmdline: string, opts?: ExecOptions) => Promise<string>
 

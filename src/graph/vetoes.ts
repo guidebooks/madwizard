@@ -17,11 +17,11 @@
 import { EOL } from "os"
 import chalk from "chalk"
 
-import { MadWizardOptions } from ".."
-import { ChoiceState } from "../choices"
-import { CodeBlockProps } from "../codeblock"
-import { Provenance, hasProvenance } from "./provenance"
-import { CompileOptions, Graph, compile, nodes } from "."
+import { MadWizardOptions } from "../fe/index.js"
+import { ChoiceState } from "../choices/index.js"
+import { CodeBlockProps } from "../codeblock/index.js"
+import { Provenance, hasProvenance } from "./provenance.js"
+import { CompileOptions, Graph, compile, nodes } from "./index.js"
 
 /**
  * List the veto-able provenances. This can be used to help fill in

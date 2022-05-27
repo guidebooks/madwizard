@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { ChoiceState, ChoicesMap } from "."
-import ChoiceEventManager from "./events"
+import ChoiceEventManager from "./events.js"
+import { ChoiceState, ChoicesMap } from "./index.js"
 
 export default class ChoiceStateImpl extends ChoiceEventManager implements ChoiceState {
   public constructor(

@@ -17,7 +17,7 @@
 import chalk from "chalk"
 import { basename } from "path"
 
-import { validTasks } from "./tasks"
+import { validTasks } from "./tasks.js"
 
 export default function usage(argv: string[], msg?: string) {
   if (msg) {

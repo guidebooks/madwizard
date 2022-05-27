@@ -21,10 +21,10 @@ import { visit } from "unist-util-visit"
 import { Content, Element, Parent, Root } from "hast"
 import { visitParents, SKIP } from "unist-util-visit-parents"
 
-import isElementWithProperties from "./util/isElement"
-import { WizardSteps, PositionProps } from "./frontmatter/KuiFrontmatter"
-import { GroupMember as CodeBlockGroupMember } from "../../codeblock/CodeBlockProps"
-import { isImports, visitImportContainers } from "./remark-import"
+import isElementWithProperties from "./util/isElement.js"
+import { WizardSteps, PositionProps } from "./frontmatter/KuiFrontmatter.js"
+import { GroupMember as CodeBlockGroupMember } from "../../codeblock/CodeBlockProps.js"
+import { isImports, visitImportContainers } from "./remark-import.js"
 
 type Primordial = Pick<CodeBlockGroupMember, "group"> & {
   title: string

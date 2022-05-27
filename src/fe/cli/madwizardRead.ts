@@ -21,8 +21,8 @@ import envPaths from "env-paths"
 import fetch from "make-fetch-happen"
 import { read as vfileRead } from "to-vfile"
 
-import { join } from "../../parser/markdown/snippets"
-import { toRawGithubUserContent } from "../../parser/markdown/snippets/urls"
+import { join } from "../../parser/markdown/snippets/index.js"
+import { toRawGithubUserContent } from "../../parser/markdown/snippets/urls.js"
 
 export async function get(uri: string) {
   return fetch(uri, { cachePath: envPaths("madwizard").cache })

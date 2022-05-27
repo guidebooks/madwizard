@@ -18,7 +18,7 @@ import terminalLink from "terminal-link"
 import { highlight } from "cli-highlight"
 import chalk, { Modifiers, Color } from "chalk"
 
-import { Status } from "../../graph"
+import { Status } from "../../graph/index.js"
 
 export type Decoration = Modifiers | Color
 

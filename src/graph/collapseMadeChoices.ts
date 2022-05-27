@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ChoiceState, updateContent } from "../choices"
+import { ChoiceState, updateContent } from "../choices/index.js"
 import {
   Graph,
   emptySequence,
@@ -27,7 +27,7 @@ import {
   isTitledSteps,
   sequence,
   subtask,
-} from "."
+} from "./index.js"
 
 function collapse(graph: Graph, choices: ChoiceState): Graph {
   if (isChoice(graph)) {

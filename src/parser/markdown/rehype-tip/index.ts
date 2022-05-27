@@ -17,7 +17,7 @@
 import Debug from "debug"
 import { Node, Element } from "hast"
 
-import isElementWithProperties from "../util/isElement"
+import isElementWithProperties from "../util/isElement.js"
 
 const RE_TIP =
   /^([?!][?!][?!])(\+?)\s+(tip|todo|bug|info|note|warning|caution|success|question)(\s+"(.+)"\s*)?(\s+inline)?(\s+inline\s+end)?(\n(.|[\n\r])*)?$/i

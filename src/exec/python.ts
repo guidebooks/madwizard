@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import shellItOut from "./shell"
-import { ExecOptions } from "./options"
+import shellItOut from "./shell.js"
+import { ExecOptions } from "./options.js"
 
 /** Execute a python script in a subprocess */
 export default async function pythonItOut(cmdline: string | boolean, opts: ExecOptions) {

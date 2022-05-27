@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { ChoiceState } from "../choices"
-import { ExpansionMap } from "../choices/groups/expansion"
-import { Graph, Status, StatusMap, isLeafNode, isChoice, partsOf } from "../graph"
+import { ChoiceState } from "../choices/index.js"
+import { ExpansionMap } from "../choices/groups/expansion.js"
+import { Graph, Status, StatusMap, isLeafNode, isChoice, partsOf } from "../graph/index.js"
 
 /** Optimize certain expensive or non-idempotent operations */
 export interface Memos {

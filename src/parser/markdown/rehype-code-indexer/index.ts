@@ -22,19 +22,19 @@ import { Transformer } from "unified"
 import { toString } from "hast-util-to-string"
 import { visitParents } from "unist-util-visit-parents"
 
-import { provenanceOfFilepath } from "../../../graph/provenance"
+import { provenanceOfFilepath } from "../../../graph/provenance.js"
 
-import dump from "./dump"
-import { isTab } from "../rehype-tabbed"
-import { isExecutable } from "../../../codeblock/isCodeBlock"
-import { getTipTitle, isTipWithFullTitle } from "../rehype-tip"
+import dump from "./dump.js"
+import { isTab } from "../rehype-tabbed/index.js"
+import { isExecutable } from "../../../codeblock/isCodeBlock.js"
+import { getTipTitle, isTipWithFullTitle } from "../rehype-tip/index.js"
 import isElementWithProperties, {
   hasContentChildren,
   isParagraph,
   isText,
   isNonEmptyTextOrParagraph,
-} from "../util/isElement"
-import { toMarkdownString, Node } from "../util/toMarkdownString"
+} from "../util/isElement.js"
+import { toMarkdownString, Node } from "../util/toMarkdownString.js"
 
 import {
   isHeading,
@@ -46,9 +46,9 @@ import {
   getTitle,
   getDescription,
   getHeadingLevel,
-} from "../rehype-wizard"
+} from "../rehype-wizard.js"
 
-import { tryFrontmatter } from "../frontmatter"
+import { tryFrontmatter } from "../frontmatter/index.js"
 import {
   isBarrier,
   isOnAnImportChain,
@@ -57,8 +57,8 @@ import {
   getImportFilepath,
   getImportTitle,
   getValidate,
-} from "../remark-import"
-import { CodeBlockProps, addNesting as addCodeBlockNesting, Choice } from "../../../codeblock/CodeBlockProps"
+} from "../remark-import.js"
+import { CodeBlockProps, addNesting as addCodeBlockNesting, Choice } from "../../../codeblock/CodeBlockProps.js"
 
 /**
  * Heuristic: Code Blocks inside of closed "tips" (i.e. default-closed

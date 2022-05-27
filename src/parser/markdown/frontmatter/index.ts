@@ -21,12 +21,12 @@ import { u } from "unist-builder"
 import { visit } from "unist-util-visit"
 import { visitParents } from "unist-util-visit-parents"
 
-import { isLiteral, isText } from "../util/isElement"
-import { isOnAnImportChain, visitImportContainers } from "../remark-import"
-import KuiFrontmatter, { hasWizardSteps, isNormalSplit, isValidPosition, isValidPositionObj } from "./KuiFrontmatter"
-import { preprocessCodeBlocksInContent, preprocessCodeBlocksInImports } from "../remark-codeblocks-topmatter"
+import { isLiteral, isText } from "../util/isElement.js"
+import { isOnAnImportChain, visitImportContainers } from "../remark-import.js"
+import KuiFrontmatter, { hasWizardSteps, isNormalSplit, isValidPosition, isValidPositionObj } from "./KuiFrontmatter.js"
+import { preprocessCodeBlocksInContent, preprocessCodeBlocksInImports } from "../remark-codeblocks-topmatter.js"
 
-export { tryFrontmatter } from "./frontmatter-parser"
+export { tryFrontmatter } from "./frontmatter-parser.js"
 
 export function splitTarget(node) {
   if (node.type === "raw") {

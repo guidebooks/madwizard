@@ -33,9 +33,9 @@ import {
   isSequence,
   isParallel,
   isTitledSteps,
-} from "."
+} from "./index.js"
 
-import { CodeBlockProps } from "../codeblock"
+import { CodeBlockProps } from "../codeblock/index.js"
 
 function orderSequence(graph: Sequence = emptySequence(), ordinal = 0): Sequence<Ordered> {
   const { postorder, sequence } = graph.sequence.reduce(

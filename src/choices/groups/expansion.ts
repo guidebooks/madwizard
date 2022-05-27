@@ -16,11 +16,11 @@
 
 import chalk from "chalk"
 import { v4 } from "uuid"
-import { oraPromise } from "../../util/ora-delayed-promise"
+import { oraPromise } from "../../util/ora-delayed-promise.js"
 
-import { Debug } from "./debug"
-import { ExecutorOptions } from "../../exec/Executor"
-import { Memos } from "../../memoization"
+import { Debug } from "./debug.js"
+import { ExecutorOptions } from "../../exec/Executor.js"
+import { Memos } from "../../memoization/index.js"
 import {
   Graph,
   Choice,
@@ -31,7 +31,7 @@ import {
   isChoice,
   isTitledSteps,
   isSubTask,
-} from "../../graph"
+} from "../../graph/index.js"
 
 export type ExpansionMap = Record<ReturnType<typeof isExpansion>, string[]>
 
@@ -102,7 +102,7 @@ function expandPart(template: ChoicePart, names: string[]): ChoicePart[] {
 async function doExpand(expansionExpr: string, options: Partial<ExecutorOptions>): Promise<string[]> {
   try {
     const response = await oraPromise(
-      (options.exec || (await import("../../exec").then((_) => _.shellExecToString)))(expansionExpr, options),
+      (options.exec || (await import("../../exec/index.js").then((_) => _.shellExecToString)))(expansionExpr, options),
       chalk.dim(`Expanding ${chalk.blue(expansionExpr)}`)
     )
     return response.split(/\n/).filter(Boolean)

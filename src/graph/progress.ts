@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { ChoiceState } from "../choices"
-import { CodeBlockProps } from "../codeblock"
+import { ChoiceState } from "../choices/index.js"
+import { CodeBlockProps } from "../codeblock/index.js"
 import {
   Status,
   StatusMap,
@@ -27,7 +27,7 @@ import {
   isSequence,
   isParallel,
   isTitledSteps,
-} from "."
+} from "./index.js"
 
 type Progress = { nDone: number; nError: number; nTotal: number; nextOrdinals: number[] }
 
