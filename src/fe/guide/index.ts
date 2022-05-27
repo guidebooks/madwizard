@@ -132,7 +132,10 @@ export class Guide {
   }
 
   private ask(opts: Question) {
-    console.clear()
+    if (!process.env.DEBUG) {
+      console.clear()
+    }
+
     const prompt = this.isSelect(opts) ? new enquirer.Select(opts) : new enquirer.Form(opts)
     return prompt.run()
   }
