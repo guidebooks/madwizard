@@ -25,21 +25,23 @@ export default async function shellItOut(
 ): Promise<"success"> {
   const capture = typeof opts.capture === "string"
 
+  const env = Object.assign(
+    {
+      HOMEBREW_NO_INSTALL_CLEANUP: "1",
+      HOMEBREW_NO_INSTALL_UPGRADE: "1",
+      HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1",
+    },
+    process.env,
+    opts.env || {},
+    extraEnv
+  )
+
   return new Promise((resolve, reject) => {
     const child = spawn(
       process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash"),
       ["-c", `set -o pipefail; ${cmdline}`],
       {
-        env: Object.assign(
-          {
-            HOMEBREW_NO_INSTALL_CLEANUP: "1",
-            HOMEBREW_NO_INSTALL_UPGRADE: "1",
-            HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1",
-          },
-          process.env,
-          opts.env || {},
-          extraEnv
-        ),
+        env,
         stdio: opts.quiet
           ? ["inherit", "ignore", "pipe"]
           : capture
