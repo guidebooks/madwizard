@@ -16,9 +16,9 @@
 
 import Debug from "debug"
 
-import { isExecutable } from "../../../codeblock"
-import { START_OF_TIP, END_OF_TIP } from "../rehype-tip"
-import { START_OF_TAB, END_OF_TAB, PUSH_TABS } from "."
+import { isExecutable } from "../../../codeblock/index.js"
+import { START_OF_TIP, END_OF_TIP } from "../rehype-tip/index.js"
+import { START_OF_TAB, END_OF_TAB, PUSH_TABS } from "./index.js"
 
 /** A placeholder marker to indicate markdown that uses indentation not to mean Tab or Tip content */
 const FAKE_END_MARKER = ""

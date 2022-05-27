@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Debug } from "../debug"
+import { Debug } from "../debug.js"
 
 export default function debug(subtask: string, formatter: string, ...args: string[]) {
   return Debug(`aprioris/${subtask}`)(formatter, ...args)

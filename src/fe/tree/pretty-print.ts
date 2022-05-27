@@ -17,12 +17,12 @@
 import { EOL } from "os"
 import chalk from "chalk"
 
-import { Memoizer } from "../../memoization"
-import { ChoiceState } from "../../choices"
-import { compile, order } from "../../graph"
-import { CodeBlockProps } from "../../codeblock"
-import { AnsiUI, Treeifier, UITree } from "../tree"
-import { MadWizardOptions } from "../MadWizardOptions"
+import { Memoizer } from "../../memoization/index.js"
+import { ChoiceState } from "../../choices/index.js"
+import { compile, order } from "../../graph/index.js"
+import { CodeBlockProps } from "../../codeblock/index.js"
+import { AnsiUI, Treeifier, UITree } from "../tree/index.js"
+import { MadWizardOptions } from "../MadWizardOptions.js"
 
 const Symbols = {
   ansi: {

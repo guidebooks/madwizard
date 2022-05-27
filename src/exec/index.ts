@@ -15,15 +15,15 @@
  */
 
 import { Env, ExecOptions } from "./options"
-import { CustomExecutable, SupportedLanguage, isPythonic, isShellish } from "../codeblock"
+import { CustomExecutable, SupportedLanguage, isPythonic, isShellish } from "../codeblock/index.js"
 
-import shell from "./shell"
-import which from "./which"
-import custom from "./custom"
-import python from "./python"
-import exporter from "./export"
-import pipShow from "./pip-show"
-import raySubmit from "./ray-submit"
+import shell from "./shell.js"
+import which from "./which.js"
+import custom from "./custom.js"
+import python from "./python.js"
+import exporter from "./export.js"
+import pipShow from "./pip-show.js"
+import raySubmit from "./ray-submit.js"
 
 export { Env, ExecOptions }
 

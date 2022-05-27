@@ -27,7 +27,7 @@ import {
   isSubTask,
   isTitledSteps,
   withTitle,
-} from "."
+} from "./index.js"
 
 /** Choose `A` if it has a title, else `B` */
 function titlest(A: Graph, B?: EnTitled) {

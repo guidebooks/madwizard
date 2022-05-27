@@ -28,8 +28,8 @@
 import { v4 } from "uuid"
 import { basename } from "path"
 
-import { ChoiceState } from "../choices"
-import { Provenance } from "./provenance"
+import { ChoiceState } from "../choices/index.js"
+import { Provenance } from "./provenance.js"
 import {
   Barrier,
   Validatable,
@@ -38,17 +38,17 @@ import {
   Title,
   Description,
   FormElement,
-} from "../codeblock/CodeBlockProps"
+} from "../codeblock/CodeBlockProps.js"
 
-export * from "./order"
-export * from "./vetoes"
-export * from "./Status"
-export * from "./compile"
-export * from "./optional"
-export * from "./progress"
-export * from "./validate"
-export * from "./linearize"
-export * from "./choice-frontier"
+export * from "./order.js"
+export * from "./vetoes.js"
+export * from "./Status.js"
+export * from "./compile.js"
+export * from "./optional.js"
+export * from "./progress.js"
+export * from "./validate.js"
+export * from "./linearize.js"
+export * from "./choice-frontier.js"
 
 type Key = {
   key: string

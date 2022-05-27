@@ -19,10 +19,10 @@ import { Node } from "hast"
 import { Code } from "mdast"
 import { visitParents } from "unist-util-visit-parents"
 
-import dump from "./rehype-code-indexer/dump"
-import { tryFrontmatter } from "./frontmatter"
-import { isOnAnImportChain, visitImportContainers } from "./remark-import"
-import KuiFrontmatter, { hasCodeBlocks } from "./frontmatter/KuiFrontmatter"
+import dump from "./rehype-code-indexer/dump.js"
+import { tryFrontmatter } from "./frontmatter/index.js"
+import { isOnAnImportChain, visitImportContainers } from "./remark-import.js"
+import KuiFrontmatter, { hasCodeBlocks } from "./frontmatter/KuiFrontmatter.js"
 
 function isCode(node: Node): node is Code {
   return node.type === "code" && typeof (node as Code).value === "string"

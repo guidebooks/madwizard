@@ -15,7 +15,7 @@
  */
 
 import { Element } from "hast"
-import { SupportedLanguage } from "./language"
+import { SupportedLanguage } from "./language.js"
 
 export function isExecutable(language: string): language is SupportedLanguage {
   return /bash|sh|shell|py|python/.test(language)

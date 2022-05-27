@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Memos } from "../memoization"
+import { Memos } from "../memoization/index.js"
 
 /** Environment variable state that might be mutated by the guidebook itself */
 export type Env = Pick<Memos, "env">

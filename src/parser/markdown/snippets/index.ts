@@ -21,13 +21,13 @@ import { mainSymbols } from "figures"
 import expandHomeDir from "expand-home-dir"
 import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin } from "path"
 
-import { isUrl, toRawGithubUserContent } from "./urls"
-import { oraPromise } from "../../../util/ora-delayed-promise"
+import { isUrl, toRawGithubUserContent } from "./urls.js"
+import { oraPromise } from "../../../util/ora-delayed-promise.js"
 
-import indent from "../util/indent"
-import { MadWizardOptions } from "../../.."
-import { hasImports } from "../frontmatter/KuiFrontmatter"
-import { tryFrontmatter } from "../frontmatter/frontmatter-parser"
+import indent from "../util/indent.js"
+import { MadWizardOptions } from "../../../fe/index.js"
+import { hasImports } from "../frontmatter/KuiFrontmatter.js"
+import { tryFrontmatter } from "../frontmatter/frontmatter-parser.js"
 
 const RE_DOCS_URL = /^(https:\/\/([^/]+\/){4}docs)/
 

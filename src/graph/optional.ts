@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Graph, isChoice, isSequence, isParallel, isSubTask, isTitledSteps } from "."
+import { Graph, isChoice, isSequence, isParallel, isSubTask, isTitledSteps } from "./index.js"
 
 export function isOptional(graph: Graph) {
   if (isSequence(graph)) {

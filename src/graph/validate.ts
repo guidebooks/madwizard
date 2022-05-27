@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Memos } from "../memoization"
-import { Validatable } from "../codeblock"
-import { ExecOptions } from "../exec"
-import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask, isValidatable } from "."
+import { Memos } from "../memoization/index.js"
+import { Validatable } from "../codeblock/index.js"
+import { ExecOptions } from "../exec/index.js"
+import { Status, Graph, isSequence, isParallel, isChoice, isTitledSteps, isSubTask, isValidatable } from "./index.js"
 
 export type ValidationExecutor = (cmdline: string, opts?: ExecOptions) => "success" | Promise<"success">
 
@@ -69,7 +69,7 @@ export async function doValidate(
   }
 
   try {
-    await (opts.validator || (await import("../exec").then((_) => _.shellExec)))(validate, {
+    await (opts.validator || (await import("../exec/index.js").then((_) => _.shellExec)))(validate, {
       quiet: true,
       env: opts.env,
       dependencies: opts.dependencies,

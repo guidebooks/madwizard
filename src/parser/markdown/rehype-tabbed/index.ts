@@ -18,13 +18,13 @@ import Debug from "debug"
 import { Transformer } from "unified"
 import { Element, ElementContent, Properties } from "hast"
 
-import { ChoiceState } from "../../../choices"
-import { MadWizardOptions } from "../../../fe"
-import isElementWithProperties from "../util/isElement"
-import { identifyRecognizableTabGroups } from "../../../choices/groups"
-import { AllowedFormElement, FormElementType } from "../../../codeblock"
+import { ChoiceState } from "../../../choices/index.js"
+import { MadWizardOptions } from "../../../fe/index.js"
+import isElementWithProperties from "../util/isElement.js"
+import { identifyRecognizableTabGroups } from "../../../choices/groups/index.js"
+import { AllowedFormElement, FormElementType } from "../../../codeblock/index.js"
 
-import populateTabs from "./populate"
+import populateTabs from "./populate.js"
 
 export const START_OF_TAB = `<!-- ____KUI_START_OF_TAB____ -->`
 export const PUSH_TABS = `<!-- ____KUI_NESTED_TABS____ -->`

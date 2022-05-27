@@ -15,7 +15,7 @@
  */
 
 import { basename } from "path"
-import { Graph, isSubTask, isChoice, isSequence, isParallel, isTitledSteps } from "."
+import { Graph, isSubTask, isChoice, isSequence, isParallel, isTitledSteps } from "./index.js"
 
 /**
  * Attempt to propagate "meaning" to less areas without prior meaning,

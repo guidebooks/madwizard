@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-export * from "./language"
-export * from "./isCodeBlock"
-export * from "./CodeBlockProps"
+export * from "./language.js"
+export * from "./isCodeBlock.js"
+export * from "./CodeBlockProps.js"

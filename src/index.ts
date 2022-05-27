@@ -15,25 +15,25 @@
  */
 
 // CLI
-export * as CLI from "./fe/cli"
+export * as CLI from "./fe/cli/index.js"
 
 // UI support
-export * as Tree from "./fe/tree"
+export * as Tree from "./fe/tree/index.js"
 
 // APIs
-export * as Graph from "./graph"
-export * as Parser from "./parser"
-export * as Choices from "./choices"
-export * as Wizard from "./wizard"
-export * as CodeBlock from "./codeblock"
+export * as Graph from "./graph/index.js"
+export * as Parser from "./parser/index.js"
+export * as Choices from "./choices/index.js"
+export * as Wizard from "./wizard/index.js"
+export * as CodeBlock from "./codeblock/index.js"
 
 // Options
-export * from "./fe"
+export * from "./fe/index.js"
 
 // Version
-export * from "./version"
+export * from "./version.js"
 
 // Reader
 export async function reader() {
-  return import("./fe/cli/madwizardRead").then((_) => _.madwizardRead)
+  return import("./fe/cli/madwizardRead.js").then((_) => _.madwizardRead)
 }

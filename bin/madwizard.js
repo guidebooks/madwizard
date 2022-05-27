@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node --experimental-specifier-resolution=node --no-warnings --experimental-import-meta-resolve
+#!/usr/bin/env -S node --no-warnings
 
 /* eslint-env node */
 /* ^^^ rather than add env: node globally in package.json */
@@ -20,7 +20,7 @@ const store =
     : process.env.MWSTORE || join(dirname(require.resolve(madwizard)), "store")
 const argv = process.argv.slice(1).concat(["--store=" + store])
 
-import(madwizard + "/dist/fe/cli")
+import(madwizard + "/dist/fe/cli/index.js")
   .then((_) => _.cli(argv))
   .catch((err) => {
     if (process.env.DEBUG) {

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import arch from "./arch"
-import platform from "./platform"
-import homebrew from "./homebrew"
-import interminal from "./interminal"
+import arch from "./arch.js"
+import platform from "./platform.js"
+import homebrew from "./homebrew.js"
+import interminal from "./interminal.js"
 
 export default [arch, platform, homebrew, interminal]

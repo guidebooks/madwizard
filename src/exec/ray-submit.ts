@@ -15,8 +15,8 @@
  */
 
 import Debug from "debug"
-import { ExecOptions } from "./options"
-import custom, { CustomEnv } from "./custom"
+import { ExecOptions } from "./options.js"
+import custom, { CustomEnv } from "./custom.js"
 
 type Pip = {
   pip: string[]

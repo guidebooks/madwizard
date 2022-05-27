@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import ChoiceStateImpl from "./impl"
-import { Choice as CodeBlockChoice } from "../codeblock/CodeBlockProps"
-import { ChoiceHandlerRegistration } from "./events"
+import ChoiceStateImpl from "./impl.js"
+import { Choice as CodeBlockChoice } from "../codeblock/CodeBlockProps.js"
+import { ChoiceHandlerRegistration } from "./events.js"
 
-export { expand, updateContent } from "./groups/expansion"
+export { expand, updateContent } from "./groups/expansion.js"
 
 /* map from choice group to selected choice member */
 export type ChoicesMap = Record<CodeBlockChoice["group"], CodeBlockChoice["title"]>

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { UITree } from "./props"
-import { isChoice, isSubTask, isTitledSteps } from "../../graph"
+import { UITree } from "./props.js"
+import { isChoice, isSubTask, isTitledSteps } from "../../graph/index.js"
 
 export default class TreeTransformer<Content> {
   /**

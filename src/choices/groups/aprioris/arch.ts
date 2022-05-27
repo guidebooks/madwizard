@@ -16,9 +16,9 @@
 
 import { Element } from "hast"
 
-import debug from "./debug"
-import { ChoiceState } from "../.."
-import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from ".."
+import debug from "./debug.js"
+import { ChoiceState } from "../../index.js"
+import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "../index.js"
 
 export class Arch {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */

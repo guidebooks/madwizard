@@ -16,14 +16,14 @@
 
 import Debug from "debug"
 
-import { ChoiceState } from "../choices"
-import { CompileOptions, Graph, sequence } from "."
+import { ChoiceState } from "../choices/index.js"
+import { CompileOptions, Graph, sequence } from "./index.js"
 
-import hoistSubTasks from "./hoistSubTasks"
-import propagateTitles from "./propagateTitles"
-import collapseValidated from "./collapseValidated"
-import collapseMadeChoices from "./collapseMadeChoices"
-import deadCodeElimination from "./deadCodeElimination"
+import hoistSubTasks from "./hoistSubTasks.js"
+import propagateTitles from "./propagateTitles.js"
+import collapseValidated from "./collapseValidated.js"
+import collapseMadeChoices from "./collapseMadeChoices.js"
+import deadCodeElimination from "./deadCodeElimination.js"
 
 export default async function optimize(graph: Graph, choices: ChoiceState, options?: CompileOptions) {
   const debug = Debug("madwizard/timing/graph:optimize")

@@ -16,15 +16,15 @@
 
 import { Node } from "hast"
 
-import withFormProperties from "./form"
-import { getTabTitle, Tab } from "."
-import { isParent } from "../util/isElement"
-import { isImports } from "../remark-import"
+import withFormProperties from "./form.js"
+import { getTabTitle, Tab } from "./index.js"
+import { isParent } from "../util/isElement.js"
+import { isImports } from "../remark-import.js"
 
 // const RE_TAB = /^(.|[\n\r])*===\s+"(.+)"\s*(\n(.|[\n\r])*)?$/
 const RE_TAB = /^===\s+"(.+)/
 
-import { START_OF_TAB, END_OF_TAB, PUSH_TABS } from "."
+import { START_OF_TAB, END_OF_TAB, PUSH_TABS } from "./index.js"
 
 export default function populateTabs(uuid: string, tree: Node): { tree: Node; tabgroupIdx: number } {
   let tabgroupIdx = -1
