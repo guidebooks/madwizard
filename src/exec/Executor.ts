@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-export type Executor = (cmdline: string) => Promise<string>
+import { ExecOptions } from "./options"
 
-export type ExecutorOptions = {
+export type Executor = (cmdline: string, opts?: ExecOptions) => Promise<string>
+
+export type ExecutorOptions = Partial<ExecOptions> & {
   exec: Executor
 }
