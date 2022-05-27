@@ -20,6 +20,17 @@ import shellItOut from "./shell"
 import { ExecOptions } from "./options"
 import { CustomExecutable } from "../codeblock"
 
+export interface CustomEnv {
+  /** Directory in which the custom executable will be executed */
+  MWDIR: string
+
+  /** Filepath of the custom executable */
+  MWFILEPATH: string
+
+  /** Filename of the custom executable */
+  MWFILENAME: string
+}
+
 /**
  * Shell out the execution of the given `cmdline` using the custom
  * `exec`. The protocol is that madwizard will set three environment
@@ -41,7 +52,7 @@ import { CustomExecutable } from "../codeblock"
 export default async function execAsCustom(
   cmdline: string | boolean,
   opts: ExecOptions,
-  exec: CustomExecutable["exec"]
+  _exec: CustomExecutable["exec"] | ((env: CustomEnv) => CustomExecutable["exec"] | Promise<CustomExecutable["exec"]>)
 ): Promise<"success"> {
   const [{ write }, { dir: tmpDir, file: tmpFile }] = await Promise.all([import("fs"), import("tmp")])
 
@@ -52,11 +63,14 @@ export default async function execAsCustom(
       } else {
         tmpFile({ dir }, (err, filepath, fd, cleanupCallback2) => {
           // TODO use cleanupCallback
-          write(fd, cmdline.toString(), (err) => {
+          write(fd, cmdline.toString(), async (err) => {
             if (err) {
               reject(err)
             } else {
-              shellItOut(exec, opts, { MWDIR: dir, MWFILEPATH: filepath, MWFILENAME: basename(filepath) })
+              const mwenv = { MWDIR: dir, MWFILEPATH: filepath, MWFILENAME: basename(filepath) }
+              const exec = typeof _exec === "function" ? await _exec(mwenv) : _exec
+
+              shellItOut(exec, opts, mwenv)
                 .then(resolve, reject)
                 .finally(() => {
                   cleanupCallback2()
