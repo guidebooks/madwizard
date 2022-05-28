@@ -17,11 +17,11 @@
 import Debug from "debug"
 import { VFile } from "vfile"
 import envPaths from "env-paths"
+import { isAbsolute, join } from "path"
 
 import fetch from "make-fetch-happen"
 import { read as vfileRead } from "to-vfile"
 
-import { join } from "../../parser/markdown/snippets/index.js"
 import { toRawGithubUserContent } from "../../parser/markdown/snippets/urls.js"
 
 export async function get(uri: string) {
@@ -46,6 +46,23 @@ export async function madwizardRead(
   } else {
     try {
       // try reading from the local filesystem
+      if (searchStore && store && !isAbsolute(file.path) && !/\.md$/.test(file.path)) {
+        const withSlashIndexDotMd = new VFile(file)
+        const withDotMd = new VFile(file)
+        withSlashIndexDotMd.path = join(store, file.path, "index.md")
+        withDotMd.path = join(store, file.path + ".md")
+
+        try {
+          // try ml/ray/run/index.md and ml/ray/run.md, and return
+          // whichever first succeeds
+          return await Promise.any([withSlashIndexDotMd, withDotMd].map((_) => vfileRead(_)))
+        } catch (err) {
+          Debug("madwizard/read")(err)
+          // fallthrough
+        }
+      }
+
+      // normal file read, without any store/ prefixing
       return await vfileRead(file)
     } catch (err) {
       if (err.code === "EISDIR") {
