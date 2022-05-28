@@ -43,9 +43,8 @@ export function preprocessCodeBlocksInContent(
     ? topmostFrontmatter.codeblocks
     : undefined
 
-  debug("code block specs", codeblocksToUse || "none")
-
   if (codeblocksToUse) {
+    debug("code block specs", codeblocksToUse)
     const codeblocks = codeblocksToUse.map((_) => Object.assign({}, _, { match: new RegExp(_.match) }))
 
     visitParents(tree, "code", (node, ancestors) => {
