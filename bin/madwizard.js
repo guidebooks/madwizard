@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node --no-warnings
+#!/usr/bin/env node
 
 /* eslint-env node */
 /* ^^^ rather than add env: node globally in package.json */
