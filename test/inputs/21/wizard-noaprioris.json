@@ -3,13 +3,13 @@
     "graph": {
       "key": "somekey",
       "title": "Export an env var",
-      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
+      "description": "Intentionally referencing `$BAM`, to test default values.\n",
       "filepath": "",
       "graph": {
         "key": "somekey",
         "sequence": [
           {
-            "body": "export FOO=3",
+            "body": "export FOO=${BAM-3}",
             "language": "shell",
             "id": "somekey"
           }
@@ -19,14 +19,14 @@
     },
     "step": {
       "name": "Export an env var",
-      "description": "This should be valid, if FOO is propagated correctly to the validator.\n"
+      "description": "Intentionally referencing `$BAM`, to test default values.\n"
     }
   },
   {
     "graph": {
       "key": "somekey",
       "title": "Export an env var",
-      "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
+      "description": "Intentionally referencing `$BAM`, to test default values.\n",
       "filepath": "",
       "graph": {
         "key": "somekey",
@@ -42,7 +42,7 @@
     },
     "step": {
       "name": "Export an env var",
-      "description": "This should be valid, if FOO is propagated correctly to the validator.\n"
+      "description": "Intentionally referencing `$BAM`, to test default values.\n"
     }
   },
   {

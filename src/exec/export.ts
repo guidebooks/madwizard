@@ -26,7 +26,12 @@ export default function execAsExport(cmdline: string | boolean, opts: ExecOption
     const match = isExport(cmdline)
     if (match) {
       const [, key, value] = match
-      const valueForUpdate = value.replace(/\${?([^:]+)}?/g, (_, p1) => opts.env[p1] || process.env[p1])
+      const valueForUpdate = value.replace(/\${?([^:}]+)}?/g, (_, p1) => {
+        const withDefault = p1.match(/^([^-]+)(-(.+))?$/)
+        const defaultValue = !withDefault ? undefined : withDefault[3]
+        const key = defaultValue === undefined ? p1 : match[1]
+        return opts.env[key] || process.env[key] || defaultValue
+      })
       opts.env[key] = valueForUpdate
       return "success" as const
     }
