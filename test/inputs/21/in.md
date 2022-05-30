@@ -2,8 +2,10 @@
 
 ## Export an env var
 
+Intentionally referencing `$BAM`, to test default values.
+
 ```shell
-export FOO=3
+export FOO=${BAM-3}
 ```
 
 ```shell

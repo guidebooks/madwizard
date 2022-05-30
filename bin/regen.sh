@@ -25,7 +25,7 @@ do
     fi
     ./bin/madwizard.js plan ./test/inputs/$i/in.md "$ASSERT" > ./test/inputs/$i/tree.txt &
     ./bin/madwizard.js json ./test/inputs/$i/in.md "$ASSERT" > ./test/inputs/$i/wizard.json &
-    ./bin/madwizard.js run ./test/inputs/$i/in.md "$ASSERT" > ./test/inputs/$i/run.txt &
+    ./bin/madwizard.js run ./test/inputs/$i/in.md "$ASSERT" --verbose > ./test/inputs/$i/run.txt &
     wait
     echo -n .
 done
@@ -42,7 +42,7 @@ do
         ASSERT2="--assert=madwizard/apriori/platform=$platform"
         ./bin/madwizard.js plan ./test/inputs/$i/in.md "$ASSERT" "$ASSERT2" > ./test/inputs/$i/tree-$platform.txt &
         ./bin/madwizard.js json ./test/inputs/$i/in.md "$ASSERT" "$ASSERT2" > ./test/inputs/$i/wizard-$platform.json &
-        ./bin/madwizard.js run ./test/inputs/$i/in.md "$ASSERT" "$ASSERT2" > ./test/inputs/$i/run-$platform.txt &
+        ./bin/madwizard.js run ./test/inputs/$i/in.md "$ASSERT" "$ASSERT2" --verbose > ./test/inputs/$i/run-$platform.txt &
     done
     wait
     echo -n .
