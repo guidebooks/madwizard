@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import gpu from "./gpu.js"
 import arch from "./arch.js"
 import platform from "./platform.js"
 import homebrew from "./homebrew.js"
 import interminal from "./interminal.js"
 
-export default [arch, platform, homebrew, interminal]
+export default [gpu, arch, platform, homebrew, interminal]
