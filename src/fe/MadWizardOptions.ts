@@ -19,6 +19,9 @@ import { CompilerOptions } from "../graph/compile"
 interface DisplayOptions {
   /** Shorten output of long or multi-line code blocks. */
   narrow: boolean
+
+  /** Verbose output */
+  verbose: boolean
 }
 
 interface FetchOptions {
