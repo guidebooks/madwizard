@@ -64,6 +64,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
   const noOptimize = !!_argv.find((_) => _ === "-O0" || _ === "--optimize=0" || _ === "--no-optimize")
   const noAprioris = !!_argv.find((_) => _ === "--no-aprioris")
   const noValidate = !!_argv.find((_) => _ === "--no-validate")
+  const verbose = !!_argv.find((_) => _ === "--verbose" || _ === "-V")
   const optimize = noOptimize ? false : { aprioris: !noAprioris, validate: !noValidate }
 
   // base uri of guidebook store; this will allow users to type
@@ -84,7 +85,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
           return M
         }, {})
 
-  const commandLineOptions: MadWizardOptions = { veto, mkdocs, narrow, optimize, store }
+  const commandLineOptions: MadWizardOptions = { veto, mkdocs, narrow, optimize, store, verbose }
   const options: MadWizardOptions = Object.assign(commandLineOptions, providedOptions)
 
   if (!task || !input) {

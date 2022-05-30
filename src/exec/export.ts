@@ -16,10 +16,14 @@
 
 import { ExecOptions } from "./options.js"
 
+export function isExport(cmdline: string): ReturnType<string["match"]> {
+  return cmdline.match(/^\s*export\s+(.+)="?([^"]+)"?$/)
+}
+
 /** See if we are being asked to execute `export FOO=bar` */
 export default function execAsExport(cmdline: string | boolean, opts: ExecOptions) {
   if (opts.env && typeof cmdline === "string") {
-    const match = cmdline.match(/^\s*export\s+(.+)="?([^"]+)"?$/)
+    const match = isExport(cmdline)
     if (match) {
       const [, key, value] = match
       const valueForUpdate = value.replace(/\${?([^:]+)}?/g, (_, p1) => opts.env[p1] || process.env[p1])

@@ -32,6 +32,7 @@ type TaskFn = (task: TaskWrapper) => Promise<void> | Task[]
 export interface Task {
   title?: string
   spinner?: boolean
+  quiet?: boolean
   task: Task[] | TaskFn
 }
 
@@ -68,6 +69,7 @@ class TaskWrapperImpl implements TaskWrapper {
   public constructor(
     private readonly title: string,
     private readonly stream = process.stdout,
+    private readonly quiet = false,
     private readonly spinner?: ReturnType<typeof ora>
   ) {}
 
@@ -97,7 +99,10 @@ class TaskWrapperImpl implements TaskWrapper {
     if (msg) {
       this.stream.write(msg)
     }
-    this.stream.write(EOL)
+
+    if (msg || !this.quiet) {
+      this.stream.write(EOL)
+    }
   }
 
   public stdout() {
@@ -106,26 +111,26 @@ class TaskWrapperImpl implements TaskWrapper {
 }
 
 export async function taskRunner(tasks: Task[], options: TaskRunnerOptions = {}, stream = process.stdout, depth = 0) {
-  await promiseEach(tasks, async ({ title, task, spinner }, idx) => {
-    if (idx > 0 && !options.quiet) {
+  await promiseEach(tasks, async ({ title, task, spinner, quiet }, idx) => {
+    if (idx > 0 && !options.quiet && !quiet) {
       stream.write(EOL)
     }
 
-    if (!spinner && title) {
+    if (!spinner && title && !quiet) {
       stream.write(title)
     }
 
     if (Array.isArray(task)) {
       // subtasks
-      if (!options.quiet) {
+      if (!options.quiet && !quiet) {
         stream.write(EOL)
       }
       await taskRunner(task, options, stream, depth + 1)
     } else {
-      const wrapper = new TaskWrapperImpl(title, stream, spinner ? ora(title).start() : undefined)
+      const wrapper = new TaskWrapperImpl(title, stream, quiet, !quiet && spinner ? ora(title).start() : undefined)
       const response = await task(wrapper)
       if (Array.isArray(response)) {
-        if (!options.quiet) {
+        if (!options.quiet && !quiet) {
           stream.write(EOL)
         }
         await taskRunner(response, options, stream, depth + 1)

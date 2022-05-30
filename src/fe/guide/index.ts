@@ -25,10 +25,10 @@ import { EventEmitter } from "events"
 
 import { taskRunner, Task } from "./taskrunner.js"
 
-import { shellExec } from "../../exec/index.js"
 import { MadWizardOptions } from "../../index.js"
 import { ChoiceState } from "../../choices/index.js"
 import { CodeBlockProps } from "../../codeblock/index.js"
+import { shellExec, isExport } from "../../exec/index.js"
 import indent from "../../parser/markdown/util/indent.js"
 import { Memos, Memoizer, statusOf } from "../../memoization/index.js"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree/index.js"
@@ -144,6 +144,11 @@ export class Guide {
     return msg.slice(0, 50).split(/\n/)[0]
   }
 
+  /** Try to be quiet when executing this task? */
+  private beQuietForTaskRunner(block: CodeBlockProps) {
+    return !this.options.verbose && (!!isExport(block.body) || /^\s*echo.+/gm.test(block.body))
+  }
+
   private listrTaskStep({ step, graph }: TaskStep, taskIdx: number, dryRun: boolean): Task {
     const subtasks = blocks(graph)
 
@@ -158,6 +163,7 @@ export class Guide {
       title: !this.isGuided
         ? ""
         : (dryRun ? chalk.yellow(mainSymbols.questionMarkPrefix) : chalk.green(mainSymbols.play)) + " " + step.name,
+      quiet: subtasks.every((_) => this.beQuietForTaskRunner(_)),
       task: () =>
         subtasks.map(
           (block): Task => ({
@@ -165,6 +171,7 @@ export class Guide {
               ? chalk.dim("checking to see if this task has already been done\u2026")
               : this.ui.code(block.body, block.language),
             spinner: !!block.validate,
+            quiet: this.beQuietForTaskRunner(block),
             task: async (subtask) => {
               let status: Status = statusOf(block, this.memos.statusMemo, this.choices)
 

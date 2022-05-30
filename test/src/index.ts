@@ -104,18 +104,22 @@ function tryParseInt(str: string): number {
 
 /** Read the cli.txt file, treated as extra command line args */
 function getCLIOptions(input: string) {
+  const baseOptions = ["--verbose"]
+
   try {
     const asserts = readFileSync(join(input, "assert.txt")).toString()
     if (asserts.length > 0) {
-      return asserts
-        .split(/\n/)
-        .filter(Boolean)
-        .map((_) => `--assert=${_}`)
+      return baseOptions.concat(
+        asserts
+          .split(/\n/)
+          .filter(Boolean)
+          .map((_) => `--assert=${_}`)
+      )
     }
   } catch (err) {
     // fall-through
   }
-  return []
+  return baseOptions
 }
 
 /** "madwizard plan" */
