@@ -56,6 +56,7 @@ async function saveEnvToFile(
 
   const runtimeEnv: Record<string, any> = Object.assign(
     {
+      env_vars: opts.env,
       working_dir: customEnv.MWDIR,
     },
     deps
