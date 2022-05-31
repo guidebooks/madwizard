@@ -15,16 +15,17 @@
  */
 
 // ==foo== -> <mark>foo</mark>
-import hackMarks from "./remark-mark.js"
+// import hackMarks from "./remark-mark.js"
 
 // ++ctrl+alt+delete++== -> <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>delete</kbd>
-import hackKeys from "./remark-keys.js"
+// import hackKeys from "./remark-keys.js"
 
 // support pymdown's indentation-based tab and tip blocking
 import hackIndentation from "./rehype-tabbed/hack.js"
 
 export function hackMarkdownSource(source: string) {
-  return hackKeys(hackMarks(hackIndentation(source)))
+  // return hackKeys(hackMarks(hackIndentation(source)))
+  return hackIndentation(source)
     .trim()
     .replace(/\){target=[^}]+}/g, ")")
     .replace(/{draggable=(false|true)}/g, "")
