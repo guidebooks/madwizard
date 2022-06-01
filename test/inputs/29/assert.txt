@@ -1,0 +1,1 @@
+expand(echo ${A-error} ; echo ${B-4} ; echo ${C-5})=3

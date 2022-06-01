@@ -1,0 +1,10 @@
+Testing tab expansion
+├── Testing tab expansion
+│   └── export A=3
+└── Testing tab expansion
+    ├── Option 1: error
+    │   └── echo "error"
+    ├── Option 2: 4
+    │   └── echo "4"
+    └── Option 3: 5
+        └── echo "5"

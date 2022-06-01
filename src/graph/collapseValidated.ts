@@ -16,16 +16,15 @@
 
 import chalk from "chalk"
 import Debug from "debug"
+import { oraPromise } from "../util/ora-delayed-promise.js"
 
 import { hasProvenance } from "./provenance.js"
-import { oraPromise } from "../util/ora-delayed-promise.js"
+import { findChoiceFrontier } from "./choice-frontier.js"
 
 import {
   CompileOptions,
+  Choice,
   Graph,
-  Sequence,
-  Parallel,
-  TitledStep,
   Ordered,
   Unordered,
   doValidate,
@@ -43,22 +42,16 @@ import {
  * Execute the `validate` property of the steps in the given `wizard`,
  * and stash the result in the `status` field of each step.
  */
-export default async function collapseValidated<
-  T extends Unordered | Ordered = Unordered,
-  G extends Graph<T> = Graph<T>
->(graph: G, options?: CompileOptions, nearestEnclosingTitle?: string): Promise<G> {
-  if (options) {
-    if (
-      options.optimize &&
-      (options.optimize === false || (options.optimize !== true && options.optimize.validate === false))
-    ) {
-      // then this optimization has been disabled
-      return graph
-    } else if (options.veto && hasProvenance(graph) && graph.provenance.find((_) => options.veto.test(_))) {
-      Debug("madwizard/graph/optimize/collapse-validated")("veto", extractTitle(graph))
-      // then this optimization has been vetoed
-      return graph
-    }
+async function collapseValidated<T extends Unordered | Ordered = Unordered, G extends Graph<T> = Graph<T>>(
+  graph: G,
+  options?: CompileOptions,
+  firstChoice?: Choice,
+  nearestEnclosingTitle?: string
+): Promise<G> {
+  if (options && options.veto && hasProvenance(graph) && graph.provenance.find((_) => options.veto.test(_))) {
+    Debug("madwizard/graph/optimize/collapse-validated")("veto", extractTitle(graph))
+    // then this optimization has been vetoed
+    return graph
   }
 
   if (isValidatable(graph)) {
@@ -89,45 +82,28 @@ export default async function collapseValidated<
   }
 
   const recurse = <T extends Unordered | Ordered, G extends Graph<T>>(graph: G) =>
-    collapseValidated(graph, options, extractTitle(graph) || nearestEnclosingTitle)
+    collapseValidated(graph, options, firstChoice, extractTitle(graph) || nearestEnclosingTitle)
 
   const recurse2 = <T extends Unordered | Ordered, G extends Graph<T>>({ graph }: { graph: G }) => recurse(graph)
 
   if (isSequence<T>(graph)) {
-    const idxOfFirstChoice = graph.sequence.findIndex(isChoice)
-    const stopIdx = idxOfFirstChoice < 0 ? graph.sequence.length : idxOfFirstChoice
-    const rest = graph.sequence.slice(stopIdx)
-    const firstPart: Sequence["sequence"] = await Promise.all(graph.sequence.slice(0, stopIdx).map(recurse)).then((_) =>
-      _.filter(Boolean)
-    )
-    const sequence = firstPart.concat(rest)
-
+    const sequence = await Promise.all(graph.sequence.map(recurse)).then((_) => _.filter(Boolean))
     if (sequence.length > 0) {
       return Object.assign({}, graph, { sequence })
     }
   } else if (isParallel<T>(graph)) {
-    const idxOfFirstChoice = graph.parallel.findIndex(isChoice)
-    const stopIdx = idxOfFirstChoice < 0 ? graph.parallel.length : idxOfFirstChoice
-    const rest = graph.parallel.slice(stopIdx)
-    const firstPart: Parallel["parallel"] = await Promise.all(graph.parallel.slice(0, stopIdx).map(recurse)).then((_) =>
-      _.filter(Boolean)
-    )
-    const parallel = firstPart.concat(rest)
+    const parallel = await Promise.all(graph.parallel.map(recurse)).then((_) => _.filter(Boolean))
     if (parallel.length > 0) {
       return Object.assign({}, graph, { parallel })
     }
   } else if (isTitledSteps<T>(graph)) {
-    const idxOfFirstChoice = graph.steps.findIndex((_) => isChoice(_.graph))
-    const stopIdx = idxOfFirstChoice < 0 ? graph.steps.length : idxOfFirstChoice
-    const rest = graph.steps.slice(stopIdx)
-    const firstPart: TitledStep["graph"][] = await Promise.all(graph.steps.slice(0, stopIdx).map(recurse2))
-
-    if (firstPart.length + rest.length > 0) {
+    const steps = await Promise.all(graph.steps.map(recurse2))
+    if (steps.filter(Boolean).length > 0) {
       return Object.assign({}, graph, {
         steps: graph.steps
           .map((_, idx) => {
-            if (idx < idxOfFirstChoice && firstPart[idx]) {
-              return Object.assign({}, _, { graph: firstPart[idx] })
+            if (steps[idx]) {
+              return Object.assign({}, _, { graph: steps[idx] })
             }
             return _
           })
@@ -139,7 +115,46 @@ export default async function collapseValidated<
     if (subgraph) {
       return Object.assign({}, graph, { graph: subgraph })
     }
+  } else if (isChoice<T>(graph) && graph.group === firstChoice.group) {
+    const parts = await Promise.all(graph.choices.map(recurse2))
+    if (parts.filter(Boolean).length > 0) {
+      return Object.assign({}, graph, {
+        choices: graph.choices
+          .map((_, idx) => {
+            if (parts[idx]) {
+              return Object.assign({}, _, { graph: parts[idx] })
+            }
+            return _
+          })
+          .filter(Boolean),
+      })
+    }
   } else {
     return graph
   }
+}
+
+export default function collapse<T extends Unordered | Ordered = Unordered, G extends Graph<T> = Graph<T>>(
+  graph: G,
+  options?: CompileOptions
+): G | Promise<G> {
+  if (
+    options &&
+    options.optimize &&
+    (options.optimize === false || (options.optimize !== true && options.optimize.validate === false))
+  ) {
+    // then this optimization has been disabled
+    return graph
+  }
+
+  // otherwise: keep track of the first choice; there is no sense in
+  // invoking potentially expensive validation logic beyond that; 1)
+  // might be wasted work; 2) may not even be meaningful, as the
+  // choice might alter state in a way that affects the way those
+  // contingent validation tasks behave
+  const frontier = findChoiceFrontier(graph)
+  const firstChoice = frontier.length === 0 ? undefined : frontier[0].choice
+
+  // then, traverse the graph, looking for validation opportunities
+  return collapseValidated(graph, options, firstChoice)
 }
