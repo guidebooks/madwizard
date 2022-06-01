@@ -18,7 +18,7 @@ import shellItOut from "./shell.js"
 import { ExecOptions } from "./options.js"
 
 export function isExport(cmdline: string): ReturnType<string["match"]> {
-  return cmdline.match(/^\s*export\s+(.+)="?([^"]+)"?$/)
+  return cmdline.match(/^\s*export\s+([^=]+)=/)
 }
 
 /** See if we are being asked to execute `export FOO=bar` */

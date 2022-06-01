@@ -1,4 +1,4 @@
-export BASE=$(echo 2)
+export BASE=$(echo "2")
 export FOO=${BAM-3}
 export FOO="$BASE:$FOO"
 echo "This should be 2:3 --> $FOO"
