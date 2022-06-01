@@ -39,7 +39,7 @@ export default async function shellItOut(
   return new Promise((resolve, reject) => {
     const child = spawn(
       process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash"),
-      ["-c", `set -o pipefail; ${cmdline}`],
+      ["-c", process.platform === "win32" ? cmdline.toString() : `set -o pipefail; ${cmdline}`],
       {
         env,
         stdio: opts.quiet
