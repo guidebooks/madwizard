@@ -23,6 +23,9 @@ import { oraPromise } from "../util/ora-delayed-promise.js"
 import {
   CompileOptions,
   Graph,
+  Sequence,
+  Parallel,
+  TitledStep,
   Ordered,
   Unordered,
   doValidate,
@@ -91,37 +94,40 @@ export default async function collapseValidated<
   const recurse2 = <T extends Unordered | Ordered, G extends Graph<T>>({ graph }: { graph: G }) => recurse(graph)
 
   if (isSequence<T>(graph)) {
-    const sequence = await Promise.all(graph.sequence.map(recurse)).then((_) => _.filter(Boolean))
+    const idxOfFirstChoice = graph.sequence.findIndex(isChoice)
+    const stopIdx = idxOfFirstChoice < 0 ? graph.sequence.length : idxOfFirstChoice
+    const rest = graph.sequence.slice(stopIdx)
+    const firstPart: Sequence["sequence"] = await Promise.all(graph.sequence.slice(0, stopIdx).map(recurse)).then((_) =>
+      _.filter(Boolean)
+    )
+    const sequence = firstPart.concat(rest)
+
     if (sequence.length > 0) {
       return Object.assign({}, graph, { sequence })
     }
   } else if (isParallel<T>(graph)) {
-    const parallel = await Promise.all(graph.parallel.map(recurse)).then((_) => _.filter(Boolean))
+    const idxOfFirstChoice = graph.parallel.findIndex(isChoice)
+    const stopIdx = idxOfFirstChoice < 0 ? graph.parallel.length : idxOfFirstChoice
+    const rest = graph.parallel.slice(stopIdx)
+    const firstPart: Parallel["parallel"] = await Promise.all(graph.parallel.slice(0, stopIdx).map(recurse)).then((_) =>
+      _.filter(Boolean)
+    )
+    const parallel = firstPart.concat(rest)
     if (parallel.length > 0) {
       return Object.assign({}, graph, { parallel })
     }
-  } else if (isChoice<T>(graph)) {
-    const parts = await Promise.all(graph.choices.map(recurse2))
-    if (parts.filter(Boolean).length > 0) {
-      return Object.assign({}, graph, {
-        choices: graph.choices
-          .map((_, idx) => {
-            if (parts[idx]) {
-              return Object.assign({}, _, { graph: parts[idx] })
-            }
-            return _
-          })
-          .filter(Boolean),
-      })
-    }
   } else if (isTitledSteps<T>(graph)) {
-    const steps = await Promise.all(graph.steps.map(recurse2))
-    if (steps.filter(Boolean).length > 0) {
+    const idxOfFirstChoice = graph.steps.findIndex((_) => isChoice(_.graph))
+    const stopIdx = idxOfFirstChoice < 0 ? graph.steps.length : idxOfFirstChoice
+    const rest = graph.steps.slice(stopIdx)
+    const firstPart: TitledStep["graph"][] = await Promise.all(graph.steps.slice(0, stopIdx).map(recurse2))
+
+    if (firstPart.length + rest.length > 0) {
       return Object.assign({}, graph, {
         steps: graph.steps
           .map((_, idx) => {
-            if (steps[idx]) {
-              return Object.assign({}, _, { graph: steps[idx] })
+            if (idx < idxOfFirstChoice && firstPart[idx]) {
+              return Object.assign({}, _, { graph: firstPart[idx] })
             }
             return _
           })
