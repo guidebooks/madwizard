@@ -344,6 +344,7 @@ export async function compile(
         ? undefined
         : await doExpand(
             parts.length === 1 ? parts[0] : ordering === "parallel" ? parallel(parts) : sequence(parts),
+            choices,
             options
           )
 
