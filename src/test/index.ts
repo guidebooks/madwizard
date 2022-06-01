@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import slash from "slash"
 import { suite, Test } from "uvu"
 import * as assert from "uvu/assert"
 import { execFile } from "child_process"
@@ -24,10 +25,10 @@ import { diffString } from "json-diff"
 import { createRequire } from "module"
 import { readdirSync, readFileSync } from "fs"
 
-import { CLI, MadWizardOptions } from "../../dist/index.js"
+import { CLI, MadWizardOptions } from "../index.js"
 
 const require = createRequire(import.meta.url)
-const inputDir = join(dirname(require.resolve(".")), "../inputs")
+const inputDir = join(dirname(require.resolve(".")), "../../test/inputs")
 
 type Options = MadWizardOptions | ((input: string) => MadWizardOptions)
 
@@ -62,8 +63,14 @@ function munge(wizard: Record<string, unknown>) {
         return "placeholder"
       } else if (key === "description" && !value) {
         return undefined
+      } else if (key === "provenance") {
+        return value.map((_) => slash(_))
       } else if (key === "source" || (key === "content" && typeof value === "string")) {
-        return value.replace(/(id): [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(-\d+)?/g, "$1: fakeid")
+        return value
+          .replace(/(id): [0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(-\d+)?/g, "$1: fakeid")
+          .replace(/\r/g, "")
+      } else if (typeof value === "string") {
+        return value.replace(/\r/g, "")
       } else {
         return value
       }
