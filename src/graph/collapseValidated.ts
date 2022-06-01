@@ -134,7 +134,7 @@ export default async function collapseValidated<
           .filter(Boolean),
       })
     }
-  } else if (isSubTask<T>(graph)) {
+  } else if (isSubTask<T>(graph) && !isChoice(graph.graph)) {
     const subgraph = await recurse(graph.graph)
     if (subgraph) {
       return Object.assign({}, graph, { graph: subgraph })
