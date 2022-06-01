@@ -130,7 +130,7 @@ async function visit(
     return Promise.all(graph.parallel.map(recurse))
   } else if (isChoice(graph)) {
     if (isExpansionGroup(graph)) {
-      graph.choices = (
+      const newChoices = (
         await Promise.all(
           graph.choices.map(async (part) => {
             const expansionExpr = isExpansion(part)
@@ -161,6 +161,10 @@ async function visit(
       )
         .flat()
         .filter(Boolean)
+
+      if (newChoices.length > 0) {
+        graph.choices = newChoices
+      }
     } else {
       graph.choices = graph.choices.map((_) => updateContent(_))
       return Promise.all(graph.choices.map((_) => recurse(_.graph)))
