@@ -19,19 +19,10 @@ import { v4 } from "uuid"
 import { oraPromise } from "../../util/ora-delayed-promise.js"
 
 import { Debug } from "./debug.js"
-import { ExecutorOptions } from "../../exec/Executor.js"
+import { ChoiceState } from "../index.js"
 import { Memos } from "../../memoization/index.js"
-import {
-  Graph,
-  Choice,
-  ChoicePart,
-  blocks,
-  isSequence,
-  isParallel,
-  isChoice,
-  isTitledSteps,
-  isSubTask,
-} from "../../graph/index.js"
+import { ExecutorOptions } from "../../exec/Executor.js"
+import { Graph, Choice, ChoicePart, blocks, findChoicesOnFrontier } from "../../graph/index.js"
 
 export type ExpansionMap = Record<ReturnType<typeof isExpansion>, string[]>
 
@@ -118,63 +109,44 @@ async function doExpand(expansionExpr: string, options: Partial<ExecutorOptions>
  * updating content such as descriptions and code bodies (via
  * `updateContent`) as we go.
  */
-async function visit(
-  graph: Graph,
-  options: Partial<Memos> & Partial<ExecutorOptions> & { debug: ReturnType<typeof Debug> }
+async function expandOneChoice(
+  options: Partial<Memos> & Partial<ExecutorOptions> & { debug: ReturnType<typeof Debug> },
+  graph: Choice
 ) {
-  const recurse = (graph: Graph) => visit(graph, options)
+  if (isExpansionGroup(graph)) {
+    const newChoices = (
+      await Promise.all(
+        graph.choices.map(async (part) => {
+          const expansionExpr = isExpansion(part)
+          if (!expansionExpr) {
+            return updateContent(part)
+          } else {
+            const response =
+              (options.expansionMemo && options.expansionMemo[expansionExpr]) ||
+              (await doExpand(expansionExpr, options))
+            options.debug(expansionExpr, response)
 
-  if (isSequence(graph)) {
-    return Promise.all(graph.sequence.map(recurse))
-  } else if (isParallel(graph)) {
-    return Promise.all(graph.parallel.map(recurse))
-  } else if (isChoice(graph)) {
-    if (isExpansionGroup(graph)) {
-      const newChoices = (
-        await Promise.all(
-          graph.choices.map(async (part) => {
-            const expansionExpr = isExpansion(part)
-            if (!expansionExpr) {
-              return updateContent(part)
-            } else {
-              const response =
-                (options.expansionMemo && options.expansionMemo[expansionExpr]) ||
-                (await doExpand(expansionExpr, options))
-              options.debug(expansionExpr, response)
-
-              if (response.length > 0) {
-                // memoize the expansion
-                if (options.expansionMemo) {
-                  options.expansionMemo[expansionExpr] = response
-                }
-
-                // expand the template, which yields Part -> Part[]
-                const parts = expandPart(part, response)
-
-                // recurse on the expanded parts
-                await Promise.all(parts.map((_) => recurse(_.graph)))
-                return parts
+            if (response.length > 0) {
+              // memoize the expansion
+              if (options.expansionMemo) {
+                options.expansionMemo[expansionExpr] = response
               }
-            }
-          })
-        )
-      )
-        .flat()
-        .filter(Boolean)
 
-      if (newChoices.length > 0) {
-        graph.choices = newChoices
-      }
-    } else {
-      graph.choices = graph.choices.map((_) => updateContent(_))
-      return Promise.all(graph.choices.map((_) => recurse(_.graph)))
+              // expand the template, which yields Part -> Part[]
+              return expandPart(part, response)
+            }
+          }
+        })
+      )
+    )
+      .flat()
+      .filter(Boolean)
+
+    if (newChoices.length > 0) {
+      graph.choices = newChoices
     }
-  } else if (isSubTask(graph)) {
-    return recurse(graph.graph)
-  } else if (isTitledSteps(graph)) {
-    return Promise.all(graph.steps.map((_) => recurse(_.graph)))
   } else {
-    updateContent({ graph })
+    graph.choices = graph.choices.map((_) => updateContent(_))
   }
 }
 
@@ -183,8 +155,18 @@ async function visit(
  * updating content such as descriptions and code bodies (via
  * `updateContent`) as we go.
  */
-export async function expand(graph: Graph, options: Partial<Memos> = {}) {
-  const debug = Debug("expansion")
-  await visit(graph, Object.assign({ debug }, options))
+export async function expand(graph: Graph, choices: ChoiceState, options: Partial<Memos> = {}) {
+  // all "first choices" that haven't already been assigned a decision
+  const choiceFrontier = findChoicesOnFrontier(graph, choices)
+
+  if (choiceFrontier.length > 0) {
+    await Promise.all(
+      choiceFrontier.map(expandOneChoice.bind(undefined, Object.assign({ debug: Debug("expansion") }, options)))
+    )
+  }
+
+  // expand uuid macro
+  blocks(graph).forEach((graph) => updateContent({ graph }))
+
   return graph
 }

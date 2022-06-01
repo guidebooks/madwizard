@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { ChoiceState } from "../choices/index.js"
+
 import {
   Choice,
   Graph,
@@ -101,17 +103,29 @@ export function findChoiceFrontier(graph: Graph) {
   return frontier
 }
 
-export function findChoicesOnFrontier(graph: Graph): Choice[] {
+export function findChoicesOnFrontier(graph: Graph, choices?: ChoiceState): Choice[] {
   if (isChoice(graph)) {
-    return [graph]
+    if (!choices || !choices.get(graph.group)) {
+      return [graph]
+    } else {
+      const madeChoiceTitle = choices.get(graph.group)
+      const chosenSubtree = graph.choices.find(
+        (_) => _.title.localeCompare(madeChoiceTitle, undefined, { sensitivity: "accent" }) === 0
+      )
+      if (!chosenSubtree) {
+        return [graph]
+      } else {
+        return findChoicesOnFrontier(chosenSubtree.graph, choices)
+      }
+    }
   } else if (isSubTask(graph)) {
-    return findChoicesOnFrontier(graph.graph)
+    return findChoicesOnFrontier(graph.graph, choices)
   } else if (isSequence(graph)) {
-    return graph.sequence.flatMap(findChoicesOnFrontier)
+    return graph.sequence.flatMap((_) => findChoicesOnFrontier(_, choices))
   } else if (isParallel(graph)) {
-    return graph.parallel.flatMap(findChoicesOnFrontier)
+    return graph.parallel.flatMap((_) => findChoicesOnFrontier(_, choices))
   } else if (isTitledSteps(graph)) {
-    return graph.steps.flatMap((_) => findChoicesOnFrontier(_.graph))
+    return graph.steps.flatMap((_) => findChoicesOnFrontier(_.graph, choices))
   } else {
     return []
   }
