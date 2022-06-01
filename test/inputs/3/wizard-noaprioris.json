@@ -106,5 +106,53 @@
         }
       ]
     }
+  },
+  {
+    "graph": {
+      "group": "Tab1####Tab2",
+      "title": "Main Tasks",
+      "source": "placeholder",
+      "provenance": ["test/inputs/snippets/snippets-in-tab3.md"],
+      "choices": [
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "key": "somekey",
+                "title": "importc.md",
+                "filepath": "test/inputs/snippets/importc.md",
+                "graph": {
+                  "key": "somekey",
+                  "sequence": [
+                    {
+                      "body": "echo CCC",
+                      "language": "bash",
+                      "validate": true,
+                      "id": "somekey"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab2"
+        }
+      ]
+    },
+    "step": {
+      "name": "Main Tasks",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab2",
+          "group": "Tab1####Tab2",
+          "member": 1,
+          "isFirstChoice": false
+        }
+      ]
+    }
   }
 ]
