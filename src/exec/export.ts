@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import shellItOut from "./shell.js"
 import { ExecOptions } from "./options.js"
 
 export function isExport(cmdline: string): ReturnType<string["match"]> {
@@ -25,15 +26,16 @@ export default function execAsExport(cmdline: string | boolean, opts: ExecOption
   if (opts.env && typeof cmdline === "string") {
     const match = isExport(cmdline)
     if (match) {
-      const [, key, value] = match
-      const valueForUpdate = value.replace(/\${?([^:}]+)}?/g, (_, p1) => {
-        const withDefault = p1.match(/^([^-]+)(-(.+))?$/)
-        const defaultValue = !withDefault ? undefined : withDefault[3]
-        const key = defaultValue === undefined ? p1 : match[1]
-        return opts.env[key] || process.env[key] || defaultValue
-      })
-      opts.env[key] = valueForUpdate
-      return "success" as const
+      const semicolon = /;\s*$/.test(cmdline) ? "" : ";"
+      const [, key] = match
+
+      const options = Object.assign({}, opts, { capture: "", throwErrors: true })
+      return shellItOut(`${cmdline}${semicolon} echo -n $${key}`, options)
+        .then(() => options.capture)
+        .then((valueForUpdate) => {
+          opts.env[key] = valueForUpdate
+          return "success" as const
+        })
     }
   }
 }

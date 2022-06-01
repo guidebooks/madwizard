@@ -9,6 +9,29 @@
         "key": "somekey",
         "sequence": [
           {
+            "body": "export BASE=$(echo 2)",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Export an env var",
+      "description": "Intentionally referencing `$BAM`, to test default values.\n"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "Export an env var",
+      "description": "Intentionally referencing `$BAM`, to test default values.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
             "body": "export FOO=${BAM-3}",
             "language": "shell",
             "id": "somekey"
@@ -32,7 +55,7 @@
         "key": "somekey",
         "sequence": [
           {
-            "body": "export FOO=\"2:$FOO\"",
+            "body": "export FOO=\"$BASE:$FOO\"",
             "language": "shell",
             "id": "somekey"
           }

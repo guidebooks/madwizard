@@ -1,7 +1,8 @@
 Exports
 ├── Export an env var
+│   ├── export BASE=$(echo 2)
 │   ├── export FOO=${BAM-3}
-│   └── export FOO="2:$FOO"
+│   └── export FOO="$BASE:$FOO"
 ├── Then use it
 │   └── echo "This should be 2:3 --> $FOO"
 └── Propagation check

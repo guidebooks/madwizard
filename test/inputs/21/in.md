@@ -5,11 +5,15 @@
 Intentionally referencing `$BAM`, to test default values.
 
 ```shell
+export BASE=$(echo 2)
+```
+
+```shell
 export FOO=${BAM-3}
 ```
 
 ```shell
-export FOO="2:$FOO"
+export FOO="$BASE:$FOO"
 ```
 
 ## Then use it
