@@ -29,6 +29,10 @@ export default function execAsExport(cmdline: string | boolean, opts: ExecOption
       const semicolon = /;\s*$/.test(cmdline) ? "" : ";"
       const [, key] = match
 
+      // invalidate any memos using this shell variable, since we're
+      // about to update it
+      opts.invalidate(key)
+
       const options = Object.assign({}, opts, { capture: "", throwErrors: true })
       return shellItOut(`${cmdline}${semicolon} echo -n $${key}`, options)
         .then(() => options.capture)

@@ -20,7 +20,7 @@ import { Memos } from "../memoization/index.js"
 export type Env = Pick<Memos, "env">
 
 export type ExecOptions = Partial<Env> &
-  Partial<Pick<Memos, "dependencies">> & {
+  Partial<Pick<Memos, "dependencies" | "invalidate">> & {
     /** Do not emit to console */
     quiet?: boolean
 

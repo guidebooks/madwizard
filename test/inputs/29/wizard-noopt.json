@@ -1,0 +1,105 @@
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "Testing tab expansion",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "export A=3",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Testing tab expansion"
+    }
+  },
+  {
+    "graph": {
+      "group": "expand(echo ${A-error} ; echo ${B-4} ; echo ${C-5})",
+      "title": "Testing tab expansion",
+      "source": "placeholder",
+      "provenance": ["test/inputs/29/in.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"error\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "error",
+          "description": "\nThis should emit error to your terminal."
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"4\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "4",
+          "description": "\nThis should emit 4 to your terminal."
+        },
+        {
+          "member": 2,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"5\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "5",
+          "description": "\nThis should emit 5 to your terminal."
+        }
+      ]
+    },
+    "step": {
+      "name": "Testing tab expansion",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "error",
+          "group": "expand(echo ${A-error} ; echo ${B-4} ; echo ${C-5})",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "\nThis should emit error to your terminal."
+        },
+        {
+          "title": "4",
+          "group": "expand(echo ${A-error} ; echo ${B-4} ; echo ${C-5})",
+          "member": 1,
+          "isFirstChoice": true,
+          "description": "\nThis should emit 4 to your terminal."
+        },
+        {
+          "title": "5",
+          "group": "expand(echo ${A-error} ; echo ${B-4} ; echo ${C-5})",
+          "member": 2,
+          "isFirstChoice": true,
+          "description": "\nThis should emit 5 to your terminal."
+        }
+      ]
+    }
+  }
+]

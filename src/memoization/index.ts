@@ -31,6 +31,9 @@ export interface Memos {
 
   /** Any collected dependencies that need to be injected into the runtime */
   dependencies: Record<string, string[]>
+
+  /** Invalidate any memos that make use of the given shell variable */
+  invalidate(variable: string): void
 }
 
 /** Default implementation of `Memos` */
@@ -46,6 +49,15 @@ export class Memoizer implements Memos {
 
   /** Any collected dependencies that need to be injected into the runtime */
   public dependencies = {}
+
+  /** Invalidate any memos that make use of the given shell variable */
+  public invalidate(variable: string): void {
+    const pattern = new RegExp("\\$\\{?" + variable + "\\}?")
+
+    Object.keys(this.expansionMemo)
+      .filter((key) => pattern.test(key)) // list of matching keys
+      .forEach((matchingKey) => delete this.expansionMemo[matchingKey])
+  }
 }
 
 /** Percolate up any memoized status */

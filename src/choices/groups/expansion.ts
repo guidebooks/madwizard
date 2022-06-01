@@ -24,6 +24,7 @@ import { Memos } from "../../memoization/index.js"
 import { ExecutorOptions } from "../../exec/Executor.js"
 import { Graph, Choice, ChoicePart, blocks, findChoicesOnFrontier } from "../../graph/index.js"
 
+/** Map from expansion expression to a list of expanded choices */
 export type ExpansionMap = Record<ReturnType<typeof isExpansion>, string[]>
 
 export function updateContent<Part extends { graph: Graph; description?: string }>(part: Part, choice = ""): Part {
@@ -121,10 +122,9 @@ async function expandOneChoice(
           if (!expansionExpr) {
             return updateContent(part)
           } else {
-            const response =
-              (options.expansionMemo && options.expansionMemo[expansionExpr]) ||
-              (await doExpand(expansionExpr, options))
-            options.debug(expansionExpr, response)
+            const memoized = options.expansionMemo && options.expansionMemo[expansionExpr]
+            const response = memoized || (await doExpand(expansionExpr, options))
+            options.debug(expansionExpr, !!memoized, response)
 
             if (response.length > 0) {
               // memoize the expansion
