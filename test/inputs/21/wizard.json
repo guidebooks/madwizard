@@ -9,7 +9,7 @@
         "key": "somekey",
         "sequence": [
           {
-            "body": "export BASE=$(echo 2)",
+            "body": "export BASE=$(echo \"2\")",
             "language": "shell",
             "id": "somekey"
           }

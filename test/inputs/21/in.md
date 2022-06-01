@@ -5,7 +5,7 @@
 Intentionally referencing `$BAM`, to test default values.
 
 ```shell
-export BASE=$(echo 2)
+export BASE=$(echo "2")
 ```
 
 ```shell
