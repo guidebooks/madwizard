@@ -24,7 +24,7 @@ export class UseGpu {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
   public readonly choiceGroup = "madwizard/apriori/use-gpu"
 
-  private readonly options: Record<string, typeof process["arch"]> = {
+  private readonly options: Record<string, string> = {
     "use gpus": "Use GPUs",
     "don't use gpus": "Don't use GPUs",
   }
