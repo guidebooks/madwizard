@@ -24,8 +24,8 @@ import { Memos } from "../../memoization/index.js"
 import { ExecutorOptions } from "../../exec/Executor.js"
 import { Graph, Choice, ChoicePart, blocks, findChoicesOnFrontier } from "../../graph/index.js"
 
-/** Map from expansion expression to a list of expanded choices */
-export type ExpansionMap = Record<ReturnType<typeof isExpansion>, string[]>
+/** Map from `ExpansionExpression.expr` to a list of expanded choices */
+export type ExpansionMap = Record<string, string[]>
 
 export function updateContent<Part extends { graph: Graph; description?: string }>(part: Part, choice = ""): Part {
   const pattern1 = /\$\{?choice\}?/gi
@@ -67,16 +67,27 @@ function expansionPattern() {
   return /expand\((.+)\)/
 }
 
-/** Does the given Choice (i.e. a tab group) include a dynamic expansion? */
-function isExpansionGroup(graph: Choice) {
-  const match = graph.group.match(expansionPattern())
-  return match && match[1]
+/** @return the pattern we use to denote a dynamic expansion expression with a message to print while expanding */
+function expansionPatternWithMessage() {
+  return /^\s*expand\((.+)\s*(,\s*(.+))\)\s*$/
 }
 
+/** Does the given Choice (i.e. a tab group) include a dynamic expansion? */
+function isExpansionGroup(graph: Choice) {
+  return expansionPattern().test(graph.group)
+}
+
+type ExpansionExpression = { expr: string; message?: string }
+
 /** Is the given Choice member (i.e. a tab) a dynamic expansion? */
-function isExpansion(part: ChoicePart) {
-  const match = part.title.match(expansionPattern())
-  return match && match[1]
+function isExpansion(part: ChoicePart): ExpansionExpression {
+  const match = part.title.match(expansionPatternWithMessage()) || part.title.match(expansionPattern())
+  if (match) {
+    return {
+      expr: match[1],
+      message: match[3],
+    }
+  }
 }
 
 /** Replace any expansion parts with their dynamic expansion */
@@ -91,11 +102,14 @@ function expandPart(template: ChoicePart, names: string[]): ChoicePart[] {
  *
  * TODO allow a ValidationExecutor to be passed in.
  */
-async function doExpand(expansionExpr: string, options: Partial<ExecutorOptions>): Promise<string[]> {
+async function doExpand(expansionExpr: ExpansionExpression, options: Partial<ExecutorOptions>): Promise<string[]> {
   try {
     const response = await oraPromise(
-      (options.exec || (await import("../../exec/index.js").then((_) => _.shellExecToString)))(expansionExpr, options),
-      chalk.dim(`Expanding ${chalk.blue(expansionExpr)}`)
+      (options.exec || (await import("../../exec/index.js").then((_) => _.shellExecToString)))(
+        expansionExpr.expr,
+        options
+      ),
+      chalk.dim(`Expanding ${chalk.blue(expansionExpr.message || expansionExpr.expr)}`)
     )
     return response.split(/\n/).filter(Boolean)
   } catch (err) {
@@ -122,14 +136,14 @@ async function expandOneChoice(
           if (!expansionExpr) {
             return updateContent(part)
           } else {
-            const memoized = options.expansionMemo && options.expansionMemo[expansionExpr]
+            const memoized = options.expansionMemo && options.expansionMemo[expansionExpr.expr]
             const response = memoized || (await doExpand(expansionExpr, options))
             options.debug(expansionExpr, !!memoized, response)
 
             if (response.length > 0) {
               // memoize the expansion
               if (options.expansionMemo) {
-                options.expansionMemo[expansionExpr] = response
+                options.expansionMemo[expansionExpr.expr] = response
               }
 
               // expand the template, which yields Part -> Part[]
