@@ -1,0 +1,5 @@
+Test for asynchronous code block execution.
+├── echo AAA
+├── sleep 20
+│   echo BBB
+└── echo CCC

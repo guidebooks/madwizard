@@ -30,7 +30,7 @@ import { ChoiceState } from "../../choices/index.js"
 import { CodeBlockProps } from "../../codeblock/index.js"
 import { shellExec, isExport } from "../../exec/index.js"
 import indent from "../../parser/markdown/util/indent.js"
-import { Memos, Memoizer, statusOf } from "../../memoization/index.js"
+import { Memos, statusOf } from "../../memoization/index.js"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree/index.js"
 import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isForm, isTaskStep, wizardify } from "../../wizard/index.js"
 import { Graph, Status, blocks, compile, extractTitle, extractDescription, validate } from "../../graph/index.js"
@@ -45,7 +45,7 @@ export class Guide {
     private readonly blocks: CodeBlockProps[],
     private readonly choices: ChoiceState,
     private readonly options: MadWizardOptions,
-    private readonly memos: Memos = new Memoizer(),
+    private readonly memos: Memos,
     private readonly ui: UI<string> = new AnsiUI()
   ) {}
 
@@ -202,7 +202,7 @@ export class Guide {
                     const statusMemoKey = block.id
                     status =
                       (this.memos.statusMemo && this.memos.statusMemo[statusMemoKey] === "success" && "success") ||
-                      (await shellExec(block.body, this.memos, block.language, block.exec))
+                      (await shellExec(block.body, this.memos, block.language, block.exec, block.async))
 
                     if (status == "success" && this.memos.statusMemo) {
                       this.memos.statusMemo[statusMemoKey] = status

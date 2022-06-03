@@ -152,6 +152,13 @@ export type CodeBlockProps = Partial<CustomExecutable> &
     language: SupportedLanguage
     optional?: boolean
     nesting?: CodeBlockNestingParent[]
+
+    /**
+     * Should this code block be executed asynchronously? If so, its
+     * execution will be forked, and joined before the guidebook
+     * completes.
+     */
+    async?: boolean
   }
 
 export function addNesting(props: CodeBlockProps, nesting: CodeBlockNestingParent, insertIdx?: number) {
