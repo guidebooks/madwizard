@@ -1,5 +1,5 @@
 echo -n A
-for i in {1..29}
+for i in {1..30}
 do
     if [ -f ./test/inputs/$i/assert.txt ]; then
         ASSERT="--assert=$(cat ./test/inputs/$i/assert.txt | tr '\n' ' ')"
@@ -16,7 +16,7 @@ done
 echo
 
 echo -n B
-for i in {1..8} {11..18} {20..22} {24..29}
+for i in {1..8} {11..18} {20..22} {24..30}
 do
     if [ -f ./test/inputs/$i/assert.txt ]; then
         ASSERT="--assert=$(cat ./test/inputs/$i/assert.txt)"

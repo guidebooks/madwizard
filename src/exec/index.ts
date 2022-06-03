@@ -32,7 +32,8 @@ export async function shellExec(
   cmdline: string | boolean,
   opts: ExecOptions = { quiet: false },
   language: SupportedLanguage = "shell",
-  exec?: CustomExecutable["exec"]
+  exec?: CustomExecutable["exec"] /* execute code block with custom exec, rather than `sh` */,
+  async?: boolean /* fire and forget, until this process exits? */
 ): Promise<"success"> {
   if (exec) {
     // then the source has provided a custom executor
@@ -44,7 +45,7 @@ export async function shellExec(
       exporter(cmdline, opts) || // export FOO=3
       which(cmdline) || // which foo
       pipShow(cmdline, opts) || // optimized pip show
-      shell(cmdline, opts) // vanilla shell exec
+      shell(cmdline, opts, undefined, async) // vanilla shell exec
     )
   } else if (isPythonic(language)) {
     // then the code block has been declared with a `python` language

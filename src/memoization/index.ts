@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { ChildProcess } from "child_process"
+
 import { ChoiceState } from "../choices/index.js"
 import { ExpansionMap } from "../choices/groups/expansion.js"
 import { Graph, Status, StatusMap, isLeafNode, isChoice, partsOf } from "../graph/index.js"
@@ -32,6 +34,9 @@ export interface Memos {
   /** Any collected dependencies that need to be injected into the runtime */
   dependencies: Record<string, string[]>
 
+  /** Any forked subprocesses that we should wait for? */
+  subprocesses: ChildProcess[]
+
   /** Invalidate any memos that make use of the given shell variable */
   invalidate(variable: string): void
 }
@@ -49,6 +54,9 @@ export class Memoizer implements Memos {
 
   /** Any collected dependencies that need to be injected into the runtime */
   public dependencies = {}
+
+  /** Any forked subprocesses that we should wait for? */
+  public subprocesses: ChildProcess[] = []
 
   /** Invalidate any memos that make use of the given shell variable */
   public invalidate(variable: string): void {

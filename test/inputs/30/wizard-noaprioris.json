@@ -1,0 +1,72 @@
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "Test for asynchronous code block execution.",
+      "description": "This code block's output shuld not be seen by the `run` test, because the guidebook run will have completed before the sleep finishes.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo AAA",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Test for asynchronous code block execution.",
+      "description": "This code block's output shuld not be seen by the `run` test, because the guidebook run will have completed before the sleep finishes.\n"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "Test for asynchronous code block execution.",
+      "description": "This code block's output shuld not be seen by the `run` test, because the guidebook run will have completed before the sleep finishes.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "sleep 20\necho BBB",
+            "language": "shell",
+            "async": true,
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Test for asynchronous code block execution.",
+      "description": "This code block's output shuld not be seen by the `run` test, because the guidebook run will have completed before the sleep finishes.\n"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "Test for asynchronous code block execution.",
+      "description": "This code block's output shuld not be seen by the `run` test, because the guidebook run will have completed before the sleep finishes.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo CCC",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Test for asynchronous code block execution.",
+      "description": "This code block's output shuld not be seen by the `run` test, because the guidebook run will have completed before the sleep finishes.\n"
+    }
+  }
+]

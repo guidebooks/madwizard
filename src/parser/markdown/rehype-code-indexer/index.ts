@@ -141,9 +141,13 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
       visitParents(/* <Element> */ ast, "element", function visitor(node, ancestors) {
         if (node.tagName === "code") {
           // react-markdown v6+ places the language in the className
-          const match = node.properties.className ? /language-([\w{.]+)/.exec(node.properties.className.toString()) : ""
-          const language = match ? match[1].replace(/[{.]/g, "") : undefined
-          // re: the replace: this is a bit of a hack to support {.bash .no-copy} style languages from pymdown
+          const match = node.properties.className
+            ? /language-({\.)?(\w+)(\.async)?/.exec(node.properties.className.toString())
+            : ""
+          const language = match ? match[2] : undefined
+          const async = match && match[3] ? true : undefined
+          // re: {. bit: this is a bit of a hack to support {.bash .no-copy} style languages from pymdown
+          // re: .async bit: allow markdown to specify that a code block's execution should be executed asynchronously
 
           if (isExecutable(language)) {
             const myCodeIdx = codeIdx++
@@ -163,10 +167,10 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                 }
 
                 const dumpCodeBlockProps = !base64
-                  ? () => Object.assign({ body, language }, attributes)
+                  ? () => Object.assign({ body, language, async }, attributes)
                   : () =>
                       Buffer.from(
-                        JSON.stringify(Object.assign({ body, language }, attributes), (key, value) =>
+                        JSON.stringify(Object.assign({ body, language, async }, attributes), (key, value) =>
                           key === "nesting" || key === "source" ? undefined : value
                         )
                       ).toString("base64")

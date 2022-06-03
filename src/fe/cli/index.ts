@@ -181,8 +181,29 @@ export async function cli<Writer extends (msg: string) => boolean>(
 
     case "run":
     case "guide": {
-      const Guide = await import("../guide/index.js").then((_) => _.Guide)
-      await new Guide(task, blocks, choices, options).run()
+      const [Guide, Memoizer] = await Promise.all([
+        import("../guide/index.js").then((_) => _.Guide),
+        import("../../memoization/index.js").then((_) => _.Memoizer),
+      ])
+
+      const memoizer = new Memoizer()
+
+      /** Kill any spawned subprocesses */
+      const cleanExit = () => {
+        try {
+          memoizer.subprocesses.forEach((child) => child.kill())
+        } catch (err) {
+          Debug("madwizard/guide")("error killing forked subprocess", err)
+        }
+      }
+      process.on("SIGINT", cleanExit) // catch ctrl-c
+      process.on("SIGTERM", cleanExit) // catch kill
+
+      try {
+        await new Guide(task, blocks, choices, options, memoizer).run()
+      } finally {
+        cleanExit()
+      }
       break
     }
 

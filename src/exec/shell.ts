@@ -21,7 +21,8 @@ import { ExecOptions } from "./options.js"
 export default async function shellItOut(
   cmdline: string | boolean,
   opts: ExecOptions = { quiet: false },
-  extraEnv: Record<string, string> = {}
+  extraEnv: Record<string, string> = {},
+  async?: boolean /* fire and forget, until this process exits? */
 ): Promise<"success"> {
   const capture = typeof opts.capture === "string"
 
@@ -73,6 +74,11 @@ export default async function shellItOut(
     if (capture) {
       child.stderr.on("data", (data) => (out += data.toString()))
       child.stdout.on("data", (data) => (out += data.toString()))
+    }
+
+    if (async) {
+      opts.subprocesses.push(child)
+      resolve("success")
     }
   })
 }
