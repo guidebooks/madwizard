@@ -18,33 +18,41 @@ import Debug from "debug"
 import { ExecOptions } from "./options.js"
 import custom, { CustomEnv } from "./custom.js"
 
-type Pip = {
-  pip: string[]
-}
-type Conda = {
-  conda: Record<string, any>
+interface RuntimeEnvDependencies {
+  pip?: string[]
+  conda?: {
+    dependencies: (string | { pip: string[] })[]
+  }
 }
 
 /** express any pip dependencies we have collected */
-function pipsJson(opts: ExecOptions): Partial<Pip> {
+function dependencies(opts: ExecOptions): RuntimeEnvDependencies {
   const pips = new Set(!opts.dependencies || !opts.dependencies.pip ? [] : opts.dependencies.pip)
   pips.delete("ray")
 
-  return pips.size === 0 ? {} : { pip: Array.from(pips) }
-}
+  const condas = new Set(!opts.dependencies || !opts.dependencies.conda ? [] : opts.dependencies.conda)
 
-async function condaJson(condaFilepath: string): Promise<Conda> {
-  const [{ readFile }, { load }] = await Promise.all([import("fs"), import("js-yaml")])
+  if (condas.size === 0 && pips.size === 0) {
+    return {}
+  } else if (condas.size === 0) {
+    return { pip: Array.from(pips) }
+  } else {
+    if (pips.size > 0) {
+      condas.add("pip")
+    }
 
-  return new Promise((resolve, reject) => {
-    readFile(condaFilepath, (err, data) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve({ conda: load(data.toString()) })
-      }
-    })
-  })
+    const dependencies: RuntimeEnvDependencies["conda"]["dependencies"] = Array.from(condas)
+
+    if (pips.size > 0) {
+      dependencies.push({
+        pip: Array.from(pips),
+      })
+    }
+
+    return {
+      conda: { dependencies },
+    }
+  }
 }
 
 async function saveEnvToFile(
@@ -52,14 +60,12 @@ async function saveEnvToFile(
   opts: ExecOptions,
   customEnv: CustomEnv
 ) {
-  const deps = parsedOptions.conda ? await condaJson(parsedOptions.conda) : pipsJson(opts)
-
   const runtimeEnv: Record<string, any> = Object.assign(
     {
       env_vars: opts.env,
       working_dir: customEnv.MWDIR,
     },
-    deps
+    dependencies(opts)
   )
 
   if (parsedOptions["base-image"]) {
@@ -121,7 +127,6 @@ export default async function raySubmit(cmdline: string | boolean, opts: ExecOpt
         const extraArgs = exec
           .replace(prefix, "")
           .replace(/--base-image=\S+/g, "")
-          .replace(/--conda=\S+/g, "")
           .replace(/ -- .+$/, "")
 
         const envFile = await saveEnvToFile(parsedOptions, opts, customEnv)

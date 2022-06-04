@@ -24,6 +24,8 @@ import python from "./python.js"
 import pipShow from "./pip-show.js"
 import raySubmit from "./ray-submit.js"
 import exporter, { isExport } from "./export.js"
+import addPipDependences from "./pip-install.js"
+import addCondaDependences from "./conda-install.js"
 
 export { Env, ExecOptions, isExport }
 
@@ -37,7 +39,12 @@ export async function shellExec(
 ): Promise<"success"> {
   if (exec) {
     // then the source has provided a custom executor
-    return (await raySubmit(cmdline, opts, exec)) || custom(cmdline, opts, exec)
+    return (
+      addPipDependences(cmdline, opts, exec) ||
+      addCondaDependences(cmdline, opts, exec) ||
+      (await raySubmit(cmdline, opts, exec)) ||
+      custom(cmdline, opts, exec)
+    )
   } else if (isShellish(language)) {
     // then the code block has been declared with a `shell` or `bash`
     // or `sh` language
