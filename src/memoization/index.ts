@@ -62,6 +62,10 @@ export class Memoizer implements Memos {
   public invalidate(variable: string): void {
     const pattern = new RegExp("\\$\\{?" + variable + "\\}?")
 
+    Object.keys(this.statusMemo)
+      .filter((key) => pattern.test(key)) // list of matching keys
+      .forEach((matchingKey) => delete this.expansionMemo[matchingKey])
+
     Object.keys(this.expansionMemo)
       .filter((key) => pattern.test(key)) // list of matching keys
       .forEach((matchingKey) => delete this.expansionMemo[matchingKey])
