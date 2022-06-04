@@ -198,7 +198,11 @@ export async function cli<Writer extends (msg: string) => boolean>(
 
               // TODO windows...
               // maybe https://medium.com/@almenon214/killing-processes-with-node-772ffdd19aad
-              process.kill(-child.pid) // kill the process group e.g. for pipes
+              try {
+                process.kill(-child.pid) // kill the process group e.g. for pipes
+              } catch (err) {
+                Debug("madwizard/guide")("error killing process group", err)
+              }
             })
           } catch (err) {
             Debug("madwizard/guide")("error killing forked subprocess", err)
