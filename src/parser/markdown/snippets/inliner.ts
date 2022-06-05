@@ -19,6 +19,7 @@ import { dirname, join } from "path"
 
 import inlineSnippets from "./index.js"
 import { fetcherFor } from "../fetch.js"
+import { MadWizardOptions } from "../../../fe/index.js"
 import { madwizardRead } from "../../../fe/cli/madwizardRead.js"
 
 /**
@@ -29,11 +30,16 @@ import { madwizardRead } from "../../../fe/cli/madwizardRead.js"
  * @param {String} srcRelPath Path inside of srcDir to process
  * @param {String} targetDir Enclosing directory for generated content
  */
-export async function inliner(srcDir: string, srcRelPath: string, targetDir: string) {
+export async function inliner(
+  srcDir: string,
+  srcRelPath: string,
+  targetDir: string,
+  madwizardOptions: MadWizardOptions
+) {
   const srcFilePath = join(srcDir, srcRelPath)
-  const fetcher = fetcherFor(madwizardRead)
+  const fetcher = fetcherFor(madwizardRead, madwizardOptions.store, !!madwizardOptions.store)
   const data = await fetcher(srcFilePath)
-  const inlined = await inlineSnippets({ fetcher })(data, srcFilePath)
+  const inlined = await inlineSnippets({ fetcher, madwizardOptions })(data, srcFilePath)
 
   const mkdirp = (await import("mkdirp")).default
   const targetPath = join(targetDir, srcRelPath)
