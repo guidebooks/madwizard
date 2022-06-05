@@ -110,11 +110,11 @@ export async function cli<Writer extends (msg: string) => boolean>(
   // the cost of many file reads/remote fetches per run.
   if (task === "build") {
     const { inliner } = await import("../../parser/markdown/snippets/inliner.js")
-    await inliner(input, argv[3], argv[4])
+    await inliner(input, argv[3], argv[4], options)
     return
   } else if (task === "mirror") {
     const { mirror } = await import("../../parser/markdown/snippets/mirror.js")
-    await mirror(input, argv[3])
+    await mirror(input, argv[3], undefined, options)
     return
   }
 

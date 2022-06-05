@@ -208,7 +208,11 @@ function inlineSnippets(opts: Options & InternalOptions) {
     }
 
     // is this an "absolute" reference to a base store path?
-    const isStoreRef = !!opts.madwizardOptions && !!opts.madwizardOptions.store && !/^\./.test(_snippetFileName)
+    const isStoreRef =
+      !isUrl(_snippetFileName) &&
+      !!opts.madwizardOptions &&
+      !!opts.madwizardOptions.store &&
+      !/^\./.test(_snippetFileName)
 
     // the resolved filepath of the snippet
     const snippetFileName = isStoreRef ? _snippetFileName : expandHomeDir(_snippetFileName)

@@ -19,8 +19,9 @@ import { readdir } from "fs"
 import { oraPromise } from "ora"
 
 import { inliner } from "./inliner.js"
+import { MadWizardOptions } from "../../../fe/index.js"
 
-export async function mirror(srcDir: string, targetDir: string, srcRelPath = "") {
+export async function mirror(srcDir: string, targetDir: string, srcRelPath = "", options: MadWizardOptions) {
   // Debug.enable("madwizard/fetch/snippets")
 
   const srcFilePath = join(srcDir, srcRelPath)
@@ -34,9 +35,12 @@ export async function mirror(srcDir: string, targetDir: string, srcRelPath = "")
             const relpath = join(srcRelPath, entry.name)
 
             if (entry.isFile() && /\.md$/.test(entry.name)) {
-              await oraPromise(inliner(srcDir, relpath, targetDir), `Processing ${relpath}`)
+              await oraPromise(
+                inliner(srcDir, relpath, targetDir, Object.assign({}, options, { store: srcDir })),
+                `Processing ${relpath}`
+              )
             } else if (entry.isDirectory()) {
-              await mirror(srcDir, targetDir, relpath)
+              await mirror(srcDir, targetDir, relpath, options)
             }
           })
         )
