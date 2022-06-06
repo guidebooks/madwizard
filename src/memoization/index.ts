@@ -80,14 +80,20 @@ export class Memoizer implements Memos {
     if (this.subprocesses.length > 0) {
       try {
         this.subprocesses.forEach((child) => {
-          child.kill()
+          Debug("madwizard/cleanup")("killing process" + child.pid)
 
           // TODO windows...
           // maybe https://medium.com/@almenon214/killing-processes-with-node-772ffdd19aad
           try {
             process.kill(-child.pid) // kill the process group e.g. for pipes
           } catch (err) {
-            Debug("madwizard/cleanup")("error killing process group", err)
+            Debug("madwizard/cleanup")("error killing process group " + -child.pid, err)
+          }
+
+          try {
+            child.kill()
+          } catch (err) {
+            Debug("madwizard/cleanup")("error killing process " + child.pid, err)
           }
         })
       } catch (err) {
