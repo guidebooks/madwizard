@@ -189,26 +189,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
       const memoizer = new Memoizer()
 
       /** Kill any spawned subprocesses */
-      const cleanExit = () => {
-        if (memoizer.subprocesses.length > 0) {
-          Debug("madwizard/guide")("killing forked subprocess", memoizer.subprocesses)
-          try {
-            memoizer.subprocesses.forEach((child) => {
-              child.kill()
-
-              // TODO windows...
-              // maybe https://medium.com/@almenon214/killing-processes-with-node-772ffdd19aad
-              try {
-                process.kill(-child.pid) // kill the process group e.g. for pipes
-              } catch (err) {
-                Debug("madwizard/guide")("error killing process group", err)
-              }
-            })
-          } catch (err) {
-            Debug("madwizard/guide")("error killing forked subprocess", err)
-          }
-        }
-      }
+      const cleanExit = memoizer.cleanup.bind(memoizer)
       process.on("SIGINT", cleanExit) // catch ctrl-c
       process.on("SIGTERM", cleanExit) // catch kill
 
