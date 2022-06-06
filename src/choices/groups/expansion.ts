@@ -109,7 +109,7 @@ async function doExpand(expansionExpr: ExpansionExpression, options: Partial<Exe
         expansionExpr.expr,
         options
       ),
-      chalk.dim(`Expanding ${chalk.blue(expansionExpr.message || expansionExpr.expr)}`)
+      `Expanding ${chalk.blue(expansionExpr.message || expansionExpr.expr)}`
     )
     return response.split(/\n/).filter(Boolean)
   } catch (err) {
