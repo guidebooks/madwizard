@@ -44,6 +44,7 @@ export default async function shellItOut(
       ["-c", process.platform === "win32" ? cmdline.toString() : `set -o pipefail; ${cmdline}`],
       {
         env,
+        detached: async, // see Memoizer.cleanup() for asyncs, we detach and then kill that detached process group
         stdio: opts.quiet
           ? ["inherit", "ignore", "pipe"]
           : capture
