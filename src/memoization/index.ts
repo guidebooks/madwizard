@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { ChildProcess } from "child_process"
 
 import { ChoiceState } from "../choices/index.js"
@@ -39,6 +40,9 @@ export interface Memos {
 
   /** Invalidate any memos that make use of the given shell variable */
   invalidate(variable: string): void
+
+  /** Cleanup any state, e.g. spawned subprocesses */
+  cleanup(): void | Promise<void>
 }
 
 /** Default implementation of `Memos` */
@@ -69,6 +73,27 @@ export class Memoizer implements Memos {
     Object.keys(this.expansionMemo)
       .filter((key) => pattern.test(key)) // list of matching keys
       .forEach((matchingKey) => delete this.expansionMemo[matchingKey])
+  }
+
+  /** Cleanup any state, e.g. spawned subprocesses */
+  public cleanup(): void | Promise<void> {
+    if (this.subprocesses.length > 0) {
+      try {
+        this.subprocesses.forEach((child) => {
+          child.kill()
+
+          // TODO windows...
+          // maybe https://medium.com/@almenon214/killing-processes-with-node-772ffdd19aad
+          try {
+            process.kill(-child.pid) // kill the process group e.g. for pipes
+          } catch (err) {
+            Debug("madwizard/cleanup")("error killing process group", err)
+          }
+        })
+      } catch (err) {
+        Debug("madwizard/cleanup")("error killing forked subprocess", err)
+      }
+    }
   }
 }
 
