@@ -26,4 +26,7 @@ export type ExecOptions = Partial<Env> &
 
     /** Capture stdout here */
     capture?: string
+
+    /** Ignore stderr in capture? */
+    ignoreStderr?: boolean
   }

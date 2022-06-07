@@ -33,9 +33,10 @@ export default function execAsExport(cmdline: string | boolean, opts: ExecOption
       // about to update it
       opts.invalidate(key)
 
-      const options = Object.assign({}, opts, { capture: "", throwErrors: true })
+      const options = Object.assign({}, opts, { capture: "", ignoreStderr: true })
       return shellItOut(`${cmdline}${semicolon} echo -n $${key}`, options)
         .then(() => options.capture)
+        .catch(() => "")
         .then((valueForUpdate) => {
           opts.env[key] = valueForUpdate
           return "success" as const
