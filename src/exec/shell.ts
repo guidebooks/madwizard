@@ -74,7 +74,9 @@ export default async function shellItOut(
     }
 
     if (capture) {
-      child.stderr.on("data", (data) => (out += data.toString()))
+      if (!opts.ignoreStderr) {
+        child.stderr.on("data", (data) => (out += data.toString()))
+      }
       child.stdout.on("data", (data) => (out += data.toString()))
     }
 
