@@ -1,4 +1,10 @@
-echo AAAAA
+export SUFFIX="XXXX"
+export FOO${SUFFIX}=AAAAA
+export SUFFIX="YYYY"
+export FOO${SUFFIX}=BBBBB
+echo ${FOOXXXX}
 AAAAA
-echo BBBBB
+if [ -n "${FOO}" ]; then echo "BUG_A ${FOO}"; fi
+echo ${FOOYYYY}
 BBBBB
+if [ -n "${FOO}" ]; then echo "BUG_B ${FOO}"; fi

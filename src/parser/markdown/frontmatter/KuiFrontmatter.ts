@@ -79,6 +79,9 @@ export type Import =
        * set of "arguments".
        */
       group: string
+
+      /** Environment variables to use for the import */
+      env: Record<string, string>
     }
 
 /** Path to imported content */
@@ -93,6 +96,13 @@ export function getImportPath(importStmt: Import) {
  */
 export function getImportGroup(importStmt: Import) {
   return typeof importStmt === "string" ? undefined : importStmt.group
+}
+
+/**
+ * The environment variables associated with this import
+ */
+export function getImportEnv(importStmt: Import) {
+  return typeof importStmt === "string" ? undefined : importStmt.env
 }
 
 interface Imports {

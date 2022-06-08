@@ -34,11 +34,13 @@ export default function execAsExport(cmdline: string | boolean, opts: ExecOption
       opts.invalidate(key)
 
       const options = Object.assign({}, opts, { capture: "", ignoreStderr: true })
-      return shellItOut(`${cmdline}${semicolon} echo -n $${key}`, options)
-        .then(() => options.capture)
-        .catch(() => "")
-        .then((valueForUpdate) => {
-          opts.env[key] = valueForUpdate
+      const magicCmdline = `${cmdline}${semicolon} echo "${key}"; printenv ${key}`
+
+      return shellItOut(magicCmdline, options)
+        .then(() => options.capture.split(/\n/).filter(Boolean))
+        .catch(() => [key, ""])
+        .then(([keyForUpdate, valueForUpdate]) => {
+          opts.env[keyForUpdate] = valueForUpdate
           return "success" as const
         })
     }

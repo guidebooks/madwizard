@@ -2,10 +2,10 @@
 
 === "11111"
     ```shell
-    echo AAAAA
+    export FOO${SUFFIX}=AAAAA
     ```
 
 === "222222"
     ```shell
-    echo BBBBB
+    export FOO${SUFFIX}=BBBBB
     ```

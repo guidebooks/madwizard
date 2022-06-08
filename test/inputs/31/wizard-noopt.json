@@ -1,6 +1,28 @@
 [
   {
     "graph": {
+      "key": "somekey",
+      "group": "XXXXXX",
+      "title": "XXXXXX",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "export SUFFIX=\"XXXX\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "XXXXXX"
+    }
+  },
+  {
+    "graph": {
       "group": "11111####222222",
       "groupContext": "XXXXXX.11111####222222",
       "title": "Pick your Poison (XXXXXX)",
@@ -13,7 +35,7 @@
             "key": "somekey",
             "sequence": [
               {
-                "body": "echo AAAAA",
+                "body": "export FOO${SUFFIX}=AAAAA",
                 "language": "shell",
                 "id": "somekey"
               }
@@ -27,7 +49,7 @@
             "key": "somekey",
             "sequence": [
               {
-                "body": "echo BBBBB",
+                "body": "export FOO${SUFFIX}=BBBBB",
                 "language": "shell",
                 "id": "somekey"
               }
@@ -58,6 +80,76 @@
   },
   {
     "graph": {
+      "key": "somekey",
+      "group": "GGGGGG",
+      "title": "GGGGGG",
+      "description": "This variable should be defined.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo ${FOOXXXX}",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "GGGGGG",
+      "description": "This variable should be defined.\n"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "GGGGGG",
+      "title": "GGGGGG",
+      "description": "This variable should be defined.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "if [ -n \"${FOO}\" ]; then echo \"BUG_A ${FOO}\"; fi",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "GGGGGG",
+      "description": "This variable should be defined.\n"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "YYYYYY",
+      "title": "YYYYYY",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "export SUFFIX=\"YYYY\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "YYYYYY"
+    }
+  },
+  {
+    "graph": {
       "group": "11111####222222",
       "groupContext": "YYYYYY.11111####222222",
       "title": "Pick your Poison (YYYYYY)",
@@ -70,7 +162,7 @@
             "key": "somekey",
             "sequence": [
               {
-                "body": "echo AAAAA",
+                "body": "export FOO${SUFFIX}=AAAAA",
                 "language": "shell",
                 "id": "somekey"
               }
@@ -84,7 +176,7 @@
             "key": "somekey",
             "sequence": [
               {
-                "body": "echo BBBBB",
+                "body": "export FOO${SUFFIX}=BBBBB",
                 "language": "shell",
                 "id": "somekey"
               }
@@ -111,6 +203,54 @@
           "isFirstChoice": false
         }
       ]
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "GGGGGG",
+      "title": "GGGGGG",
+      "description": "This variable should be defined.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo ${FOOYYYY}",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "GGGGGG",
+      "description": "This variable should be defined.\n"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "GGGGGG",
+      "title": "GGGGGG",
+      "description": "This variable should be defined.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "if [ -n \"${FOO}\" ]; then echo \"BUG_B ${FOO}\"; fi",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "GGGGGG",
+      "description": "This variable should be defined.\n"
     }
   }
 ]
