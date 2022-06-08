@@ -1,11 +1,21 @@
 GGGGGG
 ├── XXXXXX
-│   ├── Option 1: 11111
-│   │   └── echo AAAAA
-│   └── Option 2: 222222
-│       └── echo BBBBB
-└── YYYYYY
-    ├── Option 1: 11111
-    │   └── echo AAAAA
-    └── Option 2: 222222
-        └── echo BBBBB
+│   ├── export SUFFIX="XXXX"
+│   └── Pick your Poison (XXXXXX)
+│       ├── Option 1: 11111
+│       │   └── export FOO${SUFFIX}=AAAAA
+│       └── Option 2: 222222
+│           └── export FOO${SUFFIX}=BBBBB
+├── GGGGGG
+│   ├── echo ${FOOXXXX}
+│   └── if [ -n "${FOO}" ]; then echo "BUG_A ${FOO}"; fi
+├── YYYYYY
+│   ├── export SUFFIX="YYYY"
+│   └── Pick your Poison (YYYYYY)
+│       ├── Option 1: 11111
+│       │   └── export FOO${SUFFIX}=AAAAA
+│       └── Option 2: 222222
+│           └── export FOO${SUFFIX}=BBBBB
+└── GGGGGG
+    ├── echo ${FOOYYYY}
+    └── if [ -n "${FOO}" ]; then echo "BUG_B ${FOO}"; fi

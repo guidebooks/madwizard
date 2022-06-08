@@ -27,7 +27,7 @@ import { oraPromise } from "../../../util/ora-delayed-promise.js"
 import indent from "../util/indent.js"
 import { MadWizardOptions } from "../../../fe/index.js"
 import { tryFrontmatter } from "../frontmatter/frontmatter-parser.js"
-import { Import, getImportGroup, getImportPath, hasImports } from "../frontmatter/KuiFrontmatter.js"
+import { Import, getImportEnv, getImportGroup, getImportPath, hasImports } from "../frontmatter/KuiFrontmatter.js"
 
 const RE_DOCS_URL = /^(https:\/\/([^/]+\/){4}docs)/
 
@@ -362,6 +362,7 @@ ${indent(errorMessage)}`
   }
 
   const processImport = async (importStmt: Import, srcFilePath: string, provenance: string[]) => {
+    const env = getImportEnv(importStmt)
     const group = getImportGroup(importStmt)
     const snippetFileName = getImportPath(importStmt)
 
@@ -399,10 +400,19 @@ ${indent(errorMessage)}`
     // :::
     const colons = colonColonColon(nestingDepth)
     const title = attributes.title || group
+
+    // note how we splice in `export FOO=bar` shell commands for any import env maps
     return `
 ${colons}import{provenance=${provenance.concat([snippetFileName])} filepath=${filepath} attributes="${attributesEnc}"${
       title ? ` title="${title}"` : ""
     }${group ? ` group="${group}"` : ""}}
+${
+  !env
+    ? ""
+    : Object.entries(env)
+        .map(([key, value]) => `\`\`\`shell\nexport ${key}="${value}"\n\`\`\``)
+        .join("\n")
+}
 ${body}
 ${colons}
 <!-- hack: working around a bug in the directive parser for ${snippetFileName} -->

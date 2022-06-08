@@ -1,5 +1,17 @@
 GGGGGG
-├── Pick your Poison (XXXXXX)
-│   └── echo AAAAA
-└── Pick your Poison (YYYYYY)
-    └── echo BBBBB
+├── Prerequisites
+│   ├── XXXXXX
+│   │   ├── export SUFFIX="XXXX"
+│   │   └── Pick your Poison (XXXXXX)
+│   │       └── export FOO${SUFFIX}=AAAAA
+│   └── YYYYYY
+│       ├── export SUFFIX="YYYY"
+│       └── Pick your Poison (YYYYYY)
+│           └── export FOO${SUFFIX}=BBBBB
+└── Main Tasks
+    ├── GGGGGG
+    │   ├── echo ${FOOXXXX}
+    │   └── if [ -n "${FOO}" ]; then echo "BUG_A ${FOO}"; fi
+    └── GGGGGG
+        ├── echo ${FOOYYYY}
+        └── if [ -n "${FOO}" ]; then echo "BUG_B ${FOO}"; fi
