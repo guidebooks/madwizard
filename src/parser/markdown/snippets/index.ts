@@ -26,8 +26,8 @@ import { oraPromise } from "../../../util/ora-delayed-promise.js"
 
 import indent from "../util/indent.js"
 import { MadWizardOptions } from "../../../fe/index.js"
-import { hasImports } from "../frontmatter/KuiFrontmatter.js"
 import { tryFrontmatter } from "../frontmatter/frontmatter-parser.js"
+import { Import, getImportGroup, getImportPath, hasImports } from "../frontmatter/KuiFrontmatter.js"
 
 const RE_DOCS_URL = /^(https:\/\/([^/]+\/){4}docs)/
 
@@ -145,6 +145,9 @@ type InternalOptions = {
    */
   snippetMemo?: Record<string, string | Error>
 
+  /** Current memoization key prefix */
+  memoKey: string
+
   /**
    * This provides us a way to specify a known set of base path for
    * all snippets, rather than us having to guess. See `candidates`
@@ -166,6 +169,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
   const {
     fetcher,
     snippetBasePath,
+    memoKey,
     includeFrontmatter = true,
     nestingDepth = 0,
     inImport = false,
@@ -179,31 +183,33 @@ function inlineSnippets(opts: Options & InternalOptions) {
   const _fetchRecursively = async (
     _snippetFileName: string,
     srcFilePath: string,
+    memoKey: string,
     provenance: string[],
     nestingDepth = 0,
     inImport = false
   ) => {
     debug(`${chalk.yellow(mainSymbols.triangleRight)} ${_snippetFileName}`)
 
-    const fetchAndMemoize = async (filepath: string): Promise<string | Error> => {
+    const fetchAndMemoize = async (filepath: string, memoKey: string): Promise<string | Error> => {
       try {
         const content = await doFetch(filepath, fetcher)
         debug(`${chalk.green(mainSymbols.tick)} ${snippetFileName} from ${filepath}`)
         if (typeof content === "string") {
-          snippetMemo[filepath] = content
+          snippetMemo[memoKey] = content
         }
         return content
       } catch (err) {
-        snippetMemo[filepath] = err
+        snippetMemo[memoKey] = err
         throw err
       }
     }
-    const fetch = async (afilepath: string): Promise<string | Error> => {
+    const fetch = async (afilepath: string, memoKeyPrefix: string): Promise<string | Error> => {
       const filepath = toRawGithubUserContent(afilepath)
-      if (isError(snippetMemo[filepath])) {
-        throw snippetMemo[filepath]
+      const memoKey = (memoKeyPrefix + "." + afilepath).replace(/\.+/, "")
+      if (isError(snippetMemo[memoKey])) {
+        throw snippetMemo[memoKey]
       } else {
-        return snippetMemo[filepath] || (await fetchAndMemoize(filepath))
+        return snippetMemo[memoKey] || (await fetchAndMemoize(filepath, memoKey))
       }
     }
 
@@ -245,6 +251,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
         failFast,
         fetcher,
         snippetBasePath: base,
+        memoKey,
         includeFrontmatter: inImport,
         nestingDepth: nestingDepth + 1,
         inImport,
@@ -276,7 +283,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
     const snippetDatas =
       isStoreRef || isUrl(snippetFileName) || isAbsolute(snippetFileName)
         ? [
-            await fetch(snippetFileName)
+            await fetch(snippetFileName, memoKey)
               .then(async (data) => ({
                 filepath: snippetFileName,
                 snippetData: await recurse(
@@ -304,7 +311,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
                 .filter((_) => _ && _.filepath !== srcFilePath)
             ) // avoid cycles
               .map(({ myBasePath, filepath }) =>
-                fetch(filepath)
+                fetch(filepath, memoKey)
                   .then(async (data) => ({
                     filepath,
                     snippetData: await recurse(myBasePath, filepath, toString(data)),
@@ -339,12 +346,13 @@ function inlineSnippets(opts: Options & InternalOptions) {
   const fetchRecursively = (
     _snippetFileName: string,
     srcFilePath: string,
+    memoKey: string,
     provenance: string[],
     nestingDepth = 0,
     inImport = false
   ) =>
     oraPromise(
-      _fetchRecursively(_snippetFileName, srcFilePath, provenance, nestingDepth, inImport),
+      _fetchRecursively(_snippetFileName, srcFilePath, memoKey, provenance, nestingDepth, inImport),
       chalk.dim(`Fetching ${chalk.blue(_snippetFileName)}`)
     )
 
@@ -353,7 +361,10 @@ function inlineSnippets(opts: Options & InternalOptions) {
 ${indent(errorMessage)}`
   }
 
-  const processImport = async (snippetFileName: string, srcFilePath: string, provenance: string[]) => {
+  const processImport = async (importStmt: Import, srcFilePath: string, provenance: string[]) => {
+    const group = getImportGroup(importStmt)
+    const snippetFileName = getImportPath(importStmt)
+
     const src =
       !opts.madwizardOptions ||
       !opts.madwizardOptions.store ||
@@ -366,6 +377,7 @@ ${indent(errorMessage)}`
     const { filepath, snippetData } = await fetchRecursively(
       src,
       srcFilePath,
+      memoKey + "." + group,
       provenance.concat([snippetFileName]),
       nestingDepth + 1,
       true
@@ -386,10 +398,11 @@ ${indent(errorMessage)}`
     // ...import content...
     // :::
     const colons = colonColonColon(nestingDepth)
+    const title = attributes.title || group
     return `
 ${colons}import{provenance=${provenance.concat([snippetFileName])} filepath=${filepath} attributes="${attributesEnc}"${
-      attributes.title ? ` title="${attributes.title}"` : ""
-    }}
+      title ? ` title="${title}"` : ""
+    }${group ? ` group="${group}"` : ""}}
 ${body}
 ${colons}
 <!-- hack: working around a bug in the directive parser for ${snippetFileName} -->
@@ -427,6 +440,7 @@ ${colons}
           const { snippetData } = await fetchRecursively(
             snippetFileName,
             srcFilePath,
+            memoKey,
             provenance,
             nestingDepth + 1,
             inImport
@@ -515,6 +529,7 @@ async function fetchMkdocsBasePath(opts: Options) {
 export default function processSnippets(opts: Options) {
   return inlineSnippets(
     Object.assign({}, opts, {
+      memoKey: "",
       altBasePaths: fetchMkdocsBasePath(opts),
     })
   )

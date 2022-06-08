@@ -16,13 +16,14 @@
 
 import { Element } from "hast"
 
+import mock from "./mock.js"
 import debug from "./debug.js"
 import { ChoiceState } from "../../index.js"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "../index.js"
 
 export class Platform {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = "madwizard/apriori/platform"
+  public readonly choiceGroup = mock("madwizard/apriori/platform")
 
   private readonly platforms: Record<string, typeof process["platform"]> = {
     mac: "darwin",
@@ -77,7 +78,7 @@ export class Platform {
   public checkAndSet(node: Element) {
     if (this.isMatchingTabGroup(node)) {
       debug("platform", "found matching tab group")
-      setTabGroup(node, this.choiceGroup)
+      setTabGroup(node, this.choiceGroup.group)
       this.rewriteTabsToUseCanonicalNames(node)
       return true
     }

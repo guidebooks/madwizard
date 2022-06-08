@@ -2,6 +2,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "importa.md",
       "title": "importa.md",
       "filepath": "",
       "graph": {
@@ -24,6 +25,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "barrier.md",
       "title": "barrier.md",
       "filepath": "",
       "graph": {
@@ -47,6 +49,7 @@
   {
     "graph": {
       "group": "TabE1",
+      "groupContext": "TabE1",
       "title": "EEE",
       "source": "placeholder",
       "provenance": ["test/inputs/snippets/importe.md"],

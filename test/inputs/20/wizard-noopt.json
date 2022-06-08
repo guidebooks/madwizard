@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "Tab1",
+      "groupContext": "Tab1",
       "title": "Conditional Inline of Imports",
       "source": "placeholder",
       "provenance": ["test/inputs/20/in.md"],
@@ -34,6 +35,7 @@
               },
               {
                 "group": "ITab1",
+                "groupContext": "ITab1",
                 "source": "placeholder",
                 "provenance": ["test/inputs/20/in.md"],
                 "choices": [

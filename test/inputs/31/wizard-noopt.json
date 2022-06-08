@@ -1,0 +1,116 @@
+[
+  {
+    "graph": {
+      "group": "11111####222222",
+      "groupContext": "XXXXXX.11111####222222",
+      "title": "Pick your Poison (XXXXXX)",
+      "source": "placeholder",
+      "provenance": ["test/inputs/31/choice.md.XXXXXX"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo AAAAA",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "11111"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo BBBBB",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "222222"
+        }
+      ]
+    },
+    "step": {
+      "name": "Pick your Poison (XXXXXX)",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "11111",
+          "group": "11111####222222",
+          "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "222222",
+          "group": "11111####222222",
+          "member": 1,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
+      "group": "11111####222222",
+      "groupContext": "YYYYYY.11111####222222",
+      "title": "Pick your Poison (YYYYYY)",
+      "source": "placeholder",
+      "provenance": ["test/inputs/31/choice.md.YYYYYY"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo AAAAA",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "11111"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo BBBBB",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "222222"
+        }
+      ]
+    },
+    "step": {
+      "name": "Pick your Poison (YYYYYY)",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "11111",
+          "group": "11111####222222",
+          "member": 0,
+          "isFirstChoice": false
+        },
+        {
+          "title": "222222",
+          "group": "11111####222222",
+          "member": 1,
+          "isFirstChoice": false
+        }
+      ]
+    }
+  }
+]

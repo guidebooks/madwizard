@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "Tab1####Tab2",
+      "groupContext": "Tab1####Tab2",
       "title": "Conditional Imports of Validated Code Blocks",
       "source": "placeholder",
       "provenance": ["test/inputs/18/snippet.md"],
@@ -9,20 +10,20 @@
         {
           "member": 0,
           "graph": {
-            "key": "b96a064b-5c24-4ad4-87af-e062d661dcc9",
+            "key": "somekey",
             "sequence": [
               {
-                "key": "test/inputs/snippets/importa.md",
+                "key": "somekey",
                 "title": "importa.md",
                 "filepath": "test/inputs/snippets/importa.md",
                 "graph": {
-                  "key": "98af619a-7cbd-40cf-90de-36a01f13a8b1",
+                  "key": "somekey",
                   "sequence": [
                     {
                       "body": "echo AAA",
                       "language": "bash",
                       "validate": true,
-                      "id": "4a18aabf-51cd-4f83-b478-6c46aceb3ef7-0"
+                      "id": "somekey"
                     }
                   ]
                 },
@@ -35,17 +36,18 @@
         {
           "member": 1,
           "graph": {
-            "key": "a6798a0f-ea6b-4472-a55a-be20b19e2dd6",
+            "key": "somekey",
             "sequence": [
               {
-                "key": "test/inputs/snippets/importe.md",
+                "key": "somekey",
                 "title": "EEE",
                 "filepath": "test/inputs/snippets/importe.md",
                 "graph": {
-                  "key": "3e553bc4-542b-4d58-9ed3-75fe970e6307",
+                  "key": "somekey",
                   "sequence": [
                     {
                       "group": "TabE1",
+                      "groupContext": "TabE1",
                       "title": "EEE",
                       "source": "placeholder",
                       "provenance": ["test/inputs/snippets/importe.md"],
@@ -53,12 +55,12 @@
                         {
                           "member": 0,
                           "graph": {
-                            "key": "57813b85-2a95-4c4c-8f14-c54c99bbc0d6",
+                            "key": "somekey",
                             "sequence": [
                               {
                                 "body": "echo EEE",
                                 "language": "bash",
-                                "id": "4a18aabf-51cd-4f83-b478-6c46aceb3ef7-1"
+                                "id": "somekey"
                               }
                             ]
                           },

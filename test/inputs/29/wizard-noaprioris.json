@@ -2,6 +2,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Testing tab expansion",
       "title": "Testing tab expansion",
       "filepath": "",
       "graph": {
@@ -23,6 +24,7 @@
   {
     "graph": {
       "group": "expand(echo ${A-error} ; echo ${B-4} ; echo ${C-5})",
+      "groupContext": "expand(echo ${A-error} ; echo ${B-4} ; echo ${C-5})",
       "title": "Testing tab expansion",
       "source": "placeholder",
       "provenance": ["test/inputs/29/in.md"],

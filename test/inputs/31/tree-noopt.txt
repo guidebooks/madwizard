@@ -1,0 +1,11 @@
+GGGGGG
+├── XXXXXX
+│   ├── Option 1: 11111
+│   │   └── echo AAAAA
+│   └── Option 2: 222222
+│       └── echo BBBBB
+└── YYYYYY
+    ├── Option 1: 11111
+    │   └── echo AAAAA
+    └── Option 2: 222222
+        └── echo BBBBB

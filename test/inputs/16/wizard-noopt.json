@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "Tab1",
+      "groupContext": "Tab1",
       "title": "MainTitle",
       "source": "placeholder",
       "provenance": ["test/inputs/16/in.md"],
@@ -13,6 +14,7 @@
             "sequence": [
               {
                 "group": "SubTab1####SubTab2",
+                "groupContext": "SubTab1####SubTab2",
                 "source": "placeholder",
                 "provenance": ["test/inputs/16/in.md"],
                 "choices": [

@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "Tab1####Tab2",
+      "groupContext": "Tab1####Tab2",
       "title": "Conditional Imports of Validated Code Blocks",
       "source": "placeholder",
       "provenance": ["test/inputs/18/snippet.md"],
@@ -46,6 +47,7 @@
                   "sequence": [
                     {
                       "group": "TabE1",
+                      "groupContext": "TabE1",
                       "title": "EEE",
                       "source": "placeholder",
                       "provenance": ["test/inputs/snippets/importe.md"],

@@ -16,13 +16,14 @@
 
 import { Element } from "hast"
 
+import mock from "./mock.js"
 import debug from "./debug.js"
 import { ChoiceState } from "../../index.js"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "../index.js"
 
 export class Arch {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = "madwizard/apriori/arch"
+  public readonly choiceGroup = mock("madwizard/apriori/arch")
 
   private readonly archs: Record<string, typeof process["arch"]> = {
     intel: "x64",
@@ -72,7 +73,7 @@ export class Arch {
   public checkAndSet(node: Element) {
     if (this.isMatchingTabGroup(node)) {
       debug("arch", "found matching tab group")
-      setTabGroup(node, this.choiceGroup)
+      setTabGroup(node, this.choiceGroup.group)
       this.rewriteTabsToUseCanonicalNames(node)
       return true
     }

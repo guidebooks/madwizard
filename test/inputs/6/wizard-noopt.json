@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "SubTab1####SubTab2",
+      "groupContext": "SubTab1####SubTab2",
       "title": "DDD",
       "source": "placeholder",
       "provenance": ["test/inputs/snippets/importd.md"],
@@ -72,6 +73,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "importa.md",
       "title": "importa.md",
       "filepath": "",
       "graph": {
@@ -94,6 +96,7 @@
   {
     "graph": {
       "group": "TabE1",
+      "groupContext": "TabE1",
       "title": "EEE",
       "source": "placeholder",
       "provenance": ["test/inputs/snippets/importe.md"],
@@ -132,6 +135,7 @@
   {
     "graph": {
       "group": "Tab1####Tab2####Tab3",
+      "groupContext": "Tab1####Tab2####Tab3",
       "source": "placeholder",
       "provenance": ["test/inputs/snippets/snippets-in-tab5.md"],
       "choices": [
@@ -149,6 +153,7 @@
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
+                      "groupContext": "SubTab1####SubTab2",
                       "title": "DDD",
                       "source": "placeholder",
                       "provenance": ["test/inputs/snippets/importd.md"],
@@ -235,6 +240,7 @@
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
+                      "groupContext": "SubTab1####SubTab2",
                       "title": "DDD",
                       "source": "placeholder",
                       "provenance": ["test/inputs/snippets/importd.md"],

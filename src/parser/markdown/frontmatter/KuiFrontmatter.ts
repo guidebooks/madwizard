@@ -66,8 +66,37 @@ interface CodeBlocks {
   codeblocks: CodeBlock[]
 }
 
+/** An individual import is either a path to imported content, or a pair (path, group) */
+export type Import =
+  | string
+  | {
+      /** Path to imported content */
+      path: string
+
+      /**
+       * The idempotency group to use for this import; this allows one to
+       * import the same guidebook multiple times, each with a different
+       * set of "arguments".
+       */
+      group: string
+    }
+
+/** Path to imported content */
+export function getImportPath(importStmt: Import) {
+  return typeof importStmt === "string" ? importStmt : importStmt.path
+}
+
+/**
+ * The idempotency group to use for this import; this allows one to
+ * import the same guidebook multiple times, each with a different *
+ * set of "arguments".
+ */
+export function getImportGroup(importStmt: Import) {
+  return typeof importStmt === "string" ? undefined : importStmt.group
+}
+
 interface Imports {
-  imports: string[]
+  imports: Import[]
 }
 
 export function hasImports(attributes: any): attributes is Imports {
@@ -75,7 +104,13 @@ export function hasImports(attributes: any): attributes is Imports {
     attributes &&
     typeof attributes === "object" &&
     Array.isArray(attributes.imports) &&
-    attributes.imports.every((_) => typeof _ === "string")
+    attributes.imports.every(
+      (_) =>
+        typeof _ === "string" ||
+        (typeof _ === "object" &&
+          typeof _.path === "string" &&
+          (typeof _.group === "string" || typeof _.group === "undefined"))
+    )
   )
 }
 

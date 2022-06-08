@@ -1,0 +1,46 @@
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Pick your Poison (XXXXXX)",
+      "title": "Pick your Poison (XXXXXX)",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo AAAAA",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Pick your Poison (XXXXXX)"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Pick your Poison (YYYYYY)",
+      "title": "Pick your Poison (YYYYYY)",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo BBBBB",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Pick your Poison (YYYYYY)"
+    }
+  }
+]

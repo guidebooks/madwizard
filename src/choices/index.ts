@@ -15,13 +15,17 @@
  */
 
 import ChoiceStateImpl from "./impl.js"
-import { Choice as CodeBlockChoice } from "../codeblock/CodeBlockProps.js"
+import { Choice } from "../graph/index.js"
 import { ChoiceHandlerRegistration } from "./events.js"
+import { Choice as CodeBlockChoice } from "../codeblock/CodeBlockProps.js"
 
 export { expand, updateContent } from "./groups/expansion.js"
 
+/** Key type for ChoicesMap */
+export type Key = CodeBlockChoice["group"]
+
 /* map from choice group to selected choice member */
-export type ChoicesMap = Record<CodeBlockChoice["group"], CodeBlockChoice["title"]>
+export type ChoicesMap = Record<Key, CodeBlockChoice["title"]>
 
 export interface ChoiceState {
   clone: () => ChoiceState
@@ -29,17 +33,17 @@ export interface ChoiceState {
   offChoice: ChoiceHandlerRegistration
 
   /** State representing form completion */
-  formComplete<K extends keyof ChoicesMap>(key: K, value: Record<string, string>): boolean
+  formComplete(choice: Choice, value: Record<string, string>): boolean
 
   /** Extract form responses */
-  form<K extends keyof ChoicesMap>(key: K): Record<string, string>
+  form(choice: Choice): Record<string, string>
 
   keys: () => ReturnType<typeof Object.keys>
   entries: () => ReturnType<typeof Object.entries>
-  contains: <K extends keyof ChoicesMap>(key: K) => boolean
-  get: <K extends keyof ChoicesMap>(key: K) => ChoicesMap[K]
-  set: <K extends keyof ChoicesMap>(key: K, value: ChoicesMap[K], overrideRejections?: boolean) => boolean
-  remove: <K extends keyof ChoicesMap>(key: K) => boolean
+  contains: (choice: Choice) => boolean
+  get: (choice: Choice) => ChoicesMap[Key]
+  set: (choice: Choice, value: ChoicesMap[Key], overrideRejections?: boolean) => boolean
+  remove: (choice: Choice) => boolean
 }
 
 export type Choices = {

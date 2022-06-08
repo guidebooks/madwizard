@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "Local Install####Kubernetes Install",
+      "groupContext": "Local Install####Kubernetes Install",
       "title": "Install Ray",
       "source": "placeholder",
       "provenance": ["test/inputs/23/install/index.md"],
@@ -35,6 +36,7 @@
                   "sequence": [
                     {
                       "key": "somekey",
+                      "group": "Install kubectl",
                       "title": "Install kubectl",
                       "filepath": "",
                       "graph": {
@@ -62,6 +64,7 @@
                   "sequence": [
                     {
                       "key": "somekey",
+                      "group": "Install Helm v3",
                       "title": "Install Helm v3",
                       "filepath": "",
                       "graph": {
@@ -96,6 +99,7 @@
                         "sequence": [
                           {
                             "key": "somekey",
+                            "group": "Install kubectl",
                             "title": "Install kubectl",
                             "filepath": "",
                             "graph": {
@@ -116,6 +120,7 @@
                     },
                     {
                       "group": "fakeit",
+                      "groupContext": "fakeit",
                       "title": "Choose a Kubernetes context",
                       "source": "placeholder",
                       "provenance": ["test/inputs/23/kubernetes/context.md"],
@@ -176,6 +181,7 @@
   {
     "graph": {
       "group": "Example: Using Ray Tasks to Parallelize a Function####Example: Using Ray Actors to Parallelize a Class####Example: Creating and Transforming Datasets",
+      "groupContext": "Example: Using Ray Tasks to Parallelize a Function####Example: Using Ray Actors to Parallelize a Class####Example: Creating and Transforming Datasets",
       "title": "Run a Ray Job",
       "source": "placeholder",
       "provenance": ["test/inputs/23/in.md"],
@@ -217,6 +223,7 @@
             "sequence": [
               {
                 "key": "somekey",
+                "group": "Creating and Transforming Datasets",
                 "title": "Creating and Transforming Datasets",
                 "filepath": "",
                 "graph": {
@@ -224,6 +231,7 @@
                   "sequence": [
                     {
                       "key": "somekey",
+                      "group": "Prerequisites",
                       "title": "Prerequisites",
                       "filepath": "",
                       "graph": {
@@ -251,6 +259,7 @@
                     },
                     {
                       "group": "New Dataset from Range####New Dataset from File",
+                      "groupContext": "New Dataset from Range####New Dataset from File",
                       "title": "Main Tasks",
                       "source": "placeholder",
                       "provenance": ["test/inputs/23/in.md"],

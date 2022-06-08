@@ -34,6 +34,7 @@ import {
   Barrier,
   Validatable,
   CodeBlockProps,
+  IdempotencyGroup,
   Source,
   Title,
   Description,
@@ -140,7 +141,13 @@ export type Choice<T extends Unordered | Ordered = Unordered> = Source &
   T &
   Title &
   Partial<Provenance> & {
+    /** identifier for this choice */
     group: ChoiceGroup
+
+    /** in case we are making the same choice more than once, an id for that context */
+    groupContext: string
+
+    /** The tuple of options for this choice */
     choices: ChoicePart<T>[]
   }
 
@@ -195,6 +202,7 @@ export type SubTask<T extends Unordered | Ordered = Unordered> = Key &
   Partial<Description> &
   Partial<Barrier> &
   Partial<Validatable> &
+  Partial<IdempotencyGroup> &
   T & {
     graph: Sequence<T>
   }
@@ -203,6 +211,7 @@ export type OrderedSubTask = SubTask<Ordered>
 
 export function subtask<T extends Unordered | Ordered = Unordered>(
   key: string,
+  group: string,
   title: string,
   description: string,
   filepath: string,
@@ -213,6 +222,7 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
 ): SubTask<Unordered> {
   return {
     key,
+    group,
     title,
     description,
     filepath,
@@ -225,11 +235,11 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
 
 /** @return a `Graph` that inherits the given `EnTitled` properties */
 export function withTitle(block: LeafNode, { title, description, source }: EnTitled, barrier = false) {
-  return subtask(title, title, description, "", seq(block), source, barrier)
+  return subtask(title, title, title, description, "", seq(block), source, barrier)
 }
 
 export function asSubTask(step: TitledStep): SubTask {
-  return subtask(v4(), step.title, step.description, "", step.graph, step.source)
+  return subtask(v4(), step.title, step.title, step.description, "", step.graph, step.source)
 }
 
 /** @return whether `A` and `B` are identical `Graph` */
@@ -337,7 +347,7 @@ export function sameGraph(A: Graph, B: Graph) {
  * tabular UI, usually the first tab is open by default.
  */
 export function chooseIndex(graph: Choice, choices: "default-path" | ChoiceState = "default-path") {
-  const selectedTitle = choices !== "default-path" ? choices.get(graph.group) : undefined
+  const selectedTitle = choices !== "default-path" ? choices.get(graph) : undefined
 
   const index = !selectedTitle ? 0 : graph.choices.findIndex((_) => _.title === selectedTitle)
   return index < 0 ? 0 : index

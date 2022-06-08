@@ -2,6 +2,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Text versus HTML?",
       "title": "Text versus HTML?",
       "filepath": "",
       "graph": {

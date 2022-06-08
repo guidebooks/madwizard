@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "expand(echo 3 ; echo 4 ; echo 5)",
+      "groupContext": "expand(echo 3 ; echo 4 ; echo 5)",
       "title": "Testing tab expansion",
       "source": "placeholder",
       "provenance": ["test/inputs/14/in.md"],
