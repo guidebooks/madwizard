@@ -29,4 +29,7 @@ export type ExecOptions = Partial<Env> &
 
     /** Ignore stderr in capture? */
     ignoreStderr?: boolean
+
+    /** throw any non-zero exit codes */
+    throwErrors?: boolean
   }

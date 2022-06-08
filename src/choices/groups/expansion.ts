@@ -102,7 +102,10 @@ function expandPart(template: ChoicePart, names: string[]): ChoicePart[] {
  *
  * TODO allow a ValidationExecutor to be passed in.
  */
-async function doExpand(expansionExpr: ExpansionExpression, options: Partial<ExecutorOptions>): Promise<string[]> {
+async function doExpand(
+  expansionExpr: ExpansionExpression,
+  options: Partial<ExecutorOptions> & { debug: ReturnType<typeof Debug> }
+): Promise<string[]> {
   try {
     const response = await oraPromise(
       (options.exec || (await import("../../exec/index.js").then((_) => _.shellExecToString)))(
@@ -115,6 +118,7 @@ async function doExpand(expansionExpr: ExpansionExpression, options: Partial<Exe
   } catch (err) {
     // then the expansion failed. make sure the users don't
     // see the template
+    options.debug(expansionExpr.expr, err)
     return []
   }
 }
