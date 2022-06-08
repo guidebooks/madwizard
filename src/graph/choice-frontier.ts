@@ -105,10 +105,10 @@ export function findChoiceFrontier(graph: Graph) {
 
 export function findChoicesOnFrontier(graph: Graph, choices?: ChoiceState): Choice[] {
   if (isChoice(graph)) {
-    if (!choices || !choices.get(graph.group)) {
+    if (!choices || !choices.get(graph)) {
       return [graph]
     } else {
-      const madeChoiceTitle = choices.get(graph.group)
+      const madeChoiceTitle = choices.get(graph)
       const chosenSubtree = graph.choices.find(
         (_) => _.title.localeCompare(madeChoiceTitle, undefined, { sensitivity: "accent" }) === 0
       )

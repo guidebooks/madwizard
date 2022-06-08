@@ -25,7 +25,7 @@ import { ExecutorOptions } from "../../exec/Executor.js"
 import { Graph, Choice, ChoicePart, blocks, findChoicesOnFrontier } from "../../graph/index.js"
 
 /** Map from `ExpansionExpression.expr` to a list of expanded choices */
-export type ExpansionMap = Record<string, string[]>
+export type ExpansionMap = Record<string, Promise<string[]>>
 
 export function updateContent<Part extends { graph: Graph; description?: string }>(part: Part, choice = ""): Part {
   const pattern1 = /\$\{?choice\}?/gi
@@ -136,16 +136,25 @@ async function expandOneChoice(
           if (!expansionExpr) {
             return updateContent(part)
           } else {
-            const memoized = options.expansionMemo && options.expansionMemo[expansionExpr.expr]
-            const response = memoized || (await doExpand(expansionExpr, options))
+            let memoized = options.expansionMemo && options.expansionMemo[expansionExpr.expr]
+            if (!memoized || (await memoized).length === 0) {
+              if (options.expansionMemo) {
+                options.expansionMemo[expansionExpr.expr] = new Promise((resolve, reject) => {
+                  try {
+                    resolve(doExpand(expansionExpr, options))
+                  } catch (err) {
+                    reject(err)
+                  }
+                })
+                memoized = options.expansionMemo[expansionExpr.expr]
+              } else {
+                memoized = doExpand(expansionExpr, options)
+              }
+            }
+            const response = await memoized
             options.debug(expansionExpr, !!memoized, response)
 
             if (response.length > 0) {
-              // memoize the expansion
-              if (options.expansionMemo) {
-                options.expansionMemo[expansionExpr.expr] = response
-              }
-
               // expand the template, which yields Part -> Part[]
               return expandPart(part, response)
             }

@@ -1,0 +1,4 @@
+echo AAAAA
+AAAAA
+echo BBBBB
+BBBBB

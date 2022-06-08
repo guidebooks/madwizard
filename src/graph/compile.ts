@@ -123,6 +123,14 @@ export async function compile(
     const parts: Graph[] = []
     let currentNesting: Nesting[] = []
 
+    /** If we are making the same choice more than once, we need to remember a context for each copy of that choice */
+    const currentGroupContext = () =>
+      currentNesting
+        .filter((_) => isImportNesting(_))
+        .map((_) => _.parent.group)
+        .filter(Boolean)
+        .join(",")
+
     /** Find the nearest enclosing Import */
     const currentProvenance = () => {
       const provs = currentNesting
@@ -143,13 +151,24 @@ export async function compile(
       form: parent.form,
     })
 
-    const newChoices = (block: CodeBlockProps, parent: CodeBlockChoice, isDeepest: boolean): Choice => ({
-      group: parent.group,
-      title: parent.groupDetail.title,
-      source: parent.groupDetail.source,
-      provenance: currentProvenance(),
-      choices: [newChoice(block, parent, isDeepest)],
-    })
+    const newChoices = (block: CodeBlockProps, parent: CodeBlockChoice, isDeepest: boolean): Choice => {
+      const groupContext = currentGroupContext()
+
+      // e.g.
+      // Choose your Poison (for this reason)
+      // Choose your Poison (for that other reason)
+      const groupContextForTitle = groupContext.length > 0 ? ` (${groupContext})` : ""
+      const title = (parent.groupDetail.title || "") + groupContextForTitle
+
+      return {
+        group: parent.group,
+        groupContext: (groupContext ? groupContext + "." : "") + parent.group,
+        title: title.length === 0 ? undefined : title,
+        source: parent.groupDetail.source,
+        provenance: currentProvenance(),
+        choices: [newChoice(block, parent, isDeepest)],
+      }
+    }
 
     const newWizardStep = (
       block: CodeBlockProps,
@@ -199,6 +218,7 @@ export async function compile(
     const newSubTask = (block: CodeBlockProps, parent: CodeBlockImport, isDeepest: boolean): SubTask => {
       return subtask(
         parent.key,
+        parent.group,
         parent.title,
         parent.description,
         parent.filepath,
@@ -354,6 +374,7 @@ export async function compile(
 
     if (title && !extractTitle(optimized)) {
       return subtask(
+        title,
         title,
         title,
         description,

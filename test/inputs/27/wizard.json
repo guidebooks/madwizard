@@ -2,6 +2,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Step1Title",
       "title": "Step1Title",
       "description": "Step1Description",
       "filepath": "",
@@ -25,6 +26,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Step2Title",
       "title": "Step2Title",
       "description": "Step2Description",
       "filepath": "",
@@ -48,6 +50,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Step2Title",
       "title": "Step2Title",
       "description": "Step2Description",
       "filepath": "",

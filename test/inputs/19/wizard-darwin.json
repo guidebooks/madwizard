@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "Local Install####Kubernetes Install",
+      "groupContext": "Local Install####Kubernetes Install",
       "title": "Install Ray",
       "source": "placeholder",
       "provenance": ["test/inputs/19/in.md"],
@@ -35,6 +36,7 @@
                   "sequence": [
                     {
                       "key": "somekey",
+                      "group": "Install kubectl",
                       "title": "Install kubectl",
                       "filepath": "",
                       "graph": {
@@ -62,6 +64,7 @@
                   "sequence": [
                     {
                       "key": "somekey",
+                      "group": "Install Helm",
                       "title": "Install Helm",
                       "filepath": "",
                       "graph": {

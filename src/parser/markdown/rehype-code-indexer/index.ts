@@ -53,6 +53,7 @@ import {
   isBarrier,
   isOnAnImportChain,
   isImports,
+  getImportGroup,
   getImportKey,
   getImportFilepath,
   getImportTitle,
@@ -275,6 +276,7 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                         title: getImportTitle(_.properties),
                         filepath: getImportFilepath(_.properties),
                         validate: getValidate(_.properties),
+                        group: getImportGroup(_.properties),
                       })
                     } else if (isTipWithFullTitle(_)) {
                       const title = getTipTitle(_)
@@ -341,7 +343,13 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                   if (debug.enabled) {
                     debug(
                       "nesting of " + body,
-                      attributes.nesting.map(({ kind, title, source }) => ({ kind, title, source }))
+                      attributes.nesting.map(({ key, kind, title, source, group }) => ({
+                        key,
+                        kind,
+                        title,
+                        source,
+                        group,
+                      }))
                     )
                   }
                 }

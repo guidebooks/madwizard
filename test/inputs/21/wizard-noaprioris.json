@@ -2,6 +2,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Export an env var",
       "title": "Export an env var",
       "description": "Intentionally referencing `$BAM`, to test default values.\n",
       "filepath": "",
@@ -25,6 +26,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Export an env var",
       "title": "Export an env var",
       "description": "Intentionally referencing `$BAM`, to test default values.\n",
       "filepath": "",
@@ -48,6 +50,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Export an env var",
       "title": "Export an env var",
       "description": "Intentionally referencing `$BAM`, to test default values.\n",
       "filepath": "",
@@ -71,6 +74,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Then use it",
       "title": "Then use it",
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",
@@ -94,6 +98,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Propagation check",
       "title": "Propagation check",
       "description": "This should be valid, if FOO is propagated correctly to the validator.\n",
       "filepath": "",

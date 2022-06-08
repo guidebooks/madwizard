@@ -2,6 +2,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Using Default Exec",
       "title": "Using Default Exec",
       "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
       "filepath": "",
@@ -25,6 +26,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Using Default Exec (again)",
       "title": "Using Default Exec (again)",
       "description": "Again, to make sure there are no bugs with executing the same body in a different code block.\n",
       "filepath": "",
@@ -48,6 +50,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Using Custom Exec",
       "title": "Using Custom Exec",
       "filepath": "",
       "graph": {

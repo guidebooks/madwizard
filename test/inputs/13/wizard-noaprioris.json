@@ -2,6 +2,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "H1",
       "title": "H1",
       "filepath": "",
       "graph": {

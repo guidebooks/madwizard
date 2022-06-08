@@ -70,13 +70,13 @@ function extractTitleForPrereqsPlusSubTask(graph: Graph) {
 
 function toLookupTable(list: SubTask[]): LookupTable {
   return list.reduce((M, subtask) => {
-    M[subtask.key] = subtask
+    M[subtask.group || subtask.key] = subtask
     return M
   }, {})
 }
 
 function removeDuplicates(list: SubTask[]): SubTask[] {
-  const uniqueKeys = [...new Set(list.map((_) => _.key))]
+  const uniqueKeys = [...new Set(list.map((_) => _.group || _.key))]
   const lookupTable = toLookupTable(list)
   return uniqueKeys.map((key) => lookupTable[key])
 }
@@ -124,7 +124,7 @@ function extractSubTasksCommonToAllChoices(choice: Choice): SubTask[] {
 }
 
 function pruneSubTasks(graph: SubTask, inheritedSubTasks: SubTask[], includingMe = true): SubTask {
-  if (includingMe && inheritedSubTasks.find((_) => _.key === graph.key)) {
+  if (includingMe && inheritedSubTasks.find((_) => _.key === graph.key && _.group === graph.group)) {
     // then we can zero out this particular instance of the subtask,
     // since it is inherited from above
     return undefined
@@ -268,7 +268,7 @@ function asPrereqs(content: Graph[]): SubTask {
     { tagName: "div" },
     content.map((_) => hasSource(_) && _.source).filter(Boolean)
   ) as Source["source"]
-  return subtask("Prerequisites", "Prerequisites", "", "", sequence(content), source)
+  return subtask("Prerequisites", "Prerequisites", "Prerequisites", "", "", sequence(content), source)
 }
 
 function withTitle(title: string, description: string, content: Sequence, source: Source["source"]) {
@@ -300,7 +300,7 @@ function withTitle(title: string, description: string, content: Sequence, source
       }
     }
 
-    return subtask(title, title, description, "", content, source)
+    return subtask(title, title, title, description, "", content, source)
   }
 }
 

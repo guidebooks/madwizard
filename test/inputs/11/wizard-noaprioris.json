@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "Text####HTML",
+      "groupContext": "Text####HTML",
       "title": "Text versus HTML?",
       "source": "placeholder",
       "provenance": ["test/inputs/11/in.md"],

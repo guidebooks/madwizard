@@ -124,7 +124,7 @@ export function statusOf(graph: Graph, statusMemo: StatusMap, choices: ChoiceSta
           if (goodIdx >= 0) {
             // and memoize that we elected it...
             const chosenTitle = graph.choices[goodIdx].title
-            choices.set(graph.group, chosenTitle)
+            choices.set(graph, chosenTitle)
           }
         }
         return "success"

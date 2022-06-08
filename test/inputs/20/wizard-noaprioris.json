@@ -2,6 +2,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "a.md",
       "title": "a.md",
       "filepath": "",
       "graph": {
@@ -23,6 +24,7 @@
   {
     "graph": {
       "group": "Tab1",
+      "groupContext": "Tab1",
       "title": "Conditional Inline of Imports",
       "source": "placeholder",
       "provenance": ["test/inputs/20/in.md"],
@@ -34,6 +36,7 @@
             "sequence": [
               {
                 "key": "somekey",
+                "group": "Prerequisites",
                 "title": "Prerequisites",
                 "filepath": "",
                 "graph": {
@@ -66,6 +69,7 @@
               },
               {
                 "group": "ITab1",
+                "groupContext": "ITab1",
                 "title": "Tab1",
                 "source": "placeholder",
                 "provenance": ["test/inputs/20/in.md"],

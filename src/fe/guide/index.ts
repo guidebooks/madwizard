@@ -121,9 +121,9 @@ export class Guide {
 
   private incorporateAnswers(choiceStep: ChoiceStep, answer: string | enquirer.prompt.FormQuestion.Answer) {
     if (typeof answer === "string") {
-      this.choices.set(choiceStep.graph.group, answer)
+      this.choices.set(choiceStep.graph, answer)
     } else {
-      this.choices.formComplete(choiceStep.graph.group, answer)
+      this.choices.formComplete(choiceStep.graph, answer)
     }
   }
 

@@ -2,6 +2,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Test for asynchronous code block execution.",
       "title": "Test for asynchronous code block execution.",
       "description": "This code block's output shuld not be seen by the `run` test, because the guidebook run will have completed before the sleep finishes.\n",
       "filepath": "",
@@ -25,6 +26,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Test for asynchronous code block execution.",
       "title": "Test for asynchronous code block execution.",
       "description": "This code block's output shuld not be seen by the `run` test, because the guidebook run will have completed before the sleep finishes.\n",
       "filepath": "",
@@ -49,6 +51,7 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "Test for asynchronous code block execution.",
       "title": "Test for asynchronous code block execution.",
       "description": "This code block's output shuld not be seen by the `run` test, because the guidebook run will have completed before the sleep finishes.\n",
       "filepath": "",

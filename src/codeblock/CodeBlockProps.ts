@@ -71,6 +71,17 @@ export type Source = {
   source: Something
 }
 
+export type IdempotencyGroup = {
+  /**
+   * If not given, this guidebook is assumed to be idempotent, and
+   * madwizard will look to optimize away multiple invocations of
+   * this guidebook. If an `idempotencyGroup` is given, then
+   * madwizard will only optimize away multiple invoctaions of this
+   * guidebook in the given group.
+   */
+  group: string
+}
+
 /**
  * Is this a member of a group of choices? e.g. am I `A` in a choice
  * to do either `A+B` or `C+D`?
@@ -97,6 +108,7 @@ export type Import = Source &
   Title &
   Partial<Description> &
   Partial<Barrier> &
+  Partial<IdempotencyGroup> &
   Partial<Validatable> &
   Kind<"Import"> & {
     key: string

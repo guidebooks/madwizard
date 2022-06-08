@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "Number of CPUs####Number of GPUs",
+      "groupContext": "Number of CPUs####Number of GPUs",
       "title": "Configure you Ray Resource Requirements",
       "source": "placeholder",
       "provenance": ["test/inputs/26/in.md"],

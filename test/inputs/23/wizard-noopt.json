@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "Local Install####Kubernetes Install",
+      "groupContext": "Local Install####Kubernetes Install",
       "title": "Install Ray",
       "source": "placeholder",
       "provenance": ["test/inputs/23/install/index.md"],
@@ -13,6 +14,7 @@
             "sequence": [
               {
                 "group": "Intel####Apple Silicon",
+                "groupContext": "Intel####Apple Silicon",
                 "source": "placeholder",
                 "provenance": ["test/inputs/23/install/index.md"],
                 "choices": [
@@ -45,6 +47,7 @@
                             "sequence": [
                               {
                                 "group": "Install Miniconda####Install Anaconda",
+                                "groupContext": "Install Miniconda####Install Anaconda",
                                 "title": "Choose a Conda Installation Method",
                                 "source": "placeholder",
                                 "provenance": ["test/inputs/23/python/conda/install.md"],
@@ -56,6 +59,7 @@
                                       "sequence": [
                                         {
                                           "group": "Windows####Linux####MacOS",
+                                          "groupContext": "Windows####Linux####MacOS",
                                           "source": "placeholder",
                                           "provenance": ["test/inputs/23/python/conda/install.md"],
                                           "choices": [
@@ -66,6 +70,7 @@
                                                 "sequence": [
                                                   {
                                                     "group": "Intel####ARM64",
+                                                    "groupContext": "Intel####ARM64",
                                                     "source": "placeholder",
                                                     "provenance": ["test/inputs/23/python/conda/install.md"],
                                                     "choices": [
@@ -111,6 +116,7 @@
                                                 "sequence": [
                                                   {
                                                     "group": "Intel####Apple Silicon",
+                                                    "groupContext": "Intel####Apple Silicon",
                                                     "source": "placeholder",
                                                     "provenance": ["test/inputs/23/python/conda/install.md"],
                                                     "choices": [
@@ -165,6 +171,7 @@
                                       "sequence": [
                                         {
                                           "group": "MacOS####Linux",
+                                          "groupContext": "MacOS####Linux",
                                           "source": "placeholder",
                                           "provenance": ["test/inputs/23/python/conda/install.md"],
                                           "choices": [
@@ -189,6 +196,7 @@
                                                 "sequence": [
                                                   {
                                                     "group": "x86####POWER8 and POWER9####AWS Graviton2/ARM64####IBM z/Linux and LinuxONE",
+                                                    "groupContext": "x86####POWER8 and POWER9####AWS Graviton2/ARM64####IBM z/Linux and LinuxONE",
                                                     "source": "placeholder",
                                                     "provenance": ["test/inputs/23/python/conda/install.md"],
                                                     "choices": [
@@ -303,6 +311,7 @@
                   "sequence": [
                     {
                       "group": "Linux####Windows####MacOS",
+                      "groupContext": "Linux####Windows####MacOS",
                       "title": "Install kubectl",
                       "source": "placeholder",
                       "provenance": ["test/inputs/23/kubernetes/kubectl.md"],
@@ -344,6 +353,7 @@
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
+                                "groupContext": "Homebrew####curl",
                                 "source": "placeholder",
                                 "provenance": ["test/inputs/23/kubernetes/kubectl.md"],
                                 "choices": [
@@ -369,6 +379,7 @@
                                       "sequence": [
                                         {
                                           "group": "Intel####Apple Silicon",
+                                          "groupContext": "Intel####Apple Silicon",
                                           "source": "placeholder",
                                           "provenance": ["test/inputs/23/kubernetes/kubectl.md"],
                                           "choices": [
@@ -434,6 +445,7 @@
                   "sequence": [
                     {
                       "group": "MacOS####Linux####Windows",
+                      "groupContext": "MacOS####Linux####Windows",
                       "title": "Install Helm v3",
                       "source": "placeholder",
                       "provenance": ["test/inputs/23/kubernetes/helm3.md"],
@@ -445,6 +457,7 @@
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
+                                "groupContext": "Homebrew####curl",
                                 "source": "placeholder",
                                 "provenance": ["test/inputs/23/kubernetes/helm3.md"],
                                 "choices": [
@@ -532,6 +545,7 @@
                         "sequence": [
                           {
                             "group": "Linux####Windows####MacOS",
+                            "groupContext": "Linux####Windows####MacOS",
                             "title": "Install kubectl",
                             "source": "placeholder",
                             "provenance": ["test/inputs/23/kubernetes/kubectl.md"],
@@ -573,6 +587,7 @@
                                   "sequence": [
                                     {
                                       "group": "Homebrew####curl",
+                                      "groupContext": "Homebrew####curl",
                                       "source": "placeholder",
                                       "provenance": ["test/inputs/23/kubernetes/kubectl.md"],
                                       "choices": [
@@ -598,6 +613,7 @@
                                             "sequence": [
                                               {
                                                 "group": "Intel####Apple Silicon",
+                                                "groupContext": "Intel####Apple Silicon",
                                                 "source": "placeholder",
                                                 "provenance": ["test/inputs/23/kubernetes/kubectl.md"],
                                                 "choices": [
@@ -656,6 +672,7 @@
                     },
                     {
                       "group": "fakeit",
+                      "groupContext": "fakeit",
                       "title": "Choose a Kubernetes context",
                       "source": "placeholder",
                       "provenance": ["test/inputs/23/kubernetes/context.md"],
@@ -716,6 +733,7 @@
   {
     "graph": {
       "group": "Example: Using Ray Tasks to Parallelize a Function####Example: Using Ray Actors to Parallelize a Class####Example: Creating and Transforming Datasets",
+      "groupContext": "Example: Using Ray Tasks to Parallelize a Function####Example: Using Ray Actors to Parallelize a Class####Example: Creating and Transforming Datasets",
       "title": "Run a Ray Job",
       "source": "placeholder",
       "provenance": ["test/inputs/23/in.md"],
@@ -773,6 +791,7 @@
               },
               {
                 "group": "New Dataset from Range####New Dataset from File",
+                "groupContext": "New Dataset from Range####New Dataset from File",
                 "title": "Creating and Transforming Datasets",
                 "source": "placeholder",
                 "provenance": ["test/inputs/23/in.md"],

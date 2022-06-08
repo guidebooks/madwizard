@@ -17,13 +17,14 @@
 import { Element } from "hast"
 import which from "which"
 
+import mock from "./mock.js"
 import debug from "./debug.js"
 import { ChoiceState } from "../../index.js"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "../index.js"
 
 export class Homebrew {
   /** the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = "madwizard/apriori/mac-installer"
+  public readonly choiceGroup = mock("madwizard/apriori/mac-installer")
 
   /** this helps with processing and optimizing based on the existence of homebrew on the user's system */
   private readonly canonicalName = "Homebrew"
@@ -73,7 +74,7 @@ export class Homebrew {
   public checkAndSet(node: Element) {
     if (this.isMatchingTabGroup(node)) {
       debug("homebrew", "found matching tab group")
-      setTabGroup(node, this.choiceGroup)
+      setTabGroup(node, this.choiceGroup.group)
       this.rewriteTabsToUseCanonicalNames(node)
       return true
     }

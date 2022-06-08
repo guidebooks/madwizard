@@ -2,6 +2,7 @@
   {
     "graph": {
       "group": "Tab1####Tab2",
+      "groupContext": "Tab1####Tab2",
       "source": "placeholder",
       "choices": [
         {

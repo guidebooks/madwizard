@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+import { Choice } from "../graph/index.js"
 import ChoiceEventManager from "./events.js"
-import { ChoiceState, ChoicesMap } from "./index.js"
+import { ChoiceState, ChoicesMap, Key } from "./index.js"
 
 export default class ChoiceStateImpl extends ChoiceEventManager implements ChoiceState {
   public constructor(
@@ -40,15 +41,20 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
     return Object.entries(this._choices)
   }
 
-  public contains(key: keyof ChoicesMap) {
-    return key in this._choices
+  private key(choice: Choice) {
+    return choice.groupContext
   }
 
-  public get(key: keyof ChoicesMap) {
-    return this._choices[key]
+  public contains(choice: Choice) {
+    return this.key(choice) in this._choices
   }
 
-  public remove<K extends keyof ChoicesMap>(key: K) {
+  public get(choice: Choice) {
+    return this._choices[this.key(choice)]
+  }
+
+  public remove(choice: Choice) {
+    const key = this.key(choice)
     if (key in this._choices) {
       delete this._choices[key]
       this.rejectedChoices[key] = true
@@ -59,7 +65,8 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
     }
   }
 
-  public set<K extends keyof ChoicesMap>(key: K, value: ChoicesMap[K], overrideRejections = true) {
+  public set(choice: Choice, value: ChoicesMap[Key], overrideRejections = true) {
+    const key = this.key(choice)
     if (this._choices[key] === value) {
       return false
     }
@@ -75,13 +82,13 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
   }
 
   /** State representing form completion */
-  public formComplete<K extends keyof ChoicesMap>(key: K, value: Record<string, string>) {
-    return this.set(key, JSON.stringify(value))
+  public formComplete(choice: Choice, value: Record<string, string>) {
+    return this.set(choice, JSON.stringify(value))
   }
 
   /** Extract form responses */
-  public form<K extends keyof ChoicesMap>(key: K): Record<string, string> {
-    const raw = this.get(key)
+  public form(choice: Choice): Record<string, string> {
+    const raw = this.get(choice)
     if (raw) {
       try {
         return JSON.parse(raw)

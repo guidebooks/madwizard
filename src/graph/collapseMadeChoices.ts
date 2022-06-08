@@ -31,7 +31,7 @@ import {
 
 function collapse(graph: Graph, choices: ChoiceState): Graph {
   if (isChoice(graph)) {
-    const madeChoiceTitle = choices.get(graph.group)
+    const madeChoiceTitle = choices.get(graph)
     if (madeChoiceTitle) {
       const chosenSubtree = graph.choices.find(
         (_) => _.title.localeCompare(madeChoiceTitle, undefined, { sensitivity: "accent" }) === 0
@@ -49,6 +49,7 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
           return subtask(
             hasKey(collapsed) ? collapsed.key : graph.group,
             graph.title,
+            graph.title,
             "",
             "",
             sequence([collapsed]),
@@ -58,7 +59,7 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
           return collapsed
         }
       } else {
-        const form = choices.form(graph.group)
+        const form = choices.form(graph)
         if (form) {
           // do we have values for every part?
           if (graph.choices.every((_) => !!form[_.title])) {

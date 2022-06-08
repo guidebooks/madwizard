@@ -16,13 +16,14 @@
 
 import { Element } from "hast"
 
+import mock from "./mock.js"
 import debug from "./debug.js"
 import { ChoiceState } from "../../index.js"
 import { getTabTitle, isTabWithProperties, setTabGroup, setTabTitle } from "../index.js"
 
 export class RunningInTerminal {
   /** internal, the value should be namespaced and unique, but the particulars don't matter */
-  public readonly choiceGroup = "madwizard/apriori/in-terminal"
+  public readonly choiceGroup = mock("madwizard/apriori/in-terminal")
 
   /**
    * This code assumes the given `node` satisfies `import('..').isTabGroup`.
@@ -71,7 +72,7 @@ export class RunningInTerminal {
   public checkAndSet(node: Element) {
     if (this.isMatchingTabGroup(node)) {
       debug("interminal", "found matching tab group")
-      setTabGroup(node, this.choiceGroup)
+      setTabGroup(node, this.choiceGroup.group)
       this.rewriteTabsToUseCanonicalNames(node)
       return true
     }
