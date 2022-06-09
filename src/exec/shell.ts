@@ -22,7 +22,8 @@ export default async function shellItOut(
   cmdline: string | boolean,
   opts: ExecOptions = { quiet: false },
   extraEnv: Record<string, string> = {},
-  async?: boolean /* fire and forget, until this process exits? */
+  async?: boolean /* fire and forget, until this process exits? */,
+  onClose?: () => void | Promise<void> /* callback when the process exits */
 ): Promise<"success"> {
   const capture = typeof opts.capture === "string"
 
@@ -53,13 +54,22 @@ export default async function shellItOut(
       }
     )
 
-    child.on("error", reject)
+    child.on("error", async (err) => {
+      if (onClose) {
+        await onClose()
+      }
+      reject(err)
+    })
 
     let err = ""
     let out = ""
-    child.on("close", (code) => {
+    child.on("close", async (code) => {
       if (capture) {
         opts.capture = out
+      }
+
+      if (onClose) {
+        await onClose()
       }
 
       if (code === 0) {
