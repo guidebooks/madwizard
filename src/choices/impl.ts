@@ -49,14 +49,17 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
     return this.key(choice) in this._choices
   }
 
+  /** @return the current memoized selection for the given `Choice` */
   public get(choice: Choice) {
     return this._choices[this.key(choice)]
   }
 
+  /** Remove the memoized selection for the given `Choice` */
   public remove(choice: Choice) {
     return this.removeKey(this.key(choice))
   }
 
+  /** Take care with this. If you have a `Choice`, then prefer to use `remove(choice)` */
   public removeKey(key: Key): boolean {
     if (key in this._choices) {
       delete this._choices[key]
@@ -68,8 +71,13 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
     }
   }
 
+  /** Memoize a selection for the given `Choice` */
   public set(choice: Choice, value: ChoicesMap[Key], overrideRejections = true) {
-    const key = this.key(choice)
+    return this.setKey(this.key(choice), value, overrideRejections)
+  }
+
+  /** Take care with this. If you have a `Choice`, then prefer to use `set(choice, value)` */
+  public setKey(key: Key, value: ChoicesMap[Key], overrideRejections?: boolean): boolean {
     if (this._choices[key] === value) {
       return false
     }
