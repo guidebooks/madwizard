@@ -18,6 +18,7 @@ import { EOL } from "os"
 import ora, { Ora } from "ora"
 import { mainSymbols } from "figures"
 import chalk, { ChalkInstance } from "chalk"
+import promiseEach from "../../util/promise-each.js"
 
 /** The API passed to the client, to give it some control points */
 interface TaskWrapper {
@@ -42,20 +43,6 @@ export interface TaskRunnerOptions {
 
   /** TODO Not yet supported */
   concurrent?: boolean
-}
-
-/**
- * Map a asynchronous function to an array sequentially from front to
- * back.
- *
- */
-async function promiseEach<T, R>(arr: T[], fn: (t: T, idx: number) => R | Promise<R>): Promise<R[]> {
-  const result = []
-  let idx = 0
-  for (const item of arr) {
-    result.push(await fn(item, idx++))
-  }
-  return result
 }
 
 export function skip(ora: Ora, text: string) {

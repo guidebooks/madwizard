@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-import { Memos } from "../memoization/index.js"
-
-/** Environment variable state that might be mutated by the guidebook itself */
-export type Env = Pick<Memos, "env">
-
-export type ExecOptions = Partial<Env> &
-  Partial<Pick<Memos, "dependencies" | "invalidate" | "subprocesses" | "onExit">> & {
-    /** Do not emit to console */
-    quiet?: boolean
-
-    /** Capture stdout here */
-    capture?: string
-
-    /** Ignore stderr in capture? */
-    ignoreStderr?: boolean
-
-    /** throw any non-zero exit codes */
-    throwErrors?: boolean
+/**
+ * Map a asynchronous function to an array sequentially from front to
+ * back.
+ *
+ */
+export default async function promiseEach<T, R>(arr: T[], fn: (t: T, idx: number) => R | Promise<R>): Promise<R[]> {
+  const result = []
+  let idx = 0
+  for (const item of arr) {
+    result.push(await fn(item, idx++))
   }
+  return result
+}

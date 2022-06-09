@@ -53,7 +53,8 @@ export default async function execAsCustom(
   cmdline: string | boolean,
   opts: ExecOptions,
   _exec: CustomExecutable["exec"] | ((env: CustomEnv) => CustomExecutable["exec"] | Promise<CustomExecutable["exec"]>),
-  async?: boolean
+  async?: boolean,
+  onClose?: () => void | Promise<void>
 ): Promise<"success"> {
   const [{ write }, { dir: tmpDir, file: tmpFile }] = await Promise.all([import("fs"), import("tmp")])
 
@@ -71,12 +72,15 @@ export default async function execAsCustom(
               const mwenv = { MWDIR: dir, MWFILEPATH: filepath, MWFILENAME: basename(filepath) }
               const exec = typeof _exec === "function" ? await _exec(mwenv) : _exec
 
-              const onClose = () => {
+              const myOnClose = async () => {
                 cleanupCallback2()
                 cleanupCallback1()
+                if (onClose) {
+                  await onClose()
+                }
               }
 
-              shellItOut(exec, opts, mwenv, async, onClose).then(resolve, reject)
+              shellItOut(exec, opts, mwenv, async, myOnClose).then(resolve, reject)
             }
           })
         })

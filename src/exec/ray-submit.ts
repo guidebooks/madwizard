@@ -15,6 +15,7 @@
  */
 
 import Debug from "debug"
+import { shellSync } from "./shell.js"
 import { ExecOptions } from "./options.js"
 import custom, { CustomEnv } from "./custom.js"
 
@@ -117,6 +118,14 @@ export default async function raySubmit(cmdline: string | boolean, opts: ExecOpt
       //
       // Note: in guidebook source, only one \" is needed.
       // Here, we need \\" just to make nodejs's parser happy.
+
+      // make sure to kill the ray job before we go
+      opts.onExit.push({
+        name: "stop ray job",
+        cb: () => {
+          shellSync("ray job stop ${JOB_ID}", opts)
+        },
+      })
 
       return custom(
         cmdline,
