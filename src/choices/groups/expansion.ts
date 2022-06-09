@@ -118,7 +118,7 @@ async function doExpand(
   } catch (err) {
     // then the expansion failed. make sure the users don't
     // see the template
-    options.debug(expansionExpr.expr, err)
+    options.debug(expansionExpr.expr, options.env, err)
     return []
   }
 }
