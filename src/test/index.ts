@@ -208,6 +208,9 @@ function testRunTask(test: Test, input: string, suffix: string) {
   })
 }
 
+const justTheseInputs =
+  process.argv.length <= 2 ? undefined : new Set(process.argv.slice(2).map((_) => parseInt(_, 10)))
+
 const tasks = ["plan", "wizard", "run"]
 const suites = options.flatMap(({ suffix }) => tasks.map((task) => suite(`${task} ${suffix || "default options"}`)))
 /**
@@ -217,6 +220,7 @@ const suites = options.flatMap(({ suffix }) => tasks.map((task) => suite(`${task
 readdirSync(inputDir)
   .map(tryParseInt)
   .filter((_) => !isNaN(_))
+  .filter((_) => !justTheseInputs || justTheseInputs.has(_))
   .sort((a, b) => a - b)
   .map((_) => join(inputDir, String(_)))
   .forEach((input) => {
