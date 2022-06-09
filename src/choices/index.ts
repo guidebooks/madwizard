@@ -44,6 +44,7 @@ export interface ChoiceState {
   get: (choice: Choice) => ChoicesMap[Key]
   set: (choice: Choice, value: ChoicesMap[Key], overrideRejections?: boolean) => boolean
   remove: (choice: Choice) => boolean
+  removeKey: (key: Key) => boolean
 }
 
 export type Choices = {
