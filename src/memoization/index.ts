@@ -38,6 +38,9 @@ export interface Memos {
   /** Any forked subprocesses that we should wait for? */
   subprocesses: ChildProcess[]
 
+  /** onExit handlers */
+  onExit: { name: string; cb: () => void | Promise<void> }[]
+
   /** Invalidate any memos that make use of the given shell variable */
   invalidate(variable: string): void
 
@@ -62,6 +65,9 @@ export class Memoizer implements Memos {
   /** Any forked subprocesses that we should wait for? */
   public subprocesses: ChildProcess[] = []
 
+  /** onExit handlers */
+  public onExit: Memos["onExit"] = []
+
   /** Invalidate any memos that make use of the given shell variable */
   public invalidate(variable: string): void {
     const pattern = new RegExp(variable)
@@ -77,15 +83,25 @@ export class Memoizer implements Memos {
   }
 
   /** Cleanup any state, e.g. spawned subprocesses */
-  public cleanup(): void | Promise<void> {
+  public cleanup(): void {
     if (this.subprocesses.length > 0) {
       try {
-        // re: `reverse`, we intentionally iterate over the
+        // re: `reverse()`, we intentionally iterate over the
         // subprocesses in *reverse* order. The assumption here is
         // that we need to "unwind" the subprocesses. If we kill older
         // subprocesses first, then the later kills may fail because
         // those later processes depend on state or connections being maintained by the earlier
         // ones; e.g. kubernetes port forwards.
+        this.onExit.reverse().forEach(({ name, cb }) => {
+          try {
+            Debug("madwizard/cleanup")(name)
+            cb()
+          } catch (err) {
+            Debug("madwizard/cleanup")("error in onExit handler " + name, err)
+          }
+        })
+
+        // same here, re: `reverse()`
         this.subprocesses.reverse().forEach((child) => {
           Debug("madwizard/cleanup")("killing process " + child.pid)
 

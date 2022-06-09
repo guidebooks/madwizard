@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-import { spawn } from "child_process"
+import { spawn, execSync } from "child_process"
 import { ExecOptions } from "./options.js"
+
+export function shellSync(cmdline: string, opts: ExecOptions = { quiet: false }) {
+  execSync(cmdline, { env: Object.assign({}, process.env, opts.env || {}) })
+}
 
 /** Shell out the execution of the given `cmdline` */
 export default async function shellItOut(
