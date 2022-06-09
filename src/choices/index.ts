@@ -28,8 +28,13 @@ export type Key = CodeBlockChoice["group"]
 export type ChoicesMap = Record<Key, CodeBlockChoice["title"]>
 
 export interface ChoiceState {
+  /** Copy this model */
   clone: () => ChoiceState
+
+  /** Register as a listener for selections */
   onChoice: ChoiceHandlerRegistration
+
+  /** Deregister as a listener for selections */
   offChoice: ChoiceHandlerRegistration
 
   /** State representing form completion */
@@ -38,12 +43,28 @@ export interface ChoiceState {
   /** Extract form responses */
   form(choice: Choice): Record<string, string>
 
+  /** @return the set of memoized keys */
   keys: () => ReturnType<typeof Object.keys>
+
+  /** @return the set of memoized entries */
   entries: () => ReturnType<typeof Object.entries>
+
+  /** Do we have a memoized selection for the given `Choice` */
   contains: (choice: Choice) => boolean
+
+  /** @return the current memoized selection for the given `Choice` */
   get: (choice: Choice) => ChoicesMap[Key]
+
+  /** Memoize a selection for the given `Choice` */
   set: (choice: Choice, value: ChoicesMap[Key], overrideRejections?: boolean) => boolean
+
+  /** Remove the memoized selection for the given `Choice` */
   remove: (choice: Choice) => boolean
+
+  /** Take care with this. If you have a `Choice`, then prefer to use `set(choice, value)` */
+  setKey: (key: Key, value: ChoicesMap[Key], overrideRejections?: boolean) => boolean
+
+  /** Take care with this. If you have a `Choice`, then prefer to use `remove(choice)` */
   removeKey: (key: Key) => boolean
 }
 
