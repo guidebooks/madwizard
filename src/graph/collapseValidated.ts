@@ -114,7 +114,7 @@ async function collapseValidated<T extends Unordered | Ordered = Unordered, G ex
     if (subgraph) {
       return Object.assign({}, graph, { graph: subgraph })
     }
-    /* } else if (isChoice<T>(graph) && graph.group === firstChoice.group) {
+  } else if (isChoice<T>(graph) && graph.choices.length === 1) {
     const parts = await Promise.all(graph.choices.map(recurse2))
     if (parts.filter(Boolean).length > 0) {
       return Object.assign({}, graph, {
@@ -127,7 +127,7 @@ async function collapseValidated<T extends Unordered | Ordered = Unordered, G ex
           })
           .filter(Boolean),
       })
-    } */
+    }
   } else {
     return graph
   }
