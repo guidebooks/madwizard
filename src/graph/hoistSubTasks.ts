@@ -336,7 +336,7 @@ function hoist(inputGraph: Graph, inheritedSubTasks: SubTask[]): Graph | void {
   const choiceFrontier = findChoiceFrontier(inputGraph)
   const frontierAllChoicesSubTasks = choiceFrontier.flatMap(extractSubTasksCommonToAllChoices)
 
-  const mySubTasks = removeDuplicates(union(frontierAllChoicesSubTasks, myDominatedSubTasks))
+  const mySubTasks = removeDuplicates(union(myDominatedSubTasks, frontierAllChoicesSubTasks))
   const allSubTasks = removeDuplicates(union(mySubTasks, inheritedSubTasks))
 
   if (allSubTasks.length === 0) {
