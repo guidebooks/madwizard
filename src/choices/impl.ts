@@ -54,7 +54,10 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
   }
 
   public remove(choice: Choice) {
-    const key = this.key(choice)
+    return this.removeKey(this.key(choice))
+  }
+
+  public removeKey(key: Key): boolean {
     if (key in this._choices) {
       delete this._choices[key]
       this.rejectedChoices[key] = true
