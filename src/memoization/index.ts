@@ -70,7 +70,8 @@ export class Memoizer implements Memos {
 
   /** Invalidate any memos that make use of the given shell variable */
   public invalidate(variable: string): void {
-    const pattern = new RegExp(variable)
+    // invalidate $X, ${X}, printenv X
+    const pattern = new RegExp("(\\$|(printenv\\s+))\\{?" + variable + "\\}?")
 
     Object.keys(this.statusMemo)
       .filter((key) => pattern.test(key)) // list of matching keys
@@ -78,8 +79,10 @@ export class Memoizer implements Memos {
 
     Object.keys(this.expansionMemo)
       .filter((key) => pattern.test(key)) // list of matching keys
-      .forEach((matchingKey) => delete this.expansionMemo[matchingKey])
-    Debug("madwizard/cleanup")("invalidate", pattern, this.statusMemo)
+      .forEach((matchingKey) => {
+        Debug("madwizard/cleanup")("invalidating expansion", variable, pattern, matchingKey)
+        delete this.expansionMemo[matchingKey]
+      })
   }
 
   /** Cleanup any state, e.g. spawned subprocesses */
