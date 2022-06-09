@@ -106,7 +106,7 @@ async function saveEnvToFile(
  * ```
  *
  */
-export default async function raySubmit(cmdline: string | boolean, opts: ExecOptions, exec: string) {
+export default async function raySubmit(cmdline: string | boolean, opts: ExecOptions, exec: string, async?: boolean) {
   if (typeof cmdline === "string") {
     const prefix = /\s*ray-submit/
     if (prefix.test(exec)) {
@@ -118,33 +118,38 @@ export default async function raySubmit(cmdline: string | boolean, opts: ExecOpt
       // Note: in guidebook source, only one \" is needed.
       // Here, we need \\" just to make nodejs's parser happy.
 
-      return custom(cmdline, opts, async (customEnv) => {
-        // anything after `ray-submit` will be tacked on to the `ray
-        // submit` command line
-        const parsedOptions = await import("yargs-parser").then((_) =>
-          _.default(exec, { configuration: { "populate--": true } })
-        )
-        const extraArgs = exec
-          .replace(prefix, "")
-          .replace(/--base-image=\S+/g, "")
-          .replace(/ -- .+$/, "")
+      return custom(
+        cmdline,
+        opts,
+        async (customEnv) => {
+          // anything after `ray-submit` will be tacked on to the `ray
+          // submit` command line
+          const parsedOptions = await import("yargs-parser").then((_) =>
+            _.default(exec, { configuration: { "populate--": true } })
+          )
+          const extraArgs = exec
+            .replace(prefix, "")
+            .replace(/--base-image=\S+/g, "")
+            .replace(/ -- .+$/, "")
 
-        const envFile = await saveEnvToFile(parsedOptions, opts, customEnv)
+          const envFile = await saveEnvToFile(parsedOptions, opts, customEnv)
 
-        // ./custom.ts will populate this env var
-        const inputFile = customEnv.MWFILENAME
+          // ./custom.ts will populate this env var
+          const inputFile = customEnv.MWFILENAME
 
-        // arguments after the --
-        const dashDash = parsedOptions["--"] ? parsedOptions["--"].join(" ") : ""
+          // arguments after the --
+          const dashDash = parsedOptions["--"] ? parsedOptions["--"].join(" ") : ""
 
-        // formulate a ray job submit command line; `custom` will
-        // assemble ` working directory `$MWDIR` and `$MWFILENAME`
-        const cmdline = `ray job submit --runtime-env=${envFile} ${extraArgs} -- python3 ${inputFile} ${dashDash}`
-        Debug("madwizard/exec/ray-submit")("env", opts.env || {})
-        Debug("madwizard/exec/ray-submit")("options", parsedOptions)
-        Debug("madwizard/exec/ray-submit")("cmdline", cmdline)
-        return cmdline
-      })
+          // formulate a ray job submit command line; `custom` will
+          // assemble ` working directory `$MWDIR` and `$MWFILENAME`
+          const cmdline = `ray job submit --runtime-env=${envFile} ${extraArgs} -- python3 ${inputFile} ${dashDash}`
+          Debug("madwizard/exec/ray-submit")("env", opts.env || {})
+          Debug("madwizard/exec/ray-submit")("options", parsedOptions)
+          Debug("madwizard/exec/ray-submit")("cmdline", cmdline)
+          return cmdline
+        },
+        async
+      )
     }
   }
 

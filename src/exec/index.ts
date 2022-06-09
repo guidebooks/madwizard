@@ -42,8 +42,8 @@ export async function shellExec(
     return (
       addPipDependences(cmdline, opts, exec) ||
       addCondaDependences(cmdline, opts, exec) ||
-      (await raySubmit(cmdline, opts, exec)) ||
-      custom(cmdline, opts, exec)
+      (await raySubmit(cmdline, opts, exec, async)) ||
+      custom(cmdline, opts, exec, async)
     )
   } else if (isShellish(language)) {
     // then the code block has been declared with a `shell` or `bash`
