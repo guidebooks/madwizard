@@ -80,8 +80,14 @@ export class Memoizer implements Memos {
   public cleanup(): void | Promise<void> {
     if (this.subprocesses.length > 0) {
       try {
-        this.subprocesses.forEach((child) => {
-          Debug("madwizard/cleanup")("killing process" + child.pid)
+        // re: `reverse`, we intentionally iterate over the
+        // subprocesses in *reverse* order. The assumption here is
+        // that we need to "unwind" the subprocesses. If we kill older
+        // subprocesses first, then the later kills may fail because
+        // those later processes depend on state or connections being maintained by the earlier
+        // ones; e.g. kubernetes port forwards.
+        this.subprocesses.reverse().forEach((child) => {
+          Debug("madwizard/cleanup")("killing process " + child.pid)
 
           // TODO windows...
           // maybe https://medium.com/@almenon214/killing-processes-with-node-772ffdd19aad
