@@ -55,13 +55,13 @@ function union(A: Promise<Status[]>) {
   return A.then((A) => A.slice(1).reduce(succeedFast, A[0]))
 }
 
-export type ValidateOptions = Partial<Memos> & { validator?: ValidationExecutor; throwErrors?: boolean }
+export type ValidateOptions = { validator?: ValidationExecutor; throwErrors?: boolean }
 
 /** This does an actual validation check */
 export async function doValidate(
   validate: Validatable["validate"],
   memos: Memos,
-  opts: Pick<ValidateOptions, "validator" | "throwErrors" | "env" | "dependencies">
+  opts: Pick<ValidateOptions, "validator" | "throwErrors">
 ): Promise<Status> {
   if (validate === true) {
     return "success"

@@ -60,7 +60,7 @@ async function collapseValidated<T extends Unordered | Ordered = Unordered, G ex
     if (graph.validate === true) {
       return undefined
     } else if (typeof graph.validate === "string") {
-      if (options.statusMemo && options.statusMemo[key] && options.statusMemo[key] === "success") {
+      if (memos.statusMemo && memos.statusMemo[key] && memos.statusMemo[key] === "success") {
         // this Validatable has been previously validated in this
         // session (as indicated by its presence in the given
         // `statusMemo`
@@ -71,9 +71,9 @@ async function collapseValidated<T extends Unordered | Ordered = Unordered, G ex
           doValidate(graph.validate, memos, options),
           chalk.dim(`Validating ${chalk.blue(nearestEnclosingTitle || key)}`)
         )
-        if (options.statusMemo) {
+        if (memos.statusMemo) {
           // great, now memoize the result
-          options.statusMemo[key] = status
+          memos.statusMemo[key] = status
         }
         if (status === "success") {
           return undefined
