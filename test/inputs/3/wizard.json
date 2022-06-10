@@ -90,6 +90,7 @@
         }
       ]
     },
+    "status": "success",
     "step": {
       "name": "DDD",
       "description": "This step requires you to choose how to proceed",
@@ -145,6 +146,7 @@
         }
       ]
     },
+    "status": "success",
     "step": {
       "name": "Main Tasks",
       "description": "This step requires you to choose how to proceed",

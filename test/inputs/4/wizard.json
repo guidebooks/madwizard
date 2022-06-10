@@ -135,6 +135,7 @@
         }
       ]
     },
+    "status": "success",
     "step": {
       "name": "Main Tasks",
       "description": "This step requires you to choose how to proceed",

@@ -18,6 +18,7 @@
       },
       "source": "placeholder"
     },
+    "status": "success",
     "step": {
       "name": "importa.md"
     }
@@ -92,6 +93,7 @@
       "validate": true,
       "id": "somekey"
     },
+    "status": "success",
     "step": {
       "name": "Missing title",
       "content": "```shell\necho \"testing barrier imports\"\n```"
