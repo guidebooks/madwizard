@@ -33,6 +33,9 @@ interface FetchOptions {
    * finding snippet content when parsing markdown.
    */
   mkdocs: string
+
+  /** Location of persisted profiles (remembered choices from prior runs) */
+  profilesPath: string
 }
 
 export type MadWizardOptions = Partial<CompilerOptions> & Partial<DisplayOptions> & Partial<FetchOptions>

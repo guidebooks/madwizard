@@ -18,6 +18,7 @@ import { basename } from "path"
 
 import shellItOut from "./shell.js"
 import { ExecOptions } from "./options.js"
+import { Memos } from "../memoization/index.js"
 import { CustomExecutable } from "../codeblock/index.js"
 
 export interface CustomEnv {
@@ -51,6 +52,7 @@ export interface CustomEnv {
  */
 export default async function execAsCustom(
   cmdline: string | boolean,
+  memos: Memos,
   opts: ExecOptions,
   _exec: CustomExecutable["exec"] | ((env: CustomEnv) => CustomExecutable["exec"] | Promise<CustomExecutable["exec"]>),
   async?: boolean,
@@ -80,7 +82,7 @@ export default async function execAsCustom(
                 }
               }
 
-              shellItOut(exec, opts, mwenv, async, myOnClose).then(resolve, reject)
+              shellItOut(exec, memos, opts, mwenv, async, myOnClose).then(resolve, reject)
             }
           })
         })

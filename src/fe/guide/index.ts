@@ -46,7 +46,8 @@ export class Guide {
     private readonly choices: ChoiceState,
     private readonly options: MadWizardOptions,
     private readonly memos: Memos,
-    private readonly ui: UI<string> = new AnsiUI()
+    private readonly ui: UI<string> = new AnsiUI(),
+    private readonly write?: Writable["write"]
   ) {}
 
   private get isGuided() {
@@ -55,6 +56,10 @@ export class Guide {
 
   private format(str: string, indentation = "  ") {
     return indent(this.ui.markdown(str.trim()), indentation)
+  }
+
+  private get suggestionHint() {
+    return "◄ you selected this last time"
   }
 
   /**
@@ -73,7 +78,7 @@ export class Guide {
     const preChoiceTasks = preChoiceSteps.filter((_) => _.status !== "success")
     const postChoiceTasks = wizard.filter(isTaskStep).filter((_) => _.status !== "success")
 
-    const questions: Question[] = choices.map(({ step }, stepIdx) => {
+    const questions: Question[] = choices.map(({ step, graph: choice }, stepIdx) => {
       const name = step.name || chalk.red("Missing name")
       const message = chalk.yellow.inverse.bold(
         ` Choice ${choiceIter + stepIdx + 1}:` + ` ${step.name || chalk.red("Missing name")} `
@@ -81,6 +86,8 @@ export class Guide {
 
       const { content } = step
       const form = isForm(content)
+
+      const suggestion = this.memos.suggestions.get(choice)
 
       const choices = content.map((tile, idx, A) => ({
         name: tile.title,
@@ -93,6 +100,14 @@ export class Guide {
       }))
 
       if (form) {
+        const suggestionForm = !suggestion ? {} : JSON.parse(suggestion)
+        choices.forEach((_) => {
+          const suggestion = suggestionForm[_.name]
+          if (suggestion) {
+            _.initial = suggestion
+          }
+        })
+
         return {
           type: "form" as const,
           name,
@@ -100,6 +115,24 @@ export class Guide {
           choices,
         }
       } else {
+        const selChoices = choices as enquirer.prompt.SelectQuestion.ChoiceOptions[]
+        selChoices.forEach((_) => {
+          _.hint = suggestion === _.name ? this.suggestionHint : undefined
+          if (_.name === "separator") {
+            _.name = ""
+            _.message = ""
+            _.disabled = true
+            _.role = "separator"
+          }
+        })
+
+        // sigh... i can't figure out how to make a choice
+        // default-selected; so... instead sort to float the selected
+        // to the top
+        if (suggestion) {
+          selChoices.sort((a, b) => (a.hint ? -1 : b.hint ? 1 : 0))
+        }
+
         return {
           type: "select" as const,
           name,
@@ -178,7 +211,7 @@ export class Guide {
               try {
                 if (status !== "success" && block.validate) {
                   try {
-                    status = await validate(block, Object.assign({}, this.memos, { throwErrors: dryRun }))
+                    status = await validate(block, this.memos, { throwErrors: dryRun })
                     if (status === "success") {
                       subtask.skip(dryRun ? "READY" : undefined)
                       return
@@ -202,7 +235,14 @@ export class Guide {
                     const statusMemoKey = block.id
                     status =
                       (this.memos.statusMemo && this.memos.statusMemo[statusMemoKey] === "success" && "success") ||
-                      (await shellExec(block.body, this.memos, block.language, block.exec, block.async))
+                      (await shellExec(
+                        block.body,
+                        this.memos,
+                        { write: this.write },
+                        block.language,
+                        block.exec,
+                        block.async
+                      ))
 
                     if (status == "success" && this.memos.statusMemo) {
                       this.memos.statusMemo[statusMemoKey] = status
@@ -308,7 +348,8 @@ export class Guide {
         /* options */
         quiet: !this.isGuided,
         concurrent: dryRun,
-      }
+      },
+      this.write
     )
 
     this.markDone(0, "success")

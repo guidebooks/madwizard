@@ -108,4 +108,9 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
       }
     }
   }
+
+  /** Serialize */
+  public serialize(): string {
+    return JSON.stringify(this._choices, undefined, 2)
+  }
 }

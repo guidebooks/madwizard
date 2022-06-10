@@ -108,7 +108,7 @@ export async function prettyPrintUITreeFromBlocks(
   options: PrettyPrintOptions & MadWizardOptions & { root?: string } = {}
 ) {
   const memos = new Memoizer()
-  const graph = await compile(blocks, choices, Object.assign({}, memos, options))
+  const graph = await compile(blocks, choices, memos, options)
 
   const treeifier = new Treeifier(new AnsiUI(), memos.statusMemo)
   const tree = treeifier.toTree(order(graph))

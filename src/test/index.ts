@@ -17,7 +17,7 @@
 import slash from "slash"
 import { suite, Test } from "uvu"
 import * as assert from "uvu/assert"
-import { execFile } from "child_process"
+import { dirSync as tmpDirSync } from "tmp"
 
 import stripAnsi from "strip-ansi"
 import { dirname, join } from "path"
@@ -110,22 +110,28 @@ function tryParseInt(str: string): number {
 }
 
 /** Read the cli.txt file, treated as extra command line args */
-function getCLIOptions(input: string) {
-  const baseOptions = ["--verbose"]
+function getCLIOptions(
+  input: string,
+  { noAssertions = false, noProfile = false }: { noAssertions?: boolean; noProfile?: boolean } = {}
+) {
+  const baseOptions = ["--verbose", ...(noProfile ? ["--no-profile"] : [])]
 
-  try {
-    const asserts = readFileSync(join(input, "assert.txt")).toString()
-    if (asserts.length > 0) {
-      return baseOptions.concat(
-        asserts
-          .split(/\n/)
-          .filter(Boolean)
-          .map((_) => `--assert=${_}`)
-      )
+  if (!noAssertions) {
+    try {
+      const asserts = readFileSync(join(input, "assert.txt")).toString()
+      if (asserts.length > 0) {
+        return baseOptions.concat(
+          asserts
+            .split(/\n/)
+            .filter(Boolean)
+            .map((_) => `--assert=${_}`)
+        )
+      }
+    } catch (err) {
+      // fall-through
     }
-  } catch (err) {
-    // fall-through
   }
+
   return baseOptions
 }
 
@@ -174,36 +180,33 @@ function testJsonTask(test: Test, input: string, suffix: string, _options: Optio
 
 /** "madwizard run" */
 function testRunTask(test: Test, input: string, suffix: string) {
-  test(`run for input ${input} options=${suffix || "default"}`, async () => {
-    const filepath = join(input, "in.md")
-    const expectedOutput = loadExpected(input, "run", suffix)
+  const filepath = join(input, "in.md")
+  const expectedOutput = loadExpected(input, "run", suffix)
+  const { name: profilesPath } = tmpDirSync()
 
-    if (suffix.length > 0) {
-      // since we aren't passing any of the options to the subprocess,
-      // then there's no point in executing variants
-      return
-    }
+  const configs = [
+    { noProfile: false, noAssertions: false },
+    { noProfile: false, noAssertions: true },
+  ]
+  configs.forEach((config) => {
+    test(`run for input ${input} options=${suffix || "default"} config=${JSON.stringify(config)}`, async () => {
+      let actualOutput = ""
+      const write = (msg: string) => {
+        actualOutput += msg
+        return true
+      }
 
-    // why use a subprocess spawn here? if we want to call `cli()` as
-    // a function, we'd need to update `validate.shellExec` to allow
-    // capturing *those* subprocess outputs, so that we can validate
-    // them... ugh, that seems like too much work, so instead we just
-    // spawn a madwizard subprocess, and capture stdout here as
-    // `actualOutput`. This is far slower than invoking `cli()`
-    // directly, but there's only so many hours in a day...
-    await new Promise<void>((resolve, reject) => {
-      execFile("./bin/madwizard.js", ["run", filepath, ...getCLIOptions(input)], (err, actualOutput) => {
-        try {
-          assert.equal(
-            stripAnsi(actualOutput.toString().trim()),
-            stripAnsi(expectedOutput.trim()),
-            "run output should match"
-          )
-          resolve()
-        } catch (err) {
-          reject(err)
-        }
-      })
+      try {
+        await CLI.cli(["test", "run", filepath, ...getCLIOptions(input, config)], write, { profilesPath })
+      } catch (err) {
+        // also test output of error messages
+        write(err.message)
+      }
+      assert.equal(
+        stripAnsi(actualOutput.toString().trim()),
+        stripAnsi(expectedOutput.trim()),
+        "run output should match"
+      )
     })
   })
 }

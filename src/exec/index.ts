@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Env, ExecOptions } from "./options"
+import { Memos } from "../memoization/index.js"
+import { Env, ExecOptions } from "./options.js"
 import { CustomExecutable, SupportedLanguage, isPythonic, isShellish } from "../codeblock/index.js"
 
 import shell from "./shell.js"
@@ -32,6 +33,7 @@ export { Env, ExecOptions, isExport }
 /** Shell out the execution of the given `cmdline` */
 export async function shellExec(
   cmdline: string | boolean,
+  memos: Memos,
   opts: ExecOptions = { quiet: false },
   language: SupportedLanguage = "shell",
   exec?: CustomExecutable["exec"] /* execute code block with custom exec, rather than `sh` */,
@@ -40,23 +42,23 @@ export async function shellExec(
   if (exec) {
     // then the source has provided a custom executor
     return (
-      addPipDependences(cmdline, opts, exec) ||
-      addCondaDependences(cmdline, opts, exec) ||
-      (await raySubmit(cmdline, opts, exec, async)) ||
-      custom(cmdline, opts, exec, async)
+      addPipDependences(cmdline, memos, exec) ||
+      addCondaDependences(cmdline, memos, exec) ||
+      (await raySubmit(cmdline, memos, opts, exec, async)) ||
+      custom(cmdline, memos, opts, exec, async)
     )
   } else if (isShellish(language)) {
     // then the code block has been declared with a `shell` or `bash`
     // or `sh` language
     return (
-      exporter(cmdline, opts) || // export FOO=3
+      exporter(cmdline, memos, opts) || // export FOO=3
       which(cmdline) || // which foo
-      pipShow(cmdline, opts) || // optimized pip show
-      shell(cmdline, opts, undefined, async) // vanilla shell exec
+      pipShow(cmdline, memos) || // optimized pip show
+      shell(cmdline, memos, opts, undefined, async) // vanilla shell exec
     )
   } else if (isPythonic(language)) {
     // then the code block has been declared with a `python` language
-    return python(cmdline, opts)
+    return python(cmdline, memos, opts)
   } else {
     throw new Error("Unable to execute body in unsupported language: " + language)
   }
@@ -64,11 +66,12 @@ export async function shellExec(
 
 export async function shellExecToString(
   cmdline: string | boolean,
+  memos: Memos,
   _opts: ExecOptions = { quiet: false },
   language?: SupportedLanguage,
   exec?: CustomExecutable["exec"]
 ): Promise<string> {
   const opts = Object.assign({}, _opts, { capture: "", throwErrors: true })
-  await shellExec(cmdline, opts, language, exec)
+  await shellExec(cmdline, memos, opts, language, exec)
   return opts.capture
 }

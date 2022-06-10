@@ -15,14 +15,14 @@
  */
 
 import shellItOut from "./shell.js"
-import { ExecOptions } from "./options.js"
+import { Memos } from "../memoization/index.js"
 
 /**
  * This is purely an optimization, since `pip show` is muy slow. The
  * goal is to check if a pip package is installed, without a lot of
  * fanfare.
  */
-export default function execAsPythonPackageCheck(cmdline: string | boolean, opts: ExecOptions) {
+export default function execAsPythonPackageCheck(cmdline: string | boolean, memos: Memos) {
   if (typeof cmdline === "string") {
     const match = cmdline.match(/^\s*pip-show\s+([^[]+)(\[(.+)\])?$/)
     if (match) {
@@ -40,14 +40,14 @@ export default function execAsPythonPackageCheck(cmdline: string | boolean, opts
 
       const cmdline = `python3 -c '${imports}; sys.exit(0) if ${isDirInSitePackages} or ${isFileInSitePackages} or ${isDirInUserSite} or ${isFileInUserSite} else sys.exit(1)'`
 
-      if (opts.dependencies) {
-        if (!opts.dependencies.pip) {
-          opts.dependencies.pip = []
+      if (memos.dependencies) {
+        if (!memos.dependencies.pip) {
+          memos.dependencies.pip = []
         }
-        opts.dependencies.pip.push(match[1])
+        memos.dependencies.pip.push(match[1])
       }
 
-      return shellItOut(cmdline, opts)
+      return shellItOut(cmdline, memos)
     }
   }
 }
