@@ -5,7 +5,9 @@
       "groupContext": "Tab1####Tab2",
       "title": "Conditional Imports of Validated Code Blocks",
       "source": "placeholder",
-      "provenance": ["test/inputs/18/snippet.md"],
+      "provenance": [
+        "test/inputs/18/snippet.md"
+      ],
       "choices": [
         {
           "member": 0,
@@ -50,7 +52,9 @@
                       "groupContext": "TabE1",
                       "title": "EEE",
                       "source": "placeholder",
-                      "provenance": ["test/inputs/snippets/importe.md"],
+                      "provenance": [
+                        "test/inputs/snippets/importe.md"
+                      ],
                       "choices": [
                         {
                           "member": 0,

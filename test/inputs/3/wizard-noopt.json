@@ -18,6 +18,7 @@
       },
       "source": "placeholder"
     },
+    "status": "success",
     "step": {
       "name": "importa.md"
     }
@@ -113,6 +114,7 @@
         }
       ]
     },
+    "status": "success",
     "step": {
       "name": "DDD",
       "description": "This step requires you to choose how to proceed",

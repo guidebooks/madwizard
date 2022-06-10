@@ -147,8 +147,9 @@ export async function cli<Writer extends Writable["write"]>(
     case "debug:fetch": {
       // print out timing
       const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
-      const graph = await compile(blocks, choices, new Memoizer(), options)
-      await import("../../wizard/index.js").then((_) => _.wizardify(graph))
+      const memos = new Memoizer()
+      const graph = await compile(blocks, choices, memos, options)
+      await import("../../wizard/index.js").then((_) => _.wizardify(graph, memos))
 
       await import("../tree/index.js").then((_) => new _.Treeifier(new _.DevNullUI()).toTree(order(graph)))
       break
@@ -170,8 +171,9 @@ export async function cli<Writer extends Writable["write"]>(
 
     case "json": {
       const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
-      const graph = await compile(blocks, choices, new Memoizer(), options)
-      const wizard = await import("../../wizard/index.js").then((_) => _.wizardify(graph))
+      const memos = new Memoizer()
+      const graph = await compile(blocks, choices, memos, options)
+      const wizard = await import("../../wizard/index.js").then((_) => _.wizardify(graph, memos))
       ;(write || process.stdout.write.bind(process.stdout))(
         JSON.stringify(
           wizard,

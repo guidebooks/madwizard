@@ -91,12 +91,12 @@ export function isTaskStep(step: WizardStepWithGraph): step is TaskStep {
  */
 function wizardStepForPrereq<T, G extends Graph<T>>(
   graph: G,
-  options: Partial<Pick<Memos, "statusMemo">>,
+  memos: Memos,
   choices: ChoiceState
 ): WizardStepWithGraph<G, Markdown> {
   return {
     graph,
-    status: (options.statusMemo && statusOf(graph, options.statusMemo, choices)) || "blank",
+    status: (memos.statusMemo && statusOf(graph, memos.statusMemo, choices)) || "blank",
     step: {
       name: extractTitle(graph) || "Missing title",
       description: extractDescription(graph),
@@ -112,10 +112,10 @@ function wizardStepForPrereq<T, G extends Graph<T>>(
 function wizardStepForChoiceOnFrontier(
   graph: Choice,
   isFirstChoice: boolean,
-  options: Partial<Pick<Memos, "statusMemo">>,
+  memos: Memos,
   choices: ChoiceState
 ): WizardStepWithGraph<Choice, Tile[]> {
-  const status = (options.statusMemo && statusOf(graph, options.statusMemo, choices)) || "blank"
+  const status = (memos.statusMemo && statusOf(graph, memos.statusMemo, choices)) || "blank"
   return {
     graph,
     status,
@@ -139,19 +139,18 @@ type Wizard = WizardStepWithGraph[]
 export { Wizard }
 
 /** Options to the graph->wizard transformer */
-type Options = Partial<Pick<Memos, "statusMemo">> &
-  Partial<Choices> & {
-    /** Include optional blocks in the wizard? */
-    includeOptional: boolean
+type Options = Partial<Choices> & {
+  /** Include optional blocks in the wizard? */
+  includeOptional: boolean
 
-    /**
-     * In order to avoid re-checking validity, callers may pass in the
-     * prior Wizard model.
-     */
-    previous: Wizard
-  }
+  /**
+   * In order to avoid re-checking validity, callers may pass in the
+   * prior Wizard model.
+   */
+  previous: Wizard
+}
 
-export function wizardify<T>(graph: Graph<T>, options: Partial<Options> = {}): Wizard {
+export function wizardify<T>(graph: Graph<T>, memos: Memos, options: Partial<Options> = {}): Wizard {
   const debug = Debug("madwizard/timing/wizard:wizardify")
   debug("start")
 
@@ -171,10 +170,10 @@ export function wizardify<T>(graph: Graph<T>, options: Partial<Options> = {}): W
         ? []
         : prereqs
             .filter((_) => includeOptional || !isOptional(_))
-            .map((_) => wizardStepForPrereq(_, options, options.choices))),
+            .map((_) => wizardStepForPrereq(_, memos, options.choices))),
       ...(!choice || (!includeOptional && isOptional(choice))
         ? []
-        : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice, options, options.choices)]),
+        : [wizardStepForChoiceOnFrontier(choice, idx === idxOfFirstChoice, memos, options.choices)]),
     ])
 
     return wizard

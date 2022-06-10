@@ -18,6 +18,7 @@
       },
       "source": "placeholder"
     },
+    "status": "success",
     "step": {
       "name": "importa.md"
     }

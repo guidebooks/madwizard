@@ -68,7 +68,7 @@ export class Guide {
    */
   private async questions(choiceIter: number, previous?: Wizard) {
     const graph = await compile(this.blocks, this.choices, Object.assign({}, this.options, this.memos))
-    const wizard = await wizardify(graph, { previous, statusMemo: this.memos.statusMemo, choices: this.choices })
+    const wizard = await wizardify(graph, this.memos, { previous, choices: this.choices })
 
     const firstChoiceIdx = wizard.findIndex((_) => isChoiceStep(_) && _.status !== "success")
     const preChoiceSteps = firstChoiceIdx < 0 ? [] : wizard.slice(0, firstChoiceIdx).filter(isTaskStep)
