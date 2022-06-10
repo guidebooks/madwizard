@@ -59,7 +59,7 @@ export class Guide {
   }
 
   private get suggestionHint() {
-    return "◄ you selected this last time"
+    return chalk.yellow("◄ you selected this last time")
   }
 
   /**
