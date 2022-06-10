@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ExecOptions } from "./options.js"
+import { Memos } from "../memoization/index.js"
 import { CustomExecutable } from "../codeblock/index.js"
 
 /**
@@ -22,18 +22,18 @@ import { CustomExecutable } from "../codeblock/index.js"
  */
 export default function addCondaDependences(
   cmdline: string | boolean,
-  opts: ExecOptions,
+  memos: Memos,
   exec?: CustomExecutable["exec"] /* execute code block with custom exec, rather than `sh` */
 ) {
-  if (exec && typeof cmdline === "string" && /^\s*conda-install\s*$/.test(exec) && opts.dependencies) {
-    if (!opts.dependencies.conda) {
-      opts.dependencies.conda = []
+  if (exec && typeof cmdline === "string" && /^\s*conda-install\s*$/.test(exec) && memos.dependencies) {
+    if (!memos.dependencies.conda) {
+      memos.dependencies.conda = []
     }
 
     cmdline
       .split(/\n/)
       .filter(Boolean)
-      .forEach((_) => opts.dependencies.conda.push(_))
+      .forEach((_) => memos.dependencies.conda.push(_))
     return "success" as const
   }
 }

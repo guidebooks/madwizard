@@ -16,6 +16,7 @@
 
 import { EOL } from "os"
 import Debug from "debug"
+import { Writable } from "stream"
 
 import usage from "./usage.js"
 import { DebugTask, isDebugTask, isValidTask } from "./tasks.js"
@@ -30,7 +31,7 @@ function enableTracing(task: DebugTask, subtask = "*") {
   Debug.enable(`madwizard/${task.replace(/^debug:/, "")}/${subtask}`)
 }
 
-export async function cli<Writer extends (msg: string) => boolean>(
+export async function cli<Writer extends Writable["write"]>(
   _argv: string[],
   write?: Writer,
   providedOptions: MadWizardOptions = {}
@@ -61,6 +62,11 @@ export async function cli<Writer extends (msg: string) => boolean>(
 
   const narrow = !!_argv.find((_) => _ === "--narrow" || _ === "-n")
 
+  const noProfile = !!_argv.find((_) => _ === "--no-profile")
+  const profilesPathIdx = _argv.findIndex((_) => _ === "--profiles-path")
+  const profilesPath =
+    profilesPathIdx < 0 ? undefined : _argv[profilesPathIdx].slice(_argv[profilesPathIdx].indexOf("=") + 1)
+
   const noOptimize = !!_argv.find((_) => _ === "-O0" || _ === "--optimize=0" || _ === "--no-optimize")
   const noAprioris = !!_argv.find((_) => _ === "--no-aprioris")
   const noValidate = !!_argv.find((_) => _ === "--no-validate")
@@ -73,19 +79,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
     ? _argv.find((_) => _.startsWith("--store=")).replace(/^--store=/, "")
     : undefined
 
-  // assert a choice to have a given value
-  const assertions = !_argv.find((_) => _.startsWith("--assert="))
-    ? undefined
-    : _argv
-        .filter((_) => _.startsWith("--assert="))
-        .map((_) => _.replace(/^--assert=/, ""))
-        .map((_) => _.split(/=/))
-        .reduce((M, [key, value]) => {
-          M[key] = value
-          return M
-        }, {})
-
-  const commandLineOptions: MadWizardOptions = { veto, mkdocs, narrow, optimize, store, verbose }
+  const commandLineOptions: MadWizardOptions = { veto, mkdocs, narrow, optimize, profilesPath, store, verbose }
   const options: MadWizardOptions = Object.assign(commandLineOptions, providedOptions)
 
   if (!task || !input) {
@@ -100,7 +94,26 @@ export async function cli<Writer extends (msg: string) => boolean>(
     enableTracing(task)
   }
 
-  const choices = newChoiceState(assertions)
+  // restore choices from profile
+  const profile = undefined // TODO
+  const suggestions = noProfile
+    ? newChoiceState()
+    : await import("../../util/cache.js").then((_) => _.restoreChoices(options, profile))
+
+  // if we are doing a run, then use the suggestions as the final
+  // choices; otherwise, treat them just as suggestions in the guide
+  const choices = task === "run" ? suggestions : newChoiceState()
+
+  // assert a choice to have a given value
+  !_argv.find((_) => _.startsWith("--assert="))
+    ? undefined
+    : _argv
+        .filter((_) => _.startsWith("--assert="))
+        .map((_) => _.replace(/^--assert=/, ""))
+        .map((_) => _.split(/=/))
+        .forEach(([key, value]) => {
+          choices.setKey(key, value)
+        })
 
   // build and mirror: these allow for static/ahead-of-time fetching
   // and inlining of content. This can be helpful to allow shipping
@@ -133,7 +146,8 @@ export async function cli<Writer extends (msg: string) => boolean>(
     case "debug:timing":
     case "debug:fetch": {
       // print out timing
-      const graph = await compile(blocks, choices, options)
+      const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
+      const graph = await compile(blocks, choices, new Memoizer(), options)
       await import("../../wizard/index.js").then((_) => _.wizardify(graph))
 
       await import("../tree/index.js").then((_) => new _.Treeifier(new _.DevNullUI()).toTree(order(graph)))
@@ -146,12 +160,17 @@ export async function cli<Writer extends (msg: string) => boolean>(
       )
       break
 
-    case "vetoes":
-      (write || process.stdout.write.bind(process.stdout))(await vetoesToString(blocks, choices, options))
+    case "vetoes": {
+      const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
+      ;(write || process.stdout.write.bind(process.stdout))(
+        await vetoesToString(blocks, choices, new Memoizer(), options)
+      )
       break
+    }
 
     case "json": {
-      const graph = await compile(blocks, choices, options)
+      const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
+      const graph = await compile(blocks, choices, new Memoizer(), options)
       const wizard = await import("../../wizard/index.js").then((_) => _.wizardify(graph))
       ;(write || process.stdout.write.bind(process.stdout))(
         JSON.stringify(
@@ -186,7 +205,7 @@ export async function cli<Writer extends (msg: string) => boolean>(
         import("../../memoization/index.js").then((_) => _.Memoizer),
       ])
 
-      const memoizer = new Memoizer()
+      const memoizer = new Memoizer(suggestions)
 
       /** Kill any spawned subprocesses */
       const cleanExit = memoizer.cleanup.bind(memoizer)
@@ -194,7 +213,8 @@ export async function cli<Writer extends (msg: string) => boolean>(
       process.on("SIGTERM", cleanExit) // catch kill
 
       try {
-        await new Guide(task, blocks, choices, options, memoizer).run()
+        await new Guide(task, blocks, choices, options, memoizer, undefined, write).run()
+        await import("../../util/cache.js").then((_) => _.persistChoices(options, choices, suggestions))
       } finally {
         cleanExit()
       }

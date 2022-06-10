@@ -17,6 +17,7 @@
 import { EOL } from "os"
 import chalk from "chalk"
 
+import { Memos } from "../memoization/index.js"
 import { MadWizardOptions } from "../fe/index.js"
 import { ChoiceState } from "../choices/index.js"
 import { CodeBlockProps } from "../codeblock/index.js"
@@ -35,13 +36,23 @@ export function vetoes(graph: Graph): Provenance["provenance"] {
  * List the veto-able provenances. This can be used to help fill in
  * the `--veto` field of `MadWizardOptions`.
  */
-export async function vetoesFromBlocks(blocks: CodeBlockProps[], choices: ChoiceState, options: CompileOptions = {}) {
-  const graph = await compile(blocks, choices, Object.assign({}, options, { optimize: false, expand: false }))
+export async function vetoesFromBlocks(
+  blocks: CodeBlockProps[],
+  choices: ChoiceState,
+  memos: Memos,
+  options: CompileOptions = {}
+) {
+  const graph = await compile(blocks, choices, memos, Object.assign({}, options, { optimize: false, expand: false }))
   return vetoes(graph)
 }
 
-export async function vetoesToString(blocks: CodeBlockProps[], choices: ChoiceState, options: MadWizardOptions = {}) {
-  return (await vetoesFromBlocks(blocks, choices, Object.assign({}, options, { optimize: false })))
+export async function vetoesToString(
+  blocks: CodeBlockProps[],
+  choices: ChoiceState,
+  memos: Memos,
+  options: MadWizardOptions = {}
+) {
+  return (await vetoesFromBlocks(blocks, choices, memos, Object.assign({}, options, { optimize: false })))
     .map((_) => (options.veto && options.veto.test(_) ? `${_} ${chalk.red("[VETOED]")}` : _))
     .join(EOL)
 }

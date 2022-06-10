@@ -16,16 +16,16 @@
 
 import Debug from "debug"
 import { VFile } from "vfile"
-import envPaths from "env-paths"
 import { isAbsolute, join } from "path"
 
 import fetch from "make-fetch-happen"
 import { read as vfileRead } from "to-vfile"
 
+import { cachePath } from "../../util/cache.js"
 import { toRawGithubUserContent } from "../../parser/markdown/snippets/urls.js"
 
 export async function get(uri: string) {
-  return fetch(uri, { cachePath: envPaths("madwizard").cache })
+  return fetch(uri, { cachePath: cachePath() })
 }
 
 /** Fetch the contents of the given `VFile` */

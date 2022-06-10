@@ -16,9 +16,10 @@
 
 import shellItOut from "./shell.js"
 import { ExecOptions } from "./options.js"
+import { Memos } from "../memoization/index.js"
 
 /** Execute a python script in a subprocess */
-export default async function pythonItOut(cmdline: string | boolean, opts: ExecOptions) {
+export default async function pythonItOut(cmdline: string | boolean, memos: Memos, opts: ExecOptions) {
   const [{ write }, { file: tmpFile }] = await Promise.all([import("fs"), import("tmp")])
 
   return new Promise<"success">((resolve, reject) => {
@@ -30,7 +31,7 @@ export default async function pythonItOut(cmdline: string | boolean, opts: ExecO
           if (err) {
             reject(err)
           } else {
-            shellItOut(`python3 -u "${filepath}"`, opts).then(resolve, reject).finally(cleanupCallback)
+            shellItOut(`python3 -u "${filepath}"`, memos, opts).then(resolve, reject).finally(cleanupCallback)
           }
         })
       }

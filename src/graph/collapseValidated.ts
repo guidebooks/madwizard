@@ -18,6 +18,7 @@ import chalk from "chalk"
 import Debug from "debug"
 import { oraPromise } from "../util/ora-delayed-promise.js"
 
+import { Memos } from "../memoization/index.js"
 import { hasProvenance } from "./provenance.js"
 import { findChoiceFrontier } from "./choice-frontier.js"
 
@@ -43,6 +44,7 @@ import {
  */
 async function collapseValidated<T extends Unordered | Ordered = Unordered, G extends Graph<T> = Graph<T>>(
   graph: G,
+  memos: Memos,
   options?: CompileOptions,
   firstChoice?: Choice,
   nearestEnclosingTitle?: string
@@ -66,7 +68,7 @@ async function collapseValidated<T extends Unordered | Ordered = Unordered, G ex
       } else {
         // otherwise, attempt to validate this Validatable
         const status = await oraPromise(
-          doValidate(graph.validate, options),
+          doValidate(graph.validate, memos, options),
           chalk.dim(`Validating ${chalk.blue(nearestEnclosingTitle || key)}`)
         )
         if (options.statusMemo) {
@@ -81,7 +83,7 @@ async function collapseValidated<T extends Unordered | Ordered = Unordered, G ex
   }
 
   const recurse = <T extends Unordered | Ordered, G extends Graph<T>>(graph: G) =>
-    collapseValidated(graph, options, firstChoice, extractTitle(graph) || nearestEnclosingTitle)
+    collapseValidated(graph, memos, options, firstChoice, extractTitle(graph) || nearestEnclosingTitle)
 
   const recurse2 = <T extends Unordered | Ordered, G extends Graph<T>>({ graph }: { graph: G }) => recurse(graph)
 
@@ -135,6 +137,7 @@ async function collapseValidated<T extends Unordered | Ordered = Unordered, G ex
 
 export default function collapse<T extends Unordered | Ordered = Unordered, G extends Graph<T> = Graph<T>>(
   graph: G,
+  memos: Memos,
   options?: CompileOptions
 ): G | Promise<G> {
   if (
@@ -155,5 +158,5 @@ export default function collapse<T extends Unordered | Ordered = Unordered, G ex
   const firstChoice = frontier.length === 0 ? undefined : frontier[0].choice
 
   // then, traverse the graph, looking for validation opportunities
-  return collapseValidated(graph, options, firstChoice)
+  return collapseValidated(graph, memos, options, firstChoice)
 }

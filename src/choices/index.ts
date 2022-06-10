@@ -66,6 +66,9 @@ export interface ChoiceState {
 
   /** Take care with this. If you have a `Choice`, then prefer to use `remove(choice)` */
   removeKey: (key: Key) => boolean
+
+  /** Serialize */
+  serialize(): string
 }
 
 export type Choices = {
@@ -74,4 +77,9 @@ export type Choices = {
 
 export function newChoiceState(assertions: ChoicesMap = {}): ChoiceState {
   return new ChoiceStateImpl(assertions)
+}
+
+/** Deserialize constructor */
+export function deserialize(str: string) {
+  return newChoiceState(JSON.parse(str))
 }

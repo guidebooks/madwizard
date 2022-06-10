@@ -60,6 +60,7 @@ export type ValidateOptions = Partial<Memos> & { validator?: ValidationExecutor;
 /** This does an actual validation check */
 export async function doValidate(
   validate: Validatable["validate"],
+  memos: Memos,
   opts: Pick<ValidateOptions, "validator" | "throwErrors" | "env" | "dependencies">
 ): Promise<Status> {
   if (validate === true) {
@@ -69,10 +70,8 @@ export async function doValidate(
   }
 
   try {
-    await (opts.validator || (await import("../exec/index.js").then((_) => _.shellExec)))(validate, {
+    await (opts.validator || (await import("../exec/index.js").then((_) => _.shellExec)))(validate, memos, {
       quiet: true,
-      env: opts.env,
-      dependencies: opts.dependencies,
     })
     return "success"
   } catch (err) {
@@ -88,19 +87,19 @@ export async function doValidate(
  * Note: this code assumes that collapseMadeChoices has already been
  * applied to the `graph`.
  */
-async function validateGraph(graph: Graph, opts: ValidateOptions): Promise<Status> {
+async function validateGraph(graph: Graph, memos: Memos, opts: ValidateOptions): Promise<Status> {
   if (isValidatable(graph)) {
-    return doValidate(graph.validate, opts)
+    return doValidate(graph.validate, memos, opts)
   } else if (isSequence(graph)) {
-    return intersection(Promise.all(graph.sequence.map((_) => validateGraph(_, opts))))
+    return intersection(Promise.all(graph.sequence.map((_) => validateGraph(_, memos, opts))))
   } else if (isParallel(graph)) {
-    return intersection(Promise.all(graph.parallel.map((_) => validateGraph(_, opts))))
+    return intersection(Promise.all(graph.parallel.map((_) => validateGraph(_, memos, opts))))
   } else if (isChoice(graph)) {
-    return union(Promise.all(graph.choices.map((_) => validateGraph(_.graph, opts))))
+    return union(Promise.all(graph.choices.map((_) => validateGraph(_.graph, memos, opts))))
   } else if (isTitledSteps(graph)) {
-    return intersection(Promise.all(graph.steps.map((_) => validateGraph(_.graph, opts))))
+    return intersection(Promise.all(graph.steps.map((_) => validateGraph(_.graph, memos, opts))))
   } else if (isSubTask(graph)) {
-    return validateGraph(graph.graph, opts)
+    return validateGraph(graph.graph, memos, opts)
   } else if (graph.optional) {
     // here we treat optional blocks as ... non-blockers
     // w.r.t. overall success
@@ -110,6 +109,6 @@ async function validateGraph(graph: Graph, opts: ValidateOptions): Promise<Statu
   }
 }
 
-export async function validate(graph: Graph, opts: ValidateOptions): Promise<Status> {
-  return (await validateGraph(graph, opts)) || "blank"
+export async function validate(graph: Graph, memos: Memos, opts: ValidateOptions): Promise<Status> {
+  return (await validateGraph(graph, memos, opts)) || "blank"
 }

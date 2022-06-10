@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ExecOptions } from "./options.js"
+import { Memos } from "../memoization/index.js"
 import { CustomExecutable } from "../codeblock/index.js"
 
 /**
@@ -22,18 +22,18 @@ import { CustomExecutable } from "../codeblock/index.js"
  */
 export default function addPipDependences(
   cmdline: string | boolean,
-  opts: ExecOptions,
+  memos: Memos,
   exec?: CustomExecutable["exec"] /* execute code block with custom exec, rather than `sh` */
 ) {
-  if (exec && typeof cmdline === "string" && /^\s*pip-install\s*$/.test(exec) && opts.dependencies) {
-    if (!opts.dependencies.pip) {
-      opts.dependencies.pip = []
+  if (exec && typeof cmdline === "string" && /^\s*pip-install\s*$/.test(exec) && memos.dependencies) {
+    if (!memos.dependencies.pip) {
+      memos.dependencies.pip = []
     }
 
     cmdline
       .split(/\n/)
       .filter(Boolean)
-      .forEach((_) => opts.dependencies.pip.push(_))
+      .forEach((_) => memos.dependencies.pip.push(_))
     return "success" as const
   }
 }

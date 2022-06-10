@@ -104,12 +104,14 @@ function expandPart(template: ChoicePart, names: string[]): ChoicePart[] {
  */
 async function doExpand(
   expansionExpr: ExpansionExpression,
+  memos: Memos,
   options: Partial<ExecutorOptions> & { debug: ReturnType<typeof Debug> }
 ): Promise<string[]> {
   try {
     const response = await oraPromise(
       (options.exec || (await import("../../exec/index.js").then((_) => _.shellExecToString)))(
         expansionExpr.expr,
+        memos,
         options
       ),
       `Expanding ${chalk.blue(expansionExpr.message || expansionExpr.expr)}`
@@ -118,7 +120,7 @@ async function doExpand(
   } catch (err) {
     // then the expansion failed. make sure the users don't
     // see the template
-    options.debug(expansionExpr.expr, options.env, err)
+    options.debug(expansionExpr.expr, memos.env, err)
     return []
   }
 }
@@ -129,7 +131,8 @@ async function doExpand(
  * `updateContent`) as we go.
  */
 async function expandOneChoice(
-  options: Partial<Memos> & Partial<ExecutorOptions> & { debug: ReturnType<typeof Debug> },
+  memos: Memos,
+  options: Partial<ExecutorOptions> & { debug: ReturnType<typeof Debug> },
   graph: Choice
 ) {
   if (isExpansionGroup(graph)) {
@@ -140,19 +143,19 @@ async function expandOneChoice(
           if (!expansionExpr) {
             return updateContent(part)
           } else {
-            let memoized = options.expansionMemo && options.expansionMemo[expansionExpr.expr]
+            let memoized = memos.expansionMemo && memos.expansionMemo[expansionExpr.expr]
             if (!memoized || (await memoized).length === 0) {
-              if (options.expansionMemo) {
-                options.expansionMemo[expansionExpr.expr] = new Promise((resolve, reject) => {
+              if (memos.expansionMemo) {
+                memos.expansionMemo[expansionExpr.expr] = new Promise((resolve, reject) => {
                   try {
-                    resolve(doExpand(expansionExpr, options))
+                    resolve(doExpand(expansionExpr, memos, options))
                   } catch (err) {
                     reject(err)
                   }
                 })
-                memoized = options.expansionMemo[expansionExpr.expr]
+                memoized = memos.expansionMemo[expansionExpr.expr]
               } else {
-                memoized = doExpand(expansionExpr, options)
+                memoized = doExpand(expansionExpr, memos, options)
               }
             }
             const response = await memoized
@@ -182,14 +185,12 @@ async function expandOneChoice(
  * updating content such as descriptions and code bodies (via
  * `updateContent`) as we go.
  */
-export async function expand(graph: Graph, choices: ChoiceState, options: Partial<Memos> = {}) {
+export async function expand(graph: Graph, choices: ChoiceState, memos: Memos) {
   // all "first choices" that haven't already been assigned a decision
   const choiceFrontier = findChoicesOnFrontier(graph, choices)
 
   if (choiceFrontier.length > 0) {
-    await Promise.all(
-      choiceFrontier.map(expandOneChoice.bind(undefined, Object.assign({ debug: Debug("expansion") }, options)))
-    )
+    await Promise.all(choiceFrontier.map(expandOneChoice.bind(undefined, memos, { debug: Debug("expansion") })))
   }
 
   // expand uuid macro

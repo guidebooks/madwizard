@@ -25,7 +25,7 @@ interface TaskWrapper {
   skip(parentheticalMsg?: string, fullMsg?: string): void
   fail(parentheticalMsg?: string, fullMsg?: string, chalk?: ChalkInstance): void
   commence(msg?: string): void
-  stdout(): NodeJS.WriteStream & NodeJS.WritableStream
+  // stdout(): NodeJS.WriteStream & NodeJS.WritableStream
 }
 
 type TaskFn = (task: TaskWrapper) => Promise<void> | Task[]
@@ -55,7 +55,7 @@ export function skip(ora: Ora, text: string) {
 class TaskWrapperImpl implements TaskWrapper {
   public constructor(
     private readonly title: string,
-    private readonly stream = process.stdout,
+    private readonly write = process.stdout.write.bind(process.stdout),
     private readonly quiet = false,
     private readonly spinner?: ReturnType<typeof ora>
   ) {}
@@ -64,8 +64,8 @@ class TaskWrapperImpl implements TaskWrapper {
     if (this.spinner) {
       skip(this.spinner, this.title + chalk.yellow(fullMsg))
     } else {
-      this.stream.write(chalk.yellow(fullMsg))
-      this.stream.write(EOL)
+      this.write(chalk.yellow(fullMsg))
+      this.write(EOL)
     }
   }
 
@@ -84,43 +84,48 @@ class TaskWrapperImpl implements TaskWrapper {
     }
 
     if (msg) {
-      this.stream.write(msg)
+      this.write(msg)
     }
 
     if (msg || !this.quiet) {
-      this.stream.write(EOL)
+      this.write(EOL)
     }
   }
 
-  public stdout() {
+  /* public stdout() {
     return this.stream
-  }
+  } */
 }
 
-export async function taskRunner(tasks: Task[], options: TaskRunnerOptions = {}, stream = process.stdout, depth = 0) {
+export async function taskRunner(
+  tasks: Task[],
+  options: TaskRunnerOptions = {},
+  write = process.stdout.write.bind(process.stdout),
+  depth = 0
+) {
   await promiseEach(tasks, async ({ title, task, spinner, quiet }, idx) => {
     if (idx > 0 && !options.quiet && !quiet) {
-      stream.write(EOL)
+      write(EOL)
     }
 
     if (!spinner && title && !quiet) {
-      stream.write(title)
+      write(title)
     }
 
     if (Array.isArray(task)) {
       // subtasks
       if (!options.quiet && !quiet) {
-        stream.write(EOL)
+        write(EOL)
       }
-      await taskRunner(task, options, stream, depth + 1)
+      await taskRunner(task, options, write, depth + 1)
     } else {
-      const wrapper = new TaskWrapperImpl(title, stream, quiet, !quiet && spinner ? ora(title).start() : undefined)
+      const wrapper = new TaskWrapperImpl(title, write, quiet, !quiet && spinner ? ora(title).start() : undefined)
       const response = await task(wrapper)
       if (Array.isArray(response)) {
         if (!options.quiet && !quiet) {
-          stream.write(EOL)
+          write(EOL)
         }
-        await taskRunner(response, options, stream, depth + 1)
+        await taskRunner(response, options, write, depth + 1)
       }
     }
   })

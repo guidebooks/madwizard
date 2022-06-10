@@ -101,12 +101,13 @@ export interface CompilerOptions {
       }
 }
 
-export type CompileOptions = Partial<CompilerOptions> & ValidateOptions & Partial<Memos> & Partial<ExecutorOptions>
+export type CompileOptions = Partial<CompilerOptions> & ValidateOptions & Partial<ExecutorOptions>
 
 /** Take a list of code blocks and arrange them into a control flow dag */
 export async function compile(
   blocks: CodeBlockProps[],
   choices: ChoiceState,
+  memos: Memos,
   options: CompileOptions = {},
   ordering: "sequence" | "parallel" = "sequence",
   title?: string,
@@ -365,11 +366,11 @@ export async function compile(
         : await doExpand(
             parts.length === 1 ? parts[0] : ordering === "parallel" ? parallel(parts) : sequence(parts),
             choices,
-            options
+            memos
           )
 
     debug("optimizing")
-    const optimized = options.optimize === false ? unoptimized : await optimize(unoptimized, choices, options)
+    const optimized = options.optimize === false ? unoptimized : await optimize(unoptimized, choices, memos, options)
     debug("optimizing done")
 
     if (title && !extractTitle(optimized)) {

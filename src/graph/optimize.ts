@@ -16,6 +16,7 @@
 
 import Debug from "debug"
 
+import { Memos } from "../memoization/index.js"
 import { ChoiceState } from "../choices/index.js"
 import { CompileOptions, Graph, sequence } from "./index.js"
 
@@ -25,7 +26,7 @@ import collapseValidated from "./collapseValidated.js"
 import collapseMadeChoices from "./collapseMadeChoices.js"
 import deadCodeElimination from "./deadCodeElimination.js"
 
-export default async function optimize(graph: Graph, choices: ChoiceState, options?: CompileOptions) {
+export default async function optimize(graph: Graph, choices: ChoiceState, memos: Memos, options?: CompileOptions) {
   const debug = Debug("madwizard/timing/graph:optimize")
   debug("start")
 
@@ -35,6 +36,7 @@ export default async function optimize(graph: Graph, choices: ChoiceState, optio
         deadCodeElimination(
           await collapseValidated(
             deadCodeElimination(collapseMadeChoices(hoistSubTasks(deadCodeElimination(graph)), choices)),
+            memos,
             options
           )
         )

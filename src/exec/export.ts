@@ -15,6 +15,7 @@
  */
 
 import shellItOut from "./shell.js"
+import { Memos } from "../memoization"
 import { ExecOptions } from "./options.js"
 
 export function isExport(cmdline: string): ReturnType<string["match"]> {
@@ -22,8 +23,8 @@ export function isExport(cmdline: string): ReturnType<string["match"]> {
 }
 
 /** See if we are being asked to execute `export FOO=bar` */
-export default function execAsExport(cmdline: string | boolean, opts: ExecOptions) {
-  if (opts.env && typeof cmdline === "string") {
+export default function execAsExport(cmdline: string | boolean, memos: Memos, opts: ExecOptions) {
+  if (memos.env && typeof cmdline === "string") {
     const match = isExport(cmdline)
     if (match) {
       const semicolon = /;\s*$/.test(cmdline) ? "" : ";"
@@ -31,16 +32,24 @@ export default function execAsExport(cmdline: string | boolean, opts: ExecOption
 
       // invalidate any memos using this shell variable, since we're
       // about to update it
-      opts.invalidate(key)
+      memos.invalidate(key)
 
-      const options = Object.assign({}, opts, { capture: "", ignoreStderr: true })
+      //
+      const options = Object.assign({}, opts, { capture: "", ignoreStderr: true, write: undefined })
+
+      // we need to use the shell not only to give us the exported
+      // value, but also the exported key! e.g. someone might have
+      // `export FOO${BAR}=$(do something)`; here, the key has a
+      // variable expansion, and the value has a subprocess execution;
+      // so we formulate a `magicCmdLine` to give us both the
+      // `keyForUpdate` and the `valueForUpdate`
       const magicCmdline = `${cmdline}${semicolon} echo "${key}"; printenv ${key}`
 
-      return shellItOut(magicCmdline, options)
+      return shellItOut(magicCmdline, memos, options)
         .then(() => options.capture.split(/\n/).filter(Boolean))
         .catch(() => [key, ""])
         .then(([keyForUpdate, valueForUpdate]) => {
-          opts.env[keyForUpdate] = valueForUpdate
+          memos.env[keyForUpdate] = valueForUpdate
           return "success" as const
         })
     }

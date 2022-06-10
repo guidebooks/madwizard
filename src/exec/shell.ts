@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-import { spawn, execSync } from "child_process"
-import { ExecOptions } from "./options.js"
+import { spawn, execSync, StdioOptions } from "child_process"
 
-export function shellSync(cmdline: string, opts: ExecOptions = { quiet: false }) {
-  execSync(cmdline, { env: Object.assign({}, process.env, opts.env || {}) })
+import { ExecOptions } from "./options.js"
+import { Memos } from "../memoization/index.js"
+
+export function shellSync(cmdline: string, memos: Memos) {
+  execSync(cmdline, { env: Object.assign({}, process.env, memos.env || {}) })
 }
 
 /** Shell out the execution of the given `cmdline` */
 export default async function shellItOut(
   cmdline: string | boolean,
+  memos: Memos,
   opts: ExecOptions = { quiet: false },
   extraEnv: Record<string, string> = {},
   async?: boolean /* fire and forget, until this process exits? */,
@@ -39,9 +42,18 @@ export default async function shellItOut(
       HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1",
     },
     process.env,
-    opts.env || {},
+    memos.env || {},
     extraEnv
   )
+
+  const stdio: StdioOptions = opts.quiet
+    ? ["inherit", "ignore", "pipe"]
+    : capture
+    ? ["inherit", "pipe", "pipe"]
+    : ["inherit", "inherit", "inherit"]
+  if (opts.write) {
+    stdio[1] = "pipe"
+  }
 
   return new Promise((resolve, reject) => {
     const child = spawn(
@@ -50,11 +62,7 @@ export default async function shellItOut(
       {
         env,
         detached: async, // see Memoizer.cleanup() for asyncs, we detach and then kill that detached process group
-        stdio: opts.quiet
-          ? ["inherit", "ignore", "pipe"]
-          : capture
-          ? ["inherit", "pipe", "pipe"]
-          : ["inherit", "inherit", "inherit"],
+        stdio,
       }
     )
 
@@ -94,10 +102,13 @@ export default async function shellItOut(
         child.stderr.on("data", (data) => (out += data.toString()))
       }
       child.stdout.on("data", (data) => (out += data.toString()))
+    } else if (opts.write) {
+      // sending the stream to a custom consumer, mostly for tests
+      child.stdout.on("data", (data) => opts.write(data.toString()))
     }
 
     if (async) {
-      opts.subprocesses.push(child)
+      memos.subprocesses.push(child)
       resolve("success")
     }
   })

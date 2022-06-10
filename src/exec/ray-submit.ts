@@ -15,8 +15,10 @@
  */
 
 import Debug from "debug"
+
 import { shellSync } from "./shell.js"
 import { ExecOptions } from "./options.js"
+import { Memos } from "../memoization/index.js"
 import custom, { CustomEnv } from "./custom.js"
 
 interface RuntimeEnvDependencies {
@@ -27,11 +29,11 @@ interface RuntimeEnvDependencies {
 }
 
 /** express any pip dependencies we have collected */
-function dependencies(opts: ExecOptions): RuntimeEnvDependencies {
-  const pips = new Set(!opts.dependencies || !opts.dependencies.pip ? [] : opts.dependencies.pip)
+function dependencies(memos: Memos): RuntimeEnvDependencies {
+  const pips = new Set(!memos.dependencies || !memos.dependencies.pip ? [] : memos.dependencies.pip)
   pips.delete("ray")
 
-  const condas = new Set(!opts.dependencies || !opts.dependencies.conda ? [] : opts.dependencies.conda)
+  const condas = new Set(!memos.dependencies || !memos.dependencies.conda ? [] : memos.dependencies.conda)
 
   if (condas.size === 0 && pips.size === 0) {
     return {}
@@ -58,15 +60,15 @@ function dependencies(opts: ExecOptions): RuntimeEnvDependencies {
 
 async function saveEnvToFile(
   parsedOptions: ReturnType<typeof import("yargs-parser")>,
-  opts: ExecOptions,
+  memos: Memos,
   customEnv: CustomEnv
 ) {
   const runtimeEnv: Record<string, any> = Object.assign(
     {
-      env_vars: opts.env,
+      env_vars: memos.env,
       working_dir: customEnv.MWDIR,
     },
-    dependencies(opts)
+    dependencies(memos)
   )
 
   if (parsedOptions["base-image"]) {
@@ -107,7 +109,13 @@ async function saveEnvToFile(
  * ```
  *
  */
-export default async function raySubmit(cmdline: string | boolean, opts: ExecOptions, exec: string, async?: boolean) {
+export default async function raySubmit(
+  cmdline: string | boolean,
+  memos: Memos,
+  opts: ExecOptions,
+  exec: string,
+  async?: boolean
+) {
   if (typeof cmdline === "string") {
     const prefix = /\s*ray-submit/
     if (prefix.test(exec)) {
@@ -120,15 +128,16 @@ export default async function raySubmit(cmdline: string | boolean, opts: ExecOpt
       // Here, we need \\" just to make nodejs's parser happy.
 
       // make sure to kill the ray job before we go
-      opts.onExit.push({
+      memos.onExit.push({
         name: "stop ray job",
         cb: () => {
-          shellSync("ray job stop ${JOB_ID}", opts)
+          shellSync("ray job stop ${JOB_ID}", memos)
         },
       })
 
       return custom(
         cmdline,
+        memos,
         opts,
         async (customEnv) => {
           // anything after `ray-submit` will be tacked on to the `ray
@@ -141,7 +150,7 @@ export default async function raySubmit(cmdline: string | boolean, opts: ExecOpt
             .replace(/--base-image=\S+/g, "")
             .replace(/ -- .+$/, "")
 
-          const envFile = await saveEnvToFile(parsedOptions, opts, customEnv)
+          const envFile = await saveEnvToFile(parsedOptions, memos, customEnv)
 
           // ./custom.ts will populate this env var
           const inputFile = customEnv.MWFILENAME
@@ -152,7 +161,7 @@ export default async function raySubmit(cmdline: string | boolean, opts: ExecOpt
           // formulate a ray job submit command line; `custom` will
           // assemble ` working directory `$MWDIR` and `$MWFILENAME`
           const cmdline = `ray job submit --runtime-env=${envFile} ${extraArgs} -- python3 ${inputFile} ${dashDash}`
-          Debug("madwizard/exec/ray-submit")("env", opts.env || {})
+          Debug("madwizard/exec/ray-submit")("env", memos.env || {})
           Debug("madwizard/exec/ray-submit")("options", parsedOptions)
           Debug("madwizard/exec/ray-submit")("cmdline", cmdline)
           return cmdline
