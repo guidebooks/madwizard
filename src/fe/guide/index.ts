@@ -59,7 +59,8 @@ export class Guide {
   }
 
   private get suggestionHint() {
-    return chalk.yellow("◄ you selected this last time")
+    // reset the underlining from enquirer
+    return chalk.reset.yellow.dim("  ◄ you selected this last time")
   }
 
   /**
@@ -89,15 +90,18 @@ export class Guide {
 
       const suggestion = this.memos.suggestions.get(choice)
 
-      const choices = content.map((tile, idx, A) => ({
-        name: tile.title,
-        initial: form ? tile.form.defaultValue.toString() : undefined,
-        message:
-          chalk.bold(tile.title) +
-          (!tile.description
-            ? ""
-            : chalk.reset(EOL) + this.format(tile.description) + (idx === A.length - 1 ? "" : EOL)),
-      }))
+      const choices = content.map((tile) => {
+        const isSuggested = suggestion === tile.title
+
+        return {
+          name: tile.title,
+          initial: form ? tile.form.defaultValue.toString() : undefined,
+          message:
+            chalk.bold(tile.title) +
+            (isSuggested ? this.suggestionHint : "") +
+            (!tile.description ? "" : chalk.reset(EOL) + this.format(tile.description) + EOL),
+        }
+      })
 
       if (form) {
         const suggestionForm = !suggestion ? {} : JSON.parse(suggestion)
@@ -117,7 +121,7 @@ export class Guide {
       } else {
         const selChoices = choices as enquirer.prompt.SelectQuestion.ChoiceOptions[]
         selChoices.forEach((_) => {
-          _.hint = suggestion === _.name ? this.suggestionHint : undefined
+          //_.hint = suggestion === _.name ? this.suggestionHint : undefined
           if (_.name === "separator") {
             _.name = ""
             _.message = ""
@@ -130,7 +134,7 @@ export class Guide {
         // default-selected; so... instead sort to float the selected
         // to the top
         if (suggestion) {
-          selChoices.sort((a, b) => (a.hint ? -1 : b.hint ? 1 : 0))
+          selChoices.sort((a, b) => (suggestion === a.name ? -1 : suggestion === b.name ? 1 : 0))
         }
 
         return {
