@@ -114,7 +114,7 @@ function getCLIOptions(
   input: string,
   { noAssertions = false, noProfile = false }: { noAssertions?: boolean; noProfile?: boolean } = {}
 ) {
-  const baseOptions = ["--verbose", ...(noProfile ? ["--no-profile"] : [])]
+  const baseOptions = ["--quiet", "--verbose", ...(noProfile ? ["--no-profile"] : [])]
 
   if (!noAssertions) {
     try {

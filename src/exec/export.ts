@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import chalk from "chalk"
 import shellItOut from "./shell.js"
 import { Memos } from "../memoization"
 import { ExecOptions } from "./options.js"
@@ -50,6 +51,11 @@ export default function execAsExport(cmdline: string | boolean, memos: Memos, op
         .catch(() => [key, ""])
         .then(([keyForUpdate, valueForUpdate]) => {
           memos.env[keyForUpdate] = valueForUpdate
+
+          if (opts.verbose && !opts.quiet) {
+            console.error(chalk.dim.yellow(`Setting ${keyForUpdate}=${valueForUpdate}`))
+          }
+
           return "success" as const
         })
     }

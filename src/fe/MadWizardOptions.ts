@@ -16,7 +16,14 @@
 
 import { CompilerOptions } from "../graph/compile"
 
-interface DisplayOptions {
+export interface RunOptions {
+  /** Don't actually execute anything, but making choices and
+   * validation and expanding lists is ok
+   */
+  dryRun: boolean
+}
+
+export interface DisplayOptions {
   /** Shorten output of long or multi-line code blocks. */
   narrow: boolean
 
@@ -38,4 +45,7 @@ interface FetchOptions {
   profilesPath: string
 }
 
-export type MadWizardOptions = Partial<CompilerOptions> & Partial<DisplayOptions> & Partial<FetchOptions>
+export type MadWizardOptions = Partial<CompilerOptions> &
+  Partial<DisplayOptions> &
+  Partial<FetchOptions> &
+  Partial<RunOptions>

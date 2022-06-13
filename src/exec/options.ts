@@ -15,24 +15,27 @@
  */
 
 import { Writable } from "stream"
+
 import { Memos } from "../memoization/index.js"
+import { DisplayOptions, RunOptions } from "../fe/MadWizardOptions.js"
 
 /** Environment variable state that might be mutated by the guidebook itself */
 export type Env = Pick<Memos, "env">
 
-export type ExecOptions = {
-  /** Do not emit to console */
-  quiet?: boolean
+export type ExecOptions = Partial<DisplayOptions> &
+  Partial<RunOptions> & {
+    /** Do not emit to console */
+    quiet?: boolean
 
-  /** Capture stdout here */
-  capture?: string
+    /** Capture stdout here */
+    capture?: string
 
-  /** Ignore stderr in capture? */
-  ignoreStderr?: boolean
+    /** Ignore stderr in capture? */
+    ignoreStderr?: boolean
 
-  /** throw any non-zero exit codes */
-  throwErrors?: boolean
+    /** throw any non-zero exit codes */
+    throwErrors?: boolean
 
-  /** optional writer, e.g. for tests to capture output */
-  write?: Writable["write"]
-}
+    /** optional writer, e.g. for tests to capture output */
+    write?: Writable["write"]
+  }
