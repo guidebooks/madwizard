@@ -116,7 +116,7 @@ export default async function raySubmit(
   exec: string,
   async?: boolean
 ) {
-  if (typeof cmdline === "string") {
+  if (typeof cmdline === "string" && !opts.dryRun) {
     const prefix = /\s*ray-submit/
     if (prefix.test(exec)) {
       // authors could have `exec: ...ourCustomExec...`, but that's

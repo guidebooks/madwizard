@@ -242,7 +242,7 @@ export class Guide {
                       (await shellExec(
                         block.body,
                         this.memos,
-                        { write: this.write },
+                        { write: this.write, dryRun: this.options.dryRun, verbose: this.options.verbose },
                         block.language,
                         block.exec,
                         block.async
