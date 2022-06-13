@@ -7,6 +7,7 @@ GGGGGG
 │       └── Option 2: 222222
 │           └── export FOO${SUFFIX}=BBBBB
 ├── GGGGGG
+│   ├── unset SUFFIX
 │   ├── echo ${FOOXXXX}
 │   └── if [ -n "${FOO}" ]; then echo "BUG_A ${FOO}"; fi
 ├── YYYYYY
@@ -17,5 +18,6 @@ GGGGGG
 │       └── Option 2: 222222
 │           └── export FOO${SUFFIX}=BBBBB
 └── GGGGGG
+    ├── unset SUFFIX
     ├── echo ${FOOYYYY}
     └── if [ -n "${FOO}" ]; then echo "BUG_B ${FOO}"; fi

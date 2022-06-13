@@ -19,21 +19,33 @@ import shellItOut from "./shell.js"
 import { Memos } from "../memoization"
 import { ExecOptions } from "./options.js"
 
-export function isExport(cmdline: string): ReturnType<string["match"]> {
-  return cmdline.match(/^\s*export\s+([^=]+)=/)
+function _isExport(cmdline: string): ReturnType<string["match"]> {
+  return cmdline.match(/^\s*(export|unset)\s+([^=]+)=?/)
+}
+
+/** Is the given `cmdline` of the form `export foo=bar`? */
+export function isExport(cmdline: string): boolean {
+  // TODO suboptimal (match versus test)
+  return !!_isExport(cmdline)
 }
 
 /** See if we are being asked to execute `export FOO=bar` */
 export default function execAsExport(cmdline: string | boolean, memos: Memos, opts: ExecOptions) {
   if (memos.env && typeof cmdline === "string") {
-    const match = isExport(cmdline)
+    const match = _isExport(cmdline)
     if (match) {
       const semicolon = /;\s*$/.test(cmdline) ? "" : ";"
-      const [, key] = match
+      const [, op, key] = match
 
       // invalidate any memos using this shell variable, since we're
       // about to update it
       memos.invalidate(key)
+
+      if (op === "unset") {
+        // for unset foo, we only need the invalidate part
+        delete memos.env[key] // TODO, move this to memos.invalidate()?
+        return "success"
+      }
 
       //
       const options = Object.assign({}, opts, { capture: "", ignoreStderr: true, write: undefined })
