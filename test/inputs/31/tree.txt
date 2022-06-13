@@ -10,8 +10,10 @@ GGGGGG
 │           └── export FOO${SUFFIX}=BBBBB
 └── Main Tasks
     ├── GGGGGG
+    │   ├── unset SUFFIX
     │   ├── echo ${FOOXXXX}
     │   └── if [ -n "${FOO}" ]; then echo "BUG_A ${FOO}"; fi
     └── GGGGGG
+        ├── unset SUFFIX
         ├── echo ${FOOYYYY}
         └── if [ -n "${FOO}" ]; then echo "BUG_B ${FOO}"; fi

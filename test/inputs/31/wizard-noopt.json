@@ -89,6 +89,30 @@
         "key": "somekey",
         "sequence": [
           {
+            "body": "unset SUFFIX",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "GGGGGG",
+      "description": "This variable should be defined.\n"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "GGGGGG",
+      "title": "GGGGGG",
+      "description": "This variable should be defined.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
             "body": "echo ${FOOXXXX}",
             "language": "shell",
             "id": "somekey"
@@ -203,6 +227,30 @@
           "isFirstChoice": false
         }
       ]
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "GGGGGG",
+      "title": "GGGGGG",
+      "description": "This variable should be defined.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "unset SUFFIX",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "GGGGGG",
+      "description": "This variable should be defined.\n"
     }
   },
   {

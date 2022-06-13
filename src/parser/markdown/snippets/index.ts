@@ -402,20 +402,28 @@ ${indent(errorMessage)}`
     const title = attributes.title || group
 
     // note how we splice in `export FOO=bar` shell commands for any import env maps
+    const setenv = !env
+      ? ""
+      : Object.entries(env)
+          .map(([key, value]) => `\`\`\`shell\nexport ${key}="${value}"\n\`\`\``)
+          .join("\n")
+
+    const clearenv = !env
+      ? ""
+      : Object.keys(env)
+          .map((key) => `\`\`\`shell\nunset ${key}\n\`\`\``)
+          .join("\n")
+
+    // note how we splice in `export FOO=bar` shell commands for any import env maps
     return `
 ${colons}import{provenance=${provenance.concat([snippetFileName])} filepath=${filepath} attributes="${attributesEnc}"${
       title ? ` title="${title}"` : ""
     }${group ? ` group="${group}"` : ""}}
-${
-  !env
-    ? ""
-    : Object.entries(env)
-        .map(([key, value]) => `\`\`\`shell\nexport ${key}="${value}"\n\`\`\``)
-        .join("\n")
-}
+${setenv}
 ${body}
 ${colons}
 <!-- hack: working around a bug in the directive parser for ${snippetFileName} -->
+${clearenv}
 `
   }
 
