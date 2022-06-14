@@ -15,6 +15,7 @@
  */
 
 import Debug from "debug"
+import { join } from "path"
 
 import { shellSync } from "./shell.js"
 import { ExecOptions } from "./options.js"
@@ -62,7 +63,7 @@ async function saveEnvToFile(
   parsedOptions: ReturnType<typeof import("yargs-parser")>,
   memos: Memos,
   customEnv: CustomEnv
-) {
+): Promise<{ filepath: string; runtimeEnv: Record<string, any> }> {
   const runtimeEnv: Record<string, any> = Object.assign(
     {
       env_vars: memos.env,
@@ -87,7 +88,7 @@ async function saveEnvToFile(
           if (err) {
             reject(err)
           } else {
-            resolve(filepath)
+            resolve({ filepath, runtimeEnv })
           }
         })
       }
@@ -135,6 +136,7 @@ export default async function raySubmit(
         },
       })
 
+      const source = cmdline
       return custom(
         cmdline,
         memos,
@@ -150,7 +152,7 @@ export default async function raySubmit(
             .replace(/--base-image=\S+/g, "")
             .replace(/ -- .+$/, "")
 
-          const envFile = await saveEnvToFile(parsedOptions, memos, customEnv)
+          const { filepath: envFile, runtimeEnv } = await saveEnvToFile(parsedOptions, memos, customEnv)
 
           // ./custom.ts will populate this env var
           const inputFile = customEnv.MWFILENAME
@@ -160,10 +162,48 @@ export default async function raySubmit(
 
           // formulate a ray job submit command line; `custom` will
           // assemble ` working directory `$MWDIR` and `$MWFILENAME`
-          const cmdline = `ray job submit --runtime-env=${envFile} ${extraArgs} -- python3 ${inputFile} ${dashDash}`
+          const systemPart = `ray job submit --runtime-env=${envFile} ${extraArgs}`
+          const appPart = `python3 ${inputFile} ${dashDash}`
+          const cmdline = `${systemPart} -- ${appPart}`
           Debug("madwizard/exec/ray-submit")("env", memos.env || {})
           Debug("madwizard/exec/ray-submit")("options", parsedOptions)
           Debug("madwizard/exec/ray-submit")("cmdline", cmdline)
+
+          // save a job.json to the staging directory
+          if (memos.env.LOGDIR_STAGE) {
+            // intentionally async'd here with no await... this may
+            // cause problems with super-short runs? so far it seems
+            // to be ok.
+            new Promise<void>((resolve, reject) => {
+              import("fs").then((_) =>
+                _.writeFile(
+                  join(memos.env.LOGDIR_STAGE, "job.json"),
+                  JSON.stringify(
+                    {
+                      jobid: memos.env.JOB_ID,
+                      cmdline: {
+                        appPart,
+                        systemPart,
+                      },
+                      runtimeEnv,
+                      language: "python",
+                      source,
+                    },
+                    (key, value) => (/SECRET_ACCESS|ACCESS_KEY|PASSWORD/i.test(key) ? "********" : value),
+                    2
+                  ),
+                  (err) => {
+                    if (err) {
+                      reject(err)
+                    } else {
+                      resolve()
+                    }
+                  }
+                )
+              )
+            })
+          }
+
           return cmdline
         },
         async
