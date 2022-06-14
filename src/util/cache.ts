@@ -51,7 +51,7 @@ export async function persistChoices(
   const writeFile = await import("fs").then((_) => _.writeFile)
   const filepath = join(await profilesPath(options, true), profile)
 
-  // Careul of the order: we want to overlay new choices on top of
+  // Careful of the order: we want to overlay new choices on top of
   // previous suggestions
   const union = suggestions.clone()
   choices.entries().forEach(([key, value]) => {
