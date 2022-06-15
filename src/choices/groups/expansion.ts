@@ -118,10 +118,8 @@ async function doExpand(
     )
     return response.split(/\n/).filter(Boolean)
   } catch (err) {
-    // then the expansion failed. make sure the users don't
-    // see the template
     options.debug(expansionExpr.expr, memos.env, err)
-    return []
+    return undefined
   }
 }
 
@@ -143,25 +141,21 @@ async function expandOneChoice(
           if (!expansionExpr) {
             return updateContent(part)
           } else {
-            let memoized = memos.expansionMemo && memos.expansionMemo[expansionExpr.expr]
-            if (!memoized || (await memoized).length === 0) {
-              if (memos.expansionMemo) {
-                memos.expansionMemo[expansionExpr.expr] = new Promise((resolve, reject) => {
-                  try {
-                    resolve(doExpand(expansionExpr, memos, options))
-                  } catch (err) {
-                    reject(err)
-                  }
-                })
-                memoized = memos.expansionMemo[expansionExpr.expr]
-              } else {
-                memoized = doExpand(expansionExpr, memos, options)
-              }
+            // is it memoized? we consider the answer no if the memo is []
+            if (!memos.expansionMemo[expansionExpr.expr]) {
+              memos.expansionMemo[expansionExpr.expr] = doExpand(expansionExpr, memos, options)
             }
-            const response = await memoized
-            options.debug(expansionExpr, !!memoized, response)
 
-            if (response.length > 0) {
+            let response = await memos.expansionMemo[expansionExpr.expr]
+            if (!response) {
+              // then the previous expansion failed, try one more time
+              options.debug(expansionExpr, "redo")
+              memos.expansionMemo[expansionExpr.expr] = doExpand(expansionExpr, memos, options)
+              response = await memos.expansionMemo[expansionExpr.expr]
+            }
+
+            options.debug(expansionExpr, response, memos.env)
+            if (response && response.length > 0) {
               // expand the template, which yields Part -> Part[]
               return expandPart(part, response)
             }

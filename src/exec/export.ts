@@ -41,12 +41,6 @@ export default function execAsExport(cmdline: string | boolean, memos: Memos, op
       // about to update it
       memos.invalidate(key)
 
-      if (op === "unset") {
-        // for unset foo, we only need the invalidate part
-        delete memos.env[key] // TODO, move this to memos.invalidate()?
-        return "success"
-      }
-
       //
       const options = Object.assign({}, opts, { capture: "", ignoreStderr: true, write: undefined })
 
@@ -62,13 +56,22 @@ export default function execAsExport(cmdline: string | boolean, memos: Memos, op
         .then(() => options.capture.split(/\n/).filter(Boolean))
         .catch(() => [key, ""])
         .then(([keyForUpdate, valueForUpdate]) => {
-          memos.env[keyForUpdate] = valueForUpdate
+          if (op === "unset") {
+            // for unset foo, we only need the invalidate part
+            if (opts.verbose && !opts.quiet) {
+              console.error(chalk.dim.yellow(`Unsetting ${keyForUpdate}`))
+            }
 
-          if (opts.verbose && !opts.quiet) {
-            console.error(chalk.dim.yellow(`Setting ${keyForUpdate}=${valueForUpdate}`))
+            delete memos.env[key] // TODO, move this to memos.invalidate()?
+            return "success"
+          } else {
+            if (opts.verbose && !opts.quiet) {
+              console.error(chalk.dim.yellow(`Setting ${keyForUpdate}=${valueForUpdate}`))
+            }
+
+            memos.env[keyForUpdate] = valueForUpdate
+            return "success" as const
           }
-
-          return "success" as const
         })
     }
   }
