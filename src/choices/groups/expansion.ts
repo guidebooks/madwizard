@@ -25,7 +25,7 @@ import { ExecutorOptions } from "../../exec/Executor.js"
 import { Graph, Choice, ChoicePart, blocks, findChoicesOnFrontier } from "../../graph/index.js"
 
 /** Map from `ExpansionExpression.expr` to a list of expanded choices */
-export type ExpansionMap = Record<string, Promise<string[]>>
+export type ExpansionMap = Record<string, Promise<string[] | null>>
 
 export function updateContent<Part extends { graph: Graph; description?: string }>(part: Part, choice = ""): Part {
   const pattern1 = /\$\{?choice\}?/gi
@@ -106,7 +106,7 @@ async function doExpand(
   expansionExpr: ExpansionExpression,
   memos: Memos,
   options: Partial<ExecutorOptions> & { debug: ReturnType<typeof Debug> }
-): Promise<string[]> {
+): Promise<string[] | null> {
   try {
     const response = await oraPromise(
       (options.exec || (await import("../../exec/index.js").then((_) => _.shellExecToString)))(
@@ -119,7 +119,46 @@ async function doExpand(
     return response.split(/\n/).filter(Boolean)
   } catch (err) {
     options.debug(expansionExpr.expr, memos.env, err)
-    return undefined
+    return null
+  }
+}
+
+async function getOrExpand(
+  part: ChoicePart,
+  expansionExpr: ExpansionExpression,
+  memos: Memos,
+  options: Partial<ExecutorOptions> & { debug: ReturnType<typeof Debug> },
+  inRetry = false
+) {
+  // is it memoized?
+  if (!memos.expansionMemo[expansionExpr.expr]) {
+    memos.expansionMemo[expansionExpr.expr] = doExpand(expansionExpr, memos, options)
+  } else {
+    options.debug(expansionExpr, "memoized")
+  }
+
+  const myMemo = memos.expansionMemo[expansionExpr.expr]
+  const response = await myMemo
+
+  if (response === null) {
+    if (inRetry) {
+      options.debug(expansionExpr, "inval")
+      delete memos.expansionMemo[expansionExpr.expr]
+    } else {
+      // then the previous expansion failed, try one more time
+      options.debug(expansionExpr, "redo")
+      if (memos.expansionMemo[expansionExpr.expr] === myMemo) {
+        options.debug(expansionExpr, "redo-inval")
+        delete memos.expansionMemo[expansionExpr.expr]
+      }
+      return getOrExpand(part, expansionExpr, memos, options, true)
+    }
+  }
+
+  options.debug(expansionExpr, response, memos.env)
+  if (response && response.length > 0) {
+    // expand the template, which yields Part -> Part[]
+    return expandPart(part, response)
   }
 }
 
@@ -141,24 +180,7 @@ async function expandOneChoice(
           if (!expansionExpr) {
             return updateContent(part)
           } else {
-            // is it memoized? we consider the answer no if the memo is []
-            if (!memos.expansionMemo[expansionExpr.expr]) {
-              memos.expansionMemo[expansionExpr.expr] = doExpand(expansionExpr, memos, options)
-            }
-
-            let response = await memos.expansionMemo[expansionExpr.expr]
-            if (!response) {
-              // then the previous expansion failed, try one more time
-              options.debug(expansionExpr, "redo")
-              memos.expansionMemo[expansionExpr.expr] = doExpand(expansionExpr, memos, options)
-              response = await memos.expansionMemo[expansionExpr.expr]
-            }
-
-            options.debug(expansionExpr, response, memos.env)
-            if (response && response.length > 0) {
-              // expand the template, which yields Part -> Part[]
-              return expandPart(part, response)
-            }
+            return getOrExpand(part, expansionExpr, memos, options)
           }
         })
       )
