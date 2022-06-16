@@ -25,7 +25,7 @@ import(madwizard + "/dist/fe/cli/index.js")
   .catch((err) => {
     if (process.env.DEBUG) {
       console.log(err)
-    } else {
+    } else if (err && err.message) {
       console.log(err.message)
     }
     process.exit(1)
