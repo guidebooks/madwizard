@@ -48,7 +48,7 @@ export async function persistChoices(
   suggestions: ChoiceState,
   profile = "default"
 ) {
-  const writeFile = await import("fs").then((_) => _.writeFile)
+  const writeFile = await import("write-file-atomic").then((_) => _.default)
   const filepath = join(await profilesPath(options, true), profile)
 
   // Careful of the order: we want to overlay new choices on top of
@@ -58,17 +58,13 @@ export async function persistChoices(
     union.setKey(key, value)
   })
 
-  return new Promise<void>((resolve, reject) => {
-    writeFile(filepath, union.serialize(), (err) => {
-      if (err) {
-        Debug("madwizard/profile")("error saving profile to " + filepath, err)
-        reject(err)
-      } else {
-        Debug("madwizard/profile")("profile saved to " + filepath)
-        resolve()
-      }
-    })
-  })
+  try {
+    await writeFile(filepath, union.serialize())
+    Debug("madwizard/profile")("profile saved to " + filepath)
+  } catch (err) {
+    Debug("madwizard/profile")("error saving profile to " + filepath, err)
+    throw err
+  }
 }
 
 export async function restoreChoices(options: MadWizardOptions, profile = "default"): Promise<ChoiceState> {
@@ -91,6 +87,7 @@ export async function restoreChoices(options: MadWizardOptions, profile = "defau
           resolve(deserialize(data.toString()))
         } catch (err) {
           Debug("madwizard/profile")("error parsing profile from " + filepath, err)
+          console.error("!!!!!!!", data.toString().length, filepath)
           reject(err)
         }
       }

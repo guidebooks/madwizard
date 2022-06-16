@@ -21,6 +21,12 @@ export interface RunOptions {
    * validation and expanding lists is ok
    */
   dryRun: boolean
+
+  /** Name of profile to use */
+  profile: string
+
+  /** Profile flush hysteresis. To avoid a flood of file writes, you can control the hystersis delay for profile persistence [default: 50ms] */
+  profileSaveDelay: number
 }
 
 export interface DisplayOptions {
