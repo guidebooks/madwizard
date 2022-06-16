@@ -99,7 +99,7 @@ export async function cli<Writer extends Writable["write"]>(
   }
 
   // restore choices from profile
-  const profile = undefined // TODO
+  const profile = options.profile
   const suggestions = noProfile
     ? newChoiceState()
     : await import("../../util/cache.js").then((_) => _.restoreChoices(options, profile))
@@ -107,6 +107,26 @@ export async function cli<Writer extends Writable["write"]>(
   // if we are doing a run, then use the suggestions as the final
   // choices; otherwise, treat them just as suggestions in the guide
   const choices = task === "run" ? suggestions : newChoiceState()
+
+  // A handler to serialize choices. We will call this after every
+  // choice. At exit, make sure to wait for the last persist to finish.
+  let lastPersist: ReturnType<typeof setTimeout>
+  let lastPersistPromise: Promise<void>
+  const persistChoices = () =>
+    import("../../util/cache.js").then((_) => _.persistChoices(options, choices, suggestions, profile))
+  if (!noProfile) {
+    choices.onChoice(() => {
+      // persist choices after every choice is made, and remember the
+      // async, so we can wait for it on exit
+      if (lastPersist) {
+        clearTimeout(lastPersist)
+      }
+
+      lastPersist = setTimeout(() => {
+        lastPersistPromise = persistChoices()
+      }, 50)
+    })
+  }
 
   // assert a choice to have a given value
   !_argv.find((_) => _.startsWith("--assert="))
@@ -220,8 +240,20 @@ export async function cli<Writer extends Writable["write"]>(
 
       try {
         await new Guide(task, blocks, choices, options, memoizer, undefined, write).run()
-        await import("../../util/cache.js").then((_) => _.persistChoices(options, choices, suggestions))
       } finally {
+        if (!noProfile) {
+          if (lastPersistPromise) {
+            // wait for the last choice persistence operation to
+            // complete before we exit
+            await lastPersistPromise
+          } else if (lastPersist) {
+            // then we have a scheduled async; cancel that and save
+            // immediately
+            clearTimeout(lastPersist)
+            await persistChoices()
+          }
+        }
+
         cleanExit()
       }
       break

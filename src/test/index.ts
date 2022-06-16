@@ -15,6 +15,7 @@
  */
 
 import slash from "slash"
+import { v4 as uuid } from "uuid"
 import { suite, Test } from "uvu"
 import * as assert from "uvu/assert"
 import { dirSync as tmpDirSync } from "tmp"
@@ -112,7 +113,7 @@ function tryParseInt(str: string): number {
 /** Read the cli.txt file, treated as extra command line args */
 function getCLIOptions(
   input: string,
-  { noAssertions = false, noProfile = false }: { noAssertions?: boolean; noProfile?: boolean } = {}
+  { noAssertions = false, noProfile = true }: { noAssertions?: boolean; noProfile?: boolean } = {}
 ) {
   const baseOptions = ["--quiet", "--verbose", ...(noProfile ? ["--no-profile"] : [])]
 
@@ -182,6 +183,8 @@ function testJsonTask(test: Test, input: string, suffix: string, _options: Optio
 function testRunTask(test: Test, input: string, suffix: string) {
   const filepath = join(input, "in.md")
   const expectedOutput = loadExpected(input, "run", suffix)
+
+  const profile = uuid()
   const { name: profilesPath } = tmpDirSync()
 
   const configs = [
@@ -197,7 +200,11 @@ function testRunTask(test: Test, input: string, suffix: string) {
       }
 
       try {
-        await CLI.cli(["test", "run", filepath, ...getCLIOptions(input, config)], write, { profilesPath })
+        await CLI.cli(["test", "run", filepath, ...getCLIOptions(input, config)], write, {
+          profilesPath,
+          profile,
+          profileSaveDelay: 0,
+        })
       } catch (err) {
         // also test output of error messages
         write(err.message)
