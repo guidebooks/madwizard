@@ -20,11 +20,9 @@ import { oraPromise } from "../util/ora-delayed-promise.js"
 
 import { Memos } from "../memoization/index.js"
 import { hasProvenance } from "./provenance.js"
-import { findChoiceFrontier } from "./choice-frontier.js"
 
 import {
   CompileOptions,
-  Choice,
   Graph,
   Ordered,
   Unordered,
@@ -46,7 +44,6 @@ async function collapseValidated<T extends Unordered | Ordered = Unordered, G ex
   graph: G,
   memos: Memos,
   options?: CompileOptions,
-  firstChoice?: Choice,
   nearestEnclosingTitle?: string
 ): Promise<G> {
   if (options && options.veto && hasProvenance(graph) && graph.provenance.find((_) => options.veto.test(_))) {
@@ -83,7 +80,7 @@ async function collapseValidated<T extends Unordered | Ordered = Unordered, G ex
   }
 
   const recurse = <T extends Unordered | Ordered, G extends Graph<T>>(graph: G) =>
-    collapseValidated(graph, memos, options, firstChoice, extractTitle(graph) || nearestEnclosingTitle)
+    collapseValidated(graph, memos, options, extractTitle(graph) || nearestEnclosingTitle)
 
   const recurse2 = <T extends Unordered | Ordered, G extends Graph<T>>({ graph }: { graph: G }) => recurse(graph)
 
@@ -143,20 +140,13 @@ export default function collapse<T extends Unordered | Ordered = Unordered, G ex
   if (
     options &&
     options.optimize &&
-    (options.optimize === false || (options.optimize !== true && options.optimize.validate === false))
+    (options.optimize === false || // all optimizations disabled
+      (options.optimize !== true && options.optimize.validate === false)) // this optimization disabled
   ) {
     // then this optimization has been disabled
     return graph
   }
 
-  // otherwise: keep track of the first choice; there is no sense in
-  // invoking potentially expensive validation logic beyond that; 1)
-  // might be wasted work; 2) may not even be meaningful, as the
-  // choice might alter state in a way that affects the way those
-  // contingent validation tasks behave
-  const frontier = findChoiceFrontier(graph)
-  const firstChoice = frontier.length === 0 ? undefined : frontier[0].choice
-
-  // then, traverse the graph, looking for validation opportunities
-  return collapseValidated(graph, memos, options, firstChoice)
+  // traverse the graph, looking for the first validation opportunity
+  return collapseValidated(graph, memos, options)
 }
