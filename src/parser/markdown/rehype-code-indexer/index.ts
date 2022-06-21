@@ -194,6 +194,24 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                   reserialize()
                 }
 
+                // look for a directly enclosing heading to name the code block
+                const parent = ancestors[ancestors.length - 1]
+                const grandparent = ancestors[ancestors.length - 2]
+                if (parent && grandparent) {
+                  const { child, title, source } = findNearestEnclosingTitle(grandparent, parent, node)
+                  if (title) {
+                    // found one!
+                    addNesting(attributes, {
+                      kind: "Import",
+                      source,
+                      key: title,
+                      title,
+                      description: extractFirstParagraph(grandparent, child),
+                      filepath: "",
+                    })
+                  }
+                }
+
                 // go from top to bottom, which is in reverse order, so
                 // that we can synthesize the "optional" and "choices"
                 // attributes
@@ -285,24 +303,6 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                         source: _,
                         key: title,
                         title,
-                        filepath: "",
-                      })
-                    }
-                  }
-                }
-
-                if (!attributes.nesting) {
-                  const parent = ancestors[ancestors.length - 1]
-                  const grandparent = ancestors[ancestors.length - 2]
-                  if (parent && grandparent) {
-                    const { child, title, source } = findNearestEnclosingTitle(grandparent, parent, node)
-                    if (title) {
-                      addNesting(attributes, {
-                        kind: "Import",
-                        source,
-                        key: title,
-                        title,
-                        description: extractFirstParagraph(grandparent, child),
                         filepath: "",
                       })
                     }

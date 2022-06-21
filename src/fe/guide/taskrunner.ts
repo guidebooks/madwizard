@@ -63,7 +63,7 @@ class TaskWrapperImpl implements TaskWrapper {
   public skip(parentheticalMsg = "SKIPPED", fullMsg = ` [${parentheticalMsg}]`) {
     if (this.spinner) {
       skip(this.spinner, this.title + chalk.yellow(fullMsg))
-    } else {
+    } else if (!this.quiet) {
       this.write(chalk.yellow(fullMsg))
       this.write(EOL)
     }
@@ -105,7 +105,7 @@ export async function taskRunner(
 ) {
   await promiseEach(tasks, async ({ title, task, spinner, quiet }, idx) => {
     if (idx > 0 && !options.quiet && !quiet) {
-      write(EOL)
+      // write(EOL)
     }
 
     if (!spinner && title && !quiet) {

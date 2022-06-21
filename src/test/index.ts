@@ -201,6 +201,7 @@ function testRunTask(test: Test, input: string, suffix: string) {
 
       try {
         await CLI.cli(["test", "run", filepath, ...getCLIOptions(input, config)], write, {
+          clear: false,
           profilesPath,
           profile,
           profileSaveDelay: 0,

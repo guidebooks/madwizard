@@ -6,5 +6,6 @@ Install Ray
     │   └── brew install kubectl
     ├── Install Helm
     │   └── brew install helm
-    └── helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/
-        kubectl wait --for=condition=available --all rayclusters
+    └── Install Ray on a Kubernetes Cluster
+        └── helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/
+            kubectl wait --for=condition=available --all rayclusters
