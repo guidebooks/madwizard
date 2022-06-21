@@ -19,6 +19,7 @@ import { join } from "path"
 
 import { shellSync } from "./shell.js"
 import { ExecOptions } from "./options.js"
+import { copyChoices } from "../util/cache.js"
 import { Memos } from "../memoization/index.js"
 import custom, { CustomEnv } from "./custom.js"
 
@@ -175,6 +176,8 @@ export default async function raySubmit(
             // cause problems with super-short runs? so far it seems
             // to be ok.
             new Promise<void>((resolve, reject) => {
+              copyChoices(join(memos.env.LOGDIR_STAGE, "choices.json"), opts)
+
               import("fs").then((_) =>
                 _.writeFile(
                   join(memos.env.LOGDIR_STAGE, "job.json"),

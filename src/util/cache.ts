@@ -41,6 +41,21 @@ async function profilesPath(options: MadWizardOptions, mkdir = false) {
   return filepath
 }
 
+export async function copyChoices(dstFilepath: string, options: MadWizardOptions, profile = "default") {
+  const copyFile = await import("fs").then((_) => _.copyFile)
+  const srcFilepath = join(await profilesPath(options, true), profile)
+
+  return new Promise<void>((resolve, reject) => {
+    copyFile(srcFilepath, dstFilepath, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
+}
+
 /** Persist the set of `choices`, unioned with the previously restored suggestions, as a profile named by `profile` */
 export async function persistChoices(
   options: MadWizardOptions,
