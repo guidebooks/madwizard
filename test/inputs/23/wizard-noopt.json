@@ -272,9 +272,20 @@
                                 ]
                               },
                               {
-                                "body": "export PATH=~/miniconda/bin:$PATH",
-                                "language": "shell",
-                                "id": "somekey"
+                                "key": "somekey",
+                                "title": "Update your PATH to include conda",
+                                "filepath": "",
+                                "graph": {
+                                  "key": "somekey",
+                                  "sequence": [
+                                    {
+                                      "body": "export PATH=~/miniconda/bin:$PATH",
+                                      "language": "shell",
+                                      "id": "somekey"
+                                    }
+                                  ]
+                                },
+                                "source": "placeholder"
                               }
                             ]
                           },
@@ -698,9 +709,21 @@
                 "source": "placeholder"
               },
               {
-                "body": "helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/\nkubectl wait --for=condition=available --all rayclusters",
-                "language": "shell",
-                "id": "somekey"
+                "key": "somekey",
+                "title": "Install Ray on a Kubernetes Cluster",
+                "description": "This will install Ray on a Kubernetes context of your choosing.\n",
+                "filepath": "",
+                "graph": {
+                  "key": "somekey",
+                  "sequence": [
+                    {
+                      "body": "helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/\nkubectl wait --for=condition=available --all rayclusters",
+                      "language": "shell",
+                      "id": "somekey"
+                    }
+                  ]
+                },
+                "source": "placeholder"
               }
             ]
           },
@@ -744,9 +767,21 @@
             "key": "somekey",
             "sequence": [
               {
-                "body": "import ray\nray.init()\n\n@ray.remote\ndef f(x):\n    return x * x\n\nfutures = [f.remote(i) for i in range(4)]\nprint(ray.get(futures)) # [0, 1, 4, 9]",
-                "language": "python",
-                "id": "somekey"
+                "key": "somekey",
+                "title": "Ray Core: Parallelizing Functions with Ray Tasks",
+                "description": "First, you import Ray and and initialize it with `ray.init()`. Then you decorate your function with `@ray.remote` to declare that you want to run this function remotely. Lastly, you call that function with `.remote()` instead of calling it normally. This remote call yields a future, a so-called Ray object reference, that you can then fetch with `ray.get`.\n",
+                "filepath": "",
+                "graph": {
+                  "key": "somekey",
+                  "sequence": [
+                    {
+                      "body": "import ray\nray.init()\n\n@ray.remote\ndef f(x):\n    return x * x\n\nfutures = [f.remote(i) for i in range(4)]\nprint(ray.get(futures)) # [0, 1, 4, 9]",
+                      "language": "python",
+                      "id": "somekey"
+                    }
+                  ]
+                },
+                "source": "placeholder"
               }
             ]
           },
@@ -759,9 +794,21 @@
             "key": "somekey",
             "sequence": [
               {
-                "body": "import ray\nray.init() # Only call this once.\n\n@ray.remote\nclass Counter(object):\n    def __init__(self):\n        self.n = 0\n\n    def increment(self):\n        self.n += 1\n\n    def read(self):\n        return self.n\n\ncounters = [Counter.remote() for i in range(4)]\n[c.increment.remote() for c in counters]\nfutures = [c.read.remote() for c in counters]\nprint(ray.get(futures)) # [1, 1, 1, 1]",
-                "language": "python",
-                "id": "somekey"
+                "key": "somekey",
+                "title": "Ray Core: Parallelizing Classes with Ray Actors",
+                "description": "Ray provides actors to allow you to parallelize an instance of a class in Python or Java. When you instantiate a class that is a Ray actor, Ray will start a remote instance of that class in the cluster. This actor can then execute remote method calls and maintain its own internal state.\n",
+                "filepath": "",
+                "graph": {
+                  "key": "somekey",
+                  "sequence": [
+                    {
+                      "body": "import ray\nray.init() # Only call this once.\n\n@ray.remote\nclass Counter(object):\n    def __init__(self):\n        self.n = 0\n\n    def increment(self):\n        self.n += 1\n\n    def read(self):\n        return self.n\n\ncounters = [Counter.remote() for i in range(4)]\n[c.increment.remote() for c in counters]\nfutures = [c.read.remote() for c in counters]\nprint(ray.get(futures)) # [1, 1, 1, 1]",
+                      "language": "python",
+                      "id": "somekey"
+                    }
+                  ]
+                },
+                "source": "placeholder"
               }
             ]
           },
@@ -781,9 +828,21 @@
                   "key": "somekey",
                   "sequence": [
                     {
-                      "body": "pip install \"ray[data]\" dask",
-                      "language": "shell",
-                      "id": "somekey"
+                      "key": "somekey",
+                      "title": "Install Ray Data",
+                      "description": "Ray Datasets are the standard way to load and exchange data in Ray libraries and applications. They provide basic distributed data transformations such as `map`, `filter`, and `repartition`, and are compatible with a variety of file formats, data sources, and distributed frameworks.\n",
+                      "filepath": "",
+                      "graph": {
+                        "key": "somekey",
+                        "sequence": [
+                          {
+                            "body": "pip install \"ray[data]\" dask",
+                            "language": "shell",
+                            "id": "somekey"
+                          }
+                        ]
+                      },
+                      "source": "placeholder"
                     }
                   ]
                 },

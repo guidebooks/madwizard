@@ -35,6 +35,9 @@ export interface DisplayOptions {
 
   /** Verbose output */
   verbose: boolean
+
+  /** Clear the screen when running in guide mode [default: true] */
+  clear: boolean
 }
 
 interface FetchOptions {

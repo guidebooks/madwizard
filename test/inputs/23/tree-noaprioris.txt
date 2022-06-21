@@ -39,7 +39,8 @@ Run a Ray Job
 │       │       │   │           └── Option 4: IBM z/Linux and LinuxONE
 │       │       │   │               └── curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-s390x.sh
 │       │       │   │                   bash Anaconda3-2021.11-Linux-s390x.sh -b -p $HOME/miniconda
-│       │       │   └── export PATH=~/miniconda/bin:$PATH
+│       │       │   └── Update your PATH to include conda
+│       │       │       └── export PATH=~/miniconda/bin:$PATH
 │       │       └── conda activate
 │       │           pip uninstall grpcio
 │       │           conda install grpcio
@@ -95,32 +96,35 @@ Run a Ray Job
 │           │   └── Choose a Kubernetes context
 │           │       └── Option 1: fakeit
 │           │           └── kubectl config set-context "${choice}"
-│           └── helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/
-│               kubectl wait --for=condition=available --all rayclusters
+│           └── Install Ray on a Kubernetes Cluster
+│               └── helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/
+│                   kubectl wait --for=condition=available --all rayclusters
 └── Main Tasks
     ├── Option 1: Example: Using Ray Tasks to Parallelize a Function
-    │   └── import ray
-    │       ray.init()
-    │       @ray.remote
-    │       def f(x):
-    │           return x * x
-    │       futures = [f.remote(i) for i in range(4)]
-    │       print(ray.get(futures)) 
+    │   └── Ray Core: Parallelizing Functions with Ray Tasks
+    │       └── import ray
+    │           ray.init()
+    │           @ray.remote
+    │           def f(x):
+    │               return x * x
+    │           futures = [f.remote(i) for i in range(4)]
+    │           print(ray.get(futures)) 
     ├── Option 2: Example: Using Ray Actors to Parallelize a Class
-    │   └── import ray
-    │       ray.init() 
-    │       @ray.remote
-    │       class Counter(object):
-    │           def __init__(self):
-    │               self.n = 0
-    │           def increment(self):
-    │               self.n += 1
-    │           def read(self):
-    │               return self.n
-    │       counters = [Counter.remote() for i in range(4)]
-    │       [c.increment.remote() for c in counters]
-    │       futures = [c.read.remote() for c in counters]
-    │       print(ray.get(futures)) 
+    │   └── Ray Core: Parallelizing Classes with Ray Actors
+    │       └── import ray
+    │           ray.init() 
+    │           @ray.remote
+    │           class Counter(object):
+    │               def __init__(self):
+    │                   self.n = 0
+    │               def increment(self):
+    │                   self.n += 1
+    │               def read(self):
+    │                   return self.n
+    │           counters = [Counter.remote() for i in range(4)]
+    │           [c.increment.remote() for c in counters]
+    │           futures = [c.read.remote() for c in counters]
+    │           print(ray.get(futures)) 
     └── Option 3: Example: Creating and Transforming Datasets
         └── Creating and Transforming Datasets
             ├── Prerequisites

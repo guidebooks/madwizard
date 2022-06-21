@@ -114,7 +114,7 @@ async function doExpand(
         memos,
         options
       ),
-      `Expanding ${chalk.blue(expansionExpr.message || expansionExpr.expr)}`
+      chalk.dim(`Expanding ${chalk.blue(expansionExpr.message || expansionExpr.expr)}`)
     )
     return response.split(/\n/).filter(Boolean)
   } catch (err) {

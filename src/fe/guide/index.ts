@@ -168,6 +168,7 @@ export class Guide {
     return opts.type === "select"
   }
 
+  /** Present the given question to the user */
   private ask(opts: Question) {
     if (process.env.MWCLEAR) {
       console.clear()
@@ -183,7 +184,7 @@ export class Guide {
 
   /** Try to be quiet when executing this task? */
   private beQuietForTaskRunner(block: CodeBlockProps) {
-    return !this.options.verbose && (!!isExport(block.body) || /^\s*(echo|cat|mkdir|while).+/gm.test(block.body))
+    return !this.options.verbose && (!!isExport(block.body) || /^\s*(echo|cat|mkdir|while|if).+/gm.test(block.body))
   }
 
   private listrTaskStep({ step, graph }: TaskStep, taskIdx: number, dryRun: boolean): Task {
@@ -206,9 +207,11 @@ export class Guide {
           (block): Task => ({
             title: block.validate
               ? chalk.dim("checking to see if this task has already been done\u2026")
-              : this.ui.code(block.body, block.language),
+              : this.options.verbose
+              ? this.ui.code(block.body, block.language)
+              : "",
             spinner: !!block.validate,
-            quiet: this.beQuietForTaskRunner(block),
+            quiet: !this.options.verbose,
             task: async (subtask) => {
               let status: Status = statusOf(block, this.memos.statusMemo, this.choices)
 
@@ -411,6 +414,10 @@ export class Guide {
   }
 
   public async run() {
+    if (this.options.clear !== false) {
+      console.clear()
+    }
+
     const tasks = await this.resolveChoices()
     try {
       // await this.showPlan(true, true)

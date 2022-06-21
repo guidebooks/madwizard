@@ -67,5 +67,6 @@ Install Ray
     │   │   └── bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)
     │   └── Option 3: Windows
     │       └── bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)
-    └── helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/
-        kubectl wait --for=condition=available --all rayclusters
+    └── Install Ray on a Kubernetes Cluster
+        └── helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/
+            kubectl wait --for=condition=available --all rayclusters
