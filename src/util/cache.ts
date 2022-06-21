@@ -87,7 +87,6 @@ export async function restoreChoices(options: MadWizardOptions, profile = "defau
           resolve(deserialize(data.toString()))
         } catch (err) {
           Debug("madwizard/profile")("error parsing profile from " + filepath, err)
-          console.error("!!!!!!!", data.toString().length, filepath)
           reject(err)
         }
       }
