@@ -169,7 +169,7 @@ export class Guide {
   }
 
   private ask(opts: Question) {
-    if (!process.env.DEBUG) {
+    if (process.env.MWCLEAR) {
       console.clear()
     }
 
