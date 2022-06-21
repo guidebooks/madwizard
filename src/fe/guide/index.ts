@@ -183,7 +183,7 @@ export class Guide {
 
   /** Try to be quiet when executing this task? */
   private beQuietForTaskRunner(block: CodeBlockProps) {
-    return !this.options.verbose && (!!isExport(block.body) || /^\s*echo.+/gm.test(block.body))
+    return !this.options.verbose && (!!isExport(block.body) || /^\s*(echo|cat|mkdir|while).+/gm.test(block.body))
   }
 
   private listrTaskStep({ step, graph }: TaskStep, taskIdx: number, dryRun: boolean): Task {
