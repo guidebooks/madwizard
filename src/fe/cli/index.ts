@@ -254,9 +254,12 @@ export async function cli<Writer extends Writable["write"]>(
           }
         }
 
-        cleanExit()
+        if (options.clean !== false) {
+          cleanExit()
+        }
       }
-      break
+
+      return cleanExit
     }
 
     default:

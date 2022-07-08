@@ -27,6 +27,9 @@ export interface RunOptions {
 
   /** Profile flush hysteresis. To avoid a flood of file writes, you can control the hystersis delay for profile persistence [default: 50ms] */
   profileSaveDelay: number
+
+  /** Clean up guidebook subprocesses, instead of relying on the caller to do so, via the return value from `fe/cli` [default: true] */
+  clean: boolean
 }
 
 export interface DisplayOptions {
