@@ -19,6 +19,7 @@ import Debug from "debug"
 import { Writable } from "stream"
 
 import usage from "./usage.js"
+import defaultOptions from "./defaults.js"
 import { DebugTask, isDebugTask, isValidTask } from "./tasks.js"
 
 import { MadWizardOptions } from "../MadWizardOptions.js"
@@ -71,6 +72,7 @@ export async function cli<Writer extends Writable["write"]>(
   // validation and expanding lists is ok
   const dryRun = !!_argv.find((_) => _ === "--dry-run")
 
+  const interactive = !!_argv.find((_) => _ === "-i" || _ === "--interactive")
   const noOptimize = !!_argv.find((_) => _ === "-O0" || _ === "--optimize=0" || _ === "--no-optimize")
   const noAprioris = !!_argv.find((_) => _ === "--no-aprioris")
   const noValidate = !!_argv.find((_) => _ === "--no-validate")
@@ -83,8 +85,18 @@ export async function cli<Writer extends Writable["write"]>(
     ? _argv.find((_) => _.startsWith("--store=")).replace(/^--store=/, "")
     : undefined
 
-  const commandLineOptions: MadWizardOptions = { veto, dryRun, mkdocs, narrow, optimize, profilesPath, store, verbose }
-  const options: MadWizardOptions = Object.assign(commandLineOptions, providedOptions)
+  const commandLineOptions: MadWizardOptions = {
+    veto,
+    dryRun,
+    mkdocs,
+    narrow,
+    optimize,
+    profilesPath,
+    store,
+    verbose,
+    interactive,
+  }
+  const options: MadWizardOptions = Object.assign({}, defaultOptions, commandLineOptions, providedOptions)
 
   if (!task || !input) {
     return usage(argv)

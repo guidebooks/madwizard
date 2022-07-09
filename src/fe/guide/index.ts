@@ -25,6 +25,7 @@ import { EventEmitter } from "events"
 
 import { taskRunner, Task } from "./taskrunner.js"
 
+import { eqSet } from "../../util/set.js"
 import { MadWizardOptions } from "../../index.js"
 import { ChoiceState } from "../../choices/index.js"
 import { CodeBlockProps } from "../../codeblock/index.js"
@@ -35,7 +36,20 @@ import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree/index.js"
 import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isForm, isTaskStep, wizardify } from "../../wizard/index.js"
 import { Graph, Status, blocks, compile, extractTitle, extractDescription, validate } from "../../graph/index.js"
 
-type Question = enquirer.prompt.SelectQuestionOptions | enquirer.prompt.FormQuestionOptions
+/** A question for which we will use the answer from the current profile (i.e. from a previously-made choice) */
+type AlreadyAnswered = {
+  type: "AlreadyAnswered"
+  name: string
+  message: string
+  answer: string
+}
+
+function isAlreadyAnswered(question: Question): question is AlreadyAnswered {
+  return question.type === "AlreadyAnswered"
+}
+
+/** Some form of interrogative to pose to the user */
+type Question = enquirer.prompt.SelectQuestionOptions | enquirer.prompt.FormQuestionOptions | AlreadyAnswered
 
 export class Guide {
   private readonly debug = Debug("madwizard/fe/guide")
@@ -79,23 +93,57 @@ export class Guide {
     const preChoiceTasks = preChoiceSteps.filter((_) => _.status !== "success")
     const postChoiceTasks = wizard.filter(isTaskStep).filter((_) => _.status !== "success")
 
-    const questions: Question[] = choices.map(({ step, graph: choice }, stepIdx) => {
+    // re: slice(0, 1), we ask one question at a time, so there is no
+    // need to waste time computing the question models for subsequent questions
+    const questions: Question[] = choices.slice(0, 1).map(({ step, graph: choice }, stepIdx) => {
       const name = step.name || chalk.red("Missing name")
       const message = chalk.yellow.inverse.bold(
         ` Choice ${choiceIter + stepIdx + 1}:` + ` ${step.name || chalk.red("Missing name")} `
       )
 
       const { content } = step
-      const form = isForm(content)
 
+      // according to the current profile, has this question been
+      // previously answered?
       const suggestion = this.memos.suggestions.get(choice)
+
+      // are we dealing with a form? i.e. a set of questions, rather
+      // than a singleton question
+      const thisChoiceIsAForm = isForm(content)
+      const suggestionForm = !thisChoiceIsAForm || !suggestion ? {} : JSON.parse(suggestion)
+
+      if (suggestion && !this.options.interactive) {
+        if (thisChoiceIsAForm) {
+          if (suggestionForm && eqSet(new Set(Object.keys(suggestionForm)), new Set(content.map((_) => _.title)))) {
+            return {
+              type: "AlreadyAnswered",
+              name,
+              message,
+              answer: suggestion,
+            }
+          }
+        } else {
+          const suggested = content.find((_) => _.title === suggestion)
+          if (suggested) {
+            // then we are in non-interactive mode, and found a valid
+            // prior choice
+            return {
+              type: "AlreadyAnswered",
+              name,
+              message,
+              answer: suggestion,
+            }
+          }
+        }
+      }
 
       const choices = content.map((tile) => {
         const isSuggested = suggestion === tile.title
 
         return {
           name: tile.title,
-          initial: form ? tile.form.defaultValue.toString() : undefined,
+          initial: thisChoiceIsAForm ? tile.form.defaultValue.toString() : undefined,
+          isSuggested,
           message:
             chalk.bold(tile.title) +
             (isSuggested ? this.suggestionHint : "") +
@@ -103,8 +151,7 @@ export class Guide {
         }
       })
 
-      if (form) {
-        const suggestionForm = !suggestion ? {} : JSON.parse(suggestion)
+      if (thisChoiceIsAForm) {
         choices.forEach((_) => {
           const suggestion = suggestionForm[_.name]
           if (suggestion) {
@@ -133,9 +180,7 @@ export class Guide {
         // sigh... i can't figure out how to make a choice
         // default-selected; so... instead sort to float the selected
         // to the top
-        if (suggestion) {
-          selChoices.sort((a, b) => (suggestion === a.name ? -1 : suggestion === b.name ? 1 : 0))
-        }
+        selChoices.sort((a, b) => (suggestion === a.name ? -1 : suggestion === b.name ? 1 : 0))
 
         return {
           type: "select" as const,
@@ -170,6 +215,16 @@ export class Guide {
 
   /** Present the given question to the user */
   private ask(opts: Question) {
+    if (isAlreadyAnswered(opts)) {
+      // Then there is nothing to ask the user, since this question
+      // already has an answer, likely by using a previous answer from
+      // the current profile. We still want to give some indication of
+      // what's going on, though.
+
+      console.log(opts.message + chalk.dim(" · ") + chalk.cyan(opts.answer))
+      return opts.answer
+    }
+
     if (process.env.MWCLEAR) {
       console.clear()
     }
@@ -406,15 +461,17 @@ export class Guide {
         }`
       )
     } else {
+      const firstQuestion = questions[0]
+
       // note that we ask one question at a time, because the answer
       // to the first question may influence what question we ask next
-      await this.incorporateAnswers(choices[0], await this.ask(questions[0]))
+      await this.incorporateAnswers(choices[0], await this.ask(firstQuestion))
       return this.resolveChoices(iter + 1, choiceIter + 1, wizard)
     }
   }
 
   public async run() {
-    if (this.options.clear !== false) {
+    if (this.options.clear !== false && this.options.interactive) {
       console.clear()
     }
 

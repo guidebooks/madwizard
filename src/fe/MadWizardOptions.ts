@@ -17,6 +17,14 @@
 import { CompilerOptions } from "../graph/compile"
 
 export interface RunOptions {
+  /**
+   * Interactive mode: even if a choice has a prior selection that is
+   * still valid, ask the user again to make that choice. Note, in interactive mode, some attempt will still be madxxe
+   * to notify the user of their prior choices, and to prioritize the
+   * UI to highlight those prior choices. [default: true]
+   */
+  interactive: boolean
+
   /** Don't actually execute anything, but making choices and
    * validation and expanding lists is ok
    */
@@ -25,10 +33,17 @@ export interface RunOptions {
   /** Name of profile to use */
   profile: string
 
-  /** Profile flush hysteresis. To avoid a flood of file writes, you can control the hystersis delay for profile persistence [default: 50ms] */
+  /**
+   * Profile flush hysteresis. To avoid a flood of file writes, you
+   * can control the hystersis delay for profile persistence [default:
+   * 50ms]
+   */
   profileSaveDelay: number
 
-  /** Clean up guidebook subprocesses, instead of relying on the caller to do so, via the return value from `fe/cli` [default: true] */
+  /**
+   * Clean up guidebook subprocesses, instead of relying on the caller
+   * to do so, via the return value from `fe/cli` [default: true]
+   */
   clean: boolean
 }
 
