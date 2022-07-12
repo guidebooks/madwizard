@@ -18,6 +18,7 @@ import { spawn, execSync, StdioOptions } from "child_process"
 
 import { ExecOptions } from "./options.js"
 import { Memos } from "../memoization/index.js"
+import { guidebookGlobalDataPath, guidebookProfileDataPath } from "../profiles/index.js"
 
 export function shellSync(cmdline: string, memos: Memos) {
   execSync(cmdline, { env: Object.assign({}, process.env, memos.env || {}) })
@@ -34,12 +35,20 @@ export default async function shellItOut(
 ): Promise<"success"> {
   const capture = typeof opts.capture === "string"
 
+  // location for guidebooks to store non-profile-specific data
+  const GUIDEBOOK_GLOBAL_DATA_PATH = guidebookGlobalDataPath(opts)
+
+  // location for guidebooks to store profile-specific data
+  const GUIDEBOOK_PROFILE_DATA_PATH = guidebookProfileDataPath(opts)
+
   const env = Object.assign(
     {
       IBMCLOUD_VERSION_CHECK: "false",
       HOMEBREW_NO_INSTALL_CLEANUP: "1",
       HOMEBREW_NO_INSTALL_UPGRADE: "1",
       HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK: "1",
+      GUIDEBOOK_GLOBAL_DATA_PATH,
+      GUIDEBOOK_PROFILE_DATA_PATH,
     },
     process.env,
     memos.env || {},
