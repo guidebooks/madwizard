@@ -16,6 +16,7 @@
 
 import ChoiceStateImpl from "./impl.js"
 import { Choice } from "../graph/index.js"
+import { Profile, isProfile } from "../profiles/index.js"
 import { ChoiceHandlerRegistration } from "./events.js"
 import { Choice as CodeBlockChoice } from "../codeblock/CodeBlockProps.js"
 
@@ -28,8 +29,11 @@ export type Key = CodeBlockChoice["group"]
 export type ChoicesMap = Record<Key, CodeBlockChoice["title"]>
 
 export interface ChoiceState {
+  /** @return Profile metadata */
+  get profile(): Profile
+
   /** Copy this model */
-  clone: () => ChoiceState
+  clone(profileName?: string): ChoiceState
 
   /** Register as a listener for selections */
   onChoice: ChoiceHandlerRegistration
@@ -75,11 +79,24 @@ export type Choices = {
   choices: ChoiceState
 }
 
-export function newChoiceState(assertions: ChoicesMap = {}): ChoiceState {
-  return new ChoiceStateImpl(assertions)
+export function newChoiceState(profile: string, assertions: ChoicesMap = {}): ChoiceState {
+  const now = Date.now()
+  return new ChoiceStateImpl({ name: profile, creationTime: now, lastModifiedTime: now, choices: assertions })
+}
+
+export function emptyChoiceState(profileName = "empty"): ChoiceState {
+  return newChoiceState(profileName)
 }
 
 /** Deserialize constructor */
-export function deserialize(str: string) {
-  return newChoiceState(JSON.parse(str))
+export function deserialize(serializedProfile: string, profileName: string): ChoiceState {
+  const profile = JSON.parse(serializedProfile)
+  if (isProfile(profile)) {
+    return new ChoiceStateImpl(profile)
+  } else {
+    // upgrade older profile format, which does not have the extra
+    // profile bits (name, timestamps, ...)
+    const now = Date.now()
+    return new ChoiceStateImpl({ name: profileName, creationTime: now, lastModifiedTime: now, choices: profile })
+  }
 }

@@ -18,11 +18,11 @@ import { EOL } from "os"
 import chalk from "chalk"
 
 import { Memoizer } from "../../memoization/index.js"
-import { ChoiceState } from "../../choices/index.js"
 import { compile, order } from "../../graph/index.js"
 import { CodeBlockProps } from "../../codeblock/index.js"
-import { AnsiUI, Treeifier, UITree } from "../tree/index.js"
 import { MadWizardOptions } from "../MadWizardOptions.js"
+import { AnsiUI, Treeifier, UITree } from "../tree/index.js"
+import { ChoiceState, emptyChoiceState } from "../../choices/index.js"
 
 const Symbols = {
   ansi: {
@@ -107,7 +107,7 @@ export async function prettyPrintUITreeFromBlocks(
   choices: ChoiceState,
   options: PrettyPrintOptions & MadWizardOptions & { root?: string } = {}
 ) {
-  const memos = new Memoizer()
+  const memos = new Memoizer(emptyChoiceState())
   const graph = await compile(blocks, choices, memos, options)
 
   const treeifier = new Treeifier(new AnsiUI(), memos.statusMemo)

@@ -27,12 +27,29 @@ export function isDebugTask(task: Task): task is DebugTask {
   return validDebugTasks().includes(task as DebugTask)
 }
 
+/** Tasks that do not take a file argument */
+type TaskNoArgs = "profile"
+
+export function taskHasNoArgs(task: string): task is TaskNoArgs {
+  return task === "profile"
+}
+
 /** The type definining the valid Tasks to run via the CLI client */
-export type Task = "plan" | "guide" | "run" | "json" | "version" | "vetoes" | "build" | "mirror" | DebugTask
+export type Task =
+  | "plan"
+  | "guide"
+  | "run"
+  | "json"
+  | "version"
+  | "vetoes"
+  | "build"
+  | "mirror"
+  | DebugTask
+  | TaskNoArgs
 
 /** @return the list of valid Tasks to run via the CLI client */
 export function validTasks(): Task[] {
-  const normalTasks: Task[] = ["plan", "guide", "run", "json", "version", "vetoes", "build", "mirror"]
+  const normalTasks: Task[] = ["profile", "plan", "guide", "run", "json", "version", "vetoes", "build", "mirror"]
   return normalTasks.concat(validDebugTasks())
 }
 

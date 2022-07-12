@@ -26,8 +26,8 @@ import { unified, PluggableList } from "unified"
 import { MadWizardOptions } from "../../fe/index.js"
 import { Reader, fetcherFor } from "./fetch.js"
 
+import { ChoiceState } from "../../choices/index.js"
 import { CodeBlockProps } from "../../codeblock/index.js"
-import { ChoiceState, newChoiceState } from "../../choices/index.js"
 
 import { hackMarkdownSource } from "./hack.js"
 
@@ -87,7 +87,7 @@ const rehypePlugins = (
 async function parse(
   input: VFile,
   reader: Reader,
-  choices: ChoiceState = newChoiceState(),
+  choices: ChoiceState,
   uuid = v4(),
   madwizardOptions: MadWizardOptions = {}
 ) {

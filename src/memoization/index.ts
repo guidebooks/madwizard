@@ -17,8 +17,8 @@
 import Debug from "debug"
 import { ChildProcess } from "child_process"
 
+import { ChoiceState } from "../choices/index.js"
 import { ExpansionMap } from "../choices/groups/expansion.js"
-import { ChoiceState, newChoiceState } from "../choices/index.js"
 import { Graph, Status, StatusMap, isLeafNode, isChoice, partsOf } from "../graph/index.js"
 
 /** Optimize certain expensive or non-idempotent operations */
@@ -53,7 +53,7 @@ export interface Memos {
 
 /** Default implementation of `Memos` */
 export class Memoizer implements Memos {
-  public constructor(public readonly suggestions: ChoiceState = newChoiceState()) {}
+  public constructor(public readonly suggestions: ChoiceState) {}
 
   /** the `Status` of a given `LeafNode` in a `Graph` */
   public readonly statusMemo: StatusMap = {}
