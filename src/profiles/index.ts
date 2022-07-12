@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
+import { join } from "path"
+
+import defaults from "../fe/cli/defaults.js"
 import { ChoicesMap } from "../choices/index.js"
+import { MadWizardOptions } from "../fe/index.js"
+
+export { default as clone } from "./clone.js"
+export { default as list } from "./list.js"
+export { default as persist } from "./persist.js"
+export { default as restore } from "./restore.js"
 
 export interface Profile {
   /** Name of this profile */
@@ -46,4 +55,12 @@ export function isProfile(obj: unknown): obj is Profile {
 
 export function copyWithName(profile: Profile, name: string) {
   return Object.assign({}, profile, { name })
+}
+
+export function guidebookGlobalDataPath(opts: MadWizardOptions) {
+  return opts.dataPath || defaults.dataPath
+}
+
+export function guidebookProfileDataPath(opts: MadWizardOptions) {
+  return join(guidebookGlobalDataPath(opts), opts.profile || defaults.profile)
 }

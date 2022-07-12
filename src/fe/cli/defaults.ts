@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import { dataPath } from "../../util/cache.js"
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
 const defaults: MadWizardOptions = {
   clean: true,
+  dataPath: dataPath(),
   interactive: false,
   profile: "default",
   profileSaveDelay: 50,

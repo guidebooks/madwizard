@@ -17,13 +17,14 @@
 import { Writable } from "stream"
 
 import { Memos } from "../memoization/index.js"
-import { DisplayOptions, RunOptions } from "../fe/MadWizardOptions.js"
+import { FetchOptions, DisplayOptions, RunOptions } from "../fe/MadWizardOptions.js"
 
 /** Environment variable state that might be mutated by the guidebook itself */
 export type Env = Pick<Memos, "env">
 
 export type ExecOptions = Partial<DisplayOptions> &
-  Partial<RunOptions> & {
+  Partial<RunOptions> &
+  Partial<FetchOptions> & {
     /** Do not emit to console */
     quiet?: boolean
 

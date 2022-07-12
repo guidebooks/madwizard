@@ -58,7 +58,7 @@ export interface DisplayOptions {
   clear: boolean
 }
 
-interface FetchOptions {
+export interface FetchOptions {
   /** Base URI of Guidebook store? */
   store: string
 
@@ -70,6 +70,9 @@ interface FetchOptions {
 
   /** Location of persisted profiles (remembered choices from prior runs) */
   profilesPath: string
+
+  /** Location for guidebooks to store persisted data */
+  dataPath: string
 }
 
 export type MadWizardOptions = Partial<CompilerOptions> &
