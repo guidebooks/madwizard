@@ -16,12 +16,13 @@
 
 import { Choice } from "../graph/index.js"
 import ChoiceEventManager from "./events.js"
+import { Profile, copyWithName } from "../profiles/index.js"
 import { ChoiceState, ChoicesMap, Key } from "./index.js"
 
 export default class ChoiceStateImpl extends ChoiceEventManager implements ChoiceState {
   public constructor(
     /** Choices made, e.g. "i want to install using homebrew" */
-    private readonly _choices: ChoicesMap = {},
+    private readonly _profile: Profile,
 
     /** Choices rejected, e.g. "i really don't want to install using curl" */
     private readonly rejectedChoices: Record<keyof ChoicesMap, boolean> = {}
@@ -29,16 +30,31 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
     super()
   }
 
-  public clone() {
-    return new ChoiceStateImpl(this._choices, this.rejectedChoices)
+  /** Name of the profile */
+  public get profile() {
+    return this._profile
+  }
+
+  /** Adjust the `lastModifiedTime` attribute of our profile */
+  private bumpLastModified() {
+    this._profile.lastModifiedTime = Date.now()
+  }
+
+  public clone(profileName?: string) {
+    const profile = !profileName ? this._profile : copyWithName(this._profile, profileName)
+    return new ChoiceStateImpl(profile, this.rejectedChoices)
+  }
+
+  private get choices() {
+    return this._profile.choices
   }
 
   public keys() {
-    return Object.keys(this._choices)
+    return Object.keys(this.choices)
   }
 
   public entries() {
-    return Object.entries(this._choices)
+    return Object.entries(this.choices)
   }
 
   private key(choice: Choice) {
@@ -46,12 +62,12 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
   }
 
   public contains(choice: Choice) {
-    return this.key(choice) in this._choices
+    return this.key(choice) in this.choices
   }
 
   /** @return the current memoized selection for the given `Choice` */
   public get(choice: Choice) {
-    return this._choices[this.key(choice)]
+    return this.choices[this.key(choice)]
   }
 
   /** Remove the memoized selection for the given `Choice` */
@@ -61,10 +77,11 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
 
   /** Take care with this. If you have a `Choice`, then prefer to use `remove(choice)` */
   public removeKey(key: Key): boolean {
-    if (key in this._choices) {
-      delete this._choices[key]
+    if (key in this.choices) {
+      delete this.choices[key]
       this.rejectedChoices[key] = true
       this.notifyOfChoice(this)
+      this.bumpLastModified()
       return true
     } else {
       return false
@@ -78,14 +95,15 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
 
   /** Take care with this. If you have a `Choice`, then prefer to use `set(choice, value)` */
   public setKey(key: Key, value: ChoicesMap[Key], overrideRejections?: boolean): boolean {
-    if (this._choices[key] === value) {
+    if (this.choices[key] === value) {
       return false
     }
 
     if (overrideRejections || !(key in this.rejectedChoices)) {
       delete this.rejectedChoices[key]
-      this._choices[key] = value
+      this.choices[key] = value
       this.notifyOfChoice(this)
+      this.bumpLastModified()
       return true
     } else {
       return false
@@ -111,6 +129,6 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
 
   /** Serialize */
   public serialize(): string {
-    return JSON.stringify(this._choices, undefined, 2)
+    return JSON.stringify(this._profile, undefined, 2)
   }
 }

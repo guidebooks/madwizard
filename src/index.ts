@@ -26,6 +26,7 @@ export * as Parser from "./parser/index.js"
 export * as Choices from "./choices/index.js"
 export * as Wizard from "./wizard/index.js"
 export * as CodeBlock from "./codeblock/index.js"
+export { default as listProfiles } from "./profiles/list.js"
 
 export { Memoizer } from "./memoization/index.js"
 

@@ -20,7 +20,7 @@ import { Writable } from "stream"
 
 import usage from "./usage.js"
 import defaultOptions from "./defaults.js"
-import { DebugTask, isDebugTask, isValidTask } from "./tasks.js"
+import { DebugTask, isDebugTask, isValidTask, taskHasNoArgs } from "./tasks.js"
 
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
@@ -51,7 +51,7 @@ export async function cli<Writer extends Writable["write"]>(
     import("../../graph/index.js"),
   ])
 
-  const task = !argv[2] ? "guide" : argv[1]
+  const task = !argv[2] && !taskHasNoArgs(argv[1]) ? "guide" : argv[1]
   const input = argv[2] || argv[1]
 
   const vetoIdx = _argv.findIndex((_) => new RegExp("^--veto=").test(_))
@@ -113,19 +113,18 @@ export async function cli<Writer extends Writable["write"]>(
   // restore choices from profile
   const profile = options.profile
   const suggestions = noProfile
-    ? newChoiceState()
-    : await import("../../util/cache.js").then((_) => _.restoreChoices(options, profile))
+    ? newChoiceState(profile)
+    : await import("../../profiles/restore.js").then((_) => _.default(options, profile))
 
   // if we are doing a run, then use the suggestions as the final
   // choices; otherwise, treat them just as suggestions in the guide
-  const choices = task === "run" ? suggestions : newChoiceState()
+  const choices = task === "run" ? suggestions : newChoiceState(profile)
 
   // A handler to serialize choices. We will call this after every
   // choice. At exit, make sure to wait for the last persist to finish.
   let lastPersist: ReturnType<typeof setTimeout>
   let lastPersistPromise: Promise<void>
-  const persistChoices = () =>
-    import("../../util/cache.js").then((_) => _.persistChoices(options, choices, suggestions, profile))
+  const persistChoices = () => import("../../profiles/persist.js").then((_) => _.default(options, choices, suggestions))
   if (!noProfile) {
     choices.onChoice(() => {
       // persist choices after every choice is made, and remember the
@@ -165,6 +164,8 @@ export async function cli<Writer extends Writable["write"]>(
     const { mirror } = await import("../../parser/markdown/snippets/mirror.js")
     await mirror(input, argv[3], undefined, options)
     return
+  } else if (task === "profile") {
+    return import("../profiles/index.js").then((_) => _.default(argv, options))
   }
 
   const { blocks } = await parse(input, madwizardRead, choices, undefined, options)
@@ -183,7 +184,7 @@ export async function cli<Writer extends Writable["write"]>(
     case "debug:fetch": {
       // print out timing
       const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
-      const memos = new Memoizer()
+      const memos = new Memoizer(suggestions)
       const graph = await compile(blocks, choices, memos, options)
       await import("../../wizard/index.js").then((_) => _.wizardify(graph, memos))
 
@@ -200,14 +201,14 @@ export async function cli<Writer extends Writable["write"]>(
     case "vetoes": {
       const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
       ;(write || process.stdout.write.bind(process.stdout))(
-        await vetoesToString(blocks, choices, new Memoizer(), options)
+        await vetoesToString(blocks, choices, new Memoizer(suggestions), options)
       )
       break
     }
 
     case "json": {
       const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
-      const memos = new Memoizer()
+      const memos = new Memoizer(suggestions)
       const graph = await compile(blocks, choices, memos, options)
       const wizard = await import("../../wizard/index.js").then((_) => _.wizardify(graph, memos))
       ;(write || process.stdout.write.bind(process.stdout))(
