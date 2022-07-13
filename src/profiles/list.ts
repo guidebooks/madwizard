@@ -15,7 +15,7 @@
  */
 
 import restore from "./restore.js"
-import { profilesPath } from "../util/cache.js"
+import { profilesPath } from "./paths.js"
 import { MadWizardOptions } from "../fe/index.js"
 import { ChoiceState } from "../choices/index.js"
 
