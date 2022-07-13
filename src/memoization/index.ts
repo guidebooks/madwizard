@@ -62,7 +62,7 @@ export class Memoizer implements Memos {
   public readonly expansionMemo: ExpansionMap = {}
 
   /** Any captured environment variable assignments. For example, a guidebook may want to update via `export FOO=bar` */
-  public readonly env = {}
+  public readonly env: typeof process.env = {}
 
   /** Any collected dependencies that need to be injected into the runtime */
   public dependencies = {}
