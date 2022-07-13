@@ -29,6 +29,11 @@ export function guidebookProfileDataPath(opts: MadWizardOptions) {
   return join(guidebookGlobalDataPath(opts), opts.profile || defaults.profile)
 }
 
+/** Location for guidebooks to store job-specific data */
+export function guidebookJobDataPath(opts: MadWizardOptions) {
+  return join(guidebookProfileDataPath(opts), "jobs")
+}
+
 /** @return the filepath in which persistent profiles are stored */
 export async function profilesPath(options: MadWizardOptions, mkdir = false) {
   const filepath = join(
