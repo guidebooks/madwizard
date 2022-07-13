@@ -19,9 +19,9 @@ import { join } from "path"
 
 import { shellSync } from "./shell.js"
 import { ExecOptions } from "./options.js"
-import { copyChoices } from "../util/cache.js"
 import { Memos } from "../memoization/index.js"
 import custom, { CustomEnv } from "./custom.js"
+import { copyChoices } from "../profiles/index.js"
 
 interface RuntimeEnvDependencies {
   pip?: string[]

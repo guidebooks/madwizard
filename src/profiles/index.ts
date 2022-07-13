@@ -16,10 +16,11 @@
 
 import { join } from "path"
 
-import defaults from "../fe/cli/defaults.js"
+import { profilesPath } from "./paths.js"
 import { ChoicesMap } from "../choices/index.js"
 import { MadWizardOptions } from "../fe/index.js"
 
+export * from "./paths.js"
 export { default as clone } from "./clone.js"
 export { default as list } from "./list.js"
 export { default as persist } from "./persist.js"
@@ -53,14 +54,23 @@ export function isProfile(obj: unknown): obj is Profile {
   )
 }
 
+/** @return an in-memory copy of the given `Profile`, but one using the new `name` */
 export function copyWithName(profile: Profile, name: string) {
   return Object.assign({}, profile, { name })
 }
 
-export function guidebookGlobalDataPath(opts: MadWizardOptions) {
-  return opts.dataPath || defaults.dataPath
-}
+/** Perform a disk-to-disk copy of the given named `profile` to the given `distFielpath` */
+export async function copyChoices(dstFilepath: string, options: MadWizardOptions, profile = "default") {
+  const copyFile = await import("fs").then((_) => _.copyFile)
+  const srcFilepath = join(await profilesPath(options, true), profile)
 
-export function guidebookProfileDataPath(opts: MadWizardOptions) {
-  return join(guidebookGlobalDataPath(opts), opts.profile || defaults.profile)
+  return new Promise<void>((resolve, reject) => {
+    copyFile(srcFilepath, dstFilepath, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    })
+  })
 }

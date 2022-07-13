@@ -17,7 +17,7 @@
 import Debug from "debug"
 import { join } from "path"
 
-import { profilesPath } from "../util/cache.js"
+import { profilesPath } from "./paths.js"
 import { MadWizardOptions } from "../fe/index.js"
 import { ChoiceState, emptyChoiceState } from "../choices/index.js"
 
