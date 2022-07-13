@@ -292,7 +292,10 @@ export async function cli<Writer extends Writable["write"]>(
         }
       }
 
-      return cleanExit
+      return {
+        cleanExit,
+        env: memoizer.env,
+      }
     }
 
     default:
