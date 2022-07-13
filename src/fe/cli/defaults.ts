@@ -18,11 +18,29 @@ import { dataPath } from "../../util/cache.js"
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
 const defaults: MadWizardOptions = {
-  clean: true,
+  /**
+   * The default path for guidebooks to store data is determined by
+   * `dataPath()`, which uses platform-specific logic.
+   */
   dataPath: dataPath(),
-  interactive: false,
+
+  interactive: true,
+
+  /** The choice profile to use */
   profile: "default",
+
+  /**
+   * Hysteresis, in milliseconds, for batching the persistence (to
+   * disk) of choice updates. This can avoid a flurry of file I/O, but
+   * means process crashes or ctrl+c's may result in unsaved choices.
+   */
   profileSaveDelay: 50,
+
+  /**
+   * [Advanced] Yes, we want to kill any subprocesses guidebooks might
+   * have launched (via `shell.async`).
+   */
+  clean: true,
 }
 
 export default defaults

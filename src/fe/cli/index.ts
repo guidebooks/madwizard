@@ -72,12 +72,12 @@ export async function cli<Writer extends Writable["write"]>(
   // validation and expanding lists is ok
   const dryRun = !!_argv.find((_) => _ === "--dry-run")
 
-  const interactive = !!_argv.find((_) => _ === "-i" || _ === "--interactive")
-  const noOptimize = !!_argv.find((_) => _ === "-O0" || _ === "--optimize=0" || _ === "--no-optimize")
-  const noAprioris = !!_argv.find((_) => _ === "--no-aprioris")
-  const noValidate = !!_argv.find((_) => _ === "--no-validate")
-  const verbose = !!_argv.find((_) => _ === "--verbose" || _ === "-V")
-  const optimize = noOptimize ? false : { aprioris: !noAprioris, validate: !noValidate }
+  const interactive = _argv.find((_) => _ === "-i" || _ === "--interactive") ? true : undefined
+  const noOptimize = _argv.find((_) => _ === "-O0" || _ === "--optimize=0" || _ === "--no-optimize") ? true : undefined
+  const noAprioris = _argv.find((_) => _ === "--no-aprioris") ? true : undefined
+  const noValidate = _argv.find((_) => _ === "--no-validate") ? true : undefined
+  const verbose = _argv.find((_) => _ === "--verbose" || _ === "-V") ? true : undefined
+  const optimize = noOptimize ? undefined : { aprioris: !noAprioris, validate: !noValidate }
 
   // base uri of guidebook store; this will allow users to type
   // shortnames for books in the store
@@ -85,16 +85,36 @@ export async function cli<Writer extends Writable["write"]>(
     ? _argv.find((_) => _.startsWith("--store=")).replace(/^--store=/, "")
     : undefined
 
-  const commandLineOptions: MadWizardOptions = {
-    veto,
-    dryRun,
-    mkdocs,
-    narrow,
-    optimize,
-    profilesPath,
-    store,
-    verbose,
-    interactive,
+  const commandLineOptions: MadWizardOptions = {}
+  if (interactive !== undefined) {
+    commandLineOptions.interactive = interactive
+  }
+  if (veto !== undefined) {
+    commandLineOptions.veto = veto
+  }
+  if (dryRun !== undefined) {
+    commandLineOptions.dryRun = dryRun
+  }
+  if (mkdocs !== undefined) {
+    commandLineOptions.mkdocs = mkdocs
+  }
+  if (narrow !== undefined) {
+    commandLineOptions.narrow = narrow
+  }
+  if (optimize !== undefined) {
+    commandLineOptions.optimize = optimize
+  }
+  if (profilesPath !== undefined) {
+    commandLineOptions.profilesPath = profilesPath
+  }
+  if (store !== undefined) {
+    commandLineOptions.store = store
+  }
+  if (verbose !== undefined) {
+    commandLineOptions.verbose = verbose
+  }
+  if (interactive !== undefined) {
+    commandLineOptions.interactive = interactive
   }
   const options: MadWizardOptions = Object.assign({}, defaultOptions, commandLineOptions, providedOptions)
 
