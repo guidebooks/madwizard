@@ -15,7 +15,7 @@ function opts {
 }
 
 echo -n A
-for i in {1..31}
+for i in {1..32}
 do
     if [ -n "$WHICH" ] && [ $i != $WHICH ]; then continue; fi
 
@@ -35,7 +35,7 @@ done
 echo
 
 echo -n B
-for i in {1..8} {11..18} {20..22} {24..31}
+for i in {1..8} {11..18} {20..22} {24..32}
 do
     if [ -n "$WHICH" ] && [ $i != $WHICH ]; then continue; fi
 

@@ -1,0 +1,11 @@
+Sequence
+├── echo hello \
+│   world
+├── echo hello \
+│   world \
+│   again
+├── export FOO=333333
+└── echo AAAAAA \
+    $FOO xxx \
+    $FOO $FOO xxx \
+       $FOO

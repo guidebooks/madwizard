@@ -26,13 +26,15 @@ export function shellSync(cmdline: string, memos: Memos) {
 
 /** Shell out the execution of the given `cmdline` */
 export default async function shellItOut(
-  cmdline: string | boolean,
+  _cmdline: string | boolean,
   memos: Memos,
   opts: ExecOptions = { quiet: false },
   extraEnv: Record<string, string> = {},
   async?: boolean /* fire and forget, until this process exits? */,
   onClose?: () => void | Promise<void> /* callback when the process exits */
 ): Promise<"success"> {
+  const cmdline = typeof _cmdline === "boolean" ? _cmdline : _cmdline.replace(/\\\n/g, " ")
+
   const capture = typeof opts.capture === "string"
 
   // location for guidebooks to store non-profile-specific data
