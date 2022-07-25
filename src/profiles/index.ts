@@ -63,7 +63,6 @@ export function isProfile(obj: unknown): obj is Profile {
 }
 
 export async function lastUsed(options: MadWizardOptions = {}) {
-  console.error("!!!!LLL", await import("./list.js").then((_) => _.default(options)))
   return import("./list.js")
     .then((_) => _.default(options))
     .then((L) => L.sort((a, b) => b.profile.lastUsedTime - a.profile.lastUsedTime))
