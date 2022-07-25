@@ -36,10 +36,8 @@ export function guidebookJobDataPath(opts: MadWizardOptions) {
 
 /** @return the filepath in which persistent profiles are stored */
 export async function profilesPath(options: MadWizardOptions, mkdir = false) {
-  const filepath = join(
-    options.profilesPath || process.env.MWPROFILES_PATH || guidebookGlobalDataPath(options),
-    "profiles"
-  )
+  const filepath =
+    options.profilesPath || process.env.MWPROFILES_PATH || join(guidebookGlobalDataPath(options), "profiles")
   if (mkdir) {
     const mkdirp = await import("mkdirp").then((_) => _.default)
     await mkdirp(filepath)
