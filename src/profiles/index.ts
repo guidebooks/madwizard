@@ -21,8 +21,9 @@ import { ChoicesMap } from "../choices/index.js"
 import { MadWizardOptions } from "../fe/index.js"
 
 export * from "./paths.js"
-export { default as clone } from "./clone.js"
 export { default as list } from "./list.js"
+export { default as clone } from "./clone.js"
+export { default as rename } from "./rename.js"
 export { default as persist } from "./persist.js"
 export { default as restore } from "./restore.js"
 
