@@ -62,6 +62,14 @@ export function isProfile(obj: unknown): obj is Profile {
   )
 }
 
+export async function lastUsed(options: MadWizardOptions = {}) {
+  console.error("!!!!LLL", await import("./list.js").then((_) => _.default(options)))
+  return import("./list.js")
+    .then((_) => _.default(options))
+    .then((L) => L.sort((a, b) => b.profile.lastUsedTime - a.profile.lastUsedTime))
+    .then((L) => (L[0] ? L[0].profile.name : undefined))
+}
+
 /** @return an in-memory copy of the given `Profile`, but one using the new `name` */
 export function copyWithName(profile: Profile, name: string) {
   return Object.assign({}, profile, { name })
