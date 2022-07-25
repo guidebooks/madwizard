@@ -63,6 +63,10 @@ export async function cli<Writer extends Writable["write"]>(
 
   const narrow = !!_argv.find((_) => _ === "--narrow" || _ === "-n")
 
+  const profileIdx = _argv.findIndex((_) => new RegExp("^--profile=").test(_))
+  const profileFromCommandLine =
+    profileIdx < 0 ? undefined : _argv[profileIdx].slice(_argv[profileIdx].indexOf("=") + 1)
+
   const noProfile = !!_argv.find((_) => _ === "--no-profile")
   const profilesPathIdx = _argv.findIndex((_) => _ === "--profiles-path")
   const profilesPath =
@@ -97,6 +101,9 @@ export async function cli<Writer extends Writable["write"]>(
   }
   if (mkdocs !== undefined) {
     commandLineOptions.mkdocs = mkdocs
+  }
+  if (profileFromCommandLine !== undefined) {
+    commandLineOptions.profile = profileFromCommandLine
   }
   if (narrow !== undefined) {
     commandLineOptions.narrow = narrow
@@ -158,6 +165,10 @@ export async function cli<Writer extends Writable["write"]>(
       }, 50)
     })
   }
+
+  // bump the `lastUsedTime` attribute
+  choices.profile.lastUsedTime = Date.now()
+  persistChoices()
 
   // assert a choice to have a given value
   !_argv.find((_) => _.startsWith("--assert="))

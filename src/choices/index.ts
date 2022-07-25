@@ -81,7 +81,13 @@ export type Choices = {
 
 export function newChoiceState(profile: string, assertions: ChoicesMap = {}): ChoiceState {
   const now = Date.now()
-  return new ChoiceStateImpl({ name: profile, creationTime: now, lastModifiedTime: now, choices: assertions })
+  return new ChoiceStateImpl({
+    name: profile,
+    creationTime: now,
+    lastModifiedTime: now,
+    lastUsedTime: now,
+    choices: assertions,
+  })
 }
 
 export function emptyChoiceState(profileName = "empty"): ChoiceState {
@@ -97,6 +103,12 @@ export function deserialize(serializedProfile: string, profileName: string): Cho
     // upgrade older profile format, which does not have the extra
     // profile bits (name, timestamps, ...)
     const now = Date.now()
-    return new ChoiceStateImpl({ name: profileName, creationTime: now, lastModifiedTime: now, choices: profile })
+    return new ChoiceStateImpl({
+      name: profileName,
+      creationTime: now,
+      lastModifiedTime: now,
+      lastUsedTime: now,
+      choices: profile,
+    })
   }
 }

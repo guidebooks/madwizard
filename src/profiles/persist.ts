@@ -42,6 +42,9 @@ export default async function persist(
     union.setKey(key, value)
   })
 
+  // make sure we use unify the lastUsedTime, too
+  union.profile.lastUsedTime = Math.max(union.profile.lastUsedTime || 0, choices.profile.lastUsedTime || 0)
+
   try {
     await writeFile(filepath, union.serialize())
     Debug("madwizard/profile")("profile saved to " + filepath)
