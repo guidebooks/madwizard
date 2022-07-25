@@ -21,6 +21,11 @@ import { profilesPath } from "./paths.js"
 import { MadWizardOptions } from "../fe/index.js"
 import { ChoiceState, emptyChoiceState } from "../choices/index.js"
 
+/** We can't seem to control any aspect of the temporary file names used by `write-file-atomic` :( */
+export function isTemporary(profile: string) {
+  return /\.\d+/.test(profile)
+}
+
 /**
  * Persist the set of `choices`, unioned with the previously restored suggestions.
  */
