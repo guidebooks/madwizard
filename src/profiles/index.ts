@@ -37,6 +37,13 @@ export interface Profile {
   /** Timestamp at which this profile was last modified */
   lastModifiedTime: number
 
+  /**
+   * Timestamp at which this profile was last used in the execution of
+   * a guidebook. Will be different from `lastModifiedTime` e.g. when
+   * using a profile without changing it.
+   */
+  lastUsedTime: number
+
   /** (future-proofing, not currently used) User-defined tags associated with this profile */
   tags?: string[]
 
