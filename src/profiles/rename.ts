@@ -16,6 +16,7 @@
 
 import { join } from "path"
 
+import clone from "./clone.js"
 import { profilesPath } from "./paths.js"
 import { MadWizardOptions } from "../fe/index.js"
 
@@ -25,8 +26,9 @@ export default async function rename(
   srcProfileName: string,
   dstProfileName: string
 ): Promise<void> {
-  const { rename } = await import("fs/promises")
+  await clone(options, srcProfileName, dstProfileName)
+
   const srcFilepath = join(await profilesPath(options), srcProfileName)
-  const dstFilepath = join(await profilesPath(options), dstProfileName)
-  await rename(srcFilepath, dstFilepath)
+  const { unlink } = await import("fs/promises")
+  await unlink(srcFilepath)
 }
