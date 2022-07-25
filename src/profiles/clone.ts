@@ -22,7 +22,7 @@ import { MadWizardOptions } from "../fe/index.js"
 export default async function clone(
   options: MadWizardOptions,
   srcProfileName: string,
-  destProfileName: string
+  dstProfileName: string
 ): Promise<void> {
-  await persist(options, await restore(options, srcProfileName), undefined, destProfileName)
+  await persist(options, await restore(options, srcProfileName), undefined, dstProfileName)
 }
