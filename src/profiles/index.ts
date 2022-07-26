@@ -75,7 +75,11 @@ export function copyWithName(profile: Profile, name: string) {
 }
 
 /** Perform a disk-to-disk copy of the given named `profile` to the given `distFielpath` */
-export async function copyChoices(dstFilepath: string, options: MadWizardOptions, profile = "default") {
+export async function copyChoices(
+  dstFilepath: string,
+  options: MadWizardOptions,
+  profile = options.profile || "default"
+) {
   const copyFile = await import("fs").then((_) => _.copyFile)
   const srcFilepath = join(await profilesPath(options, true), profile)
 
