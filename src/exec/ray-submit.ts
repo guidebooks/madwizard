@@ -16,12 +16,15 @@
 
 import Debug from "debug"
 import { join } from "path"
+import { access, readFile } from "fs/promises"
 
 import { shellSync } from "./shell.js"
 import { ExecOptions } from "./options.js"
 import { Memos } from "../memoization/index.js"
 import custom, { CustomEnv } from "./custom.js"
 import { copyChoices } from "../profiles/index.js"
+
+type ParsedOptions = ReturnType<typeof import("yargs-parser")>
 
 interface RuntimeEnvDependencies {
   pip?: string[]
@@ -30,9 +33,51 @@ interface RuntimeEnvDependencies {
   }
 }
 
+/** Expand env vars */
+export function expand(expr: string, memos: Memos): string {
+  return !expr ? expr : expr.replace(/\${?([^}/\s]+)}?/g, (_, p1) => memos.env[p1] || process.env[p1] || p1)
+}
+
+/** Maybe the working directory as a requirements.txt? */
+async function addPipsFromTemplate(pips: Set<string>, parsedOptions: ParsedOptions, memos: Memos) {
+  if (parsedOptions["working-dir"]) {
+    const workingDirPips = join(expand(parsedOptions["working-dir"], memos), "requirements.txt")
+    if (
+      await access(workingDirPips)
+        .then(() => true)
+        .catch(() => false)
+    ) {
+      try {
+        const pipsFromWorkingDir = await readFile(workingDirPips).then((data) =>
+          data.toString().split(/\n/).filter(Boolean)
+        )
+        pipsFromWorkingDir.forEach((pip) => pips.add(pip))
+      } catch (err) {
+        console.error("Error reading requirements.txt", err)
+      }
+    }
+  }
+}
+
+/** Maybe the working directory has a runtime-env.yaml we can use? */
+async function readRuntimeEnvFromTemplate(parsedOptions, memos: Memos) {
+  if (parsedOptions["working-dir"]) {
+    const workingDirRuntimeEnv = join(expand(parsedOptions["working-dir"], memos), "runtime-env.yaml")
+    if (
+      await access(workingDirRuntimeEnv)
+        .then(() => true)
+        .catch(() => false)
+    ) {
+      // then the working dir has a runtime env that we can use
+      return import("js-yaml").then(async (_) => _.load((await readFile(workingDirRuntimeEnv)).toString()))
+    }
+  }
+}
+
 /** express any pip dependencies we have collected */
-function dependencies(memos: Memos): RuntimeEnvDependencies {
+async function dependencies(memos: Memos, parsedOptions: ParsedOptions): Promise<RuntimeEnvDependencies> {
   const pips = new Set(!memos.dependencies || !memos.dependencies.pip ? [] : memos.dependencies.pip)
+  await addPipsFromTemplate(pips, parsedOptions, memos)
   pips.delete("ray")
 
   const condas = new Set(!memos.dependencies || !memos.dependencies.conda ? [] : memos.dependencies.conda)
@@ -61,23 +106,28 @@ function dependencies(memos: Memos): RuntimeEnvDependencies {
 }
 
 async function saveEnvToFile(
-  parsedOptions: ReturnType<typeof import("yargs-parser")>,
+  parsedOptions: ParsedOptions,
   memos: Memos,
   customEnv: CustomEnv
 ): Promise<{ filepath: string; runtimeEnv: Record<string, any> }> {
   const runtimeEnv: Record<string, any> = Object.assign(
+    (await readRuntimeEnvFromTemplate(parsedOptions, memos)) || {},
     {
       env_vars: memos.env,
       working_dir: customEnv.MWDIR,
     },
-    dependencies(memos)
+    await dependencies(memos, parsedOptions)
   )
 
-  if (parsedOptions["base-image"]) {
-    runtimeEnv.container = {
-      image: parsedOptions["base-image"],
-    }
+  if (parsedOptions["working-dir"]) {
+    runtimeEnv["working_dir"] = expand(parsedOptions["working-dir"], memos)
   }
+
+  /* if (parsedOptions["base-image"]) {
+    runtimeEnv.container = {
+      image: expand(parsedOptions["base-image"], memos),
+    }
+  } */
 
   const [{ tmpName }, { writeFile }, { dump }] = await Promise.all([import("tmp"), import("fs"), import("js-yaml")])
   return new Promise((resolve, reject) => {
@@ -151,12 +201,14 @@ export default async function raySubmit(
           const extraArgs = exec
             .replace(prefix, "")
             .replace(/--base-image=\S+/g, "")
+            .replace(/--working-dir=\S+/g, "")
+            .replace(/--entrypoint=\S+/g, "")
             .replace(/ -- .+$/, "")
 
           const { filepath: envFile, runtimeEnv } = await saveEnvToFile(parsedOptions, memos, customEnv)
 
           // ./custom.ts will populate this env var
-          const inputFile = customEnv.MWFILENAME
+          const inputFile = expand(parsedOptions.entrypoint, memos) || customEnv.MWFILENAME
 
           // arguments after the --
           const dashDash = parsedOptions["--"] ? parsedOptions["--"].join(" ") : ""
@@ -169,6 +221,7 @@ export default async function raySubmit(
           Debug("madwizard/exec/ray-submit")("env", memos.env || {})
           Debug("madwizard/exec/ray-submit")("options", parsedOptions)
           Debug("madwizard/exec/ray-submit")("cmdline", cmdline)
+          Debug("madwizard/exec/ray-submit")("runtimeEnv", runtimeEnv || {})
 
           // save a job.json to the staging directory
           if (memos.env.LOGDIR_STAGE) {
