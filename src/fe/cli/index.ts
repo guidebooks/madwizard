@@ -279,8 +279,12 @@ export async function cli<Writer extends Writable["write"]>(
 
       /** Kill any spawned subprocesses */
       const cleanExit = memoizer.cleanup.bind(memoizer)
-      process.on("SIGINT", cleanExit) // catch ctrl-c
-      process.on("SIGTERM", cleanExit) // catch kill
+      const cleanExitFromSignal = () => {
+        console.error("Exiting now, please wait for us to gracefully clean things up")
+        cleanExit()
+      }
+      process.on("SIGINT", cleanExitFromSignal) // catch ctrl-c
+      process.on("SIGTERM", cleanExitFromSignal) // catch kill
 
       try {
         await new Guide(task, blocks, choices, options, memoizer, undefined, write).run()
