@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
-import { join } from "path"
 import { readdir } from "fs"
 import { oraPromise } from "ora"
+import { writeFile } from "fs/promises"
+import { basename, dirname, join } from "path"
 
 import { inliner } from "./inliner.js"
 import { MadWizardOptions } from "../../../fe/index.js"
+
+import { parse } from "../../../parser/index.js"
+import { newChoiceState } from "../../../choices/index.js"
+import { madwizardRead } from "../../../fe/cli/madwizardRead.js"
+
+/**
+ * We pre-parse the source into the `blocks` model (our AST). This
+ * returns the location of the ast model associated with the given source `filepath`.
+ */
+export function targetPathForAst(filepath: string, storePrefix = "") {
+  return join(storePrefix, dirname(filepath), basename(filepath, ".md") + "-madwizard.json")
+}
 
 export async function mirror(srcDir: string, targetDir: string, srcRelPath = "", options: MadWizardOptions) {
   // Debug.enable("madwizard/fetch/snippets")
@@ -37,8 +50,39 @@ export async function mirror(srcDir: string, targetDir: string, srcRelPath = "",
             if (entry.isFile() && /\.md$/.test(entry.name)) {
               await oraPromise(
                 inliner(srcDir, relpath, targetDir, Object.assign({}, options, { store: srcDir })),
-                `Processing ${relpath}`
+                `Inlining ${relpath}`
               )
+
+              await oraPromise(async () => {
+                const targetPathForInlinedContent = join(targetDir, relpath) // dst/foo.md
+                const pathForAst = targetPathForAst(targetPathForInlinedContent) // dst/foo-madwizard.json
+
+                const nonProfile = "not-a-profile"
+
+                const { blocks } = await parse(
+                  targetPathForInlinedContent,
+                  madwizardRead,
+                  newChoiceState(nonProfile),
+                  undefined,
+                  {}
+                )
+                await writeFile(
+                  pathForAst,
+                  JSON.stringify(blocks, (key, value) => {
+                    if (
+                      key === "child" ||
+                      key === "containedCodeBlocks" ||
+                      key === "source" ||
+                      key === "position" ||
+                      (key === "level" && typeof value === "number")
+                    ) {
+                      return undefined
+                    } else {
+                      return value
+                    }
+                  })
+                )
+              }, `Optimizing ${relpath}`)
             } else if (entry.isDirectory()) {
               await mirror(srcDir, targetDir, relpath, options)
             }

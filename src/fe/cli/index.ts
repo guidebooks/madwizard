@@ -38,7 +38,7 @@ export async function cli<Writer extends Writable["write"]>(
   providedOptions: MadWizardOptions = {}
 ) {
   // TODO replace this with yargs or something like that
-  const argv = _argv.filter((_, idx) => !/^-/.test(_) && (idx === 0 || !/^--/.test(_argv[idx - 1])))
+  const argv = _argv.filter((_) => !/^-/.test(_))
 
   if (argv[1] === "version") {
     return import("../../version.js").then((_) => _.version())
@@ -81,7 +81,7 @@ export async function cli<Writer extends Writable["write"]>(
   const noAprioris = _argv.find((_) => _ === "--no-aprioris") ? true : undefined
   const noValidate = _argv.find((_) => _ === "--no-validate") ? true : undefined
   const verbose = _argv.find((_) => _ === "--verbose" || _ === "-V") ? true : undefined
-  const optimize = noOptimize ? undefined : { aprioris: !noAprioris, validate: !noValidate }
+  const optimize = noOptimize ? false : { aprioris: !noAprioris, validate: !noValidate }
 
   // base uri of guidebook store; this will allow users to type
   // shortnames for books in the store
@@ -199,7 +199,42 @@ export async function cli<Writer extends Writable["write"]>(
     return import("../profiles/index.js").then((_) => _.default(argv, options))
   }
 
-  const { blocks } = await parse(input, madwizardRead, choices, undefined, options)
+  /** @return the block model, either by using a precompiled model from the store, or by parsing the source */
+  const getBlocksModel = async () => {
+    // check to see if the compiled model exists
+    const [{ access, readFile }, { targetPathForAst }] = await Promise.all([
+      import("fs/promises"),
+      import("../../parser/markdown/snippets/mirror.js"),
+    ])
+
+    const ast1 = targetPathForAst(input + "/index.md", options.store)
+    const ast2 = targetPathForAst(input + ".md", options.store)
+    const mightBeAst = !/\.md$/.test(input) && !/^http/.test(options.store)
+    const [exists1, exists2] = await Promise.all([
+      !mightBeAst
+        ? ""
+        : access(ast1)
+            .then(() => ast1)
+            .catch(() => ""),
+      !mightBeAst
+        ? ""
+        : access(ast2)
+            .then(() => ast2)
+            .catch(() => ""),
+    ])
+    if (exists1 || exists2) {
+      // yes! the pre-parsed ast model exists
+      const { populateAprioris } = await import("../../choices/groups/index.js")
+      await populateAprioris(choices, options)
+      return JSON.parse(await readFile(exists1 || exists2).then((_) => _.toString()))
+    } else {
+      // no! we need to parse it from the source (much slower)
+      return parse(input, madwizardRead, choices, undefined, options).then((_) => _.blocks)
+    }
+  }
+
+  // this is the block model we parse from the source
+  const blocks = await getBlocksModel()
 
   switch (task) {
     case "version":
