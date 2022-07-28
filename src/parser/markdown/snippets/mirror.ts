@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
+import { join } from "path"
 import { readdir } from "fs"
 import { oraPromise } from "ora"
 import { writeFile } from "fs/promises"
-import { basename, dirname, join } from "path"
 
 import { inliner } from "./inliner.js"
 import { MadWizardOptions } from "../../../fe/index.js"
 
 import { parse } from "../../../parser/index.js"
+import { targetPathForAst } from "./mirror-paths.js"
 import { newChoiceState } from "../../../choices/index.js"
 import { madwizardRead } from "../../../fe/cli/madwizardRead.js"
-
-/**
- * We pre-parse the source into the `blocks` model (our AST). This
- * returns the location of the ast model associated with the given source `filepath`.
- */
-export function targetPathForAst(filepath: string, storePrefix = "") {
-  return join(storePrefix, dirname(filepath), basename(filepath, ".md") + "-madwizard.json")
-}
 
 export async function mirror(srcDir: string, targetDir: string, srcRelPath = "", options: MadWizardOptions) {
   // Debug.enable("madwizard/fetch/snippets")

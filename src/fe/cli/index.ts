@@ -44,10 +44,8 @@ export async function cli<Writer extends Writable["write"]>(
     return import("../../version.js").then((_) => _.version())
   }
 
-  const [{ parse }, { newChoiceState }, { madwizardRead }, { compile, order, vetoesToString }] = await Promise.all([
-    import("../../parser/index.js"),
+  const [{ newChoiceState }, { compile, order, vetoesToString }] = await Promise.all([
     import("../../choices/index.js"),
-    import("./madwizardRead.js"),
     import("../../graph/index.js"),
   ])
 
@@ -204,7 +202,7 @@ export async function cli<Writer extends Writable["write"]>(
     // check to see if the compiled model exists
     const [{ access, readFile }, { targetPathForAst }] = await Promise.all([
       import("fs/promises"),
-      import("../../parser/markdown/snippets/mirror.js"),
+      import("../../parser/markdown/snippets/mirror-paths.js"),
     ])
 
     const ast1 = targetPathForAst(input + "/index.md", options.store)
@@ -229,6 +227,10 @@ export async function cli<Writer extends Writable["write"]>(
       return JSON.parse(await readFile(exists1 || exists2).then((_) => _.toString()))
     } else {
       // no! we need to parse it from the source (much slower)
+      const [{ madwizardRead }, { parse }] = await Promise.all([
+        import("./madwizardRead.js"),
+        import("../../parser/index.js"),
+      ])
       return parse(input, madwizardRead, choices, undefined, options).then((_) => _.blocks)
     }
   }
