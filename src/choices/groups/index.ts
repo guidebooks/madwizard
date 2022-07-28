@@ -29,20 +29,7 @@ export {
 
 import aprioris from "./aprioris/index.js"
 
-/**
- * Scan tab groups to see if we can squash down the choice given our a
- * priori knowledge, e.g. about what platform we are on.
- *
- */
-export function identifyRecognizableTabGroups(
-  tree: Node,
-  choices: ChoiceState,
-  { optimize = true }: MadWizardOptions = {}
-) {
-  if (!choices) {
-    return
-  }
-
+export function populateAprioris(choices: ChoiceState, { optimize = true }: MadWizardOptions = {}) {
   const useAprioris = !(optimize === false || (optimize !== true && optimize.aprioris === false))
 
   if (useAprioris) {
@@ -50,6 +37,21 @@ export function identifyRecognizableTabGroups(
       .filter((_) => !choices.contains(_.choiceGroup)) // already set?
       .forEach((_) => _.populateChoice(choices))
   }
+
+  return useAprioris
+}
+
+/**
+ * Scan tab groups to see if we can squash down the choice given our a
+ * priori knowledge, e.g. about what platform we are on.
+ *
+ */
+export function identifyRecognizableTabGroups(tree: Node, choices: ChoiceState, options: MadWizardOptions) {
+  if (!choices) {
+    return
+  }
+
+  const useAprioris = populateAprioris(choices, options)
 
   const nodesToVisit: Element[] = []
 
