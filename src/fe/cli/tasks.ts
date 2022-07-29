@@ -30,7 +30,7 @@ export function isDebugTask(task: Task): task is DebugTask {
 /** Tasks that do not take a file argument */
 type TaskNoArgs = "profile"
 
-export function taskHasNoArgs(task: string): task is TaskNoArgs {
+export function taskHasNoArgs(task: string | number): task is TaskNoArgs {
   return task === "profile"
 }
 

@@ -16,7 +16,7 @@
 
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
-export default async function profileSubcommand(argv: string[], options: MadWizardOptions) {
+export default async function profileSubcommand(argv: (string | number)[], options: MadWizardOptions) {
   const task = argv[2]
 
   if (task === "get") {
@@ -26,14 +26,14 @@ export default async function profileSubcommand(argv: string[], options: MadWiza
     ])
     console.log(ui(profiles))
   } else if (task === "delete") {
-    const profileName = argv[3]
+    const profileName = argv[3].toString()
     if (!profileName) {
       throw new Error("Usage: profile delete <profileName>")
     }
     await import("../../profiles/delete.js").then((_) => _.default(options, profileName))
   } else if (task === "clone") {
-    const srcProfileName = argv[3]
-    const destProfileName = argv[4]
+    const srcProfileName = argv[3].toString()
+    const destProfileName = argv[4].toString()
     if (!srcProfileName || !destProfileName) {
       throw new Error("Usage: profile clone <srcProfileName> <destProfileName>")
     }
