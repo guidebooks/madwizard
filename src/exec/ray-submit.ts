@@ -16,6 +16,7 @@
 
 import Debug from "debug"
 import { join } from "path"
+import expandHomeDir from "expand-home-dir"
 import { access, readFile } from "fs/promises"
 
 import { shellSync } from "./shell.js"
@@ -39,7 +40,15 @@ export function expand(expr: string | number, memos: Memos): string {
     ? expr
     : typeof expr !== "string"
     ? expr.toString()
-    : expr.replace(/\${?([^}/\s]+)}?/g, (_, p1) => memos.env[p1] || process.env[p1] || p1)
+    : expr.replace(/\${?([^}/\s]+)}?/g, (_, p1) =>
+        expandHomeDir(
+          typeof memos.env[p1] !== "undefined"
+            ? memos.env[p1]
+            : typeof process.env[p1] !== "undefined"
+            ? process.env[p1]
+            : p1
+        )
+      )
 }
 
 /** Maybe the working directory as a requirements.txt? */
@@ -215,7 +224,7 @@ export default async function raySubmit(
           const inputFile = expand(parsedOptions.entrypoint, memos) || customEnv.MWFILENAME
 
           // arguments after the --
-          const dashDash = parsedOptions["--"] ? parsedOptions["--"].map((_) => expand(_, memos)).join(" ") : ""
+          const dashDash = parsedOptions["--"] ? parsedOptions["--"].join(" ") : ""
 
           // formulate a ray job submit command line; `custom` will
           // assemble ` working directory `$MWDIR` and `$MWFILENAME`
