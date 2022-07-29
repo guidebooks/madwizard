@@ -247,10 +247,10 @@ export async function cli<Writer extends Writable["write"]>(
   const makeMemos = async () => {
     const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
     const memos = new Memoizer(suggestions)
-    if (parsedOptions["--"]) {
-      // allow guidebooks to selectively inject -- <rest> arguments into shell commands
-      memos.env.GUIDEBOOK_DASHDASH = parsedOptions["--"].join(" ")
-    }
+
+    // allow guidebooks to selectively inject -- <rest> arguments into shell commands
+    memos.env.GUIDEBOOK_DASHDASH = parsedOptions["--"] ? parsedOptions["--"].join(" ") : ""
+
     return memos
   }
 
