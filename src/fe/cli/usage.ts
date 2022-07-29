@@ -19,12 +19,12 @@ import { basename } from "path"
 
 import { validTasks } from "./tasks.js"
 
-export default function usage(argv: string[], msg?: string) {
+export default function usage(argv: (string | number)[], msg?: string) {
   if (msg) {
     console.error(chalk.red(msg))
   }
   console.error(
-    `${chalk.bold.yellow("Usage:")} ${basename(argv[0]).replace(/\.js$/, "")} ${chalk.cyan(
+    `${chalk.bold.yellow("Usage:")} ${basename(argv[0].toString()).replace(/\.js$/, "")} ${chalk.cyan(
       validTasks().join("|")
     )} <a filepath or url>`
   )

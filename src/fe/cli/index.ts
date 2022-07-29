@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { EOL } from "os"
-import Debug from "debug"
+import yargs from "yargs-parser"
 import { Writable } from "stream"
 
 import usage from "./usage.js"
@@ -28,8 +27,8 @@ function assertExhaustive(value: never, message = "Reached unexpected case in ex
   throw new Error(message)
 }
 
-function enableTracing(task: DebugTask, subtask = "*") {
-  Debug.enable(`madwizard/${task.replace(/^debug:/, "")}/${subtask}`)
+async function enableTracing(task: DebugTask, subtask = "*") {
+  await import("debug").then((_) => _.enable(`madwizard/${task.replace(/^debug:/, "")}/${subtask}`))
 }
 
 export async function cli<Writer extends Writable["write"]>(
@@ -37,8 +36,25 @@ export async function cli<Writer extends Writable["write"]>(
   write?: Writer,
   providedOptions: MadWizardOptions = {}
 ) {
-  // TODO replace this with yargs or something like that
-  const argv = _argv.filter((_) => !/^-/.test(_))
+  const parsedOptions = yargs(_argv, {
+    configuration: { "populate--": true }, // parse out the "-- <rest>" part of the command line
+    alias: { profile: ["p"], narrow: ["n"], interactive: ["i"], verbose: ["V"] },
+    boolean: [
+      "no-profile",
+      "narrow",
+      "n",
+      "interactive",
+      "i",
+      "0O",
+      "no-optimize",
+      "no-aprioris",
+      "no-validate",
+      "verbose",
+      "V",
+      "dry-run",
+    ],
+  })
+  const argv = parsedOptions._
 
   if (argv[1] === "version") {
     return import("../../version.js").then((_) => _.version())
@@ -49,43 +65,32 @@ export async function cli<Writer extends Writable["write"]>(
     import("../../graph/index.js"),
   ])
 
-  const task = !argv[2] && !taskHasNoArgs(argv[1]) ? "guide" : argv[1]
-  const input = argv[2] || argv[1]
+  const task = !argv[2] && !taskHasNoArgs(argv[1]) ? "guide" : (argv[1] || "").toString()
+  const input = (argv[2] || argv[1] || "").toString()
 
-  const vetoIdx = _argv.findIndex((_) => new RegExp("^--veto=").test(_))
-  const vetoStr = vetoIdx < 0 ? undefined : _argv[vetoIdx].slice(_argv[vetoIdx].indexOf("=") + 1)
-  const veto = !vetoStr ? undefined : new RegExp(vetoStr)
-
-  const mkdocsIdx = _argv.findIndex((_) => new RegExp("^--mkdocs=").test(_))
-  const mkdocs = mkdocsIdx < 0 ? undefined : _argv[mkdocsIdx].slice(_argv[mkdocsIdx].indexOf("=") + 1)
-
-  const narrow = !!_argv.find((_) => _ === "--narrow" || _ === "-n")
-
-  const profileIdx = _argv.findIndex((_) => new RegExp("^--profile=").test(_))
-  const profileFromCommandLine =
-    profileIdx < 0 ? undefined : _argv[profileIdx].slice(_argv[profileIdx].indexOf("=") + 1)
-
-  const noProfile = !!_argv.find((_) => _ === "--no-profile")
-  const profilesPathIdx = _argv.findIndex((_) => _ === "--profiles-path")
-  const profilesPath =
-    profilesPathIdx < 0 ? undefined : _argv[profilesPathIdx].slice(_argv[profilesPathIdx].indexOf("=") + 1)
+  const veto = !parsedOptions.veto ? undefined : new RegExp(parsedOptions.veto)
+  const mkdocs = parsedOptions.mkdocs
+  const narrow = parsedOptions.narrow
+  const profileFromCommandLine = parsedOptions.profile === false ? undefined : parsedOptions.profile
+  const noProfile = parsedOptions["no-profile"]
+  const profilesPath = parsedOptions["profiles-path"]
 
   // don't actually execute anything, but making choices and
   // validation and expanding lists is ok
-  const dryRun = !!_argv.find((_) => _ === "--dry-run")
+  const dryRun = parsedOptions["dry-run"]
 
-  const interactive = _argv.find((_) => _ === "-i" || _ === "--interactive") ? true : undefined
-  const noOptimize = _argv.find((_) => _ === "-O0" || _ === "--optimize=0" || _ === "--no-optimize") ? true : undefined
-  const noAprioris = _argv.find((_) => _ === "--no-aprioris") ? true : undefined
-  const noValidate = _argv.find((_) => _ === "--no-validate") ? true : undefined
-  const verbose = _argv.find((_) => _ === "--verbose" || _ === "-V") ? true : undefined
+  const interactive = parsedOptions.interactive
+  const noOptimize = parsedOptions.O0 || parsedOptions.optimize === false || parsedOptions.optimize === 0 || undefined
+  const noAprioris = parsedOptions["no-aprioris"]
+  const noValidate = parsedOptions["no-validate"]
+  const verbose = parsedOptions.verbose
+
+  // optimization settings
   const optimize = noOptimize ? false : { aprioris: !noAprioris, validate: !noValidate }
 
   // base uri of guidebook store; this will allow users to type
   // shortnames for books in the store
-  const store = _argv.find((_) => _.startsWith("--store="))
-    ? _argv.find((_) => _.startsWith("--store=")).replace(/^--store=/, "")
-    : undefined
+  const store = parsedOptions.store
 
   const commandLineOptions: MadWizardOptions = {}
   if (interactive !== undefined) {
@@ -132,7 +137,7 @@ export async function cli<Writer extends Writable["write"]>(
   }
 
   if (isDebugTask(task)) {
-    enableTracing(task)
+    await enableTracing(task)
   }
 
   // restore choices from profile
@@ -187,11 +192,11 @@ export async function cli<Writer extends Writable["write"]>(
   // the cost of many file reads/remote fetches per run.
   if (task === "build") {
     const { inliner } = await import("../../parser/markdown/snippets/inliner.js")
-    await inliner(input, argv[3], argv[4], options)
+    await inliner(input, argv[3].toString(), argv[4].toString(), options)
     return
   } else if (task === "mirror") {
     const { mirror } = await import("../../parser/markdown/snippets/mirror.js")
-    await mirror(input, argv[3], undefined, options)
+    await mirror(input, argv[3].toString(), undefined, options)
     return
   } else if (task === "profile") {
     return import("../profiles/index.js").then((_) => _.default(argv, options))
@@ -238,6 +243,17 @@ export async function cli<Writer extends Writable["write"]>(
   // this is the block model we parse from the source
   const blocks = await getBlocksModel()
 
+  // @return a new Memoizer
+  const makeMemos = async () => {
+    const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
+    const memos = new Memoizer(suggestions)
+    if (parsedOptions["--"]) {
+      // allow guidebooks to selectively inject -- <rest> arguments into shell commands
+      memos.env.GUIDEBOOK_DASHDASH = parsedOptions["--"].join(" ")
+    }
+    return memos
+  }
+
   switch (task) {
     case "version":
       break
@@ -251,8 +267,7 @@ export async function cli<Writer extends Writable["write"]>(
     case "debug:timing":
     case "debug:fetch": {
       // print out timing
-      const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
-      const memos = new Memoizer(suggestions)
+      const memos = await makeMemos()
       const graph = await compile(blocks, choices, memos, options)
       await import("../../wizard/index.js").then((_) => _.wizardify(graph, memos))
 
@@ -267,16 +282,15 @@ export async function cli<Writer extends Writable["write"]>(
       break
 
     case "vetoes": {
-      const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
-      ;(write || process.stdout.write.bind(process.stdout))(
-        await vetoesToString(blocks, choices, new Memoizer(suggestions), options)
+      (write || process.stdout.write.bind(process.stdout))(
+        await vetoesToString(blocks, choices, await makeMemos(), options)
       )
       break
     }
 
     case "json": {
-      const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
-      const memos = new Memoizer(suggestions)
+      const { EOL } = await import("os")
+      const memos = await makeMemos()
       const graph = await compile(blocks, choices, memos, options)
       const wizard = await import("../../wizard/index.js").then((_) => _.wizardify(graph, memos))
       ;(write || process.stdout.write.bind(process.stdout))(
@@ -307,17 +321,12 @@ export async function cli<Writer extends Writable["write"]>(
 
     case "run":
     case "guide": {
-      const [Guide, Memoizer] = await Promise.all([
-        import("../guide/index.js").then((_) => _.Guide),
-        import("../../memoization/index.js").then((_) => _.Memoizer),
-      ])
-
-      const memoizer = new Memoizer(suggestions)
+      const [memoizer, Guide] = await Promise.all([makeMemos(), import("../guide/index.js").then((_) => _.Guide)])
 
       /** Kill any spawned subprocesses */
       const cleanExit = memoizer.cleanup.bind(memoizer)
       const cleanExitFromSignal = () => {
-        console.error("Exiting now, please wait for us to gracefully clean things up")
+        console.error("⚠️ Exiting now, please wait for us to gracefully clean things up")
         cleanExit()
       }
       process.on("SIGINT", cleanExitFromSignal) // catch ctrl-c

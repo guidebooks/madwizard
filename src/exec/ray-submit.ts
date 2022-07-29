@@ -34,8 +34,12 @@ interface RuntimeEnvDependencies {
 }
 
 /** Expand env vars */
-export function expand(expr: string, memos: Memos): string {
-  return !expr ? expr : expr.replace(/\${?([^}/\s]+)}?/g, (_, p1) => memos.env[p1] || process.env[p1] || p1)
+export function expand(expr: string | number, memos: Memos): string {
+  return typeof expr === "undefined"
+    ? expr
+    : typeof expr !== "string"
+    ? expr.toString()
+    : expr.replace(/\${?([^}/\s]+)}?/g, (_, p1) => memos.env[p1] || process.env[p1] || p1)
 }
 
 /** Maybe the working directory as a requirements.txt? */
@@ -211,7 +215,7 @@ export default async function raySubmit(
           const inputFile = expand(parsedOptions.entrypoint, memos) || customEnv.MWFILENAME
 
           // arguments after the --
-          const dashDash = parsedOptions["--"] ? parsedOptions["--"].join(" ") : ""
+          const dashDash = parsedOptions["--"] ? parsedOptions["--"].map((_) => expand(_, memos)).join(" ") : ""
 
           // formulate a ray job submit command line; `custom` will
           // assemble ` working directory `$MWDIR` and `$MWFILENAME`
