@@ -26,6 +26,19 @@ export function isTemporary(profile: string) {
   return /\.\d+/.test(profile)
 }
 
+export async function save(choices: ChoiceState, options: MadWizardOptions = {}, profileName = choices.profile.name) {
+  const writeFile = await import("write-file-atomic").then((_) => _.default)
+  const filepath = join(await profilesPath(options, true), profileName)
+
+  try {
+    await writeFile(filepath, choices.serialize())
+    Debug("madwizard/profile")("profile saved to " + filepath)
+  } catch (err) {
+    Debug("madwizard/profile")("error saving profile to " + filepath, err)
+    throw err
+  }
+}
+
 /**
  * Persist the set of `choices`, unioned with the previously restored suggestions.
  */
@@ -37,9 +50,6 @@ export default async function persist(
 ) {
   const profileName = altProfileName || choices.profile.name
 
-  const writeFile = await import("write-file-atomic").then((_) => _.default)
-  const filepath = join(await profilesPath(options, true), profileName)
-
   // Careful of the order: we want to overlay new choices on top of
   // previous suggestions
   const union = suggestions.clone(profileName)
@@ -50,11 +60,5 @@ export default async function persist(
   // make sure we use unify the lastUsedTime, too
   union.profile.lastUsedTime = Math.max(union.profile.lastUsedTime || 0, choices.profile.lastUsedTime || 0)
 
-  try {
-    await writeFile(filepath, union.serialize())
-    Debug("madwizard/profile")("profile saved to " + filepath)
-  } catch (err) {
-    Debug("madwizard/profile")("error saving profile to " + filepath, err)
-    throw err
-  }
+  await save(union, options, profileName)
 }

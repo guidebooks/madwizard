@@ -25,7 +25,7 @@ export { default as list } from "./list.js"
 export { default as clone } from "./clone.js"
 export { default as rename } from "./rename.js"
 export { default as restore } from "./restore.js"
-export { isTemporary, default as persist } from "./persist.js"
+export { save, isTemporary, default as persist } from "./persist.js"
 
 export interface Profile {
   /** Name of this profile */
@@ -49,6 +49,27 @@ export interface Profile {
 
   /** The choices made by this profile */
   choices: ChoicesMap
+}
+
+/**
+ * Search for the named profile. If found, bump it's lastUsedTime
+ * attribute to be now, persist the change, and return true. If not
+ * found, return false.
+ */
+export async function bumpLastUsedTime(profileName: string, options: MadWizardOptions = {}) {
+  const [list, save] = await Promise.all([
+    import("./list.js").then((_) => _.default),
+    import("./persist.js").then((_) => _.save),
+  ])
+  const profiles = await list(options)
+  const profile = profiles.find((_) => _.profile.name === profileName)
+  if (profile) {
+    profile.profile.lastUsedTime = Date.now()
+    await save(profile, options)
+    return true
+  } else {
+    return false
+  }
 }
 
 export function isProfile(obj: unknown): obj is Profile {
