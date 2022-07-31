@@ -155,7 +155,7 @@ export async function cli<Writer extends Writable["write"]>(
   let lastPersist: ReturnType<typeof setTimeout>
   let lastPersistPromise: Promise<void>
   const persistChoices = () => import("../../profiles/persist.js").then((_) => _.default(options, choices, suggestions))
-  if (!noProfile) {
+  if (!noProfile && !process.env.QUIET_CONSOLE) {
     choices.onChoice(() => {
       // persist choices after every choice is made, and remember the
       // async, so we can wait for it on exit
@@ -170,8 +170,10 @@ export async function cli<Writer extends Writable["write"]>(
   }
 
   // bump the `lastUsedTime` attribute
-  choices.profile.lastUsedTime = Date.now()
-  persistChoices()
+  if (!process.env.QUIET_CONSOLE) {
+    choices.profile.lastUsedTime = Date.now()
+    persistChoices()
+  }
 
   // assert a choice to have a given value
   !_argv.find((_) => _.startsWith("--assert="))

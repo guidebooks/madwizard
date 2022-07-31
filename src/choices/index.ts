@@ -85,7 +85,7 @@ export function newChoiceState(profile: string, assertions: ChoicesMap = {}): Ch
     name: profile,
     creationTime: now,
     lastModifiedTime: now,
-    lastUsedTime: now,
+    lastUsedTime: 0,
     choices: assertions,
   })
 }
