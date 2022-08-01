@@ -28,7 +28,7 @@ function assertExhaustive(value: never, message = "Reached unexpected case in ex
 }
 
 async function enableTracing(task: DebugTask, subtask = "*") {
-  await import("debug").then((_) => _.enable(`madwizard/${task.replace(/^debug:/, "")}/${subtask}`))
+  await import("debug").then((_) => _.default.enable(`madwizard/${task.replace(/^debug:/, "")}/${subtask}`))
 }
 
 export async function cli<Writer extends Writable["write"]>(
