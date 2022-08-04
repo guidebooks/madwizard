@@ -124,12 +124,13 @@ async function saveEnvToFile(
   customEnv: CustomEnv
 ): Promise<{ filepath: string; runtimeEnv: Record<string, any> }> {
   const runtimeEnv: Record<string, any> = Object.assign(
+    {},
+    await dependencies(memos, parsedOptions),
     (await readRuntimeEnvFromTemplate(parsedOptions, memos)) || {},
     {
       env_vars: memos.env,
       working_dir: customEnv.MWDIR,
-    },
-    await dependencies(memos, parsedOptions)
+    }
   )
 
   if (parsedOptions["working-dir"]) {
