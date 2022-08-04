@@ -72,7 +72,7 @@ export async function cli<Writer extends Writable["write"]>(
   const mkdocs = parsedOptions.mkdocs
   const narrow = parsedOptions.narrow
   const profileFromCommandLine = parsedOptions.profile === false ? undefined : parsedOptions.profile
-  const noProfile = parsedOptions["no-profile"]
+  const noProfile = parsedOptions.profile === false
   const profilesPath = parsedOptions["profiles-path"]
 
   // don't actually execute anything, but making choices and
@@ -170,7 +170,7 @@ export async function cli<Writer extends Writable["write"]>(
   }
 
   // bump the `lastUsedTime` attribute
-  if (!process.env.QUIET_CONSOLE) {
+  if (!process.env.QUIET_CONSOLE && !noProfile) {
     choices.profile.lastUsedTime = Date.now()
     persistChoices()
   }
