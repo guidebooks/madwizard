@@ -26,7 +26,11 @@ export default async function list(options: MadWizardOptions): Promise<ChoiceSta
   return new Promise((resolve, reject) => {
     readdir(filepath, (err, files) => {
       if (err) {
-        reject(err)
+        if (err.code === "ENOENT") {
+          resolve([])
+        } else {
+          reject(err)
+        }
       } else {
         resolve(
           Promise.all(
