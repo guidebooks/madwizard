@@ -238,6 +238,7 @@ export async function cli<Writer extends Writable["write"]>(
         import("./madwizardRead.js"),
         import("../../parser/index.js"),
       ])
+      await import("debug").then((_) => _.default("madwizard/fe/cli")("using guidebook " + input))
       return parse(input, madwizardRead, choices, undefined, options).then((_) => _.blocks)
     }
   }
