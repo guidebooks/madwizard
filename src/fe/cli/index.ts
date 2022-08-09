@@ -329,7 +329,7 @@ export async function cli<Writer extends Writable["write"]>(
       /** Kill any spawned subprocesses */
       const cleanExit = memoizer.cleanup.bind(memoizer)
       const cleanExitFromSignal = () => {
-        console.error("⚠️ Exiting now, please wait for us to gracefully clean things up")
+        console.error(`⚠️ Exiting${verbose ? ` ${input}` : ""} now, please wait for us to gracefully clean things up`)
         cleanExit()
       }
       process.on("SIGINT", cleanExitFromSignal) // catch ctrl-c
@@ -354,6 +354,11 @@ export async function cli<Writer extends Writable["write"]>(
         if (options.clean !== false) {
           cleanExit()
         }
+
+        // in case we were launched as part of some parent, not a
+        // standalone process, make sure to deregister here:
+        process.off("SIGINT", cleanExitFromSignal) // catch ctrl-c
+        process.off("SIGTERM", cleanExitFromSignal) // catch kill
       }
 
       return {
