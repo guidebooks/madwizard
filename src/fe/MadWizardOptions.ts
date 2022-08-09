@@ -48,6 +48,9 @@ export interface RunOptions {
 }
 
 export interface DisplayOptions {
+  /** name to display in log messages */
+  name: string
+
   /** Shorten output of long or multi-line code blocks. */
   narrow: boolean
 

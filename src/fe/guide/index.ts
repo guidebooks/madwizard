@@ -480,6 +480,9 @@ export class Guide {
       console.clear()
     }
 
+    // a name we might want to associate with the run, in the logs
+    const name = this.options.name ? ` (${this.options.name})` : ""
+
     const tasks = await this.resolveChoices()
     try {
       // await this.showPlan(true, true)
@@ -488,14 +491,14 @@ export class Guide {
       if (tasksWereRun && this.isGuided) {
         if (this.allDoneSuccessfully()) {
           console.log()
-          console.log("✨ Guidebook successful")
+          console.log("✨ Guidebook successful" + name)
         } else {
           console.log()
-          console.log(chalk.red("Guidebook incomplete"))
+          console.log(chalk.red("Guidebook incomplete" + name))
         }
       }
     } catch (err) {
-      throw new Error(chalk.red(mainSymbols.cross) + " Run failed: " + err.message)
+      throw new Error(chalk.red(mainSymbols.cross) + " Run failed" + name + ": " + err.message)
     }
   }
 }
