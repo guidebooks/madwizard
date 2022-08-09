@@ -126,7 +126,12 @@ export async function cli<Writer extends Writable["write"]>(
   if (interactive !== undefined) {
     commandLineOptions.interactive = interactive
   }
-  const options: MadWizardOptions = Object.assign({}, defaultOptions, commandLineOptions, providedOptions)
+  const options: MadWizardOptions = Object.assign(
+    { name: process.env.GUIDEBOOK_NAME },
+    defaultOptions,
+    commandLineOptions,
+    providedOptions
+  )
 
   if (!task || !input) {
     return usage(argv)
@@ -324,20 +329,33 @@ export async function cli<Writer extends Writable["write"]>(
 
     case "run":
     case "guide": {
+      // a name we might want to associate with the run, in the logs
+      const name = options.name ? ` (${options.name})` : ""
+
+      const exitMessage = `⚠️ Exiting${name} now, please wait for us to gracefully clean things up`
       const [memoizer, Guide] = await Promise.all([makeMemos(), import("../guide/index.js").then((_) => _.Guide)])
 
       /** Kill any spawned subprocesses */
       const cleanExit = memoizer.cleanup.bind(memoizer)
-      const cleanExitFromSignal = () => {
-        console.error(`⚠️ Exiting${verbose ? ` ${input}` : ""} now, please wait for us to gracefully clean things up`)
+      const cleanExitFromSIGINT = () => {
+        console.error("Received interrupt")
+        console.error(exitMessage)
         cleanExit()
       }
-      process.on("SIGINT", cleanExitFromSignal) // catch ctrl-c
-      process.on("SIGTERM", cleanExitFromSignal) // catch kill
+      const cleanExitFromSIGTERM = () => {
+        console.error("Received termination request")
+        console.error(exitMessage)
+        cleanExit()
+      }
+      process.on("SIGINT", cleanExitFromSIGINT) // catch ctrl-c
+      process.on("SIGTERM", cleanExitFromSIGTERM) // catch kill
 
       try {
         await new Guide(task, blocks, choices, options, memoizer, undefined, write).run()
       } finally {
+        if (options.verbose) {
+          console.error(exitMessage)
+        }
         if (!noProfile) {
           if (lastPersistPromise) {
             // wait for the last choice persistence operation to
@@ -357,8 +375,8 @@ export async function cli<Writer extends Writable["write"]>(
 
         // in case we were launched as part of some parent, not a
         // standalone process, make sure to deregister here:
-        process.off("SIGINT", cleanExitFromSignal) // catch ctrl-c
-        process.off("SIGTERM", cleanExitFromSignal) // catch kill
+        process.off("SIGINT", cleanExitFromSIGINT) // catch ctrl-c
+        process.off("SIGTERM", cleanExitFromSIGTERM) // catch kill
       }
 
       return {
