@@ -1,0 +1,35 @@
+[
+  {
+    "graph": {
+      "body": "echo \"this should be reachable\"",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\necho \"this should be reachable\"\n```"
+    }
+  },
+  {
+    "graph": {
+      "body": "echo \"stopping here\"\nexit 90",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\necho \"stopping here\"\nexit 90\n```"
+    }
+  },
+  {
+    "graph": {
+      "body": "echo \"this should not be reachable\"",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\necho \"this should not be reachable\"\n```"
+    }
+  }
+]

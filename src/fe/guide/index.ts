@@ -28,6 +28,7 @@ import { taskRunner, Task } from "./taskrunner.js"
 import { eqSet } from "../../util/set.js"
 import { MadWizardOptions } from "../../index.js"
 import { ChoiceState } from "../../choices/index.js"
+import { isEarlyExit } from "../../exec/EarlyExit.js"
 import { CodeBlockProps } from "../../codeblock/index.js"
 import { shellExec, isExport } from "../../exec/index.js"
 import indent from "../../parser/markdown/util/indent.js"
@@ -498,7 +499,9 @@ export class Guide {
         }
       }
     } catch (err) {
-      throw new Error(chalk.red(mainSymbols.cross) + " Run failed" + name + ": " + err.message)
+      if (!isEarlyExit(err)) {
+        throw new Error(chalk.red(mainSymbols.cross) + " Run failed" + name + ": " + err.message)
+      }
     }
   }
 }
