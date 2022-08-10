@@ -16,6 +16,7 @@
 
 import { spawn, execSync, StdioOptions } from "child_process"
 
+import EarlyExit from "./EarlyExit.js"
 import { ExecOptions } from "./options.js"
 import { Memos } from "../memoization/index.js"
 import { guidebookGlobalDataPath, guidebookProfileDataPath, guidebookJobDataPath } from "../profiles/index.js"
@@ -99,7 +100,9 @@ export default async function shellItOut(
         await onClose()
       }
 
-      if (code === 0) {
+      if (code === 90) {
+        reject(EarlyExit())
+      } else if (code === 0) {
         resolve("success")
       } else {
         reject(new Error(err || `${cmdline} failed`))

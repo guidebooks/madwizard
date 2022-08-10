@@ -24,6 +24,18 @@ You may find the source for these [here](https://github.com/guidebooks/store/tre
 npm install -g madwizard
 ```
 
+## Special Markdown Features
+
+- You may offer a choice to the user by using [PyMdown's tabbed syntax](https://facelessuser.github.io/pymdown-extensions/extensions/tabbed/)
+
+- Code blocks may request that a guidebook exits early, but with a
+  normal 0 overall exit code, by exiting that shell block with a `90`
+  exit code (there is no particular meaning to this exit code):
+  ```shell
+  echo "Stopping execution normally"
+  exit 90
+  ```
+
 ## Usage
 
 Point madwizard at a local or remote markdown file, and choose a
