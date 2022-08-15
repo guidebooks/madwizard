@@ -102,10 +102,21 @@ export class AnsiUI implements UI<string> {
     }
   }
 
+  private readonly LINK_REGEX = /\[([^\]]+)\]\(([^)]+)\)/g
+  private readonly BOLD_REGEX = /\*{2}([^*]+)\*{2}/g
+  private readonly UNDERLINE_REGEX = /_{2}([^_]+)_{2}/g
+  private readonly STRIKETHROUGH_REGEX = /~{2}([^~]+)~{2}/g
+  private readonly ITALIC_REGEX = /(?<!\\)\*(.+)(?<!\\)\*|(?<!\\)_(.+)(?<!\\)_/g
+  private readonly CODEBLOCK_REGEX = /`([^`]+)`/g
+
   /** Primitive, here, for now. */
   public markdown(body: string) {
     return body
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, p1, p2) => terminalLink(p1, p2)) // links
-      .replace(/`([^`]+)`/g, (_, p1) => this.code(p1, "markdown"))
+      .replace(this.LINK_REGEX, (_, p1, p2) => terminalLink(p1, p2)) // links
+      .replace(this.BOLD_REGEX, (...args) => chalk.bold(args[1]))
+      .replace(this.UNDERLINE_REGEX, (...args) => chalk.underline(args[1]))
+      .replace(this.STRIKETHROUGH_REGEX, (...args) => chalk.strikethrough(args[1]))
+      .replace(this.ITALIC_REGEX, (...args) => chalk.italic(args[1] || args[2]))
+      .replace(this.CODEBLOCK_REGEX, (_, p1) => this.code(p1, "markdown"))
   }
 }
