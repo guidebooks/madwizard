@@ -123,12 +123,17 @@ async function saveEnvToFile(
   memos: Memos,
   customEnv: CustomEnv
 ): Promise<{ filepath: string; runtimeEnv: Record<string, any> }> {
+  // we cannot pass through a PATH, because this affects program
+  // visibility in the ray workers; keep it as __PATH for debugging
+  const curatedEnvVars = Object.assign({ __PATH: memos.env.PATH }, memos.env)
+  delete memos.env.PATH
+
   const runtimeEnv: Record<string, any> = Object.assign(
     {},
     await dependencies(memos, parsedOptions),
     (await readRuntimeEnvFromTemplate(parsedOptions, memos)) || {},
     {
-      env_vars: memos.env,
+      env_vars: curatedEnvVars,
       working_dir: customEnv.MWDIR,
     }
   )
