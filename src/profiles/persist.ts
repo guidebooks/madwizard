@@ -23,7 +23,11 @@ import { ChoiceState, emptyChoiceState } from "../choices/index.js"
 
 /** We can't seem to control any aspect of the temporary file names used by `write-file-atomic` :( */
 export function isTemporary(profile: string) {
-  return /\.\d+/.test(profile)
+  return (
+    /\.\d+/.test(profile) ||
+    /~$/.test(profile) || // emacs backup
+    /^#\w+$#/.test(profile)
+  ) // emacs temporary
 }
 
 export async function save(choices: ChoiceState, options: MadWizardOptions = {}, profileName = choices.profile.name) {
