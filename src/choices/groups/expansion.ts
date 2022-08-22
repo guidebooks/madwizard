@@ -29,11 +29,13 @@ export type ExpansionMap = Record<string, Promise<string[] | null>>
 
 export function updateContent<Part extends { graph: Graph; description?: string }>(part: Part, choice = ""): Part {
   const pattern1 = /\$\{?choice\}?/gi
-  const pattern2 = /\$\{?uuid\}?/gi
+  const pattern2a = /\${uuid}/gi
+  const pattern2b = /\$uuid/gi
 
   let _uuid: string
   const uuid = () => _uuid || (_uuid = v4())
-  const replace = (str: string) => (choice ? str.replace(pattern1, choice) : str).replace(pattern2, uuid())
+  const replace = (str: string) =>
+    (choice ? str.replace(pattern1, choice) : str).replace(pattern2a, uuid()).replace(pattern2b, uuid())
 
   blocks(part.graph).forEach((_) => {
     if (typeof _.body === "string") {
