@@ -1,2 +1,2 @@
 111
-✖ Run failed: 111 failed
+✘ Run failed: 111 failed
