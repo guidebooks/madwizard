@@ -340,12 +340,12 @@ export async function cli<Writer extends Writable["write"]>(
       const cleanExitFromSIGINT = () => {
         console.error("Received interrupt")
         console.error(exitMessage)
-        cleanExit()
+        cleanExit("SIGINT")
       }
       const cleanExitFromSIGTERM = () => {
         console.error("Received termination request")
         console.error(exitMessage)
-        cleanExit()
+        cleanExit("SIGTERM")
       }
       process.on("SIGINT", cleanExitFromSIGINT) // catch ctrl-c
       process.on("SIGTERM", cleanExitFromSIGTERM) // catch kill

@@ -201,8 +201,14 @@ export default async function raySubmit(
       // make sure to kill the ray job before we go
       memos.onExit.push({
         name: "stop ray job",
-        cb: () => {
-          shellSync("ray job stop ${JOB_ID}", memos)
+        cb: (signal?: "SIGINT" | "SIGTERM") => {
+          if (signal) {
+            // only stop the ray job if we got an interrupt or
+            // termination request; if this is a normal exit, at the
+            // end of the run, no need (and might be dangerous) to try
+            // to stop the job.
+            shellSync("ray job stop ${JOB_ID}", memos)
+          }
         },
       })
 

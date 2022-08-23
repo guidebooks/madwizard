@@ -42,13 +42,13 @@ export interface Memos {
   subprocesses: ChildProcess[]
 
   /** onExit handlers */
-  onExit: { name: string; cb: () => void | Promise<void> }[]
+  onExit: { name: string; cb: (signal?: "SIGINT" | "SIGTERM") => void | Promise<void> }[]
 
   /** Invalidate any memos that make use of the given shell variable */
   invalidate(variable: string): void
 
   /** Cleanup any state, e.g. spawned subprocesses */
-  cleanup(): void | Promise<void>
+  cleanup(signal?: "SIGINT" | "SIGTERM"): void | Promise<void>
 }
 
 /** Default implementation of `Memos` */
@@ -91,45 +91,60 @@ export class Memoizer implements Memos {
   }
 
   /** Cleanup any state, e.g. spawned subprocesses */
-  public cleanup(): void {
-    if (this.subprocesses.length > 0) {
-      try {
-        // re: `reverse()`, we intentionally iterate over the
-        // subprocesses in *reverse* order. The assumption here is
-        // that we need to "unwind" the subprocesses. If we kill older
-        // subprocesses first, then the later kills may fail because
-        // those later processes depend on state or connections being maintained by the earlier
-        // ones; e.g. kubernetes port forwards.
-        this.onExit.reverse().forEach(({ name, cb }) => {
-          try {
-            Debug("madwizard/cleanup")(name)
-            cb()
-          } catch (err) {
-            Debug("madwizard/cleanup")("error in onExit handler " + name, err)
-          }
-        })
+  public cleanup(signal?: "SIGINT" | "SIGTERM"): void {
+    try {
+      // re: `reverse()`, we intentionally iterate over the
+      // subprocesses in *reverse* order. The assumption here is
+      // that we need to "unwind" the subprocesses. If we kill older
+      // subprocesses first, then the later kills may fail because
+      // those later processes depend on state or connections being maintained by the earlier
+      // ones; e.g. kubernetes port forwards.
+      this.onExit.reverse().forEach(({ name, cb }) => {
+        try {
+          Debug("madwizard/cleanup")(name)
+          cb(signal)
+        } catch (err) {
+          Debug("madwizard/cleanup")("error in onExit handler " + name, err)
+        }
+      })
 
-        // same here, re: `reverse()`
-        this.subprocesses.reverse().forEach((child) => {
-          Debug("madwizard/cleanup")("killing process " + child.pid)
+      if (this.subprocesses.length > 0) {
+        let N = this.subprocesses.length
+        Debug("madwizard/cleanup")("number of forked subprocess to kill: " + N)
 
-          // TODO windows...
-          // maybe https://medium.com/@almenon214/killing-processes-with-node-772ffdd19aad
-          try {
-            process.kill(-child.pid) // kill the process group e.g. for pipes
-          } catch (err) {
-            Debug("madwizard/cleanup")("error killing process group " + -child.pid, err)
-          }
+        try {
+          // same here, re: `reverse()`
+          this.subprocesses.reverse().forEach((child) => {
+            Debug("madwizard/cleanup")("killing process " + child.pid)
 
-          try {
-            child.kill()
-          } catch (err) {
-            Debug("madwizard/cleanup")("error killing process " + child.pid, err)
-          }
-        })
-      } catch (err) {
-        Debug("madwizard/cleanup")("error killing forked subprocess", err)
+            try {
+              // TODO windows...
+              // maybe https://medium.com/@almenon214/killing-processes-with-node-772ffdd19aad
+              try {
+                process.kill(-child.pid, "SIGKILL") // kill the process group e.g. for pipes
+              } catch (err) {
+                Debug("madwizard/cleanup")("error killing process group " + -child.pid, err)
+              }
+
+              try {
+                child.kill("SIGKILL")
+              } catch (err) {
+                Debug("madwizard/cleanup")("error killing process " + child.pid, err)
+              }
+            } finally {
+              Debug("madwizard/cleanup")("done killing process " + child.pid + " nRemaining=" + --N)
+            }
+          })
+        } catch (err) {
+          Debug("madwizard/cleanup")("error killing forked subprocess", err)
+        } finally {
+          Debug("madwizard/cleanup")("done killing forked subprocess")
+        }
+      } else {
+        Debug("madwizard/cleanup")("no forked subprocess to kill")
       }
+    } finally {
+      Debug("madwizard/cleanup")("done with cleanup")
     }
   }
 }
