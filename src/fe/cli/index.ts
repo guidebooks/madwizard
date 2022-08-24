@@ -181,15 +181,14 @@ export async function cli<Writer extends Writable["write"]>(
   }
 
   // assert a choice to have a given value
-  !_argv.find((_) => _.startsWith("--assert="))
-    ? undefined
-    : _argv
-        .filter((_) => _.startsWith("--assert="))
-        .map((_) => _.replace(/^--assert=/, ""))
-        .map((_) => _.split(/=/))
-        .forEach(([key, value]) => {
-          choices.setKey(key, value)
-        })
+  if (parsedOptions.assert) {
+    const assertions = Array.isArray(parsedOptions.assert) ? parsedOptions.assert : [parsedOptions.assert]
+    assertions
+      .map((_) => _.split(/=/))
+      .forEach(([key, value]) => {
+        choices.setKey(key, value)
+      })
+  }
 
   // build and mirror: these allow for static/ahead-of-time fetching
   // and inlining of content. This can be helpful to allow shipping
