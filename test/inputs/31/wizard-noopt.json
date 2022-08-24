@@ -23,8 +23,8 @@
   },
   {
     "graph": {
-      "group": "11111####222222",
-      "groupContext": "XXXXXX.11111####222222",
+      "group": "11111aaaa####11111bbbb####222222",
+      "groupContext": "XXXXXX.11111aaaa####11111bbbb####222222",
       "title": "Pick your Poison (XXXXXX)",
       "source": "placeholder",
       "provenance": ["test/inputs/31/choice.md.XXXXXX"],
@@ -41,10 +41,24 @@
               }
             ]
           },
-          "title": "11111"
+          "title": "11111aaaa"
         },
         {
           "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "export FOO${SUFFIX}=CCCCC",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "11111bbbb"
+        },
+        {
+          "member": 2,
           "graph": {
             "key": "somekey",
             "sequence": [
@@ -64,15 +78,21 @@
       "description": "This step requires you to choose how to proceed",
       "content": [
         {
-          "title": "11111",
-          "group": "11111####222222",
+          "title": "11111aaaa",
+          "group": "11111aaaa####11111bbbb####222222",
           "member": 0,
           "isFirstChoice": true
         },
         {
-          "title": "222222",
-          "group": "11111####222222",
+          "title": "11111bbbb",
+          "group": "11111aaaa####11111bbbb####222222",
           "member": 1,
+          "isFirstChoice": true
+        },
+        {
+          "title": "222222",
+          "group": "11111aaaa####11111bbbb####222222",
+          "member": 2,
           "isFirstChoice": true
         }
       ]
@@ -174,8 +194,8 @@
   },
   {
     "graph": {
-      "group": "11111####222222",
-      "groupContext": "YYYYYY.11111####222222",
+      "group": "11111aaaa####11111bbbb####222222",
+      "groupContext": "YYYYYY.11111aaaa####11111bbbb####222222",
       "title": "Pick your Poison (YYYYYY)",
       "source": "placeholder",
       "provenance": ["test/inputs/31/choice.md.YYYYYY"],
@@ -192,10 +212,24 @@
               }
             ]
           },
-          "title": "11111"
+          "title": "11111aaaa"
         },
         {
           "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "export FOO${SUFFIX}=CCCCC",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "11111bbbb"
+        },
+        {
+          "member": 2,
           "graph": {
             "key": "somekey",
             "sequence": [
@@ -215,15 +249,21 @@
       "description": "This step requires you to choose how to proceed",
       "content": [
         {
-          "title": "11111",
-          "group": "11111####222222",
+          "title": "11111aaaa",
+          "group": "11111aaaa####11111bbbb####222222",
           "member": 0,
           "isFirstChoice": false
         },
         {
-          "title": "222222",
-          "group": "11111####222222",
+          "title": "11111bbbb",
+          "group": "11111aaaa####11111bbbb####222222",
           "member": 1,
+          "isFirstChoice": false
+        },
+        {
+          "title": "222222",
+          "group": "11111aaaa####11111bbbb####222222",
+          "member": 2,
           "isFirstChoice": false
         }
       ]
