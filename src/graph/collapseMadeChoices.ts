@@ -33,32 +33,49 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
   if (isChoice(graph)) {
     const madeChoiceTitle = choices.get(graph)
     if (madeChoiceTitle) {
-      const chosenSubtree = graph.choices.find(
-        (_) => _.title.localeCompare(madeChoiceTitle, undefined, { sensitivity: "accent" }) === 0
+      const patternForDesiredAnswer = new RegExp(
+        // madeChoiceTitle may be JSON in the case of a form, so
+        // escape the {} parts; see test/input/26
+        "^" + madeChoiceTitle.replace(/[{}]/g, "\\$&") + "$", // $& means the whole matched string,
+        "i"
       )
-      if (chosenSubtree) {
-        // yes! we can collapse to the chosen subgraph
-        const chosenSubgraph =
-          isSequence(chosenSubtree.graph) && chosenSubtree.graph.sequence.length === 1
-            ? chosenSubtree.graph.sequence[0]
-            : chosenSubtree.graph
+      const matchingSubtrees = graph.choices.filter((_) => patternForDesiredAnswer.test(_.title))
 
-        const collapsed = collapse(chosenSubgraph, choices)
-        if (!hasTitle(collapsed) && hasTitle(graph)) {
-          // TODO with graph.source
-          return subtask(
-            hasKey(collapsed) ? collapsed.key : graph.group,
-            graph.title,
-            graph.title,
-            "",
-            "",
-            sequence([collapsed]),
-            graph.source
-          )
-        } else {
-          return collapsed
-        }
+      if (matchingSubtrees.length > 0) {
+        // this means that the user's prior answer, or an asserted
+        // answer has at least one match based on the current shape of
+        // the choice graph
+        const collapsedGraph = matchingSubtrees.map((chosenSubtree) => {
+          const chosenSubgraph =
+            isSequence(chosenSubtree.graph) && chosenSubtree.graph.sequence.length === 1
+              ? chosenSubtree.graph.sequence[0]
+              : chosenSubtree.graph
+
+          const collapsed = collapse(chosenSubgraph, choices)
+          if (!hasTitle(collapsed) && hasTitle(graph)) {
+            // TODO with graph.source
+            return subtask(
+              hasKey(collapsed) ? collapsed.key : graph.group,
+              graph.title,
+              graph.title,
+              "",
+              "",
+              sequence([collapsed]),
+              graph.source
+            )
+          } else {
+            return collapsed
+          }
+        })
+
+        return collapsedGraph.length === 0
+          ? undefined
+          : collapsedGraph.length === 1
+          ? collapsedGraph[0]
+          : Object.assign({}, graph, { choices: collapsedGraph })
       } else {
+        // then either we have no prior/asserted answer for this
+        // choice, or that prior answer is no longer valid
         const form = choices.form(graph)
         if (form) {
           // do we have values for every part?
