@@ -39,20 +39,7 @@ export async function cli<Writer extends Writable["write"]>(
   const parsedOptions = yargs(_argv, {
     configuration: { "populate--": true }, // parse out the "-- <rest>" part of the command line
     alias: { profile: ["p"], narrow: ["n"], interactive: ["i"], verbose: ["V"] },
-    boolean: [
-      "no-profile",
-      "narrow",
-      "n",
-      "interactive",
-      "i",
-      "0O",
-      "no-optimize",
-      "no-aprioris",
-      "no-validate",
-      "verbose",
-      "V",
-      "dry-run",
-    ],
+    boolean: ["narrow", "n", "interactive", "i", "verbose", "V", "dry-run"],
   })
   const argv = parsedOptions._
 
@@ -80,9 +67,10 @@ export async function cli<Writer extends Writable["write"]>(
   const dryRun = parsedOptions["dry-run"]
 
   const interactive = parsedOptions.interactive
-  const noOptimize = parsedOptions.O0 || parsedOptions.optimize === false || parsedOptions.optimize === 0 || undefined
-  const noAprioris = parsedOptions["no-aprioris"]
-  const noValidate = parsedOptions["no-validate"]
+  const noOptimize =
+    parsedOptions.O === 0 || parsedOptions.optimize === false || parsedOptions.optimize === 0 || undefined
+  const noAprioris = parsedOptions["aprioris"] === false
+  const noValidate = parsedOptions["validate"] === false
   const verbose = parsedOptions.verbose
 
   // optimization settings
