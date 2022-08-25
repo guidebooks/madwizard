@@ -168,7 +168,14 @@ export async function cli<Writer extends Writable["write"]>(
     persistChoices()
   }
 
-  // assert a choice to have a given value
+  // assert a choice to have a given value, from programmatic options
+  if (providedOptions && typeof providedOptions.assertions === "object") {
+    Object.entries(providedOptions.assertions).forEach(([key, value]) => {
+      choices.setKey(key, value)
+    })
+  }
+
+  // assert a choice to have a given value, from command line
   if (parsedOptions.assert) {
     const assertions = Array.isArray(parsedOptions.assert) ? parsedOptions.assert : [parsedOptions.assert]
     assertions

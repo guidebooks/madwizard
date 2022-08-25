@@ -45,6 +45,9 @@ export interface RunOptions {
    * to do so, via the return value from `fe/cli` [default: true]
    */
   clean: boolean
+
+  /** Assert answers to certain questions */
+  assertions: Record<string, string>
 }
 
 export interface DisplayOptions {
