@@ -46,7 +46,7 @@ export function expand(expr: string | number, memos: Memos): string {
             ? memos.env[p1]
             : typeof process.env[p1] !== "undefined"
             ? process.env[p1]
-            : p1
+            : _
         )
       )
 }
@@ -227,6 +227,7 @@ export default async function raySubmit(
             .replace(prefix, "")
             .replace(/--base-image=\S+/g, "")
             .replace(/--working-dir=\S+/g, "")
+            .replace(/--entrypoint="[^"]*"+/g, "")
             .replace(/--entrypoint=\S+/g, "")
             .replace(/ -- .+$/, "")
 
@@ -236,12 +237,13 @@ export default async function raySubmit(
           const inputFile = expand(parsedOptions.entrypoint, memos) || customEnv.MWFILENAME
 
           // arguments after the --
-          const dashDash = parsedOptions["--"] ? parsedOptions["--"].join(" ") : ""
+          const dashDash = parsedOptions["--"] ? parsedOptions["--"].map((_) => expand(_, memos)).join(" ") : ""
 
           // formulate a ray job submit command line; `custom` will
           // assemble ` working directory `$MWDIR` and `$MWFILENAME`
+          const python = /\.py$/.test(inputFile) ? "python3" : ""
           const systemPart = `ray job submit --runtime-env=${envFile} ${extraArgs}`
-          const appPart = `python3 ${inputFile} ${dashDash}`
+          const appPart = `${python} ${source.trim().length === 0 ? "" : inputFile} ${dashDash}`
           const cmdline = `${systemPart} -- ${appPart}`
           Debug("madwizard/exec/ray-submit")("env", memos.env || {})
           Debug("madwizard/exec/ray-submit")("options", parsedOptions)
