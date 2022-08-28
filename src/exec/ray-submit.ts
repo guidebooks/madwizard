@@ -225,6 +225,7 @@ export default async function raySubmit(
           )
           const extraArgs = exec
             .replace(prefix, "")
+            .replace(/--no-input/g, "")
             .replace(/--base-image=\S+/g, "")
             .replace(/--working-dir=\S+/g, "")
             .replace(/--entrypoint="[^"]*"+/g, "")
@@ -243,7 +244,7 @@ export default async function raySubmit(
           // assemble ` working directory `$MWDIR` and `$MWFILENAME`
           const python = /\.py$/.test(inputFile) ? "python3" : ""
           const systemPart = `ray job submit --runtime-env=${envFile} ${extraArgs}`
-          const appPart = `${python} ${parsedOptions.input == false ? "" : inputFile} ${dashDash}`
+          const appPart = `${python} ${parsedOptions.input === false ? "" : inputFile} ${dashDash}`
           const cmdline = `${systemPart} -- ${appPart}`
           Debug("madwizard/exec/ray-submit")("env", memos.env || {})
           Debug("madwizard/exec/ray-submit")("options", parsedOptions)
