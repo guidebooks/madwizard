@@ -44,7 +44,7 @@ export async function shellExec(
     return (
       addPipDependences(cmdline, memos, exec) ||
       addCondaDependences(cmdline, memos, exec) ||
-      (await raySubmit(cmdline, memos, opts, exec, async)) ||
+      (await raySubmit(cmdline, language, memos, opts, exec, async)) ||
       custom(cmdline, memos, opts, exec, async)
     )
   } else if (isShellish(language)) {
