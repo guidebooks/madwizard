@@ -182,6 +182,7 @@ async function saveEnvToFile(
  */
 export default async function raySubmit(
   cmdline: string | boolean,
+  language: string,
   memos: Memos,
   opts: ExecOptions,
   exec: string,
@@ -242,7 +243,7 @@ export default async function raySubmit(
 
           // formulate a ray job submit command line; `custom` will
           // assemble ` working directory `$MWDIR` and `$MWFILENAME`
-          const python = /\.py$/.test(inputFile) ? "python3" : ""
+          const python = language === "python" ? "python3" : "" // FIXME generalize this
           const systemPart = `ray job submit --runtime-env=${envFile} ${extraArgs}`
           const appPart = `${python} ${parsedOptions.input === false ? "" : inputFile} ${dashDash}`
           const cmdline = `${systemPart} -- ${appPart}`
