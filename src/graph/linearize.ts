@@ -30,6 +30,7 @@ import {
   Unordered,
   Graph,
   choose,
+  isLeafNode,
   isSequence,
   isParallel,
   isSubTask,
@@ -76,15 +77,15 @@ export function blocks<T extends Unordered | Ordered>(
 
   if (!graph) {
     return []
-  } else if (isSequence(graph)) {
+  } else if (isSequence<T>(graph)) {
     return graph.sequence.flatMap(subblocks)
-  } else if (isParallel(graph)) {
+  } else if (isParallel<T>(graph)) {
     return graph.parallel.flatMap(subblocks)
-  } else if (isSubTask(graph)) {
+  } else if (isSubTask<T>(graph)) {
     return subblocks(graph.graph)
-  } else if (isTitledSteps(graph)) {
+  } else if (isTitledSteps<T>(graph)) {
     return graph.steps.map((_) => _.graph).flatMap(subblocks)
-  } else if (isChoice(graph)) {
+  } else if (isChoice<T>(graph)) {
     if (choices === "all") {
       // return the union across all choices
       return graph.choices.map((_) => _.graph).flatMap(subblocks)
@@ -92,7 +93,7 @@ export function blocks<T extends Unordered | Ordered>(
       // return the current/default selection
       return subblocks(choose(graph, choices))
     }
-  } else if (!graph.optional || includeOptional) {
+  } else if (isLeafNode(graph) && (!graph.optional || includeOptional)) {
     return [graph]
   } else {
     return []
