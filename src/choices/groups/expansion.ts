@@ -118,13 +118,24 @@ async function doExpand(
       ),
       chalk.dim(`Expanding ${chalk.blue(expansionExpr.message || expansionExpr.expr)}`)
     )
+
+    // we treat the response as a newline-separated list of names
     return response.split(/\n/).filter(Boolean)
   } catch (err) {
     options.debug(expansionExpr.expr, memos.env, err)
-    return null
+    return null // <-- we use a `null` entry in the memo to indicate a failed expansion
   }
 }
 
+/**
+ * Expand the given `expansionExpr` of the given `part`. For example,
+ * we may be asked to expand a list of files, and the `expansionExpr`
+ * is the bash script that will return this list.
+ *
+ * We memoize the expansion. The assumption here is that, for a given
+ * `madwizard` session, the resulting list will not change.
+ *
+ */
 async function getOrExpand(
   part: ChoicePart,
   expansionExpr: ExpansionExpression,
@@ -134,16 +145,23 @@ async function getOrExpand(
 ) {
   // is it memoized?
   if (!memos.expansionMemo[expansionExpr.expr]) {
+    // not yet, call `doExpand()` to do the actual expansion work
     memos.expansionMemo[expansionExpr.expr] = doExpand(expansionExpr, memos, options)
   } else {
+    // then we may have a memoized result; first, we will need to
+    // check whether it is `null`, indicating a failed expansion in
+    // the past
     options.debug(expansionExpr, "memoized")
   }
 
   const myMemo = memos.expansionMemo[expansionExpr.expr]
-  const response = await myMemo
+  const response = await myMemo // <-- the memoized response
 
   if (response === null) {
+    // we use `null` (as opposed to absence of the key in the memo) to
+    // indicate that the prior expansion failed; see `doExpand()` above.
     if (inRetry) {
+      // then the retry also failed; give up :(
       options.debug(expansionExpr, "inval")
       delete memos.expansionMemo[expansionExpr.expr]
     } else {
@@ -153,7 +171,7 @@ async function getOrExpand(
         options.debug(expansionExpr, "redo-inval")
         delete memos.expansionMemo[expansionExpr.expr]
       }
-      return getOrExpand(part, expansionExpr, memos, options, true)
+      return getOrExpand(part, expansionExpr, memos, options, true) // initiate retry
     }
   }
 
