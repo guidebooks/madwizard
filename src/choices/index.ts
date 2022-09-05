@@ -59,6 +59,9 @@ export interface ChoiceState {
   /** @return the current memoized selection for the given `Choice` */
   get: (choice: Choice) => ChoicesMap[Key]
 
+  /** @return the current memoized selection for the given `Choice` */
+  getKey: (key: Key) => ChoicesMap[Key]
+
   /** Memoize a selection for the given `Choice` */
   set: (choice: Choice, value: ChoicesMap[Key], overrideRejections?: boolean) => boolean
 
