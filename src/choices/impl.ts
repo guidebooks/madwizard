@@ -67,7 +67,12 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
 
   /** @return the current memoized selection for the given `Choice` */
   public get(choice: Choice) {
-    return this.choices[this.key(choice)]
+    return this.getKey(this.key(choice))
+  }
+
+  /** @return the current memoized selection for the given `Choice` */
+  public getKey(key: Key) {
+    return this.choices[key]
   }
 
   /** Remove the memoized selection for the given `Choice` */
