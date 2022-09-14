@@ -1,0 +1,3 @@
+Test support for zsh variable expansion
+├── export OPT='-v foo=bar'
+└── awk ${OPT} 'BEGIN {print foo}'

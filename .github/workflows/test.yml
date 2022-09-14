@@ -19,6 +19,7 @@ jobs:
         os: [ubuntu-latest, macOS-latest] # windows-latest
         node-version: [16.x]
         python-version: [3.9]
+        shell: [/bin/bash, /bin/zsh]
 
     steps:
     - uses: actions/checkout@v3
@@ -27,6 +28,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: Install zsh
+      run: if [ "$(uname)" = "Linux" ]; then sudo apt-get update; sudo apt-get install zsh; fi
     - run: npm ci
     - run: npm run build
-    - run: npm test
+    - run: export SHELL=${{ matrix.shell }}; npm test

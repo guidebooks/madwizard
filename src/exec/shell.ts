@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import Debug from "debug"
 import { spawn, execSync, StdioOptions } from "child_process"
 
 import EarlyExit from "./EarlyExit.js"
@@ -72,15 +73,20 @@ export default async function shellItOut(
   }
 
   return new Promise((resolve, reject) => {
-    const child = spawn(
-      process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash"),
-      ["-c", process.platform === "win32" ? cmdline.toString() : `set -o pipefail; ${cmdline}`],
-      {
-        env,
-        detached: async, // see Memoizer.cleanup() for asyncs, we detach and then kill that detached process group
-        stdio,
-      }
-    )
+    // re: setopts, by default zsh does not do word splitting on
+    // unquoted variable expansions.
+    // https://stackoverflow.com/questions/6715388/variable-expansion-is-different-in-zsh-from-that-in-bash
+    const shell = process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash")
+    const setopts = /zsh/.test(shell) ? "setopt SH_WORD_SPLIT;" : ""
+    const argv = ["-c", process.platform === "win32" ? cmdline.toString() : `set -o pipefail; ${setopts} ${cmdline}`]
+    Debug("madwizard/exec/shell")("shell", shell)
+    Debug("madwizard/exec/shell")("argv", argv)
+
+    const child = spawn(shell, argv, {
+      env,
+      detached: async, // see Memoizer.cleanup() for asyncs, we detach and then kill that detached process group
+      stdio,
+    })
 
     child.on("error", async (err) => {
       if (onClose) {
