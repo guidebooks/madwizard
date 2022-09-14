@@ -1,0 +1,50 @@
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Test support for zsh variable expansion",
+      "title": "Test support for zsh variable expansion",
+      "description": "By default zsh does not do word splitting on unquoted variable expansions. This test ensures that madwizard's shell executor has zsh behave like bash, in that `${=OPT}` is not needed to perform word-splitting.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "export OPT='-v foo=bar'",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Test support for zsh variable expansion",
+      "description": "By default zsh does not do word splitting on unquoted variable expansions. This test ensures that madwizard's shell executor has zsh behave like bash, in that `${=OPT}` is not needed to perform word-splitting.\n"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Test support for zsh variable expansion",
+      "title": "Test support for zsh variable expansion",
+      "description": "By default zsh does not do word splitting on unquoted variable expansions. This test ensures that madwizard's shell executor has zsh behave like bash, in that `${=OPT}` is not needed to perform word-splitting.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "awk ${OPT} 'BEGIN {print foo}'",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Test support for zsh variable expansion",
+      "description": "By default zsh does not do word splitting on unquoted variable expansions. This test ensures that madwizard's shell executor has zsh behave like bash, in that `${=OPT}` is not needed to perform word-splitting.\n"
+    }
+  }
+]
