@@ -86,6 +86,7 @@ export default async function shellItOut(
       env,
       detached: async, // see Memoizer.cleanup() for asyncs, we detach and then kill that detached process group
       stdio,
+      windowsHide: true, // don't pop up a bash.exe window
     })
 
     child.on("error", async (err) => {
