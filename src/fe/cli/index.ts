@@ -39,7 +39,7 @@ export async function cli<Writer extends Writable["write"]>(
   const parsedOptions = yargs(_argv, {
     configuration: { "populate--": true }, // parse out the "-- <rest>" part of the command line
     alias: { profile: ["p"], narrow: ["n"], interactive: ["i"], verbose: ["V"] },
-    boolean: ["narrow", "n", "interactive", "i", "verbose", "V", "dry-run"],
+    boolean: ["narrow", "n", "interactive", "i", "verbose", "V", "dry-run", "bump"],
   })
   const argv = parsedOptions._
 
@@ -163,7 +163,7 @@ export async function cli<Writer extends Writable["write"]>(
   }
 
   // bump the `lastUsedTime` attribute
-  if (!process.env.QUIET_CONSOLE && !noProfile) {
+  if (!process.env.QUIET_CONSOLE && !noProfile && options.bump !== false) {
     choices.profile.lastUsedTime = Date.now()
     persistChoices()
   }
