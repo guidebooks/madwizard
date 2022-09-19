@@ -62,6 +62,9 @@ export interface DisplayOptions {
 
   /** Clear the screen when running in guide mode [default: true] */
   clear: boolean
+
+  /** Bump the lastUsedTime attribute of the profile? [default: true] */
+  bump: boolean
 }
 
 export interface FetchOptions {
