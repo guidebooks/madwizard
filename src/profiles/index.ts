@@ -24,6 +24,7 @@ export * from "./paths.js"
 export { default as list } from "./list.js"
 export { default as clone } from "./clone.js"
 export { default as rename } from "./rename.js"
+export { default as remove } from "./delete.js"
 export { default as restore } from "./restore.js"
 export { save, isTemporary, default as persist } from "./persist.js"
 
