@@ -18,7 +18,7 @@ import { join } from "path"
 import { profilesPath } from "./paths.js"
 import { MadWizardOptions } from "../fe/index.js"
 
-/** Clone a profile */
+/** Delete a profile */
 export default async function deleteProfile(options: MadWizardOptions, profileName: string): Promise<void> {
   const filepath = join(await profilesPath(options, true), profileName)
   const { unlink } = await import("fs")
