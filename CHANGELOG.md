@@ -1,3 +1,10 @@
+## [0.23.4](https://github.com/guidebooks/madwizard/compare/0.23.3...0.23.4) (2022-09-22)
+
+### Bug Fixes
+
+- more fixes for status memo invalidation ([a1a2bd0](https://github.com/guidebooks/madwizard/commit/a1a2bd0122bece7bdeeedb7fa07436c1cce79037))
+- restore accidentally removed prepack script ([e6ef80b](https://github.com/guidebooks/madwizard/commit/e6ef80b568d7e00b04f9ee06ae759cf875c2d5bc))
+
 ## [0.23.3](https://github.com/guidebooks/madwizard/compare/0.23.2...0.23.3) (2022-09-22)
 
 ## [0.23.2](https://github.com/guidebooks/madwizard/compare/0.23.1...0.23.2) (2022-09-22)
