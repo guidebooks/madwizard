@@ -23,6 +23,30 @@
   },
   {
     "graph": {
+      "key": "somekey",
+      "group": "importa.md",
+      "title": "importa.md",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo AAA",
+            "language": "bash",
+            "validate": true,
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "status": "success",
+    "step": {
+      "name": "importa.md"
+    }
+  },
+  {
+    "graph": {
       "group": "SubTab1####SubTab2",
       "groupContext": "SubTab1####SubTab2",
       "title": "DDD",

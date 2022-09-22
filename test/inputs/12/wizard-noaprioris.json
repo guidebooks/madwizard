@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Codeblocks in enclosing markdown",
+      "title": "Codeblocks in enclosing markdown",
+      "description": "We expect to see the yellow dagger in the tree to denote that we inherited the validation topmatter from the enclosing in.md file.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo AAA",
+            "language": "shell",
+            "validate": "echo true",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Codeblocks in enclosing markdown",
+      "description": "We expect to see the yellow dagger in the tree to denote that we inherited the validation topmatter from the enclosing in.md file.\n"
+    }
+  }
+]
