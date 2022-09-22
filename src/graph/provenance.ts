@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { relative } from "path"
 import { Graph, SubTask } from "."
+import { MadWizardOptions } from "../fe/MadWizardOptions.js"
 
 /**
  * Usually this will be a representation of the underlying guidebook
@@ -38,9 +38,22 @@ export function provenanceOfFilepath(filepath: string) {
     if (match) {
       return match[1].replace(/\/index$/, "")
     } else {
-      return relative(process.cwd(), filepath)
+      return filepath
     }
   }
+}
+
+/**
+ * Canonicalizae the filepath to strip off the store prefix, and .md
+ * and index.md suffices.
+ *
+ */
+export function canonicalProvenanceOf(filepath: string, options: MadWizardOptions) {
+  return filepath
+    .replace(options.store, "")
+    .replace(/\.md/g, "")
+    .replace(/^\.?\//, "")
+    .replace(/\/index$/, "")
 }
 
 /** Determine the `Provenance` of the given `SubTask` */

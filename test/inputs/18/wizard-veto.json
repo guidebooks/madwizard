@@ -2,10 +2,10 @@
   {
     "graph": {
       "group": "Tab1####Tab2",
-      "groupContext": "Tab1####Tab2",
+      "groupContext": "test/inputs/18/snippet",
       "title": "Conditional Imports of Validated Code Blocks",
       "source": "placeholder",
-      "provenance": ["test/inputs/18/snippet.md"],
+      "provenance": ["test/inputs/18/snippet"],
       "choices": [
         {
           "member": 0,
@@ -14,8 +14,8 @@
             "sequence": [
               {
                 "key": "somekey",
-                "title": "importa.md",
-                "filepath": "test/inputs/snippets/importa.md",
+                "title": "importa",
+                "filepath": "test/inputs/snippets/importa",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
@@ -41,16 +41,16 @@
               {
                 "key": "somekey",
                 "title": "EEE",
-                "filepath": "test/inputs/snippets/importe.md",
+                "filepath": "test/inputs/snippets/importe",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
                     {
                       "group": "TabE1",
-                      "groupContext": "TabE1",
+                      "groupContext": "test/inputs/snippets/importe",
                       "title": "EEE",
                       "source": "placeholder",
-                      "provenance": ["test/inputs/snippets/importe.md"],
+                      "provenance": ["test/inputs/snippets/importe"],
                       "choices": [
                         {
                           "member": 0,

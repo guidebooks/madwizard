@@ -153,20 +153,27 @@ export async function compile(
     })
 
     const newChoices = (block: CodeBlockProps, parent: CodeBlockChoice, isDeepest: boolean): Choice => {
-      const groupContext = currentGroupContext()
+      const parentGroupContext = currentGroupContext()
 
       // e.g.
       // Choose your Poison (for this reason)
       // Choose your Poison (for that other reason)
-      const groupContextForTitle = groupContext.length > 0 ? ` (${groupContext})` : ""
+      const groupContextForTitle = parentGroupContext.length > 0 ? ` (${parentGroupContext})` : ""
       const title = (parent.groupDetail.title || "") + groupContextForTitle
+
+      const provenance = currentProvenance()
+      const groupContext = ((provenance && provenance[0]) || parent.group)
+        .replace(options.store, "")
+        .replace(/\.md/g, "")
+        .replace(/^\.?\//, "")
+        .replace(/\/index$/, "")
 
       return {
         group: parent.group,
-        groupContext: (groupContext ? groupContext + "." : "") + parent.group,
+        groupContext,
         title: title.length === 0 ? undefined : title,
         source: parent.groupDetail.source,
-        provenance: currentProvenance(),
+        provenance,
         choices: [newChoice(block, parent, isDeepest)],
       }
     }

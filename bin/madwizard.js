@@ -18,7 +18,9 @@ const store =
   process.env.MWSTORE === "git"
     ? "https://github.com/guidebooks/store/blob/main/guidebooks"
     : process.env.MWSTORE || join(dirname(require.resolve(madwizard)), "store")
-const argv = process.argv.slice(1).concat(["--store=" + store])
+const argv = process.argv.find((_) => /^--store/.test(_))
+  ? process.argv.slice(1)
+  : process.argv.slice(1).concat(["--store=" + store])
 
 import(madwizard + "/dist/fe/cli/index.js")
   .then((_) => _.cli(argv))

@@ -1,5 +1,5 @@
 AAA
-├── importa.md
+├── importa
 │   └── echo AAA †
 ├── EEE
 │   └── Option 1: TabE1
@@ -21,5 +21,5 @@ AAA
     │       └── Option 2: SubTab2
     │           └── echo BBB
     └── Option 2: Tab2
-        └── importc.md
+        └── importc
             └── echo CCC †

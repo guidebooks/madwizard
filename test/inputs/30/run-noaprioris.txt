@@ -1,0 +1,6 @@
+echo AAA
+AAA
+sleep 20
+echo BBB
+echo CCC
+CCC

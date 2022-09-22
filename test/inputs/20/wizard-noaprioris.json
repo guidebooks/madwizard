@@ -2,8 +2,8 @@
   {
     "graph": {
       "key": "somekey",
-      "group": "a.md",
-      "title": "a.md",
+      "group": "a",
+      "title": "a",
       "filepath": "",
       "graph": {
         "key": "somekey",
@@ -18,16 +18,16 @@
       "source": "placeholder"
     },
     "step": {
-      "name": "a.md"
+      "name": "a"
     }
   },
   {
     "graph": {
       "group": "Tab1",
-      "groupContext": "Tab1",
+      "groupContext": "test/inputs/20/in",
       "title": "Conditional Inline of Imports",
       "source": "placeholder",
-      "provenance": ["test/inputs/20/in.md"],
+      "provenance": ["test/inputs/20/in"],
       "choices": [
         {
           "member": 0,
@@ -44,8 +44,8 @@
                   "sequence": [
                     {
                       "key": "somekey",
-                      "title": "b.md",
-                      "filepath": "test/inputs/20/snippets/b.md",
+                      "title": "b",
+                      "filepath": "test/inputs/20/snippets/b",
                       "graph": {
                         "key": "somekey",
                         "sequence": [
@@ -69,10 +69,10 @@
               },
               {
                 "group": "ITab1",
-                "groupContext": "ITab1",
+                "groupContext": "test/inputs/20/in",
                 "title": "Tab1",
                 "source": "placeholder",
-                "provenance": ["test/inputs/20/in.md"],
+                "provenance": ["test/inputs/20/in"],
                 "choices": [
                   {
                     "member": 0,

@@ -2,10 +2,10 @@
   {
     "graph": {
       "group": "Local Install####Kubernetes Install",
-      "groupContext": "Local Install####Kubernetes Install",
+      "groupContext": "test/inputs/19/in",
       "title": "Install Ray",
       "source": "placeholder",
-      "provenance": ["test/inputs/19/in.md"],
+      "provenance": ["test/inputs/19/in"],
       "choices": [
         {
           "member": 0,
@@ -14,9 +14,9 @@
             "sequence": [
               {
                 "group": "Linux####Windows####MacOS",
-                "groupContext": "Linux####Windows####MacOS",
+                "groupContext": "test/inputs/19/in",
                 "source": "placeholder",
-                "provenance": ["test/inputs/19/in.md"],
+                "provenance": ["test/inputs/19/in"],
                 "choices": [
                   {
                     "member": 0,
@@ -53,9 +53,9 @@
                       "sequence": [
                         {
                           "group": "Intel####Apple Silicon",
-                          "groupContext": "Intel####Apple Silicon",
+                          "groupContext": "test/inputs/19/in",
                           "source": "placeholder",
-                          "provenance": ["test/inputs/19/in.md"],
+                          "provenance": ["test/inputs/19/in"],
                           "choices": [
                             {
                               "member": 0,
@@ -80,16 +80,16 @@
                                   {
                                     "key": "somekey",
                                     "title": "Conda: Installation",
-                                    "filepath": "test/inputs/19/snippets/conda.md",
+                                    "filepath": "test/inputs/19/snippets/conda",
                                     "graph": {
                                       "key": "somekey",
                                       "sequence": [
                                         {
                                           "group": "Miniconda####Anaconda",
-                                          "groupContext": "Miniconda####Anaconda",
+                                          "groupContext": "test/inputs/19/snippets/conda",
                                           "title": "Installation Method",
                                           "source": "placeholder",
-                                          "provenance": ["test/inputs/19/snippets/conda.md"],
+                                          "provenance": ["test/inputs/19/snippets/conda"],
                                           "choices": [
                                             {
                                               "member": 0,
@@ -98,9 +98,9 @@
                                                 "sequence": [
                                                   {
                                                     "group": "Windows####MacOS####Linux",
-                                                    "groupContext": "Windows####MacOS####Linux",
+                                                    "groupContext": "test/inputs/19/snippets/conda",
                                                     "source": "placeholder",
-                                                    "provenance": ["test/inputs/19/snippets/conda.md"],
+                                                    "provenance": ["test/inputs/19/snippets/conda"],
                                                     "choices": [
                                                       {
                                                         "member": 0,
@@ -123,9 +123,9 @@
                                                           "sequence": [
                                                             {
                                                               "group": "Intel####Apple Silicon",
-                                                              "groupContext": "Intel####Apple Silicon",
+                                                              "groupContext": "test/inputs/19/snippets/conda",
                                                               "source": "placeholder",
-                                                              "provenance": ["test/inputs/19/snippets/conda.md"],
+                                                              "provenance": ["test/inputs/19/snippets/conda"],
                                                               "choices": [
                                                                 {
                                                                   "member": 0,
@@ -191,9 +191,9 @@
                                                 "sequence": [
                                                   {
                                                     "group": "Windows####MacOS####Linux",
-                                                    "groupContext": "Windows####MacOS####Linux",
+                                                    "groupContext": "test/inputs/19/snippets/conda",
                                                     "source": "placeholder",
-                                                    "provenance": ["test/inputs/19/snippets/conda.md"],
+                                                    "provenance": ["test/inputs/19/snippets/conda"],
                                                     "choices": [
                                                       {
                                                         "member": 0,
@@ -230,9 +230,9 @@
                                                           "sequence": [
                                                             {
                                                               "group": "x86####POWER8 and POWER9####AWS Graviton2/ARM64####IBM z/Linux and LinuxONE",
-                                                              "groupContext": "x86####POWER8 and POWER9####AWS Graviton2/ARM64####IBM z/Linux and LinuxONE",
+                                                              "groupContext": "test/inputs/19/snippets/conda",
                                                               "source": "placeholder",
-                                                              "provenance": ["test/inputs/19/snippets/conda.md"],
+                                                              "provenance": ["test/inputs/19/snippets/conda"],
                                                               "choices": [
                                                                 {
                                                                   "member": 0,
@@ -340,16 +340,16 @@
               {
                 "key": "somekey",
                 "title": "Install kubectl",
-                "filepath": "test/inputs/19/snippets/kubectl.md",
+                "filepath": "test/inputs/19/snippets/kubectl",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
                     {
                       "group": "Linux####Windows####MacOS",
-                      "groupContext": "Linux####Windows####MacOS",
+                      "groupContext": "test/inputs/19/snippets/kubectl",
                       "title": "Install kubectl",
                       "source": "placeholder",
-                      "provenance": ["test/inputs/19/snippets/kubectl.md"],
+                      "provenance": ["test/inputs/19/snippets/kubectl"],
                       "choices": [
                         {
                           "member": 0,
@@ -388,9 +388,9 @@
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
-                                "groupContext": "Homebrew####curl",
+                                "groupContext": "test/inputs/19/snippets/kubectl",
                                 "source": "placeholder",
-                                "provenance": ["test/inputs/19/snippets/kubectl.md"],
+                                "provenance": ["test/inputs/19/snippets/kubectl"],
                                 "choices": [
                                   {
                                     "member": 0,
@@ -414,9 +414,9 @@
                                       "sequence": [
                                         {
                                           "group": "Intel####Apple Silicon",
-                                          "groupContext": "Intel####Apple Silicon",
+                                          "groupContext": "test/inputs/19/snippets/kubectl",
                                           "source": "placeholder",
-                                          "provenance": ["test/inputs/19/snippets/kubectl.md"],
+                                          "provenance": ["test/inputs/19/snippets/kubectl"],
                                           "choices": [
                                             {
                                               "member": 0,
@@ -457,9 +457,9 @@
                                             "sequence": [
                                               {
                                                 "group": "Intel####Apple Silicon",
-                                                "groupContext": "Intel####Apple Silicon",
+                                                "groupContext": "test/inputs/19/snippets/kubectl",
                                                 "source": "placeholder",
-                                                "provenance": ["test/inputs/19/snippets/kubectl.md"],
+                                                "provenance": ["test/inputs/19/snippets/kubectl"],
                                                 "choices": [
                                                   {
                                                     "member": 0,
@@ -520,16 +520,16 @@
               {
                 "key": "somekey",
                 "title": "Install Helm",
-                "filepath": "test/inputs/19/snippets/helm3.md",
+                "filepath": "test/inputs/19/snippets/helm3",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
                     {
                       "group": "MacOS####Linux####Windows",
-                      "groupContext": "MacOS####Linux####Windows",
+                      "groupContext": "test/inputs/19/snippets/helm3",
                       "title": "Install Helm",
                       "source": "placeholder",
-                      "provenance": ["test/inputs/19/snippets/helm3.md"],
+                      "provenance": ["test/inputs/19/snippets/helm3"],
                       "choices": [
                         {
                           "member": 0,
@@ -538,9 +538,9 @@
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
-                                "groupContext": "Homebrew####curl",
+                                "groupContext": "test/inputs/19/snippets/helm3",
                                 "source": "placeholder",
-                                "provenance": ["test/inputs/19/snippets/helm3.md"],
+                                "provenance": ["test/inputs/19/snippets/helm3"],
                                 "choices": [
                                   {
                                     "member": 0,

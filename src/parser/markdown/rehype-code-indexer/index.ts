@@ -22,7 +22,8 @@ import { Transformer } from "unified"
 import { toString } from "hast-util-to-string"
 import { visitParents } from "unist-util-visit-parents"
 
-import { provenanceOfFilepath } from "../../../graph/provenance.js"
+import { MadWizardOptions } from "../../../fe/index.js"
+import { canonicalProvenanceOf, provenanceOfFilepath } from "../../../graph/provenance.js"
 
 import dump from "./dump.js"
 import { isTab } from "../rehype-tabbed/index.js"
@@ -83,6 +84,17 @@ function extractFirstParagraph(parent: Parent, after?: Node) {
       }
     }
   }
+
+  const pIdx2 = parent.children.findIndex(
+    (_, idx) => idx >= startIdx && isElementWithProperties(_) && isImports(_.properties)
+  )
+  if (pIdx2 >= 0) {
+    const firstChild = parent.children[pIdx2]
+    if (isElementWithProperties(firstChild) && isImports(firstChild.properties)) {
+      const para = extractFirstParagraph(firstChild)
+      return para
+    }
+  }
   /*const firstChild = parent.children[startIdx]
   if (after) return firstChild && isElementWithProperties(firstChild) && firstChild.tagName
   if (firstChild && isElementWithProperties(firstChild) && firstChild.tagName === "p") {
@@ -129,7 +141,13 @@ function findNearestEnclosingTitle(grandparent: Parent, parent: Node, node: Node
  * @param filepath the origin filepath of this document
  * @param codeblocks in case the caller wants us to smash in the codeblocks we find
  */
-export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: CodeBlockProps[], base64 = false) {
+export function rehypeCodeIndexer(
+  uuid: string,
+  filepath: string,
+  options: MadWizardOptions,
+  codeblocks?: CodeBlockProps[],
+  base64 = false
+) {
   const transformer: Transformer<Element> = (ast /*: Root */) => {
     const timing = Debug("madwizard/timing/parser:markdown/rehype-code-indexer")
     const debug = Debug("madwizard/graph/parser:markdown/rehype-code-indexer")
@@ -330,7 +348,7 @@ export function rehypeCodeIndexer(uuid: string, filepath: string, codeblocks?: C
                               key: title,
                               title,
                               filepath: "",
-                              provenance: provenanceOfFilepath(filepath),
+                              provenance: canonicalProvenanceOf(provenanceOfFilepath(filepath), options),
                               description: extractFirstParagraph(grandparent, child),
                             },
                             0

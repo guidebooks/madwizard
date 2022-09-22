@@ -138,14 +138,16 @@ function getCLIOptions(
 
 /** "madwizard plan" */
 function testPlanTask(test: Test, input: string, suffix: string, _options: Options) {
-  test(`tree for input ${input} options=${suffix || "default"}`, async () => {
+  const cliOptions = getCLIOptions(input)
+  test(`tree for input ${input} options=${suffix || "default"} cliOptions=${cliOptions}`, async () => {
     let actualOutput = ""
     const write = (msg: string) => {
       actualOutput += msg
       return true
     }
 
-    const filepath = join(input, "in.md")
+    const store = process.cwd()
+    const filepath = join(input, "in.md").replace(store + "/", "")
     const options = typeof _options === "function" ? _options(input) : _options
 
     if (typeof _options === "function" && options === null) {
@@ -154,7 +156,7 @@ function testPlanTask(test: Test, input: string, suffix: string, _options: Optio
       return
     }
 
-    await CLI.cli(["test", "plan", filepath, ...getCLIOptions(input)], write, options)
+    await CLI.cli(["test", "plan", filepath, ...cliOptions], write, Object.assign({ store }, options))
     const expectedOutput = loadExpected(input, "tree", suffix)
     assert.equal(stripAnsi(actualOutput.trim()), stripAnsi(expectedOutput.trim()), "tree should match")
   })
@@ -162,17 +164,19 @@ function testPlanTask(test: Test, input: string, suffix: string, _options: Optio
 
 /** "madwizard json" */
 function testJsonTask(test: Test, input: string, suffix: string, _options: Options) {
-  test(`wizards for input ${input} options=${suffix || "default"}`, async () => {
+  const cliOptions = getCLIOptions(input)
+  test(`wizards for input ${input} options=${suffix || "default"} cliOptions=${cliOptions}`, async () => {
     let actualOutput = ""
     const write = (msg: string) => {
       actualOutput += msg
       return true
     }
 
-    const filepath = join(input, "in.md")
+    const store = process.cwd()
+    const filepath = join(input, "in.md").replace(store + "/", "")
     const options = typeof _options === "function" ? _options(input) : _options
 
-    await CLI.cli(["test", "json", filepath, ...getCLIOptions(input)], write, options)
+    await CLI.cli(["test", "json", filepath, ...cliOptions], write, Object.assign({ store }, options))
     const expectedOutput = JSON.parse(loadExpected(input, "wizard", suffix))
     const diff = diffString(munge(JSON.parse(actualOutput)), munge(expectedOutput), { color: false })
     assert.is(diff, "", "wizard should match")
@@ -180,8 +184,9 @@ function testJsonTask(test: Test, input: string, suffix: string, _options: Optio
 }
 
 /** "madwizard run" */
-function testRunTask(test: Test, input: string, suffix: string) {
-  const filepath = join(input, "in.md")
+function testRunTask(test: Test, input: string, suffix: string, options: Options) {
+  const store = process.cwd()
+  const filepath = join(input, "in.md").replace(store + "/", "")
   const expectedOutput = loadExpected(input, "run", suffix)
 
   const profile = uuid()
@@ -192,7 +197,10 @@ function testRunTask(test: Test, input: string, suffix: string) {
     { noProfile: false, noAssertions: true },
   ]
   configs.forEach((config) => {
-    test(`run for input ${input} options=${suffix || "default"} config=${JSON.stringify(config)}`, async () => {
+    const cliOptions = getCLIOptions(input, config)
+    test(`run for input ${input} suffix=${suffix || "default"} config=${JSON.stringify(
+      config
+    )} cliOptions=${cliOptions} options=${JSON.stringify(options)}`, async () => {
       let actualOutput = ""
       const write = (msg: string) => {
         actualOutput += msg
@@ -200,12 +208,17 @@ function testRunTask(test: Test, input: string, suffix: string) {
       }
 
       try {
-        await CLI.cli(["test", "run", filepath, ...getCLIOptions(input, config)], write, {
-          clear: false,
-          profilesPath,
-          profile,
-          profileSaveDelay: 0,
-        })
+        await CLI.cli(
+          ["test", "run", filepath, ...cliOptions],
+          write,
+          Object.assign({}, options, {
+            store,
+            clear: false,
+            profilesPath,
+            profile,
+            profileSaveDelay: 0,
+          })
+        )
       } catch (err) {
         // also test output of error messages
         write(err.message)
@@ -238,7 +251,7 @@ readdirSync(inputDir)
     options.forEach(({ suffix, options }, idx) => {
       testPlanTask(suites[idx * tasks.length], input, suffix, options)
       testJsonTask(suites[idx * tasks.length + 1], input, suffix, options)
-      testRunTask(suites[idx * tasks.length + 2], input, suffix)
+      testRunTask(suites[idx * tasks.length + 2], input, suffix, options)
     })
   })
 

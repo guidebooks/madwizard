@@ -24,10 +24,10 @@
   {
     "graph": {
       "group": "11111aaaa####11111bbbb####222222",
-      "groupContext": "XXXXXX.11111aaaa####11111bbbb####222222",
+      "groupContext": "test/inputs/31/choice.XXXXXX",
       "title": "Pick your Poison (XXXXXX)",
       "source": "placeholder",
-      "provenance": ["test/inputs/31/choice.md.XXXXXX"],
+      "provenance": ["test/inputs/31/choice.XXXXXX"],
       "choices": [
         {
           "member": 0,
@@ -195,10 +195,10 @@
   {
     "graph": {
       "group": "11111aaaa####11111bbbb####222222",
-      "groupContext": "YYYYYY.11111aaaa####11111bbbb####222222",
+      "groupContext": "test/inputs/31/choice.YYYYYY",
       "title": "Pick your Poison (YYYYYY)",
       "source": "placeholder",
-      "provenance": ["test/inputs/31/choice.md.YYYYYY"],
+      "provenance": ["test/inputs/31/choice.YYYYYY"],
       "choices": [
         {
           "member": 0,

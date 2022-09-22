@@ -2,10 +2,10 @@
   {
     "graph": {
       "group": "Tab1",
-      "groupContext": "Tab1",
+      "groupContext": "test/inputs/28/in",
       "title": "Testing tab expansion",
       "source": "placeholder",
-      "provenance": ["test/inputs/28/in.md"],
+      "provenance": ["test/inputs/28/in"],
       "choices": [
         {
           "member": 0,
@@ -14,10 +14,10 @@
             "sequence": [
               {
                 "group": "expand(echo 3 ; echo 4 ; echo 5)",
-                "groupContext": "expand(echo 3 ; echo 4 ; echo 5)",
+                "groupContext": "test/inputs/28/in",
                 "title": "Tab1",
                 "source": "placeholder",
-                "provenance": ["test/inputs/28/in.md"],
+                "provenance": ["test/inputs/28/in"],
                 "choices": [
                   {
                     "member": 0,

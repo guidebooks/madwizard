@@ -1,33 +1,88 @@
 [
   {
     "graph": {
-      "key": "somekey",
-      "group": "importgg.md",
-      "title": "importgg.md",
-      "filepath": "",
-      "graph": {
-        "key": "somekey",
-        "sequence": [
-          {
-            "body": "echo WWW",
-            "language": "bash",
-            "id": "somekey"
-          }
-        ]
-      },
-      "source": "placeholder"
+      "group": "madwizard/apriori/platform",
+      "groupContext": "test/inputs/snippets/importgg",
+      "title": "importgg",
+      "source": "placeholder",
+      "provenance": ["test/inputs/snippets/importgg"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo MMM",
+                "language": "bash",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Darwin"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo LLL",
+                "language": "bash",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Linux"
+        },
+        {
+          "member": 2,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo WWW",
+                "language": "bash",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Win32"
+        }
+      ]
     },
     "step": {
-      "name": "importgg.md"
+      "name": "importgg",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Darwin",
+          "group": "madwizard/apriori/platform",
+          "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "Linux",
+          "group": "madwizard/apriori/platform",
+          "member": 1,
+          "isFirstChoice": true
+        },
+        {
+          "title": "Win32",
+          "group": "madwizard/apriori/platform",
+          "member": 2,
+          "isFirstChoice": true
+        }
+      ]
     }
   },
   {
     "graph": {
       "group": "SubTab1####SubTab2",
-      "groupContext": "SubTab1####SubTab2",
+      "groupContext": "test/inputs/snippets/importdd",
       "title": "DDD",
       "source": "placeholder",
-      "provenance": ["test/inputs/snippets/importdd.md"],
+      "provenance": ["test/inputs/snippets/importdd"],
       "choices": [
         {
           "member": 0,
@@ -82,13 +137,13 @@
           "title": "SubTab1",
           "group": "SubTab1####SubTab2",
           "member": 0,
-          "isFirstChoice": true
+          "isFirstChoice": false
         },
         {
           "title": "SubTab2",
           "group": "SubTab1####SubTab2",
           "member": 1,
-          "isFirstChoice": true
+          "isFirstChoice": false
         }
       ]
     }

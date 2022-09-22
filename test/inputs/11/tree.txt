@@ -1,2 +1,5 @@
 Text versus HTML?
-└── echo text
+├── Option 1: Text
+│   └── echo text
+└── Option 2: HTML
+    └── echo html

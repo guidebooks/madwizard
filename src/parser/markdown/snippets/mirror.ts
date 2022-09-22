@@ -30,7 +30,9 @@ import { madwizardRead } from "../../../fe/cli/madwizardRead.js"
 export async function mirror(srcDir: string, targetDir: string, srcRelPath = "", options: MadWizardOptions) {
   // Debug.enable("madwizard/fetch/snippets")
 
+  const store = targetDir
   const srcFilePath = join(srcDir, srcRelPath)
+
   await new Promise<void>((resolve, reject) => {
     readdir(srcFilePath, { withFileTypes: true }, async (err, files) => {
       if (err) {
@@ -57,7 +59,7 @@ export async function mirror(srcDir: string, targetDir: string, srcRelPath = "",
                   madwizardRead,
                   newChoiceState(nonProfile),
                   undefined,
-                  {}
+                  { store }
                 )
                 await writeFile(
                   pathForAst,

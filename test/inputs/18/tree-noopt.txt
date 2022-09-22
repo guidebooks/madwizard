@@ -1,6 +1,6 @@
 Conditional Imports of Validated Code Blocks
 ├── Option 1: Tab1
-│   └── importa.md
+│   └── importa
 │       └── echo AAA †
 └── Option 2: Tab2
     └── EEE

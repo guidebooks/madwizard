@@ -1,0 +1,6 @@
+echo aaa
+aaa
+echo bbb
+bbb
+echo ccc
+ccc

@@ -79,7 +79,7 @@ const rehypePlugins = (
   rehypeWizard,
   [rehypeTabbed, uuid, choices, madwizardOptions],
   rehypeTip,
-  [rehypeCodeIndexer, uuid, filepath, codeblocks],
+  [rehypeCodeIndexer, uuid, filepath, madwizardOptions, codeblocks],
   rehypeImports,
 ]
 

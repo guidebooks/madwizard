@@ -2,10 +2,10 @@
   {
     "graph": {
       "group": "Local Install####Kubernetes Install",
-      "groupContext": "Local Install####Kubernetes Install",
+      "groupContext": "test/inputs/23/install",
       "title": "Install Ray",
       "source": "placeholder",
-      "provenance": ["test/inputs/23/install/index.md"],
+      "provenance": ["test/inputs/23/install"],
       "choices": [
         {
           "member": 0,
@@ -13,9 +13,301 @@
             "key": "somekey",
             "sequence": [
               {
-                "body": "pip install -U ray",
-                "language": "shell",
-                "id": "somekey"
+                "group": "madwizard/apriori/arch",
+                "groupContext": "test/inputs/23/install",
+                "title": "Local Install",
+                "source": "placeholder",
+                "provenance": ["test/inputs/23/install"],
+                "choices": [
+                  {
+                    "member": 0,
+                    "graph": {
+                      "key": "somekey",
+                      "sequence": [
+                        {
+                          "body": "pip install -U ray",
+                          "language": "shell",
+                          "id": "somekey"
+                        }
+                      ]
+                    },
+                    "title": "X64",
+                    "description": "\nIf you are running on x86/Intel hardware."
+                  },
+                  {
+                    "member": 1,
+                    "graph": {
+                      "key": "somekey",
+                      "sequence": [
+                        {
+                          "key": "somekey",
+                          "title": "Conda: Installation",
+                          "filepath": "test/inputs/23/python/conda/install",
+                          "graph": {
+                            "key": "somekey",
+                            "sequence": [
+                              {
+                                "group": "Install Miniconda####Install Anaconda",
+                                "groupContext": "test/inputs/23/python/conda/install",
+                                "title": "Choose a Conda Installation Method",
+                                "source": "placeholder",
+                                "provenance": ["test/inputs/23/python/conda/install"],
+                                "choices": [
+                                  {
+                                    "member": 0,
+                                    "graph": {
+                                      "key": "somekey",
+                                      "sequence": [
+                                        {
+                                          "group": "madwizard/apriori/platform",
+                                          "groupContext": "test/inputs/23/python/conda/install",
+                                          "title": "Install Miniconda",
+                                          "source": "placeholder",
+                                          "provenance": ["test/inputs/23/python/conda/install"],
+                                          "choices": [
+                                            {
+                                              "member": 1,
+                                              "graph": {
+                                                "key": "somekey",
+                                                "sequence": [
+                                                  {
+                                                    "group": "madwizard/apriori/arch",
+                                                    "groupContext": "test/inputs/23/python/conda/install",
+                                                    "title": "Linux",
+                                                    "source": "placeholder",
+                                                    "provenance": ["test/inputs/23/python/conda/install"],
+                                                    "choices": [
+                                                      {
+                                                        "member": 0,
+                                                        "graph": {
+                                                          "key": "somekey",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh\nbash Miniconda3-latest-Linux-x86_64.sh -b -p ~/miniconda",
+                                                              "language": "shell",
+                                                              "id": "somekey"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "X64"
+                                                      },
+                                                      {
+                                                        "member": 1,
+                                                        "graph": {
+                                                          "key": "somekey",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh\nbash Miniconda3-latest-Linux-aarch64.sh -b -p $HOME/miniconda",
+                                                              "language": "shell",
+                                                              "id": "somekey"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "Arm64"
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              "title": "Linux",
+                                              "description": "\nIf you are running a Linux OS."
+                                            },
+                                            {
+                                              "member": 2,
+                                              "graph": {
+                                                "key": "somekey",
+                                                "sequence": [
+                                                  {
+                                                    "group": "madwizard/apriori/arch",
+                                                    "groupContext": "test/inputs/23/python/conda/install",
+                                                    "title": "Darwin",
+                                                    "source": "placeholder",
+                                                    "provenance": ["test/inputs/23/python/conda/install"],
+                                                    "choices": [
+                                                      {
+                                                        "member": 0,
+                                                        "graph": {
+                                                          "key": "somekey",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh\nbash Miniconda3-latest-MacOSX-x86_64.sh -b -p $HOME/miniconda",
+                                                              "language": "shell",
+                                                              "id": "somekey"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "X64",
+                                                        "description": "\nIf you are running on x86/Intel hardware."
+                                                      },
+                                                      {
+                                                        "member": 1,
+                                                        "graph": {
+                                                          "key": "somekey",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh\nbash Miniconda3-latest-MacOSX-arm64.sh -b -p $HOME/miniconda",
+                                                              "language": "shell",
+                                                              "id": "somekey"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "Arm64",
+                                                        "description": "\nIf you are running on Apple Silicon/ARM hardware."
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              "title": "Darwin",
+                                              "description": "\nIf you are running MacOS."
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    "title": "Install Miniconda",
+                                    "description": "\nMiniconda is a free minimal installer for conda. It is a small, bootstrap version of Anaconda that includes only conda, Python, the packages they depend on, and a small number of other useful packages, including pip, zlib and a few others. "
+                                  },
+                                  {
+                                    "member": 1,
+                                    "graph": {
+                                      "key": "somekey",
+                                      "sequence": [
+                                        {
+                                          "group": "madwizard/apriori/platform",
+                                          "groupContext": "test/inputs/23/python/conda/install",
+                                          "title": "Install Anaconda",
+                                          "source": "placeholder",
+                                          "provenance": ["test/inputs/23/python/conda/install"],
+                                          "choices": [
+                                            {
+                                              "member": 0,
+                                              "graph": {
+                                                "key": "somekey",
+                                                "sequence": [
+                                                  {
+                                                    "body": "curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh\nbash Anaconda3-2021.11-MacOSX-x86_64.sh -b -p $HOME/miniconda",
+                                                    "language": "shell",
+                                                    "id": "somekey"
+                                                  }
+                                                ]
+                                              },
+                                              "title": "Darwin"
+                                            },
+                                            {
+                                              "member": 1,
+                                              "graph": {
+                                                "key": "somekey",
+                                                "sequence": [
+                                                  {
+                                                    "group": "x86####POWER8 and POWER9####AWS Graviton2/ARM64####IBM z/Linux and LinuxONE",
+                                                    "groupContext": "test/inputs/23/python/conda/install",
+                                                    "title": "Linux",
+                                                    "source": "placeholder",
+                                                    "provenance": ["test/inputs/23/python/conda/install"],
+                                                    "choices": [
+                                                      {
+                                                        "member": 0,
+                                                        "graph": {
+                                                          "key": "somekey",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh\nbash Anaconda3-2021.11-Linux-x86_64.sh -b -p $HOME/miniconda",
+                                                              "language": "shell",
+                                                              "id": "somekey"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "x86"
+                                                      },
+                                                      {
+                                                        "member": 1,
+                                                        "graph": {
+                                                          "key": "somekey",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-ppc64le.sh\nbash Anaconda3-2021.11-Linux-ppc64le.sh -b -p $HOME/miniconda",
+                                                              "language": "shell",
+                                                              "id": "somekey"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "POWER8 and POWER9"
+                                                      },
+                                                      {
+                                                        "member": 2,
+                                                        "graph": {
+                                                          "key": "somekey",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-aarch64.sh\nbash Anaconda3-2021.11-Linux-aarch64.sh -b -p $HOME/miniconda",
+                                                              "language": "shell",
+                                                              "id": "somekey"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "AWS Graviton2/ARM64"
+                                                      },
+                                                      {
+                                                        "member": 3,
+                                                        "graph": {
+                                                          "key": "somekey",
+                                                          "sequence": [
+                                                            {
+                                                              "body": "curl -LO https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-s390x.sh\nbash Anaconda3-2021.11-Linux-s390x.sh -b -p $HOME/miniconda",
+                                                              "language": "shell",
+                                                              "id": "somekey"
+                                                            }
+                                                          ]
+                                                        },
+                                                        "title": "IBM z/Linux and LinuxONE"
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              },
+                                              "title": "Linux"
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    },
+                                    "title": "Install Anaconda",
+                                    "description": "\nThis will install Miniconda plus hundreds of packages."
+                                  }
+                                ]
+                              },
+                              {
+                                "key": "somekey",
+                                "title": "Update your PATH to include conda",
+                                "filepath": "",
+                                "graph": {
+                                  "key": "somekey",
+                                  "sequence": [
+                                    {
+                                      "body": "export PATH=~/miniconda/bin:$PATH",
+                                      "language": "shell",
+                                      "id": "somekey"
+                                    }
+                                  ]
+                                },
+                                "source": "placeholder"
+                              }
+                            ]
+                          },
+                          "source": "placeholder"
+                        },
+                        {
+                          "body": "conda activate\npip uninstall grpcio\nconda install grpcio\npip install ray",
+                          "language": "shell",
+                          "id": "somekey"
+                        }
+                      ]
+                    },
+                    "title": "Arm64",
+                    "description": "\nIf you are running on Apple Silicon/ARM hardware."
+                  }
+                ]
               }
             ]
           },
@@ -30,26 +322,134 @@
               {
                 "key": "somekey",
                 "title": "Install kubectl",
-                "filepath": "test/inputs/23/kubernetes/kubectl.md",
+                "filepath": "test/inputs/23/kubernetes/kubectl",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
                     {
-                      "key": "somekey",
-                      "group": "Install kubectl",
+                      "group": "madwizard/apriori/platform",
+                      "groupContext": "test/inputs/23/kubernetes/kubectl",
                       "title": "Install kubectl",
-                      "filepath": "",
-                      "graph": {
-                        "key": "somekey",
-                        "sequence": [
-                          {
-                            "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
-                            "language": "bash",
-                            "id": "somekey"
-                          }
-                        ]
-                      },
-                      "source": "placeholder"
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/23/kubernetes/kubectl"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "somekey",
+                            "sequence": [
+                              {
+                                "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
+                                "language": "bash",
+                                "id": "somekey"
+                              }
+                            ]
+                          },
+                          "title": "Linux",
+                          "description": "Download the latest release with the command:\n"
+                        },
+                        {
+                          "member": 1,
+                          "graph": {
+                            "key": "somekey",
+                            "sequence": [
+                              {
+                                "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe\"",
+                                "language": "bash",
+                                "id": "somekey"
+                              }
+                            ]
+                          },
+                          "title": "Win32",
+                          "description": "Download the latest release:\n"
+                        },
+                        {
+                          "member": 2,
+                          "graph": {
+                            "key": "somekey",
+                            "sequence": [
+                              {
+                                "group": "madwizard/apriori/mac-installer",
+                                "groupContext": "test/inputs/23/kubernetes/kubectl",
+                                "title": "Darwin",
+                                "source": "placeholder",
+                                "provenance": ["test/inputs/23/kubernetes/kubectl"],
+                                "choices": [
+                                  {
+                                    "member": 0,
+                                    "graph": {
+                                      "key": "somekey",
+                                      "sequence": [
+                                        {
+                                          "body": "brew install kubectl",
+                                          "language": "bash",
+                                          "id": "somekey"
+                                        }
+                                      ]
+                                    },
+                                    "title": "Homebrew",
+                                    "description": "\nIf you are on macOS and using Homebrew package manager, you can install kubectl with Homebrew."
+                                  },
+                                  {
+                                    "member": 1,
+                                    "graph": {
+                                      "key": "somekey",
+                                      "sequence": [
+                                        {
+                                          "group": "madwizard/apriori/arch",
+                                          "groupContext": "test/inputs/23/kubernetes/kubectl",
+                                          "title": "curl",
+                                          "source": "placeholder",
+                                          "provenance": ["test/inputs/23/kubernetes/kubectl"],
+                                          "choices": [
+                                            {
+                                              "member": 0,
+                                              "graph": {
+                                                "key": "somekey",
+                                                "sequence": [
+                                                  {
+                                                    "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl.sha256\"",
+                                                    "language": "bash",
+                                                    "id": "somekey"
+                                                  }
+                                                ]
+                                              },
+                                              "title": "X64"
+                                            },
+                                            {
+                                              "member": 1,
+                                              "graph": {
+                                                "key": "somekey",
+                                                "sequence": [
+                                                  {
+                                                    "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl.sha256\"",
+                                                    "language": "bash",
+                                                    "id": "somekey"
+                                                  }
+                                                ]
+                                              },
+                                              "title": "Arm64"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/amd64/kubectl\"\nAnd for macOS on Apple Silicon, type:\n    \ncurl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/arm64/kubectl\"",
+                                          "language": "bash",
+                                          "id": "somekey"
+                                        }
+                                      ]
+                                    },
+                                    "title": "curl",
+                                    "description": "To download the latest release:\n"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "title": "Darwin",
+                          "description": "The following methods exist for installing kubectl on macOS:\n"
+                        }
+                      ]
                     }
                   ]
                 },
@@ -58,26 +458,92 @@
               {
                 "key": "somekey",
                 "title": "Install Helm v3",
-                "filepath": "test/inputs/23/kubernetes/helm3.md",
+                "filepath": "test/inputs/23/kubernetes/helm3",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
                     {
-                      "key": "somekey",
-                      "group": "Install Helm v3",
+                      "group": "madwizard/apriori/platform",
+                      "groupContext": "test/inputs/23/kubernetes/helm3",
                       "title": "Install Helm v3",
-                      "filepath": "",
-                      "graph": {
-                        "key": "somekey",
-                        "sequence": [
-                          {
-                            "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
-                            "language": "shell",
-                            "id": "somekey"
-                          }
-                        ]
-                      },
-                      "source": "placeholder"
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/23/kubernetes/helm3"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "somekey",
+                            "sequence": [
+                              {
+                                "group": "madwizard/apriori/mac-installer",
+                                "groupContext": "test/inputs/23/kubernetes/helm3",
+                                "title": "Darwin",
+                                "source": "placeholder",
+                                "provenance": ["test/inputs/23/kubernetes/helm3"],
+                                "choices": [
+                                  {
+                                    "member": 0,
+                                    "graph": {
+                                      "key": "somekey",
+                                      "sequence": [
+                                        {
+                                          "body": "brew install helm",
+                                          "language": "shell",
+                                          "id": "somekey"
+                                        }
+                                      ]
+                                    },
+                                    "title": "Homebrew"
+                                  },
+                                  {
+                                    "member": 1,
+                                    "graph": {
+                                      "key": "somekey",
+                                      "sequence": [
+                                        {
+                                          "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
+                                          "language": "shell",
+                                          "id": "somekey"
+                                        }
+                                      ]
+                                    },
+                                    "title": "curl"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "title": "Darwin"
+                        },
+                        {
+                          "member": 1,
+                          "graph": {
+                            "key": "somekey",
+                            "sequence": [
+                              {
+                                "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
+                                "language": "shell",
+                                "id": "somekey"
+                              }
+                            ]
+                          },
+                          "title": "Linux"
+                        },
+                        {
+                          "member": 2,
+                          "graph": {
+                            "key": "somekey",
+                            "sequence": [
+                              {
+                                "body": "bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)",
+                                "language": "shell",
+                                "id": "somekey"
+                              }
+                            ]
+                          },
+                          "title": "Win32"
+                        }
+                      ]
                     }
                   ]
                 },
@@ -86,33 +552,141 @@
               {
                 "key": "somekey",
                 "title": "Choose a Kubernetes context",
-                "filepath": "test/inputs/23/kubernetes/context.md",
+                "filepath": "test/inputs/23/kubernetes/context",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
                     {
                       "key": "somekey",
                       "title": "Install kubectl",
-                      "filepath": "test/inputs/23/kubernetes/kubectl.md",
+                      "filepath": "test/inputs/23/kubernetes/kubectl",
                       "graph": {
                         "key": "somekey",
                         "sequence": [
                           {
-                            "key": "somekey",
-                            "group": "Install kubectl",
+                            "group": "madwizard/apriori/platform",
+                            "groupContext": "test/inputs/23/kubernetes/kubectl",
                             "title": "Install kubectl",
-                            "filepath": "",
-                            "graph": {
-                              "key": "somekey",
-                              "sequence": [
-                                {
-                                  "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
-                                  "language": "bash",
-                                  "id": "somekey"
-                                }
-                              ]
-                            },
-                            "source": "placeholder"
+                            "source": "placeholder",
+                            "provenance": ["test/inputs/23/kubernetes/kubectl"],
+                            "choices": [
+                              {
+                                "member": 0,
+                                "graph": {
+                                  "key": "somekey",
+                                  "sequence": [
+                                    {
+                                      "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl\"",
+                                      "language": "bash",
+                                      "id": "somekey"
+                                    }
+                                  ]
+                                },
+                                "title": "Linux",
+                                "description": "Download the latest release with the command:\n"
+                              },
+                              {
+                                "member": 1,
+                                "graph": {
+                                  "key": "somekey",
+                                  "sequence": [
+                                    {
+                                      "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe\"",
+                                      "language": "bash",
+                                      "id": "somekey"
+                                    }
+                                  ]
+                                },
+                                "title": "Win32",
+                                "description": "Download the latest release:\n"
+                              },
+                              {
+                                "member": 2,
+                                "graph": {
+                                  "key": "somekey",
+                                  "sequence": [
+                                    {
+                                      "group": "madwizard/apriori/mac-installer",
+                                      "groupContext": "test/inputs/23/kubernetes/kubectl",
+                                      "title": "Darwin",
+                                      "source": "placeholder",
+                                      "provenance": ["test/inputs/23/kubernetes/kubectl"],
+                                      "choices": [
+                                        {
+                                          "member": 0,
+                                          "graph": {
+                                            "key": "somekey",
+                                            "sequence": [
+                                              {
+                                                "body": "brew install kubectl",
+                                                "language": "bash",
+                                                "id": "somekey"
+                                              }
+                                            ]
+                                          },
+                                          "title": "Homebrew",
+                                          "description": "\nIf you are on macOS and using Homebrew package manager, you can install kubectl with Homebrew."
+                                        },
+                                        {
+                                          "member": 1,
+                                          "graph": {
+                                            "key": "somekey",
+                                            "sequence": [
+                                              {
+                                                "group": "madwizard/apriori/arch",
+                                                "groupContext": "test/inputs/23/kubernetes/kubectl",
+                                                "title": "curl",
+                                                "source": "placeholder",
+                                                "provenance": ["test/inputs/23/kubernetes/kubectl"],
+                                                "choices": [
+                                                  {
+                                                    "member": 0,
+                                                    "graph": {
+                                                      "key": "somekey",
+                                                      "sequence": [
+                                                        {
+                                                          "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl.sha256\"",
+                                                          "language": "bash",
+                                                          "id": "somekey"
+                                                        }
+                                                      ]
+                                                    },
+                                                    "title": "X64"
+                                                  },
+                                                  {
+                                                    "member": 1,
+                                                    "graph": {
+                                                      "key": "somekey",
+                                                      "sequence": [
+                                                        {
+                                                          "body": "curl -LO \"https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl.sha256\"",
+                                                          "language": "bash",
+                                                          "id": "somekey"
+                                                        }
+                                                      ]
+                                                    },
+                                                    "title": "Arm64"
+                                                  }
+                                                ]
+                                              },
+                                              {
+                                                "body": "curl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/amd64/kubectl\"\nAnd for macOS on Apple Silicon, type:\n    \ncurl -LO \"https://dl.k8s.io/release/v1.23.0/bin/darwin/arm64/kubectl\"",
+                                                "language": "bash",
+                                                "id": "somekey"
+                                              }
+                                            ]
+                                          },
+                                          "title": "curl",
+                                          "description": "To download the latest release:\n"
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "title": "Darwin",
+                                "description": "The following methods exist for installing kubectl on macOS:\n"
+                              }
+                            ]
                           }
                         ]
                       },
@@ -120,10 +694,10 @@
                     },
                     {
                       "group": "fakeit",
-                      "groupContext": "fakeit",
+                      "groupContext": "test/inputs/23/kubernetes/context",
                       "title": "Choose a Kubernetes context",
                       "source": "placeholder",
-                      "provenance": ["test/inputs/23/kubernetes/context.md"],
+                      "provenance": ["test/inputs/23/kubernetes/context"],
                       "choices": [
                         {
                           "member": 0,
@@ -193,10 +767,10 @@
   {
     "graph": {
       "group": "Example: Using Ray Tasks to Parallelize a Function####Example: Using Ray Actors to Parallelize a Class####Example: Creating and Transforming Datasets",
-      "groupContext": "Example: Using Ray Tasks to Parallelize a Function####Example: Using Ray Actors to Parallelize a Class####Example: Creating and Transforming Datasets",
+      "groupContext": "test/inputs/23/in",
       "title": "Run a Ray Job",
       "source": "placeholder",
-      "provenance": ["test/inputs/23/in.md"],
+      "provenance": ["test/inputs/23/in"],
       "choices": [
         {
           "member": 0,
@@ -276,7 +850,7 @@
                           {
                             "key": "somekey",
                             "title": "Install Ray Data",
-                            "filepath": "test/inputs/23/data.md",
+                            "filepath": "test/inputs/23/data",
                             "graph": {
                               "key": "somekey",
                               "sequence": [
@@ -307,10 +881,10 @@
                     },
                     {
                       "group": "New Dataset from Range####New Dataset from File",
-                      "groupContext": "New Dataset from Range####New Dataset from File",
+                      "groupContext": "test/inputs/23/in",
                       "title": "Main Tasks",
                       "source": "placeholder",
-                      "provenance": ["test/inputs/23/in.md"],
+                      "provenance": ["test/inputs/23/in"],
                       "choices": [
                         {
                           "member": 0,

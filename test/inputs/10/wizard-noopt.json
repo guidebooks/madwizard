@@ -2,9 +2,9 @@
   {
     "graph": {
       "group": "MacOS####Linux####Windows",
-      "groupContext": "MacOS####Linux####Windows",
+      "groupContext": "test/inputs/snippets/importgg",
       "source": "placeholder",
-      "provenance": ["test/inputs/snippets/importgg.md"],
+      "provenance": ["test/inputs/snippets/importgg"],
       "choices": [
         {
           "member": 0,
@@ -77,8 +77,8 @@
   {
     "graph": {
       "key": "somekey",
-      "group": "importaa.md",
-      "title": "importaa.md",
+      "group": "importaa",
+      "title": "importaa",
       "filepath": "",
       "graph": {
         "key": "somekey",
@@ -95,16 +95,16 @@
     },
     "status": "success",
     "step": {
-      "name": "importaa.md"
+      "name": "importaa"
     }
   },
   {
     "graph": {
       "group": "SubTab1####SubTab2",
-      "groupContext": "SubTab1####SubTab2",
+      "groupContext": "test/inputs/snippets/importdd",
       "title": "DDD",
       "source": "placeholder",
-      "provenance": ["test/inputs/snippets/importdd.md"],
+      "provenance": ["test/inputs/snippets/importdd"],
       "choices": [
         {
           "member": 0,

@@ -1,1 +1,1 @@
-Number of CPUs####Number of GPUs={"Number of CPUs":4,"Number of GPUs":3}
+test/inputs/26/in={"Number of CPUs":4,"Number of GPUs":3}

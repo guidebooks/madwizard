@@ -29,6 +29,9 @@ import { MadWizardOptions } from "../../../fe/index.js"
 import { tryFrontmatter } from "../frontmatter/frontmatter-parser.js"
 import { Import, getImportEnv, getImportGroup, getImportPath, hasImports } from "../frontmatter/KuiFrontmatter.js"
 
+// FIXME refactor this
+import { canonicalProvenanceOf } from "../../../graph/provenance.js"
+
 const RE_DOCS_URL = /^(https:\/\/([^/]+\/){4}docs)/
 
 const RE_INCLUDE = /^(\s*){%\s+include "([^"]+)"\s+%}/
@@ -379,7 +382,7 @@ ${indent(errorMessage)}`
       src,
       srcFilePath,
       memoKey + "." + group,
-      provenance.concat([snippetFileName]),
+      provenance.concat([canonicalProvenanceOf(snippetFileName, opts.madwizardOptions)]),
       nestingDepth + 1,
       true
     )
@@ -414,11 +417,18 @@ ${indent(errorMessage)}`
           .map((key) => `\`\`\`shell\nunset ${key}\n\`\`\``)
           .join("\n")
 
+    // have the provenance of this content by "store absolute", so
+    // that it has the full path to the root of the store; filepath is
+    // already absolute, we just need to slice off the store prefix
+    const thisProvenance = canonicalProvenanceOf(filepath, opts.madwizardOptions)
+
     // note how we splice in `export FOO=bar` shell commands for any import env maps
     return `
-${colons}import{provenance=${provenance.concat([snippetFileName])} filepath=${filepath} attributes="${attributesEnc}"${
-      title ? ` title="${title}"` : ""
-    }${group ? ` group="${group}"` : ""}}
+${colons}import{provenance=${provenance.concat([
+      thisProvenance,
+    ])} filepath=${thisProvenance} attributes="${attributesEnc}"${title ? ` title="${title}"` : ""}${
+      group ? ` group="${group}"` : ""
+    }}
 ${setenv}
 ${body}
 ${colons}
