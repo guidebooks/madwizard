@@ -30,6 +30,7 @@ import {
   seq,
   sequence,
   subtask,
+  isValidatable,
 } from "./index.js"
 
 import { Memos } from "../memoization/index.js"
@@ -144,6 +145,19 @@ export async function compile(
       }
     }
 
+    /** Find the nearest enclosing Import, and return its validation */
+    const nearestValidate = () => {
+      for (let idx = currentNesting.length - 1; idx >= 0; idx--) {
+        const nest = currentNesting[idx]
+        if (isImportNesting(nest)) {
+          if (isValidatable(nest.graph)) {
+            return nest.graph.validate
+          }
+          break
+        }
+      }
+    }
+
     const newChoice = (block: CodeBlockProps, parent: CodeBlockChoice, isDeepest: boolean) => ({
       member: parent.member,
       graph: isDeepest ? seq(block) : emptySequence(),
@@ -168,6 +182,7 @@ export async function compile(
         source: parent.groupDetail.source,
         provenance: currentProvenance(),
         choices: [newChoice(block, parent, isDeepest)],
+        validate: nearestValidate(),
       }
     }
 

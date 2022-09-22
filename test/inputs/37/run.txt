@@ -1,0 +1,4 @@
+echo "Ok if this is printed"
+Ok if this is printed
+echo "This should be printed"
+This should be printed

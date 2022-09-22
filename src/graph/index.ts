@@ -140,6 +140,7 @@ export type ChoicePart<T extends Unordered | Ordered = Unordered> = Title &
 export type Choice<T extends Unordered | Ordered = Unordered> = Source &
   T &
   Title &
+  Partial<Validatable> &
   Partial<Provenance> & {
     /** identifier for this choice */
     group: ChoiceGroup
@@ -234,8 +235,13 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
 }
 
 /** @return a `Graph` that inherits the given `EnTitled` properties */
-export function withTitle(block: LeafNode, { title, description, source }: EnTitled, barrier = false) {
-  return subtask(title, title, title, description, "", seq(block), source, barrier)
+export function withTitle(
+  block: LeafNode,
+  { title, description, source }: EnTitled,
+  barrier = false,
+  validate?: Validatable["validate"]
+) {
+  return subtask(title, title, title, description, "", seq(block), source, barrier, validate)
 }
 
 export function asSubTask(step: TitledStep): SubTask {

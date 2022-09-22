@@ -1,0 +1,49 @@
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Nope",
+      "title": "Nope",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"Bug if this is printed\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder",
+      "validate": true
+    },
+    "step": {
+      "name": "Nope"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Yo",
+      "title": "Yo",
+      "description": "Testing file-level validation.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"This should be printed\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Yo",
+      "description": "Testing file-level validation.\n"
+    }
+  }
+]

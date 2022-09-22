@@ -1,0 +1,107 @@
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "foo.md",
+      "title": "foo.md",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"Bug if any of this is printed.\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder",
+      "validate": true
+    },
+    "step": {
+      "name": "foo.md"
+    }
+  },
+  {
+    "graph": {
+      "group": "Tab1####Tab2",
+      "groupContext": "Tab1####Tab2",
+      "title": "foo.md",
+      "source": "placeholder",
+      "provenance": ["test/inputs/39/foo.md"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"Bug if this is printed\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Tab1"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"Also a bug if this is printed\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Tab2"
+        }
+      ],
+      "validate": true
+    },
+    "step": {
+      "name": "foo.md",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1####Tab2",
+          "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "Tab2",
+          "group": "Tab1####Tab2",
+          "member": 1,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Yo",
+      "title": "Yo",
+      "description": "Testing file-level validation.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"This should be printed\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Yo",
+      "description": "Testing file-level validation.\n"
+    }
+  }
+]

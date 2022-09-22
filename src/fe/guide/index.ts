@@ -35,7 +35,16 @@ import indent from "../../parser/markdown/util/indent.js"
 import { Memos, statusOf } from "../../memoization/index.js"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree/index.js"
 import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isForm, isTaskStep, wizardify } from "../../wizard/index.js"
-import { Graph, Status, blocks, compile, extractTitle, extractDescription, validate } from "../../graph/index.js"
+import {
+  Graph,
+  Status,
+  blocksWithValidationPruning,
+  compile,
+  extractTitle,
+  extractDescription,
+  validate,
+  isValidatable,
+} from "../../graph/index.js"
 
 /** A question for which we will use the answer from the current profile (i.e. from a previously-made choice) */
 type AlreadyAnswered = {
@@ -78,6 +87,16 @@ export class Guide {
     return chalk.reset.yellow.dim("  ◄ you selected this last time")
   }
 
+  private async validateChoice(step: ChoiceStep) {
+    if (isValidatable(step.graph)) {
+      if ((await validate(step.graph, this.memos, {})) !== "success") {
+        return step
+      }
+    } else {
+      return step
+    }
+  }
+
   /**
    * @param iter How many questions have we asked so far?
    * @return the list of remaining questions
@@ -90,7 +109,12 @@ export class Guide {
     const preChoiceSteps = firstChoiceIdx < 0 ? [] : wizard.slice(0, firstChoiceIdx).filter(isTaskStep)
     // no: run all tasks up to the first barrier: .filter((_) => isBarrier(_.graph))
 
-    const choices = wizard.filter(isChoiceStep).filter((_) => _.status !== "success")
+    const choices = await Promise.all(
+      wizard
+        .filter(isChoiceStep)
+        .filter((_) => _.status !== "success")
+        .map((_) => this.validateChoice(_))
+    ).then((_) => _.filter(Boolean))
     const preChoiceTasks = preChoiceSteps.filter((_) => _.status !== "success")
     const postChoiceTasks = wizard.filter(isTaskStep).filter((_) => _.status !== "success")
 
@@ -243,8 +267,8 @@ export class Guide {
     return !this.options.verbose && (!!isExport(block.body) || /^\s*(echo|cat|mkdir|while|if).+/gm.test(block.body))
   }
 
-  private listrTaskStep({ step, graph }: TaskStep, taskIdx: number, dryRun: boolean): Task {
-    const subtasks = blocks(graph)
+  private async listrTaskStep({ step, graph }: TaskStep, taskIdx: number, dryRun: boolean): Promise<Task> {
+    const subtasks = await blocksWithValidationPruning(graph, this.memos, { throwErrors: dryRun })
 
     let doneCount = 0
     const markDone = (status: Status) => {
@@ -298,7 +322,6 @@ export class Guide {
                 try {
                   if (!dryRun) {
                     subtask.commence()
-                    await this.waitTillDone(taskIdx - 1)
 
                     status =
                       (this.memos.statusMemo && this.memos.statusMemo[statusMemoKey] === "success" && "success") ||
@@ -361,7 +384,6 @@ export class Guide {
     return [
       {
         task: async () => {
-          await this.waitTillDone(taskIdx - 1)
           await this.waitForEnter()
           this.markDone(taskIdx, "success")
         },
@@ -377,15 +399,6 @@ export class Guide {
   private markDone(taskIdx: number, status: Status) {
     this.done[taskIdx] = status
     this.doneEvents.emit(taskIdx.toString())
-  }
-  private waitTillDone(taskIdx: number): Promise<void> {
-    if (!this.done[taskIdx]) {
-      return new Promise<void>((resolve) =>
-        this.doneEvents.once(taskIdx.toString(), () => {
-          resolve()
-        })
-      )
-    }
   }
 
   /** Visualize the current execution plan, which reflects all choices made so far. */
@@ -410,12 +423,14 @@ export class Guide {
     const dryRun = execution === "dryr"
 
     const taskPromise = taskRunner(
-      taskSteps
-        .filter((_) => _.status !== "success")
-        .flatMap((_, idx, A) => [
-          this.listrTaskStep(_, stepIt ? idx * 2 + 1 : idx + 1, dryRun),
-          ...(stepIt && idx < A.length - 1 ? this.listrPauseStep(idx * 2 + 2) : []),
-        ]),
+      await Promise.all(
+        taskSteps
+          .filter((_) => _.status !== "success")
+          .map(async (_, idx, A) => [
+            await this.listrTaskStep(_, stepIt ? idx * 2 + 1 : idx + 1, dryRun),
+            ...(stepIt && idx < A.length - 1 ? this.listrPauseStep(idx * 2 + 2) : []),
+          ])
+      ).then((_) => _.flat()),
       {
         /* options */
         quiet: !this.isGuided,

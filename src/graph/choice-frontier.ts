@@ -15,6 +15,7 @@
  */
 
 import { ChoiceState } from "../choices/index.js"
+import { Validatable } from "../codeblock/CodeBlockProps.js"
 
 import {
   Choice,
@@ -28,6 +29,7 @@ import {
   isSequence,
   isSubTask,
   isTitledSteps,
+  isValidatable,
   withTitle,
 } from "./index.js"
 
@@ -42,9 +44,15 @@ function titlest(A: Graph, B?: EnTitled) {
  * presentation, so we have some explanation for what the `LeafNode`
  * code block is doing.
  */
-function pushWithTitle(S: Graph[], A: LeafNode, B?: EnTitled, isPartOfBarrier = false) {
+function pushWithTitle(
+  S: Graph[],
+  A: LeafNode,
+  B?: EnTitled,
+  isPartOfBarrier = false,
+  validate?: Validatable["validate"]
+) {
   if (B) {
-    S.push(withTitle(A, B, isPartOfBarrier))
+    S.push(withTitle(A, B, isPartOfBarrier, validate))
   } else {
     S.push(A)
   }
@@ -61,6 +69,7 @@ export function _findChoiceFrontier(
   graph: Graph,
   prereqs: Graph[],
   nearestEnclosingTitle?: EnTitled,
+  nearestEnclosingValidatable?: Validatable,
   isPartOfBarrier = false
 ): { prereqs?: Graph[]; choice: Choice }[] {
   const recurse = (graph: Graph, title?: EnTitled) =>
@@ -68,6 +77,7 @@ export function _findChoiceFrontier(
       graph,
       prereqs,
       title || titlest(graph, nearestEnclosingTitle),
+      isValidatable(graph) ? graph : nearestEnclosingValidatable,
       isPartOfBarrier || isBarrier(graph)
     )
 
@@ -89,7 +99,13 @@ export function _findChoiceFrontier(
     return graph.steps.flatMap((_) => recurse(_.graph, _))
   } else {
     // leaf-most code blocks. no choices here.
-    pushWithTitle(prereqs, graph, nearestEnclosingTitle, isPartOfBarrier)
+    pushWithTitle(
+      prereqs,
+      graph,
+      nearestEnclosingTitle,
+      isPartOfBarrier,
+      graph.validate || nearestEnclosingValidatable ? nearestEnclosingValidatable.validate : undefined
+    )
     return []
   }
 }

@@ -30,14 +30,18 @@ import {
   Unordered,
   Graph,
   choose,
+  validate,
   isLeafNode,
   isSequence,
   isParallel,
   isSubTask,
   isTitledSteps,
   isChoice,
+  isValidatable,
+  ValidateOptions,
 } from "./index.js"
 
+import { Memos } from "../memoization/index.js"
 import { ChoiceState } from "../choices/index.js"
 import { CodeBlockProps } from "../codeblock/index.js"
 
@@ -93,6 +97,38 @@ export function blocks<T extends Unordered | Ordered>(
       // return the current/default selection
       return subblocks(choose(graph, choices))
     }
+  } else if (isLeafNode(graph) && (!graph.optional || includeOptional)) {
+    return [graph]
+  } else {
+    return []
+  }
+}
+
+/** @return A linearized set of code blocks in the given `graph`, excluding subgraphs that validate */
+export async function blocksWithValidationPruning<T extends Unordered | Ordered>(
+  graph: Graph<T>,
+  memos: Memos,
+  options: ValidateOptions,
+  includeOptional = false
+): Promise<(CodeBlockProps & T)[]> {
+  const subblocks = (subgraph: Graph<T>) => blocksWithValidationPruning(subgraph, memos, options, includeOptional)
+
+  if (!graph) {
+    return []
+  } else if (isValidatable(graph) && (await validate(graph, memos, options)) === "success") {
+    memos.statusMemo[graph.validate.toString()] = "success"
+    return []
+  } else if (isSequence<T>(graph)) {
+    return Promise.all(graph.sequence.map(subblocks)).then((_) => _.flat())
+  } else if (isParallel<T>(graph)) {
+    return Promise.all(graph.parallel.map(subblocks)).then((_) => _.flat())
+  } else if (isSubTask<T>(graph)) {
+    return subblocks(graph.graph)
+  } else if (isTitledSteps<T>(graph)) {
+    return Promise.all(graph.steps.map((_) => _.graph).map(subblocks)).then((_) => _.flat())
+  } else if (isChoice<T>(graph)) {
+    // return the current/default selection
+    return subblocks(choose(graph, "default-path"))
   } else if (isLeafNode(graph) && (!graph.optional || includeOptional)) {
     return [graph]
   } else {

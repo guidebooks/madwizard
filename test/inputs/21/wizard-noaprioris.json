@@ -113,7 +113,8 @@
           }
         ]
       },
-      "source": "placeholder"
+      "source": "placeholder",
+      "validate": "[ \"$FOO\" = \"2:3\" ]"
     },
     "step": {
       "name": "Propagation check",

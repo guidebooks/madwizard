@@ -17,7 +17,8 @@
           }
         ]
       },
-      "source": "placeholder"
+      "source": "placeholder",
+      "validate": "echo true"
     },
     "step": {
       "name": "Codeblocks in enclosing markdown",

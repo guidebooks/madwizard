@@ -38,7 +38,8 @@
           }
         ]
       },
-      "source": "placeholder"
+      "source": "placeholder",
+      "validate": true
     },
     "status": "success",
     "step": {

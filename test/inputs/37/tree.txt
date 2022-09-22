@@ -1,0 +1,6 @@
+Yo
+├── Prerequisites
+│   └── foo.md
+│       └── echo "Ok if this is printed"
+└── Yo
+    └── echo "This should be printed"

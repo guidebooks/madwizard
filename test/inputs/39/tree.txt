@@ -1,0 +1,11 @@
+Yo
+├── Prerequisites
+│   └── foo.md
+│       ├── echo "Bug if any of this is printed."
+│       └── foo.md
+│           ├── Option 1: Tab1
+│           │   └── echo "Bug if this is printed"
+│           └── Option 2: Tab2
+│               └── echo "Also a bug if this is printed"
+└── Yo
+    └── echo "This should be printed"

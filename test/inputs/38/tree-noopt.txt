@@ -1,0 +1,5 @@
+Yo
+├── Yo
+│   └── echo "This should be printed"
+└── foo.md
+    └── echo "Bug if this is printed"
