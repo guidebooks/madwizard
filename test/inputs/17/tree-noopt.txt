@@ -1,7 +1,7 @@
 Sequence
-├── importa.md
+├── importa
 │   └── echo AAA †
-├── barrier.md
+├── barrier
 │   └── echo barrier
 ├── EEE
 │   └── Option 1: TabE1

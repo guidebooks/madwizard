@@ -12,8 +12,8 @@
             "sequence": [
               {
                 "key": "somekey",
-                "title": "a.md",
-                "filepath": "test/inputs/25/a.md",
+                "title": "a",
+                "filepath": "test/inputs/25/a",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
@@ -28,8 +28,8 @@
               },
               {
                 "key": "somekey",
-                "title": "b.md",
-                "filepath": "test/inputs/25/b.md",
+                "title": "b",
+                "filepath": "test/inputs/25/b",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
@@ -53,8 +53,8 @@
             "sequence": [
               {
                 "key": "somekey",
-                "title": "a.md",
-                "filepath": "test/inputs/25/a.md",
+                "title": "a",
+                "filepath": "test/inputs/25/a",
                 "graph": {
                   "key": "somekey",
                   "sequence": [

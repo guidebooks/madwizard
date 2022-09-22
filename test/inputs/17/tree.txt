@@ -1,6 +1,6 @@
 Sequence
 └── Prerequisites
-    ├── barrier.md
+    ├── barrier
     │   └── echo barrier
     └── EEE
         └── Option 1: TabE1

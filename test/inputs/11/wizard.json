@@ -1,24 +1,59 @@
 [
   {
     "graph": {
-      "key": "somekey",
-      "group": "Text versus HTML?",
+      "group": "madwizard/apriori/in-terminal",
+      "groupContext": "test/inputs/11/in",
       "title": "Text versus HTML?",
-      "filepath": "",
-      "graph": {
-        "key": "somekey",
-        "sequence": [
-          {
-            "body": "echo text",
-            "language": "shell",
-            "id": "somekey"
-          }
-        ]
-      },
-      "source": "placeholder"
+      "source": "placeholder",
+      "provenance": ["test/inputs/11/in"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo text",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Text"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo html",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "HTML"
+        }
+      ]
     },
     "step": {
-      "name": "Text versus HTML?"
+      "name": "Text versus HTML?",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Text",
+          "group": "madwizard/apriori/in-terminal",
+          "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "HTML",
+          "group": "madwizard/apriori/in-terminal",
+          "member": 1,
+          "isFirstChoice": true
+        }
+      ]
     }
   }
 ]

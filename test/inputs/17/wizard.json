@@ -2,8 +2,8 @@
   {
     "graph": {
       "key": "somekey",
-      "group": "barrier.md",
-      "title": "barrier.md",
+      "group": "barrier",
+      "title": "barrier",
       "filepath": "",
       "graph": {
         "key": "somekey",
@@ -19,17 +19,17 @@
       "barrier": true
     },
     "step": {
-      "name": "barrier.md",
+      "name": "barrier",
       "barrier": true
     }
   },
   {
     "graph": {
       "group": "TabE1",
-      "groupContext": "TabE1",
+      "groupContext": "test/inputs/snippets/importe",
       "title": "EEE",
       "source": "placeholder",
-      "provenance": ["test/inputs/snippets/importe.md"],
+      "provenance": ["test/inputs/snippets/importe"],
       "choices": [
         {
           "member": 0,

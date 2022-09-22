@@ -2,8 +2,8 @@
   {
     "graph": {
       "key": "somekey",
-      "group": "a.md",
-      "title": "a.md",
+      "group": "a",
+      "title": "a",
       "filepath": "",
       "graph": {
         "key": "somekey",
@@ -18,7 +18,7 @@
       "source": "placeholder"
     },
     "step": {
-      "name": "a.md"
+      "name": "a"
     }
   },
   {
@@ -34,8 +34,8 @@
             "sequence": [
               {
                 "key": "somekey",
-                "title": "b.md",
-                "filepath": "test/inputs/25/b.md",
+                "title": "b",
+                "filepath": "test/inputs/25/b",
                 "graph": {
                   "key": "somekey",
                   "sequence": [

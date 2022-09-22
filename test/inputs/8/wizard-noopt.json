@@ -2,10 +2,10 @@
   {
     "graph": {
       "group": "Tab1####Tab2####Tab3",
-      "groupContext": "Tab1####Tab2####Tab3",
+      "groupContext": "test/inputs/snippets/snippets-in-tab6",
       "title": "Chooser",
       "source": "placeholder",
-      "provenance": ["test/inputs/snippets/snippets-in-tab6.md"],
+      "provenance": ["test/inputs/snippets/snippets-in-tab6"],
       "choices": [
         {
           "member": 0,
@@ -15,16 +15,16 @@
               {
                 "key": "somekey",
                 "title": "DDD",
-                "filepath": "test/inputs/snippets/importd.md",
+                "filepath": "test/inputs/snippets/importd",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
-                      "groupContext": "SubTab1####SubTab2",
+                      "groupContext": "test/inputs/snippets/importd",
                       "title": "DDD",
                       "source": "placeholder",
-                      "provenance": ["test/inputs/snippets/importd.md"],
+                      "provenance": ["test/inputs/snippets/importd"],
                       "choices": [
                         {
                           "member": 0,
@@ -86,16 +86,16 @@
               {
                 "key": "somekey",
                 "title": "DDD",
-                "filepath": "test/inputs/snippets/importd.md",
+                "filepath": "test/inputs/snippets/importd",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
-                      "groupContext": "SubTab1####SubTab2",
+                      "groupContext": "test/inputs/snippets/importd",
                       "title": "DDD",
                       "source": "placeholder",
-                      "provenance": ["test/inputs/snippets/importd.md"],
+                      "provenance": ["test/inputs/snippets/importd"],
                       "choices": [
                         {
                           "member": 0,
@@ -157,16 +157,16 @@
               {
                 "key": "somekey",
                 "title": "DDD",
-                "filepath": "test/inputs/snippets/importd.md",
+                "filepath": "test/inputs/snippets/importd",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
-                      "groupContext": "SubTab1####SubTab2",
+                      "groupContext": "test/inputs/snippets/importd",
                       "title": "DDD",
                       "source": "placeholder",
-                      "provenance": ["test/inputs/snippets/importd.md"],
+                      "provenance": ["test/inputs/snippets/importd"],
                       "choices": [
                         {
                           "member": 0,

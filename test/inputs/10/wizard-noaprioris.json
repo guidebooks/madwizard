@@ -2,10 +2,10 @@
   {
     "graph": {
       "group": "MacOS####Linux####Windows",
-      "groupContext": "MacOS####Linux####Windows",
-      "title": "importgg.md",
+      "groupContext": "test/inputs/snippets/importgg",
+      "title": "importgg",
       "source": "placeholder",
-      "provenance": ["test/inputs/snippets/importgg.md"],
+      "provenance": ["test/inputs/snippets/importgg"],
       "choices": [
         {
           "member": 0,
@@ -52,7 +52,7 @@
       ]
     },
     "step": {
-      "name": "importgg.md",
+      "name": "importgg",
       "description": "This step requires you to choose how to proceed",
       "content": [
         {
@@ -79,10 +79,10 @@
   {
     "graph": {
       "group": "SubTab1####SubTab2",
-      "groupContext": "SubTab1####SubTab2",
+      "groupContext": "test/inputs/snippets/importdd",
       "title": "DDD",
       "source": "placeholder",
-      "provenance": ["test/inputs/snippets/importdd.md"],
+      "provenance": ["test/inputs/snippets/importdd"],
       "choices": [
         {
           "member": 0,

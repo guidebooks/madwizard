@@ -2,10 +2,10 @@
   {
     "graph": {
       "group": "Tab1",
-      "groupContext": "Tab1",
+      "groupContext": "test/inputs/16/in",
       "title": "MainTitle",
       "source": "placeholder",
-      "provenance": ["test/inputs/16/in.md"],
+      "provenance": ["test/inputs/16/in"],
       "choices": [
         {
           "member": 0,
@@ -14,10 +14,10 @@
             "sequence": [
               {
                 "group": "SubTab1####SubTab2",
-                "groupContext": "SubTab1####SubTab2",
+                "groupContext": "test/inputs/16/in",
                 "title": "Tab1",
                 "source": "placeholder",
-                "provenance": ["test/inputs/16/in.md"],
+                "provenance": ["test/inputs/16/in"],
                 "choices": [
                   {
                     "member": 0,

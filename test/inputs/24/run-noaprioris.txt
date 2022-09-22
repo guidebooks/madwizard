@@ -1,0 +1,6 @@
+echo hi
+hi
+echo hi
+hi
+echo hi
+hi

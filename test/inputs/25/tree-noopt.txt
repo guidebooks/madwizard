@@ -1,9 +1,9 @@
 Missing heading for choice
 ├── Option 1: Tab1
-│   ├── a.md
+│   ├── a
 │   │   └── echo AAA
-│   └── b.md
+│   └── b
 │       └── echo BBB
 └── Option 2: Tab2
-    └── a.md
+    └── a
         └── echo AAA

@@ -83,7 +83,7 @@ export class Guide {
    * @return the list of remaining questions
    */
   private async questions(choiceIter: number, previous?: Wizard) {
-    const graph = await compile(this.blocks, this.choices, Object.assign({}, this.options, this.memos))
+    const graph = await compile(this.blocks, this.choices, Object.assign({}, this.options, this.memos), this.options)
     const wizard = await wizardify(graph, this.memos, { previous, choices: this.choices })
 
     const firstChoiceIdx = wizard.findIndex((_) => isChoiceStep(_) && _.status !== "success")

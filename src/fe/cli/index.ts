@@ -69,7 +69,9 @@ export async function cli<Writer extends Writable["write"]>(
   const interactive = parsedOptions.interactive
   const noOptimize =
     parsedOptions.O === 0 || parsedOptions.optimize === false || parsedOptions.optimize === 0 || undefined
-  const noAprioris = parsedOptions["aprioris"] === false
+  const noAprioris =
+    parsedOptions["aprioris"] === false ||
+    (typeof providedOptions.optimize === "object" && providedOptions.optimize.aprioris === false)
   const noValidate = parsedOptions["validate"] === false
   const verbose = parsedOptions.verbose
 
@@ -347,7 +349,7 @@ export async function cli<Writer extends Writable["write"]>(
       try {
         await new Guide(task, blocks, choices, options, memoizer, undefined, write).run()
       } finally {
-        if (options.verbose) {
+        if (options.verbose && task !== "run") {
           console.error(exitMessage)
         }
         if (!noProfile) {

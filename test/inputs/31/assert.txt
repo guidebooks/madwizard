@@ -1,2 +1,2 @@
-XXXXXX.11111aaaa####11111bbbb####222222=.*1a.*
-YYYYYY.11111aaaa####11111bbbb####222222=222222
+test/inputs/31/choice.XXXXXX=.*1a.*
+test/inputs/31/choice.YYYYYY=222222

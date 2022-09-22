@@ -1,5 +1,5 @@
 Sequence
-├── importgg.md
+├── importgg
 │   ├── Option 1: MacOS
 │   │   └── echo MMM
 │   ├── Option 2: Linux

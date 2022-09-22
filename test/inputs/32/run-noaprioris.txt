@@ -1,0 +1,13 @@
+echo hello \
+world
+hello world
+echo hello \
+world \
+again
+hello world again
+export FOO=333333
+echo AAAAAA \
+$FOO xxx \
+$FOO $FOO xxx \
+   $FOO
+AAAAAA 333333 xxx 333333 333333 xxx 333333

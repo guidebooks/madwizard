@@ -7,7 +7,7 @@ Sequence
 │   └── Option 2: SubTab2
 │       └── echo BBB
 └── AAA
-    ├── importa.md
+    ├── importa
     │   └── echo AAA †
     ├── EEE
     │   └── Option 1: TabE1
