@@ -37,10 +37,6 @@ export default function execAsExport(cmdline: string | boolean, memos: Memos, op
       const semicolon = /;\s*$/.test(cmdline) ? "" : ";"
       const [, op, key] = match
 
-      // invalidate any memos using this shell variable, since we're
-      // about to update it
-      memos.invalidate(key)
-
       //
       const options = Object.assign({}, opts, { capture: "", ignoreStderr: true, write: undefined })
 
@@ -62,11 +58,21 @@ export default function execAsExport(cmdline: string | boolean, memos: Memos, op
               console.error(chalk.dim.yellow(`Unsetting ${keyForUpdate}`))
             }
 
+            // invalidate any memos using this shell variable, since we're
+            // about to remove that variable definition
+            memos.invalidate(key)
+
             delete memos.env[key] // TODO, move this to memos.invalidate()?
             return "success"
           } else {
             if (opts.verbose && !opts.quiet) {
               console.error(chalk.dim.yellow(`Setting ${keyForUpdate}=${valueForUpdate}`))
+            }
+
+            // invalidate any memos using this shell variable, since we're
+            // about to update it; only do this if the value has changed!
+            if (memos.env[keyForUpdate] !== valueForUpdate) {
+              memos.invalidate(key)
             }
 
             memos.env[keyForUpdate] = valueForUpdate
