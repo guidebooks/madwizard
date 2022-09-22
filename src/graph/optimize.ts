@@ -22,10 +22,10 @@ import { CompileOptions, Graph, sequence } from "./index.js"
 
 import hoistSubTasks from "./hoistSubTasks.js"
 import propagateTitles from "./propagateTitles.js"
-import collapseValidated from "./collapseValidated.js"
 import collapseMadeChoices from "./collapseMadeChoices.js"
 import deadCodeElimination from "./deadCodeElimination.js"
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default async function optimize(graph: Graph, choices: ChoiceState, memos: Memos, options?: CompileOptions) {
   const debug = Debug("madwizard/timing/graph:optimize")
   debug("start")
@@ -34,11 +34,7 @@ export default async function optimize(graph: Graph, choices: ChoiceState, memos
     return (
       propagateTitles(
         deadCodeElimination(
-          await collapseValidated(
-            deadCodeElimination(collapseMadeChoices(hoistSubTasks(deadCodeElimination(graph)), choices)),
-            memos,
-            options
-          )
+          deadCodeElimination(collapseMadeChoices(hoistSubTasks(deadCodeElimination(graph)), choices))
         )
       ) || sequence([])
     )

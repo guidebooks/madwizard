@@ -73,6 +73,30 @@
   },
   {
     "graph": {
+      "key": "somekey",
+      "group": "importa.md",
+      "title": "importa.md",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo AAA",
+            "language": "bash",
+            "validate": true,
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "status": "success",
+    "step": {
+      "name": "importa.md"
+    }
+  },
+  {
+    "graph": {
       "group": "TabE1",
       "groupContext": "TabE1",
       "title": "EEE",
