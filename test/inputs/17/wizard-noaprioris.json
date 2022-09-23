@@ -2,30 +2,6 @@
   {
     "graph": {
       "key": "somekey",
-      "group": "importa.md",
-      "title": "importa.md",
-      "filepath": "",
-      "graph": {
-        "key": "somekey",
-        "sequence": [
-          {
-            "body": "echo AAA",
-            "language": "bash",
-            "validate": true,
-            "id": "somekey"
-          }
-        ]
-      },
-      "source": "placeholder"
-    },
-    "status": "success",
-    "step": {
-      "name": "importa.md"
-    }
-  },
-  {
-    "graph": {
-      "key": "somekey",
       "group": "barrier.md",
       "title": "barrier.md",
       "filepath": "",
@@ -84,19 +60,6 @@
           "description": "\nEEE1Content"
         }
       ]
-    }
-  },
-  {
-    "graph": {
-      "body": "echo \"testing barrier imports\"",
-      "language": "shell",
-      "validate": true,
-      "id": "somekey"
-    },
-    "status": "success",
-    "step": {
-      "name": "Missing title",
-      "content": "```shell\necho \"testing barrier imports\"\n```"
     }
   }
 ]
