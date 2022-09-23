@@ -80,10 +80,7 @@ export class Memoizer implements Memos {
 
     Object.keys(this.statusMemo)
       .filter((key) => pattern.test(key)) // list of matching keys
-      .forEach((matchingKey) => {
-        Debug("madwizard/cleanup")("invalidating status", variable, pattern, matchingKey)
-        delete this.statusMemo[matchingKey]
-      })
+      .forEach((matchingKey) => delete this.expansionMemo[matchingKey])
 
     Object.keys(this.expansionMemo)
       .filter((key) => pattern.test(key)) // list of matching keys

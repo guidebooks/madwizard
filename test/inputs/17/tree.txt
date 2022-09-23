@@ -1,10 +1,7 @@
 Sequence
-├── Prerequisites
-│   ├── importa.md
-│   │   └── echo AAA †
-│   ├── barrier.md
-│   │   └── echo barrier
-│   └── EEE
-│       └── Option 1: TabE1
-│           └── echo EEE
-└── echo "testing barrier imports" †
+└── Prerequisites
+    ├── barrier.md
+    │   └── echo barrier
+    └── EEE
+        └── Option 1: TabE1
+            └── echo EEE
