@@ -269,19 +269,14 @@ export class Guide {
             spinner: !!block.validate,
             quiet: !this.options.verbose,
             task: async (subtask) => {
-              const statusMemoKey = block.id
               let status: Status = statusOf(block, this.memos.statusMemo, this.choices)
 
               try {
-                if (status === "success") {
-                  subtask.skip(dryRun ? "READY" : undefined)
-                  return
-                } else if (block.validate) {
+                if (status !== "success" && block.validate) {
                   try {
                     status = await validate(block, this.memos, { throwErrors: dryRun })
                     if (status === "success") {
                       subtask.skip(dryRun ? "READY" : undefined)
-                      this.memos.statusMemo[statusMemoKey] = status
                       return
                     }
                   } catch (err) {
@@ -300,6 +295,7 @@ export class Guide {
                     subtask.commence()
                     await this.waitTillDone(taskIdx - 1)
 
+                    const statusMemoKey = block.id
                     status =
                       (this.memos.statusMemo && this.memos.statusMemo[statusMemoKey] === "success" && "success") ||
                       (await shellExec(
