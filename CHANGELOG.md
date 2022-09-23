@@ -1,3 +1,11 @@
+## [0.23.5](https://github.com/guidebooks/madwizard/compare/0.23.4...0.23.5) (2022-09-23)
+
+### Reverts
+
+- Revert "fix: statusMemo is not properly invalidated" ([edcb944](https://github.com/guidebooks/madwizard/commit/edcb94482b1d109bc101dfe4b8797eaccd9eacd7))
+- Revert "fix: restore accidentally removed prepack script" ([452ae0b](https://github.com/guidebooks/madwizard/commit/452ae0b662b1410ab7c6203b783be232125c0844))
+- Revert "fix: more fixes for status memo invalidation" ([f29c391](https://github.com/guidebooks/madwizard/commit/f29c3911954a02e2b0729c6621d6f8336bc37ef0))
+
 ## [0.23.4](https://github.com/guidebooks/madwizard/compare/0.23.3...0.23.4) (2022-09-22)
 
 ### Bug Fixes
