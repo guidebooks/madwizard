@@ -1,3 +1,13 @@
+# [1.0.0](https://github.com/guidebooks/madwizard/compare/0.23.5...1.0.0) (2022-09-24)
+
+### Features
+
+- improved keys for remembering choices in profiles ([406e970](https://github.com/guidebooks/madwizard/commit/406e97087766665bca3f765cf50fe92bc092bbe5))
+
+### BREAKING CHANGES
+
+- this changes the keys used in profiles to remember the choices made. The goal here is to avoid using the internal representation of the choice group -- we have been using the text of the tabs/choices to represent the choice itself. this is very hard to maintain, as it means every small change to the text of the tab results in undoing the choice the user made.
+
 ## [0.23.5](https://github.com/guidebooks/madwizard/compare/0.23.4...0.23.5) (2022-09-23)
 
 ### Reverts
