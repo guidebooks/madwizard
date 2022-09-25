@@ -1,11 +1,6 @@
 Sequence
 ├── importg
-│   ├── Option 1: Darwin
-│   │   └── echo MMM
-│   ├── Option 2: Linux
-│   │   └── echo LLL
-│   └── Option 3: Win32
-│       └── echo WWW
+│   └── echo MMM
 └── DDD
     ├── Option 1: SubTab1
     │   ├── echo AAA †
