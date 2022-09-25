@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/guidebooks/madwizard/compare/1.0.0...1.0.1) (2022-09-25)
+
+### Bug Fixes
+
+- regressions in handling of localhost aprioris ([4f307e4](https://github.com/guidebooks/madwizard/commit/4f307e43e5393ebba2cf55b63491bdee87936168))
+
 # [1.0.0](https://github.com/guidebooks/madwizard/compare/0.23.5...1.0.0) (2022-09-24)
 
 ### Features
