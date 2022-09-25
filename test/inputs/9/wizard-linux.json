@@ -1,79 +1,24 @@
 [
   {
     "graph": {
-      "group": "madwizard/apriori/platform",
-      "groupContext": "test/inputs/snippets/importg",
+      "key": "somekey",
+      "group": "importg",
       "title": "importg",
-      "source": "placeholder",
-      "provenance": ["test/inputs/snippets/importg"],
-      "choices": [
-        {
-          "member": 0,
-          "graph": {
-            "key": "somekey",
-            "sequence": [
-              {
-                "body": "echo MMM",
-                "language": "bash",
-                "id": "somekey"
-              }
-            ]
-          },
-          "title": "Darwin"
-        },
-        {
-          "member": 1,
-          "graph": {
-            "key": "somekey",
-            "sequence": [
-              {
-                "body": "echo LLL",
-                "language": "bash",
-                "id": "somekey"
-              }
-            ]
-          },
-          "title": "Linux"
-        },
-        {
-          "member": 2,
-          "graph": {
-            "key": "somekey",
-            "sequence": [
-              {
-                "body": "echo WWW",
-                "language": "bash",
-                "id": "somekey"
-              }
-            ]
-          },
-          "title": "Win32"
-        }
-      ]
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo LLL",
+            "language": "bash",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
     },
     "step": {
-      "name": "importg",
-      "description": "This step requires you to choose how to proceed",
-      "content": [
-        {
-          "title": "Darwin",
-          "group": "madwizard/apriori/platform",
-          "member": 0,
-          "isFirstChoice": true
-        },
-        {
-          "title": "Linux",
-          "group": "madwizard/apriori/platform",
-          "member": 1,
-          "isFirstChoice": true
-        },
-        {
-          "title": "Win32",
-          "group": "madwizard/apriori/platform",
-          "member": 2,
-          "isFirstChoice": true
-        }
-      ]
+      "name": "importg"
     }
   },
   {
@@ -137,13 +82,13 @@
           "title": "SubTab1",
           "group": "SubTab1####SubTab2",
           "member": 0,
-          "isFirstChoice": false
+          "isFirstChoice": true
         },
         {
           "title": "SubTab2",
           "group": "SubTab1####SubTab2",
           "member": 1,
-          "isFirstChoice": false
+          "isFirstChoice": true
         }
       ]
     }

@@ -162,11 +162,18 @@ export async function compile(
       const title = (parent.groupDetail.title || "") + groupContextForTitle
 
       const provenance = currentProvenance()
-      const groupContext = ((provenance && provenance[0]) || parent.group)
-        .replace(options.store, "")
-        .replace(/\.md/g, "")
-        .replace(/^\.?\//, "")
-        .replace(/\/index$/, "")
+
+      // keep madwizard/aprioris/... etc. anything internal to
+      // madwizard, keep the choice "key" as specified by madwizard;
+      // for everything else, use the choice's "provenance", i.e. its
+      // filepath in the store
+      const groupContext = /^madwizard/.test(parent.group)
+        ? parent.group
+        : ((provenance && provenance[0]) || parent.group)
+            .replace(options.store, "")
+            .replace(/\.md/g, "")
+            .replace(/^\.?\//, "")
+            .replace(/\/index$/, "")
 
       return {
         group: parent.group,

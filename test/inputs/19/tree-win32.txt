@@ -1,72 +1,11 @@
 Install Ray
 ├── Option 1: Local Install
-│   ├── Option 1: Linux
-│   │   └── pip install -U ray
-│   ├── Option 2: Win32
-│   │   └── pip install -U ray
-│   └── Option 3: Darwin
-│       ├── Option 1: X64
-│       │   └── pip install -U ray
-│       └── Option 2: Arm64
-│           ├── Conda: Installation
-│           │   ├── Option 1: Miniconda
-│           │   │   ├── Option 1: Win32
-│           │   │   │   └── echo windowsfake
-│           │   │   ├── Option 2: Darwin
-│           │   │   │   ├── Option 1: X64
-│           │   │   │   │   └── bash <(curl -L https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
-│           │   │   │   └── Option 2: Arm64
-│           │   │   │       └── bash <(curl -L https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh)
-│           │   │   └── Option 3: Linux
-│           │   │       └── echo linuxfake
-│           │   └── Option 2: Anaconda
-│           │       ├── Option 1: Win32
-│           │       │   └── echo windowsfake
-│           │       ├── Option 2: Darwin
-│           │       │   └── bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-MacOSX-x86_64.sh)
-│           │       └── Option 3: Linux
-│           │           ├── Option 1: x86
-│           │           │   └── bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh)
-│           │           ├── Option 2: POWER8 and POWER9
-│           │           │   └── bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-ppc64le.sh)
-│           │           ├── Option 3: AWS Graviton2/ARM64
-│           │           │   └── bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-aarch64.sh)
-│           │           └── Option 4: IBM z/Linux and LinuxONE
-│           │               └── bash $<(curl -L https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-s390x.sh)
-│           └── conda activate
-│               pip uninstall grpcio
-│               conda install grpcio
-│               pip install ray
+│   └── pip install -U ray
 └── Option 2: Kubernetes Install
     ├── Install kubectl
-    │   ├── Option 1: Linux
-    │   │   └── curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    │   ├── Option 2: Win32
-    │   │   └── curl -LO "https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe"
-    │   └── Option 3: Darwin
-    │       ├── Option 1: Homebrew
-    │       │   └── brew install kubectl
-    │       └── Option 2: curl
-    │           ├── curl
-    │           │   ├── Option 1: X64
-    │           │   │   └── curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl.sha256"
-    │           │   └── Option 2: Arm64
-    │           │       └── curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl.sha256"
-    │           └── Installing a Specific Version
-    │               ├── Option 1: X64
-    │               │   └── curl -LO "https://dl.k8s.io/release/v1.23.0/bin/darwin/amd64/kubectl" [OPTIONAL]
-    │               └── Option 2: Arm64
-    │                   └── curl -LO "https://dl.k8s.io/release/v1.23.0/bin/darwin/arm64/kubectl" [OPTIONAL]
+    │   └── curl -LO "https://dl.k8s.io/release/v1.23.0/bin/windows/amd64/kubectl.exe"
     ├── Install Helm
-    │   ├── Option 1: Darwin
-    │   │   ├── Option 1: Homebrew
-    │   │   │   └── brew install helm
-    │   │   └── Option 2: curl
-    │   │       └── bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)
-    │   ├── Option 2: Linux
-    │   │   └── bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)
-    │   └── Option 3: Win32
-    │       └── bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)
+    │   └── bash $<(curl -L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3)
     └── Install Ray on a Kubernetes Cluster
         └── helm -n ray install example-cluster --create-namespace https://github.com/ray-project/ray/tree/master/deploy/charts/ray/
             kubectl wait --for=condition=available --all rayclusters
