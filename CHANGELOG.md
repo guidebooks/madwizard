@@ -1,3 +1,9 @@
+## [1.0.3](https://github.com/guidebooks/madwizard/compare/1.0.2...1.0.3) (2022-09-26)
+
+### Bug Fixes
+
+- improved protection against pushing to non-array ([3884df6](https://github.com/guidebooks/madwizard/commit/3884df642515577c1a84bd0015a22f6a3caad738))
+
 ## [1.0.2](https://github.com/guidebooks/madwizard/compare/1.0.1...1.0.2) (2022-09-25)
 
 ### Bug Fixes
