@@ -394,7 +394,7 @@ export function rehypeCodeIndexer(
                   }
                 }
 
-                if (codeblocks) {
+                if (Array.isArray(codeblocks)) {
                   codeblocks.push(
                     !base64 ? codeBlockProps : JSON.parse(Buffer.from(codeBlockProps, "base64").toString())
                   )
