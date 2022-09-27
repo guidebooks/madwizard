@@ -20,6 +20,7 @@ import { oraPromise } from "ora"
 import { writeFile } from "fs/promises"
 
 import { inliner } from "./inliner.js"
+import serializer from "./serialize.js"
 import { MadWizardOptions } from "../../../fe/index.js"
 
 import { parse } from "../../../parser/index.js"
@@ -61,22 +62,7 @@ export async function mirror(srcDir: string, targetDir: string, srcRelPath = "",
                   undefined,
                   { store }
                 )
-                await writeFile(
-                  pathForAst,
-                  JSON.stringify(blocks, (key, value) => {
-                    if (
-                      key === "child" ||
-                      key === "containedCodeBlocks" ||
-                      key === "source" ||
-                      key === "position" ||
-                      (key === "level" && typeof value === "number")
-                    ) {
-                      return undefined
-                    } else {
-                      return value
-                    }
-                  })
-                )
+                await writeFile(pathForAst, JSON.stringify(blocks, serializer))
               }, `Optimizing ${relpath}`)
             } else if (entry.isDirectory()) {
               await mirror(srcDir, targetDir, relpath, options)
