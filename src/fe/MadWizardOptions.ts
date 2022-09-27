@@ -19,11 +19,12 @@ import { CompilerOptions } from "../graph/compile"
 export interface RunOptions {
   /**
    * Interactive mode: even if a choice has a prior selection that is
-   * still valid, ask the user again to make that choice. Note, in interactive mode, some attempt will still be madxxe
-   * to notify the user of their prior choices, and to prioritize the
-   * UI to highlight those prior choices. [default: true]
+   * still valid, ask the user again to make that choice.
    */
   interactive: boolean
+
+  /** Interactive mode for a given guidebook */
+  ifor: string
 
   /** Don't actually execute anything, but making choices and
    * validation and expanding lists is ok
