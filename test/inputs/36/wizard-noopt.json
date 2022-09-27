@@ -1,0 +1,98 @@
+[
+  {
+    "graph": {
+      "group": "Tab0",
+      "groupContext": "test/inputs/36/in",
+      "title": "Testing doubly-nested tab expansion",
+      "source": "placeholder",
+      "provenance": ["test/inputs/36/in"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "key": "somekey",
+                "title": "Testing nested tab expansion",
+                "filepath": "test/inputs/35/in",
+                "graph": {
+                  "key": "somekey",
+                  "sequence": [
+                    {
+                      "group": "Tab1",
+                      "groupContext": "test/inputs/35/in",
+                      "title": "Testing nested tab expansion",
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/35/in"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "somekey",
+                            "sequence": [
+                              {
+                                "key": "somekey",
+                                "title": "Testing tab expansion",
+                                "filepath": "test/inputs/14/in",
+                                "graph": {
+                                  "key": "somekey",
+                                  "sequence": [
+                                    {
+                                      "group": "expand(echo 3 ; echo 4 ; echo 5)",
+                                      "groupContext": "test/inputs/14/in",
+                                      "title": "Testing tab expansion",
+                                      "source": "placeholder",
+                                      "provenance": ["test/inputs/14/in"],
+                                      "choices": [
+                                        {
+                                          "member": 0,
+                                          "graph": {
+                                            "key": "somekey",
+                                            "sequence": [
+                                              {
+                                                "body": "echo \"${choice}\"",
+                                                "language": "shell",
+                                                "id": "somekey"
+                                              }
+                                            ]
+                                          },
+                                          "title": "expand(echo 3 ; echo 4 ; echo 5)",
+                                          "description": "\nThis should emit ${choice} to your terminal."
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                "source": "placeholder"
+                              }
+                            ]
+                          },
+                          "title": "Tab1"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab0"
+        }
+      ]
+    },
+    "step": {
+      "name": "Testing doubly-nested tab expansion",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab0",
+          "group": "Tab0",
+          "member": 0,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  }
+]

@@ -14,62 +14,73 @@
             "sequence": [
               {
                 "key": "somekey",
-                "title": "a",
-                "filepath": "test/inputs/20/snippets/a",
+                "title": "import",
+                "filepath": "test/inputs/20/snippets/import",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
                     {
-                      "body": "echo AAA",
+                      "key": "somekey",
+                      "title": "a",
+                      "filepath": "test/inputs/20/snippets/a",
+                      "graph": {
+                        "key": "somekey",
+                        "sequence": [
+                          {
+                            "body": "echo AAA",
+                            "language": "shell",
+                            "id": "somekey"
+                          }
+                        ]
+                      },
+                      "source": "placeholder"
+                    },
+                    {
+                      "body": "echo III",
                       "language": "shell",
                       "id": "somekey"
-                    }
-                  ]
-                },
-                "source": "placeholder"
-              },
-              {
-                "body": "echo III",
-                "language": "shell",
-                "id": "somekey"
-              },
-              {
-                "group": "ITab1",
-                "groupContext": "test/inputs/20/in",
-                "source": "placeholder",
-                "provenance": ["test/inputs/20/in"],
-                "choices": [
-                  {
-                    "member": 0,
-                    "graph": {
-                      "key": "somekey",
-                      "sequence": [
+                    },
+                    {
+                      "group": "ITab1",
+                      "groupContext": "test/inputs/20/snippets/import",
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/20/snippets/import"],
+                      "choices": [
                         {
-                          "key": "somekey",
-                          "title": "b",
-                          "filepath": "test/inputs/20/snippets/b",
+                          "member": 0,
                           "graph": {
                             "key": "somekey",
                             "sequence": [
                               {
-                                "body": "echo BBB",
+                                "key": "somekey",
+                                "title": "b",
+                                "filepath": "test/inputs/20/snippets/b",
+                                "graph": {
+                                  "key": "somekey",
+                                  "sequence": [
+                                    {
+                                      "body": "echo BBB",
+                                      "language": "shell",
+                                      "id": "somekey"
+                                    }
+                                  ]
+                                },
+                                "source": "placeholder"
+                              },
+                              {
+                                "body": "echo III2",
                                 "language": "shell",
                                 "id": "somekey"
                               }
                             ]
                           },
-                          "source": "placeholder"
-                        },
-                        {
-                          "body": "echo III2",
-                          "language": "shell",
-                          "id": "somekey"
+                          "title": "ITab1"
                         }
                       ]
-                    },
-                    "title": "ITab1"
-                  }
-                ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
               }
             ]
           },

@@ -44,8 +44,8 @@ import {
   isWizardStep as isCodeBlockWizardStep,
 } from "../codeblock/CodeBlockProps.js"
 
-import optimize from "./optimize.js"
 import provenanceOf from "./provenance.js"
+import optimize, { optimize2 } from "./optimize.js"
 
 type ChoiceNesting = { parent: CodeBlockChoice; graph: Choice }
 type SubTaskNesting = { parent: CodeBlockImport; graph: SubTask }
@@ -384,11 +384,12 @@ export async function compile(
           )
 
     debug("optimizing")
-    const optimized = options.optimize === false ? unoptimized : await optimize(unoptimized, choices, memos, options)
+    const willNotOptimize = options.optimize === false
+    let optimized = willNotOptimize ? unoptimized : await optimize(unoptimized, choices, memos, options)
     debug("optimizing done")
 
     if (title && !extractTitle(optimized)) {
-      return subtask(
+      optimized = subtask(
         title,
         title,
         title,
@@ -397,9 +398,9 @@ export async function compile(
         sequence([optimized]),
         hasSource(unoptimized) ? unoptimized.source : undefined
       )
-    } else {
-      return optimized
     }
+
+    return willNotOptimize ? unoptimized : await optimize2(optimized, choices, memos, doExpand)
   } finally {
     debug("complete")
   }
