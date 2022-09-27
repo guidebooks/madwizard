@@ -1,3 +1,13 @@
+# [1.1.0](https://github.com/guidebooks/madwizard/compare/1.0.3...1.1.0) (2022-09-27)
+
+### Bug Fixes
+
+- group expansion nested under a choice can result in an infinite loop ([76957c2](https://github.com/guidebooks/madwizard/commit/76957c27af6f0489424c56c30d7aaa80c3d8bed6))
+
+### Features
+
+- new `--ifor` option (interactive only for a given guidebook) ([a81301a](https://github.com/guidebooks/madwizard/commit/a81301af40dcb462e25e521007cc83b9babe2cfa))
+
 ## [1.0.3](https://github.com/guidebooks/madwizard/compare/1.0.2...1.0.3) (2022-09-26)
 
 ### Bug Fixes
