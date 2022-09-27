@@ -113,7 +113,14 @@ export class Guide {
       const thisChoiceIsAForm = isForm(content)
       const suggestionForm = !thisChoiceIsAForm || !suggestion ? {} : JSON.parse(suggestion)
 
-      if (suggestion && !this.options.interactive) {
+      // should we ask the user to answer/re-answer this question? yes
+      // if a) we have no suggestion; or b) we were asked to run in
+      // interactive mode always, interactive === true; or c) we were
+      // asked to run in interactive mode for the last question, and
+      // this is the last question
+      const askIt = !suggestion || this.options.interactive === true || this.options.ifor === choice.groupContext
+
+      if (!askIt) {
         if (thisChoiceIsAForm) {
           if (suggestionForm && eqSet(new Set(Object.keys(suggestionForm)), new Set(content.map((_) => _.title)))) {
             return {
