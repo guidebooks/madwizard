@@ -17,7 +17,7 @@
 import Debug from "debug"
 
 import { Memos } from "../memoization/index.js"
-import { ChoiceState } from "../choices/index.js"
+import { ChoiceState, expand } from "../choices/index.js"
 import { CompileOptions, Graph, sequence } from "./index.js"
 
 import hoistSubTasks from "./hoistSubTasks.js"
@@ -45,4 +45,15 @@ export default async function optimize(graph: Graph, choices: ChoiceState, memos
   } finally {
     debug("complete")
   }
+}
+
+/** Second-pass optimizations. Here we only expand nested expand(). */
+export async function optimize2(
+  graph: Graph,
+  choices: ChoiceState,
+  memos: Memos,
+  doExpand: (...params: Parameters<typeof expand>) => Graph | Promise<Graph>
+) {
+  const expanded = await doExpand(graph, choices, memos)
+  return collapseMadeChoices(expanded, choices)
 }

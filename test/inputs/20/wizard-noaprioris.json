@@ -23,11 +23,33 @@
   },
   {
     "graph": {
-      "group": "Tab1",
-      "groupContext": "test/inputs/20/in",
-      "title": "Conditional Inline of Imports",
+      "key": "somekey",
+      "group": "import",
+      "title": "import",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo III",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "import"
+    }
+  },
+  {
+    "graph": {
+      "group": "ITab1",
+      "groupContext": "test/inputs/20/snippets/import",
+      "title": "import",
       "source": "placeholder",
-      "provenance": ["test/inputs/20/in"],
+      "provenance": ["test/inputs/20/snippets/import"],
       "choices": [
         {
           "member": 0,
@@ -36,73 +58,38 @@
             "sequence": [
               {
                 "key": "somekey",
-                "group": "Prerequisites",
-                "title": "Prerequisites",
-                "filepath": "",
+                "title": "b",
+                "filepath": "test/inputs/20/snippets/b",
                 "graph": {
                   "key": "somekey",
                   "sequence": [
                     {
-                      "key": "somekey",
-                      "title": "b",
-                      "filepath": "test/inputs/20/snippets/b",
-                      "graph": {
-                        "key": "somekey",
-                        "sequence": [
-                          {
-                            "body": "echo BBB",
-                            "language": "shell",
-                            "id": "somekey"
-                          }
-                        ]
-                      },
-                      "source": "placeholder"
+                      "body": "echo BBB",
+                      "language": "shell",
+                      "id": "somekey"
                     }
                   ]
                 },
                 "source": "placeholder"
               },
               {
-                "body": "echo III",
+                "body": "echo III2",
                 "language": "shell",
                 "id": "somekey"
-              },
-              {
-                "group": "ITab1",
-                "groupContext": "test/inputs/20/in",
-                "title": "Tab1",
-                "source": "placeholder",
-                "provenance": ["test/inputs/20/in"],
-                "choices": [
-                  {
-                    "member": 0,
-                    "graph": {
-                      "key": "somekey",
-                      "sequence": [
-                        {
-                          "body": "echo III2",
-                          "language": "shell",
-                          "id": "somekey"
-                        }
-                      ]
-                    },
-                    "title": "ITab1"
-                  }
-                ]
               }
             ]
           },
-          "title": "Tab1"
+          "title": "ITab1"
         }
       ]
     },
     "step": {
-      "name": "Conditional Inline of Imports",
+      "name": "import",
       "description": "This step requires you to choose how to proceed",
       "content": [
         {
-          "title": "Tab1",
-          "group": "Tab1",
+          "title": "ITab1",
+          "group": "ITab1",
           "member": 0,
           "isFirstChoice": true
         }

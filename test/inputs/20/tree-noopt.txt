@@ -1,10 +1,11 @@
 Conditional Inline of Imports
 └── Option 1: Tab1
-    ├── a
-    │   └── echo AAA
-    ├── echo III
-    └── Missing heading for choice
-        └── Option 1: ITab1
-            ├── b
-            │   └── echo BBB
-            └── echo III2
+    └── import
+        ├── a
+        │   └── echo AAA
+        ├── echo III
+        └── Missing heading for choice
+            └── Option 1: ITab1
+                ├── b
+                │   └── echo BBB
+                └── echo III2

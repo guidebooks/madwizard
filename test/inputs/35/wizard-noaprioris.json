@@ -1,0 +1,85 @@
+[
+  {
+    "graph": {
+      "group": "expand(echo 3 ; echo 4 ; echo 5)",
+      "groupContext": "test/inputs/14/in",
+      "title": "Testing tab expansion",
+      "source": "placeholder",
+      "provenance": ["test/inputs/14/in"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"3\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "3",
+          "description": "\nThis should emit 3 to your terminal."
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"4\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "4",
+          "description": "\nThis should emit 4 to your terminal."
+        },
+        {
+          "member": 2,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"5\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "5",
+          "description": "\nThis should emit 5 to your terminal."
+        }
+      ]
+    },
+    "step": {
+      "name": "Testing tab expansion",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "3",
+          "group": "expand(echo 3 ; echo 4 ; echo 5)",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "\nThis should emit 3 to your terminal."
+        },
+        {
+          "title": "4",
+          "group": "expand(echo 3 ; echo 4 ; echo 5)",
+          "member": 1,
+          "isFirstChoice": true,
+          "description": "\nThis should emit 4 to your terminal."
+        },
+        {
+          "title": "5",
+          "group": "expand(echo 3 ; echo 4 ; echo 5)",
+          "member": 2,
+          "isFirstChoice": true,
+          "description": "\nThis should emit 5 to your terminal."
+        }
+      ]
+    }
+  }
+]

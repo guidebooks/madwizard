@@ -1,0 +1,5 @@
+Testing nested tab expansion
+└── Option 1: Tab1
+    └── Testing tab expansion
+        └── Option 1: expand(echo 3 ; echo 4 ; echo 5)
+            └── echo "${choice}"

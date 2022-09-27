@@ -74,10 +74,13 @@ export function _findChoiceFrontier(
   const recurse2 = (graph: Graph) => recurse(graph)
 
   if (isChoice(graph)) {
-    // user has not yet made a choice. stop here and consume all
-    // prereqs
+    // User has not yet made a decision on this choice. Stop here and
+    // consume all prereqs. The combination of slice() and splice()
+    // makes sure we attach all accumulated prereqs with this choice
+    // (the slice), and then clear them out of the accumulated model
+    // (the splice).
     const frontier = [{ prereqs: prereqs.slice(), choice: graph }]
-    prereqs.splice(0, prereqs.length) // consume...
+    prereqs.splice(0, prereqs.length)
     return frontier
   } else if (isSubTask(graph)) {
     return recurse(graph.graph)
@@ -97,9 +100,14 @@ export function _findChoiceFrontier(
 export function findChoiceFrontier(graph: Graph) {
   const prereqs = []
   const frontier = _findChoiceFrontier(graph, prereqs)
+
+  // We may have post-choice code blocks, i.e. choices that are not
+  // dependent on any choice. If so, tack these on the end of the
+  // model as "prereqs" with no associated choice.
   if (prereqs.length > 0) {
     frontier.push({ prereqs, choice: undefined })
   }
+
   return frontier
 }
 

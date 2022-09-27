@@ -1,13 +1,10 @@
-Conditional Inline of Imports
-├── Prerequisites
-│   └── a
-│       └── echo AAA
-└── Main Tasks
-    └── Option 1: Tab1
-        ├── Prerequisites
-        │   └── b
-        │       └── echo BBB
-        ├── echo III
-        └── Tab1
-            └── Option 1: ITab1
-                └── echo III2
+Prerequisites
+├── a
+│   └── echo AAA
+└── import
+    ├── echo III
+    └── import
+        └── Option 1: ITab1
+            ├── b
+            │   └── echo BBB
+            └── echo III2
