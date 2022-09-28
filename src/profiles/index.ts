@@ -26,6 +26,7 @@ export { default as clone } from "./clone.js"
 export { default as rename } from "./rename.js"
 export { default as remove } from "./delete.js"
 export { default as restore } from "./restore.js"
+export { default as reset } from "./reset.js"
 export { save, isTemporary, default as persist } from "./persist.js"
 
 export interface Profile {

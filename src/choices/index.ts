@@ -76,6 +76,9 @@ export interface ChoiceState {
 
   /** Serialize */
   serialize(): string
+
+  /** Reset, i.e.remove all choices */
+  reset(): void
 }
 
 export type Choices = {
