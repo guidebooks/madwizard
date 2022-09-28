@@ -1,3 +1,9 @@
+# [1.2.0](https://github.com/guidebooks/madwizard/compare/1.1.0...1.2.0) (2022-09-28)
+
+### Features
+
+- `Profiles.reset(profileName)` api ([adb0c30](https://github.com/guidebooks/madwizard/commit/adb0c3048cf362498ec4785356132c65213d70b0))
+
 # [1.1.0](https://github.com/guidebooks/madwizard/compare/1.0.3...1.1.0) (2022-09-27)
 
 ### Bug Fixes
