@@ -136,4 +136,9 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
   public serialize(): string {
     return JSON.stringify(this._profile, undefined, 2)
   }
+
+  /** Reset, i.e.remove all choices */
+  public reset(): void {
+    this.profile.choices = {}
+  }
 }
