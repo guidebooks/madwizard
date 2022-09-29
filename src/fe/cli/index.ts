@@ -159,7 +159,10 @@ export async function cli<Writer extends Writable["write"]>(
       }
 
       lastPersist = setTimeout(() => {
-        lastPersistPromise = persistChoices()
+        lastPersist = undefined
+        lastPersistPromise = persistChoices().then(() => {
+          lastPersistPromise = undefined
+        })
       }, 50)
     })
   }
