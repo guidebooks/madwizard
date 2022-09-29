@@ -1,3 +1,9 @@
+## [1.3.2](https://github.com/guidebooks/madwizard/compare/1.3.1...1.3.2) (2022-09-29)
+
+### Bug Fixes
+
+- the very last choice may not be persisted ([6f20b6c](https://github.com/guidebooks/madwizard/commit/6f20b6c7fbaab8afbbc90530ebc047fb1d3df5b7))
+
 ## [1.3.1](https://github.com/guidebooks/madwizard/compare/1.3.0...1.3.1) (2022-09-29)
 
 ### Bug Fixes
