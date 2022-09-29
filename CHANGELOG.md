@@ -1,3 +1,9 @@
+## [1.3.1](https://github.com/guidebooks/madwizard/compare/1.3.0...1.3.1) (2022-09-29)
+
+### Bug Fixes
+
+- restore deleted prepack ([73151a4](https://github.com/guidebooks/madwizard/commit/73151a4fc36d68a03c20221856eb320cb372c9ab))
+
 # [1.3.0](https://github.com/guidebooks/madwizard/compare/1.2.0...1.3.0) (2022-09-29)
 
 ### Features
