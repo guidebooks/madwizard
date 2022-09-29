@@ -1,3 +1,9 @@
+# [1.3.0](https://github.com/guidebooks/madwizard/compare/1.2.0...1.3.0) (2022-09-29)
+
+### Features
+
+- add `Profiles.touch()` to bump the `lastUsedTime` attribute ([1fae625](https://github.com/guidebooks/madwizard/commit/1fae6258cde6247c7ef398c4d9cee8ff217751b4))
+
 # [1.2.0](https://github.com/guidebooks/madwizard/compare/1.1.0...1.2.0) (2022-09-28)
 
 ### Features
