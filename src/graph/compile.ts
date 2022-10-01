@@ -150,6 +150,7 @@ export async function compile(
       title: parent.title,
       description: parent.description,
       form: parent.form,
+      multiselect: parent.multiselect,
     })
 
     const newChoices = (block: CodeBlockProps, parent: CodeBlockChoice, isDeepest: boolean): Choice => {

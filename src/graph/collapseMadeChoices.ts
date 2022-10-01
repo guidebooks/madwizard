@@ -33,15 +33,27 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
   if (isChoice(graph)) {
     const madeChoiceTitle = choices.get(graph)
     if (madeChoiceTitle) {
-      const patternForDesiredAnswer = new RegExp(
+      const isMulti = graph.choices.every((_) => _.multiselect) && /^\[.+\]$/.test(madeChoiceTitle)
+      const pattern = new RegExp(
         // madeChoiceTitle may be JSON in the case of a form, so
         // escape the {} parts; see test/input/26
-        "^" + madeChoiceTitle.replace(/[{}]/g, "\\$&") + "$", // $& means the whole matched string,
+        "^" + madeChoiceTitle.replace(/[{}[]]/g, "\\$&") + "$", // $& means the whole matched string,
         "i"
       )
-      const matchingSubtrees = graph.choices.filter((_) => patternForDesiredAnswer.test(_.title))
+      const matchingSubtrees = graph.choices.filter((_) => pattern.test(_.title))
 
-      if (matchingSubtrees.length > 0) {
+      if (isMulti) {
+        try {
+          const previouslySelected = JSON.parse(madeChoiceTitle) as string[]
+          const multiset = isMulti ? new Set(previouslySelected) : undefined
+          if (previouslySelected.every((selection) => graph.choices.find((_) => selection === _.title))) {
+            // then every selected option in the multiset still exists
+            return sequence(graph.choices.filter((_) => multiset.has(_.title)).map((_) => _.graph))
+          }
+        } catch (err) {
+          console.error("Error processing prior multiset choice", err)
+        }
+      } else if (matchingSubtrees.length > 0) {
         // this means that the user's prior answer, or an asserted
         // answer has at least one match based on the current shape of
         // the choice graph

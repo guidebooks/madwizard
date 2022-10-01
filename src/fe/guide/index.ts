@@ -34,8 +34,17 @@ import { shellExec, isExport } from "../../exec/index.js"
 import indent from "../../parser/markdown/util/indent.js"
 import { Memos, statusOf } from "../../memoization/index.js"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree/index.js"
-import { ChoiceStep, TaskStep, Wizard, isChoiceStep, isForm, isTaskStep, wizardify } from "../../wizard/index.js"
 import { Graph, Status, blocks, compile, extractTitle, extractDescription, validate } from "../../graph/index.js"
+import {
+  ChoiceStep,
+  TaskStep,
+  Wizard,
+  isChoiceStep,
+  isForm,
+  isMultiSelect,
+  isTaskStep,
+  wizardify,
+} from "../../wizard/index.js"
 
 /** A question for which we will use the answer from the current profile (i.e. from a previously-made choice) */
 type AlreadyAnswered = {
@@ -50,7 +59,8 @@ function isAlreadyAnswered(question: Question): question is AlreadyAnswered {
 }
 
 /** Some form of interrogative to pose to the user */
-type Question = enquirer.prompt.SelectQuestionOptions | enquirer.prompt.FormQuestionOptions | AlreadyAnswered
+type SelectLikeQuestion = enquirer.prompt.SelectQuestionOptions | enquirer.prompt.MultiSelectQuestionOptions
+type Question = SelectLikeQuestion | enquirer.prompt.FormQuestionOptions | AlreadyAnswered
 
 export class Guide {
   private readonly debug = Debug("madwizard/fe/guide")
@@ -113,6 +123,9 @@ export class Guide {
       const thisChoiceIsAForm = isForm(content)
       const suggestionForm = !thisChoiceIsAForm || !suggestion ? {} : JSON.parse(suggestion)
 
+      // multiselect prior answers?
+      const previouslySelectedOptions = !isMultiSelect(content) || !suggestion ? undefined : JSON.parse(suggestion)
+
       // should we ask the user to answer/re-answer this question? yes
       // if a) we have no suggestion; or b) we were asked to run in
       // interactive mode always, interactive === true; or c) we were
@@ -128,6 +141,24 @@ export class Guide {
               name,
               message,
               answer: suggestion,
+            }
+          }
+        } else if (isMultiSelect(content)) {
+          if (!Array.isArray(previouslySelectedOptions)) {
+            console.error("Malformatted profile, expected array for " + name)
+          } else {
+            const allPreviouslySelectedOptionsStillExist = previouslySelectedOptions.every(
+              (suggestion) => !!content.find((_) => _.title === suggestion)
+            )
+            if (allPreviouslySelectedOptionsStillExist) {
+              // then we are in non-interactive mode, and found a valid
+              // prior choice
+              return {
+                type: "AlreadyAnswered",
+                name,
+                message,
+                answer: suggestion,
+              }
             }
           }
         } else {
@@ -190,11 +221,14 @@ export class Guide {
         // to the top
         selChoices.sort((a, b) => (suggestion === a.name ? -1 : suggestion === b.name ? 1 : 0))
 
+        const isMulti = isMultiSelect(content)
         return {
-          type: "select" as const,
+          type: isMultiSelect(content) ? ("multiselect" as const) : ("select" as const),
           name,
           message,
           choices,
+          initial:
+            isMulti && Array.isArray(previouslySelectedOptions) ? (previouslySelectedOptions as string[]) : undefined,
         }
       }
     })
@@ -221,6 +255,10 @@ export class Guide {
     return opts.type === "select"
   }
 
+  private isMultiSelect(opts: Question): opts is enquirer.prompt.MultiSelectQuestionOptions {
+    return opts.type === "multiselect"
+  }
+
   /** Present the given question to the user */
   private ask(opts: Question) {
     if (isAlreadyAnswered(opts)) {
@@ -237,7 +275,11 @@ export class Guide {
       console.clear()
     }
 
-    const prompt = this.isSelect(opts) ? new enquirer.Select(opts) : new enquirer.Form(opts)
+    const prompt = this.isSelect(opts)
+      ? new enquirer.Select(opts)
+      : this.isMultiSelect(opts)
+      ? new enquirer.MultiSelect(opts)
+      : new enquirer.Form(opts)
     return prompt.run()
   }
 

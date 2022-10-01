@@ -419,7 +419,7 @@ declare namespace Enquirer {
       /**
        * The default value to return if the user does not supply a value.
        */
-      initial?: V | ((this: Prompt<A>) => V | Promise<V>)
+      initial?: V | V[] | ((this: Prompt<A>) => V | Promise<V>)
     }
 
     export type Formatter<V extends types.Value, A extends types.Answer> = {
@@ -660,7 +660,7 @@ declare namespace Enquirer {
     styles: any
     timers: any
     state: State
-    initial?: T | (() => T | Promise<T>)
+    initial?: T | T[] | (() => T | Promise<T>)
 
     readonly base: Prompt
     readonly style: any
@@ -722,7 +722,7 @@ declare namespace Enquirer {
       format?: (this: P, value: T) => any
       header?: string | ((state: any) => string)
       hint?: string
-      initial?: T | (() => Promise<T> | T)
+      initial?: T | T[] | (() => Promise<T> | T)
       margin?: number | [number, number, number, number]
       message: string | (() => string | Promise<string>)
       name?: string | (() => string)

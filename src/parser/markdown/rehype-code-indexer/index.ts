@@ -275,12 +275,15 @@ export function rehypeCodeIndexer(
                             groupDetail: findNearestEnclosingTitle(grandparent, parent, node),
                           }
 
-                          // are we part of a form?
                           if (_.properties.formElementType && _.properties.formElementDefaultValue !== undefined) {
+                            // we are part of a form
                             nesting.form = {
                               type: _.properties.formElementType,
                               defaultValue: _.properties.formElementDefaultValue,
                             }
+                          } else if (_.properties.multiselect === true) {
+                            // we are part of a multi-select (i.e. checkbox rather than the default radiobutton)
+                            nesting.multiselect = true
                           }
 
                           addNesting(attributes, nesting)

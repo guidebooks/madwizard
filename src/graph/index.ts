@@ -39,6 +39,7 @@ import {
   Title,
   Description,
   FormElement,
+  MultiSelectElement,
 } from "../codeblock/CodeBlockProps.js"
 
 export * from "./order.js"
@@ -131,7 +132,8 @@ type ChoiceMember = number
 /** An answer to a choice */
 export type ChoicePart<T extends Unordered | Ordered = Unordered> = Title &
   Partial<Description> &
-  Partial<FormElement> & {
+  Partial<FormElement> &
+  Partial<MultiSelectElement> & {
     member: ChoiceMember
     graph: Sequence<T>
   }

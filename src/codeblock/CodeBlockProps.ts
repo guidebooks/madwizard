@@ -15,10 +15,12 @@
  */
 
 import { FormElement } from "./form.js"
+import MultiSelectElement from "./multiselect.js"
 import { SupportedLanguage } from "./language.js"
 import { Something } from "../parser/markdown/util/toMarkdownString.js"
 
 export * from "./form.js"
+export { MultiSelectElement }
 
 export interface Validatable {
   /**
@@ -91,6 +93,7 @@ export type Choice = GroupMember &
   Title &
   Partial<Description> &
   Partial<FormElement> &
+  Partial<MultiSelectElement> &
   Kind<"Choice"> & {
     /** Title and Source for the choice group */
     groupDetail: Partial<Title> & Source
