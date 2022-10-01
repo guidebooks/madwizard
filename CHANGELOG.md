@@ -1,3 +1,13 @@
+## [1.4.1](https://github.com/guidebooks/madwizard/compare/1.3.2...1.4.1) (2022-10-01)
+
+### Bug Fixes
+
+- restore prepack ([531e96a](https://github.com/guidebooks/madwizard/commit/531e96a5be2af1c9a9de2d6236cec4689cc59c67))
+
+### Features
+
+- allow clients to request only clearing for the initial question ([bddd0ec](https://github.com/guidebooks/madwizard/commit/bddd0ec44f9e1df3cda161c4da36264a1ff7c678))
+
 ## [1.3.2](https://github.com/guidebooks/madwizard/compare/1.3.1...1.3.2) (2022-09-29)
 
 ### Bug Fixes

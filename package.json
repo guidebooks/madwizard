@@ -1,6 +1,6 @@
 {
   "name": "madwizard",
-  "version": "1.3.2",
+  "version": "1.4.1",
   "description": "Turn Markdown into Wizards",
   "source": "src/index.ts",
   "main": "dist/index.js",
