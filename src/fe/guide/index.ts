@@ -456,6 +456,12 @@ export class Guide {
 
     if (iter === 0) {
       if (this.isGuided) {
+        if (process.env.MWCLEAR_INITIAL) {
+          // clear the console before presenting the guide, but after
+          // the initial compilation, and before presenting the guidebook title
+          console.clear()
+        }
+
         this.presentGuidebookTitle(graph)
       }
     }
