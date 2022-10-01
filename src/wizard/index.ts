@@ -18,8 +18,8 @@ import Debug from "debug"
 
 import { Choices, ChoiceState } from "../choices/index.js"
 import { Memos, statusOf } from "../memoization/index.js"
-import { Barrier, FormElement } from "../codeblock/index.js"
 import { toMarkdownString } from "../parser/markdown/util/toMarkdownString.js"
+import { Barrier, FormElement, MultiSelectElement } from "../codeblock/index.js"
 
 import {
   Graph,
@@ -37,17 +37,22 @@ import {
 
 type Markdown = string | (() => string)
 
-export type Tile = Partial<FormElement> & {
-  title: string
-  group: string
-  member: number
-  description?: string
-}
+export type Tile = Partial<FormElement> &
+  Partial<MultiSelectElement> & {
+    title: string
+    group: string
+    member: number
+    description?: string
+  }
 
 type StepContent = Tile[] | Markdown
 
 export function isForm(content: Tile[]) {
   return content.length > 0 && typeof content[0].form === "object"
+}
+
+export function isMultiSelect(content: Tile[]) {
+  return content.length > 0 && content[0].multiselect
 }
 
 export type WizardStep<C extends StepContent> = Partial<Barrier> & {
@@ -130,6 +135,7 @@ function wizardStepForChoiceOnFrontier(
         isFirstChoice,
         description: _.description,
         form: _.form,
+        multiselect: _.multiselect,
       })),
     },
   }

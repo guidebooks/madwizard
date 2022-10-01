@@ -16,10 +16,12 @@
 
 import { Node } from "hast"
 
-import withFormProperties from "./form.js"
 import { getTabTitle, Tab } from "./index.js"
 import { isParent } from "../util/isElement.js"
 import { isImports } from "../remark-import.js"
+
+import withFormProperties from "./form.js"
+import withMultiSelectProperties from "./multiselect.js"
 
 // const RE_TAB = /^(.|[\n\r])*===\s+"(.+)"\s*(\n(.|[\n\r])*)?$/
 const RE_TAB = /^===\s+"(.+)/
@@ -115,10 +117,14 @@ export default function populateTabs(uuid: string, tree: Node): { tree: Node; ta
                   })
                 }
 
-                const properties = withFormProperties(startMatch[1].replace(/"$/, ""), {
-                  depth: tabStack.length,
-                  "data-kui-tab-index": currentTabs.length,
-                })
+                const title = startMatch[1].replace(/"$/, "")
+                const properties = withMultiSelectProperties(
+                  title,
+                  withFormProperties(title, {
+                    depth: tabStack.length,
+                    "data-kui-tab-index": currentTabs.length,
+                  })
+                )
                 const rest = pchild.value.slice(startMatch.index + startMatch[0].length)
 
                 currentTabs.push({

@@ -1,0 +1,24 @@
+[
+  {
+    "graph": {
+      "body": "echo hi",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\necho hi\n```"
+    }
+  },
+  {
+    "graph": {
+      "body": "echo hi",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\necho hi\n```"
+    }
+  }
+]

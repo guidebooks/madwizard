@@ -17,7 +17,7 @@ function opts {
 export STORE="--store $PWD"
 
 echo -n A
-for i in {1..36}
+for i in {1..38}
 do
     if [ -n "$WHICH" ] && [ $i != $WHICH ]; then continue; fi
 
@@ -41,7 +41,7 @@ done
 echo
 
 echo -n B
-for i in {1..8} {11..18} {20..22} {24..36}
+for i in {1..8} {11..18} {20..22} {24..38}
 do
     if [ -n "$WHICH" ] && [ $i != $WHICH ]; then continue; fi
 
