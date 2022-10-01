@@ -1,3 +1,9 @@
+## [1.4.2](https://github.com/guidebooks/madwizard/compare/1.4.1...1.4.2) (2022-10-01)
+
+### Bug Fixes
+
+- avoid glaring yellow colors in guide ([1fd2689](https://github.com/guidebooks/madwizard/commit/1fd268940ffeaab6d7e5a6844c9b451a67da3373))
+
 ## [1.4.1](https://github.com/guidebooks/madwizard/compare/1.3.2...1.4.1) (2022-10-01)
 
 ### Bug Fixes
