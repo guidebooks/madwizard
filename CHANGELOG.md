@@ -1,3 +1,9 @@
+# [1.5.0](https://github.com/guidebooks/madwizard/compare/1.4.2...1.5.0) (2022-10-01)
+
+### Features
+
+- support for "checkbox" multiselect choices ([8bb0d9b](https://github.com/guidebooks/madwizard/commit/8bb0d9ba54bb7fb446e7b5f8bacd2436d7c5b6be))
+
 ## [1.4.2](https://github.com/guidebooks/madwizard/compare/1.4.1...1.4.2) (2022-10-01)
 
 ### Bug Fixes
