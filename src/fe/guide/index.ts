@@ -98,9 +98,9 @@ export class Guide {
     // need to waste time computing the question models for subsequent questions
     const questions: Question[] = choices.slice(0, 1).map(({ step, graph: choice }, stepIdx) => {
       const name = step.name || chalk.red("Missing name")
-      const message = chalk.yellow.inverse.bold(
-        ` Choice ${choiceIter + stepIdx + 1}:` + ` ${step.name || chalk.red("Missing name")} `
-      )
+      const message =
+        chalk.inverse.bold(` Choice ${choiceIter + stepIdx + 1} `) +
+        `${step.name ? chalk.bold(` ${step.name} `) : chalk.inverse.red(" Missing name ")}`
 
       const { content } = step
 
