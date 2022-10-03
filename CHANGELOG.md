@@ -1,3 +1,9 @@
+# [1.6.0](https://github.com/guidebooks/madwizard/compare/1.5.0...1.6.0) (2022-10-03)
+
+### Features
+
+- `Profiles.createIfNeeded()` creates an empty profile if none exists ([a2e83a5](https://github.com/guidebooks/madwizard/commit/a2e83a5f1efb12cc84601842a184f89fe67f568d))
+
 # [1.5.0](https://github.com/guidebooks/madwizard/compare/1.4.2...1.5.0) (2022-10-01)
 
 ### Features
