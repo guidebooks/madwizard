@@ -16,6 +16,7 @@
 
 import { dataPath } from "../../util/cache.js"
 import { MadWizardOptions } from "../MadWizardOptions.js"
+import defaultProfileName from "../../profiles/defaultName.js"
 
 const defaults: MadWizardOptions = {
   /**
@@ -27,7 +28,7 @@ const defaults: MadWizardOptions = {
   interactive: true,
 
   /** The choice profile to use */
-  profile: "default",
+  profile: defaultProfileName,
 
   /**
    * Hysteresis, in milliseconds, for batching the persistence (to
