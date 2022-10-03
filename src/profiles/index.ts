@@ -18,6 +18,7 @@ import { join } from "path"
 
 import { profilesPath } from "./paths.js"
 import { ChoicesMap } from "../choices/index.js"
+import defaultProfileName from "./defaultName.js"
 import { MadWizardOptions } from "../fe/index.js"
 
 export * from "./paths.js"
@@ -98,11 +99,23 @@ export function copyWithName(profile: Profile, name: string) {
   return Object.assign({}, profile, { name })
 }
 
+/** Create a new empty profile if the user has none */
+export async function createIfNeeded(options: MadWizardOptions = {}) {
+  const last = await lastUsed(options)
+  if (!last) {
+    const [persist, emptyChoiceState] = await Promise.all([
+      import("./persist.js").then((_) => _.default),
+      import("../choices/index.js").then((_) => _.emptyChoiceState),
+    ])
+    await persist(options, emptyChoiceState(defaultProfileName))
+  }
+}
+
 /** Perform a disk-to-disk copy of the given named `profile` to the given `distFielpath` */
 export async function copyChoices(
   dstFilepath: string,
   options: MadWizardOptions,
-  profile = options.profile || "default"
+  profile = options.profile || defaultProfileName
 ) {
   const copyFile = await import("fs").then((_) => _.copyFile)
   const srcFilepath = join(await profilesPath(options, true), profile)
