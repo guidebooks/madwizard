@@ -1,0 +1,71 @@
+[
+  {
+    "graph": {
+      "group": "Choose your path",
+      "groupContext": "test/inputs/39/in",
+      "title": "Expand tilde home directory in choice",
+      "source": "placeholder",
+      "provenance": ["test/inputs/39/in"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "export HOMER=\"${choice}\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Choose your path",
+          "form": {
+            "type": "string",
+            "defaultValue": "~"
+          }
+        }
+      ]
+    },
+    "step": {
+      "name": "Expand tilde home directory in choice",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Choose your path",
+          "group": "Choose your path",
+          "member": 0,
+          "isFirstChoice": true,
+          "form": {
+            "type": "string",
+            "defaultValue": "~"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Expand tilde home directory in choice",
+      "title": "Expand tilde home directory in choice",
+      "description": "Then echo the result.\n",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"Your home is $HOMER\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Expand tilde home directory in choice",
+      "description": "Then echo the result.\n"
+    }
+  }
+]

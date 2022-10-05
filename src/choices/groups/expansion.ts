@@ -16,6 +16,7 @@
 
 import chalk from "chalk"
 import { v4 } from "uuid"
+import { join } from "path"
 import { oraPromise } from "../../util/ora-delayed-promise.js"
 
 import { Debug } from "./debug.js"
@@ -27,6 +28,15 @@ import { Graph, Choice, ChoicePart, blocks, findChoicesOnFrontier } from "../../
 /** Map from `ExpansionExpression.expr` to a list of expanded choices */
 export type ExpansionMap = Record<string, Promise<string[] | null>>
 
+function expandHomeDir(path: string) {
+  const homedir = process.env.HOME_FOR_TEST || process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"]
+
+  if (!path) return path
+  if (path == "~") return homedir
+  if (path.slice(0, 2) != "~/") return path
+  return join(homedir, path.slice(2))
+}
+
 export function updateContent<Part extends { graph: Graph; description?: string }>(part: Part, choice = ""): Part {
   const pattern1 = /\$\{?choice\}?/gi
   const pattern2a = /\${uuid}/gi
@@ -35,7 +45,9 @@ export function updateContent<Part extends { graph: Graph; description?: string 
   let _uuid: string
   const uuid = () => _uuid || (_uuid = v4())
   const replace = (str: string) =>
-    (choice ? str.replace(pattern1, choice) : str).replace(pattern2a, uuid()).replace(pattern2b, uuid())
+    (choice ? str.replace(pattern1, typeof choice === "string" ? expandHomeDir(choice) : choice) : str)
+      .replace(pattern2a, uuid())
+      .replace(pattern2b, uuid())
 
   blocks(part.graph).forEach((_) => {
     if (typeof _.body === "string") {

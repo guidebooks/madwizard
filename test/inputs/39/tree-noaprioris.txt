@@ -1,0 +1,5 @@
+Expand tilde home directory in choice
+├── Sequence
+│   └── export HOMER="/Users/madwizard"
+└── Expand tilde home directory in choice
+    └── echo "Your home is $HOMER"

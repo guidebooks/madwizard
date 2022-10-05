@@ -110,6 +110,35 @@ function tryParseInt(str: string): number {
   }
 }
 
+/** Read env.txt file */
+function getEnv(input: string) {
+  try {
+    const env = readFileSync(join(input, "env.txt"))
+      .toString()
+      .trim()
+      .split(/\n/)
+      .reduce((env, _) => {
+        const [key, value] = _.split(/=/)
+        env[key] = value
+        return env
+      }, {} as Record<string, string>)
+
+    Object.entries(env).forEach(([key, value]) => {
+      if (key === "HOME") {
+        process.env.HOME_FOR_TEST = value
+      } else {
+        process.env[key] = value
+      }
+    })
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      return {}
+    } else {
+      throw err
+    }
+  }
+}
+
 /** Read the cli.txt file, treated as extra command line args */
 function getCLIOptions(
   input: string,
@@ -138,6 +167,7 @@ function getCLIOptions(
 
 /** "madwizard plan" */
 function testPlanTask(test: Test, input: string, suffix: string, _options: Options) {
+  getEnv(input)
   const cliOptions = getCLIOptions(input)
   test(`tree for input ${input} options=${suffix || "default"} cliOptions=${cliOptions}`, async () => {
     let actualOutput = ""
@@ -164,6 +194,7 @@ function testPlanTask(test: Test, input: string, suffix: string, _options: Optio
 
 /** "madwizard json" */
 function testJsonTask(test: Test, input: string, suffix: string, _options: Options) {
+  getEnv(input)
   const cliOptions = getCLIOptions(input)
   test(`wizards for input ${input} options=${suffix || "default"} cliOptions=${cliOptions}`, async () => {
     let actualOutput = ""
@@ -185,6 +216,7 @@ function testJsonTask(test: Test, input: string, suffix: string, _options: Optio
 
 /** "madwizard run" */
 function testRunTask(test: Test, input: string, suffix: string, options: Options) {
+  getEnv(input)
   const store = process.cwd()
   const filepath = join(input, "in.md").replace(store + "/", "")
   const expectedOutput = loadExpected(input, "run", suffix)
