@@ -1,3 +1,9 @@
+## [1.6.1](https://github.com/guidebooks/madwizard/compare/1.6.0...1.6.1) (2022-10-05)
+
+### Bug Fixes
+
+- a choice whose value includes ~/ does not get expanded to homedir ([e3f0bf6](https://github.com/guidebooks/madwizard/commit/e3f0bf630fab9251c909de29e1399d6211fa8a5b))
+
 # [1.6.0](https://github.com/guidebooks/madwizard/compare/1.5.0...1.6.0) (2022-10-03)
 
 ### Features
