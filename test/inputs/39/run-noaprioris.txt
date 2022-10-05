@@ -1,0 +1,3 @@
+export HOMER="/Users/madwizard"
+echo "Your home is $HOMER"
+Your home is /Users/madwizard
