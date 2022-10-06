@@ -225,8 +225,10 @@ export class Guide {
         return {
           type: isMultiSelect(content) ? ("multiselect" as const) : ("select" as const),
           name,
-          message,
+          message:
+            message + " " + chalk.dim(`(Note: ${`${chalk.bold("space")} selects and ${chalk.bold("enter")} accepts`})`),
           choices,
+          validate: (value) => Array.isArray(value) && value.length > 0, // reject no selections
           initial:
             isMulti && Array.isArray(previouslySelectedOptions) ? (previouslySelectedOptions as string[]) : undefined,
         }
