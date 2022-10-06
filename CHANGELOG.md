@@ -1,3 +1,9 @@
+## [1.6.2](https://github.com/guidebooks/madwizard/compare/1.6.1...1.6.2) (2022-10-06)
+
+### Bug Fixes
+
+- multiselect should validate and fail if user has selected nothing ([c82bd6f](https://github.com/guidebooks/madwizard/commit/c82bd6f4d63a6b7fbacc04594e2d51631eff8b74))
+
 ## [1.6.1](https://github.com/guidebooks/madwizard/compare/1.6.0...1.6.1) (2022-10-05)
 
 ### Bug Fixes
