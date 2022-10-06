@@ -1,3 +1,9 @@
+## [1.6.3](https://github.com/guidebooks/madwizard/compare/1.6.2...1.6.3) (2022-10-06)
+
+### Bug Fixes
+
+- multiselect validator is incorrectly applied to single-select ([da419c4](https://github.com/guidebooks/madwizard/commit/da419c4dc1e56dec180ce5731de15fb3b7ce8957))
+
 ## [1.6.2](https://github.com/guidebooks/madwizard/compare/1.6.1...1.6.2) (2022-10-06)
 
 ### Bug Fixes
