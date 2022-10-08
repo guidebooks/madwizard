@@ -1,0 +1,14 @@
+echo 1a0
+1a0
+echo 1ab
+1ab
+echo 1ac
+1ac
+echo 1ba
+1ba
+echo 1b
+1b
+echo 2a
+2a
+echo 2b
+2b
