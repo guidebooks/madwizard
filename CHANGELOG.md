@@ -1,3 +1,9 @@
+## [1.6.4](https://github.com/guidebooks/madwizard/compare/1.6.3...1.6.4) (2022-10-08)
+
+### Bug Fixes
+
+- graph optimizer can result in out of order execution ([f4bc8b9](https://github.com/guidebooks/madwizard/commit/f4bc8b9a4e40b1feccdc2401b88c1325d8d8024f)), closes [#458](https://github.com/guidebooks/madwizard/issues/458)
+
 ## [1.6.3](https://github.com/guidebooks/madwizard/compare/1.6.2...1.6.3) (2022-10-06)
 
 ### Bug Fixes
