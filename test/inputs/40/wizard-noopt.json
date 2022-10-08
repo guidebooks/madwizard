@@ -1,0 +1,262 @@
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "1a0",
+      "title": "1a0",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo 1a0",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "1a0"
+    }
+  },
+  {
+    "graph": {
+      "group": "Tab1a####Tab1b",
+      "groupContext": "test/inputs/40/1a",
+      "source": "placeholder",
+      "provenance": ["test/inputs/40/1a"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "key": "somekey",
+                "title": "1aa",
+                "filepath": "test/inputs/40/1aa",
+                "graph": {
+                  "key": "somekey",
+                  "sequence": [
+                    {
+                      "body": "echo 1aa",
+                      "language": "shell",
+                      "id": "somekey"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab1a"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "key": "somekey",
+                "title": "1ab",
+                "filepath": "test/inputs/40/1ab",
+                "graph": {
+                  "key": "somekey",
+                  "sequence": [
+                    {
+                      "body": "echo 1ab",
+                      "language": "shell",
+                      "id": "somekey"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab1b"
+        }
+      ]
+    },
+    "step": {
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1a",
+          "group": "Tab1a####Tab1b",
+          "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "Tab1b",
+          "group": "Tab1a####Tab1b",
+          "member": 1,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "1ac",
+      "title": "1ac",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo 1ac",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "1ac"
+    }
+  },
+  {
+    "graph": {
+      "group": "Tab1####Tab2",
+      "groupContext": "test/inputs/40/1",
+      "title": "Nested Ordering Test 1",
+      "source": "placeholder",
+      "provenance": ["test/inputs/40/1"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "key": "somekey",
+                "title": "1b",
+                "filepath": "test/inputs/40/1b",
+                "graph": {
+                  "key": "somekey",
+                  "sequence": [
+                    {
+                      "key": "somekey",
+                      "title": "1ba",
+                      "filepath": "test/inputs/40/1ba",
+                      "graph": {
+                        "key": "somekey",
+                        "sequence": [
+                          {
+                            "body": "echo 1ba",
+                            "language": "shell",
+                            "id": "somekey"
+                          }
+                        ]
+                      },
+                      "source": "placeholder"
+                    },
+                    {
+                      "body": "echo 1b",
+                      "language": "shell",
+                      "id": "somekey"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab1"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "key": "somekey",
+                "title": "1c",
+                "filepath": "test/inputs/40/1c",
+                "graph": {
+                  "key": "somekey",
+                  "sequence": [
+                    {
+                      "body": "echo 1c",
+                      "language": "shell",
+                      "id": "somekey"
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "Tab2"
+        }
+      ]
+    },
+    "step": {
+      "name": "Nested Ordering Test 1",
+      "description": "This step requires you to choose how to proceed",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1####Tab2",
+          "member": 0,
+          "isFirstChoice": false
+        },
+        {
+          "title": "Tab2",
+          "group": "Tab1####Tab2",
+          "member": 1,
+          "isFirstChoice": false
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "2a",
+      "title": "2a",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo 2a",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "2a"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "2b",
+      "title": "2b",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo 2b",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "2b"
+    }
+  }
+]
