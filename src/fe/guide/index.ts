@@ -226,7 +226,10 @@ export class Guide {
           type: isMulti ? ("multiselect" as const) : ("select" as const),
           name,
           message:
-            message + " " + chalk.dim(`(Note: ${`${chalk.bold("space")} selects and ${chalk.bold("enter")} accepts`})`),
+            message +
+            (!isMulti
+              ? ""
+              : " " + chalk.dim(`(Note: ${`${chalk.bold("space")} selects and ${chalk.bold("enter")} accepts`})`)),
           choices,
           validate: !isMulti ? undefined : (value) => Array.isArray(value) && value.length > 0, // reject no selections for multi
           initial:
