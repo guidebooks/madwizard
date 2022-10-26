@@ -1,3 +1,9 @@
+## [1.6.5](https://github.com/guidebooks/madwizard/compare/1.6.4...1.6.5) (2022-10-26)
+
+### Bug Fixes
+
+- only show the 'spacebar selects enter accepts' message for multi-select choices ([44892b4](https://github.com/guidebooks/madwizard/commit/44892b477a662addcefae73c12d529970a7486a2))
+
 ## [1.6.4](https://github.com/guidebooks/madwizard/compare/1.6.3...1.6.4) (2022-10-08)
 
 ### Bug Fixes
