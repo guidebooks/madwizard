@@ -37,6 +37,7 @@ export default async function shellItOut(
 ): Promise<"success"> {
   const cmdline = typeof _cmdline === "boolean" ? _cmdline : _cmdline.replace(/\\\n/g, " ")
 
+  // capture stdout into opts.capture
   const capture = typeof opts.capture === "string"
 
   // location for guidebooks to store non-profile-specific data
