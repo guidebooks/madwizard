@@ -1,3 +1,13 @@
+# [1.7.0](https://github.com/guidebooks/madwizard/compare/1.6.5...1.7.0) (2022-11-10)
+
+### Bug Fixes
+
+- add small comment to exec/shell ([aeeb5de](https://github.com/guidebooks/madwizard/commit/aeeb5de31acdfe0c31a4ceb1c6210a7c9e00c972))
+
+### Features
+
+- add support for emitting choices as raw json rather than via enquirer ([dfc0379](https://github.com/guidebooks/madwizard/commit/dfc0379de565353ec57e1ae3c4698013f3752c23))
+
 ## [1.6.5](https://github.com/guidebooks/madwizard/compare/1.6.4...1.6.5) (2022-10-26)
 
 ### Bug Fixes
