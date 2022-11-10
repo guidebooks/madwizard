@@ -265,7 +265,7 @@ export class Guide {
   }
 
   /** Present the given question to the user */
-  private ask(opts: Question) {
+  private async ask(opts: Question) {
     if (isAlreadyAnswered(opts)) {
       // Then there is nothing to ask the user, since this question
       // already has an answer, likely by using a previous answer from
@@ -285,7 +285,46 @@ export class Guide {
       : this.isMultiSelect(opts)
       ? new enquirer.MultiSelect(opts)
       : new enquirer.Form(opts)
-    return prompt.run()
+
+    if (this.options.raw) {
+      const readline = await import("readline")
+      const r1 = readline.createInterface({
+        terminal: false,
+        input: process.stdin,
+        output: process.stdout,
+      })
+
+      const answer = await new Promise<string | Record<string, string>>((resolve, reject) => {
+        try {
+          r1.question(
+            this.options.rawPrefix +
+              " " +
+              JSON.stringify({
+                type: "ask",
+                ask: {
+                  type: prompt.type,
+                  name: prompt.name,
+                  choices: prompt.choices,
+                },
+              }) +
+              "\n",
+            (resp) => {
+              r1.close()
+              try {
+                resolve(JSON.parse(resp) as Record<string, string>)
+              } catch (err) {
+                resolve(resp)
+              }
+            }
+          )
+        } catch (err) {
+          reject(err)
+        }
+      })
+      return answer
+    } else {
+      return this.ui.ask(prompt)
+    }
   }
 
   private firstBitOf(msg: string) {
@@ -514,6 +553,10 @@ export class Guide {
     }
 
     if (questions.length === 0) {
+      if (this.options.raw) {
+        // notify the client that we are done with the Q&A part
+        console.log(this.options.rawPrefix + " " + JSON.stringify({ type: "qa-done" }) + "\n")
+      }
       return postChoiceTasks
     } else if (preChoiceTasks.length > 0) {
       await this.runTasks(preChoiceTasks)
@@ -550,6 +593,16 @@ export class Guide {
       const tasksWereRun = await this.runTasks(tasks)
 
       if (tasksWereRun && this.isGuided) {
+        if (this.options.raw) {
+          // notify the client that we are done with the Q&A part
+          console.log(
+            this.options.rawPrefix +
+              " " +
+              JSON.stringify({ type: "all-done", success: this.allDoneSuccessfully() }) +
+              "\n"
+          )
+        }
+
         if (this.allDoneSuccessfully()) {
           console.log()
           console.log("✨ Guidebook successful" + name)

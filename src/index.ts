@@ -27,6 +27,7 @@ export * as Choices from "./choices/index.js"
 export * as Wizard from "./wizard/index.js"
 export * as CodeBlock from "./codeblock/index.js"
 export * as Profiles from "./profiles/index.js"
+export * as Prompts from "./fe/Prompts.js"
 
 export { Memoizer } from "./memoization/index.js"
 

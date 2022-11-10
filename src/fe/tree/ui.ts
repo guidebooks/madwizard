@@ -30,6 +30,7 @@ export interface UI<Content> {
   title(title: Content | string | (Content | string)[], status?: Status): Content
   open?(filepath: string): Content
   markdown(body: string): Content
+  ask(prompt: import("enquirer").Prompt): Promise<string | Record<string, string>>
 }
 
 export class DevNullUI implements UI<string> {
@@ -55,6 +56,10 @@ export class DevNullUI implements UI<string> {
 
   public markdown() {
     return ""
+  }
+
+  public ask() {
+    return Promise.resolve({})
   }
 }
 
@@ -118,5 +123,9 @@ export class AnsiUI implements UI<string> {
       .replace(this.STRIKETHROUGH_REGEX, (...args) => chalk.strikethrough(args[1]))
       .replace(this.ITALIC_REGEX, (...args) => chalk.italic(args[1] || args[2]))
       .replace(this.CODEBLOCK_REGEX, (_, p1) => this.code(p1, "markdown"))
+  }
+
+  public ask(prompt: import("enquirer").Prompt): Promise<string | Record<string, string>> {
+    return prompt.run()
   }
 }
