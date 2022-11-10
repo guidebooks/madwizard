@@ -66,6 +66,12 @@ export interface DisplayOptions {
 
   /** Bump the lastUsedTime attribute of the profile? [default: true] */
   bump: boolean
+
+  /** In raw mode, any questions will be emitted as a raw json model to the stdout */
+  raw: boolean
+
+  /** In raw mode, any raw models emitted to the stdout will be prefixed with this string [default: "MADWIZARD_RAW"] */
+  rawPrefix: string
 }
 
 export interface FetchOptions {

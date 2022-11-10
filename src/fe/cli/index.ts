@@ -19,6 +19,7 @@ import { Writable } from "stream"
 
 import usage from "./usage.js"
 import defaultOptions from "./defaults.js"
+import { UI } from "../tree/index.js"
 import { DebugTask, isDebugTask, isValidTask, taskHasNoArgs } from "./tasks.js"
 
 import { MadWizardOptions } from "../MadWizardOptions.js"
@@ -34,12 +35,13 @@ async function enableTracing(task: DebugTask, subtask = "*") {
 export async function cli<Writer extends Writable["write"]>(
   _argv: string[],
   write?: Writer,
-  providedOptions: MadWizardOptions = {}
+  providedOptions: MadWizardOptions = {},
+  ui?: UI<string>
 ) {
   const parsedOptions = yargs(_argv, {
     configuration: { "populate--": true }, // parse out the "-- <rest>" part of the command line
-    alias: { profile: ["p"], narrow: ["n"], interactive: ["i"], verbose: ["V"] },
-    boolean: ["narrow", "n", "interactive", "i", "verbose", "V", "dry-run", "bump"],
+    alias: { profile: ["p"], narrow: ["n"], interactive: ["i"], verbose: ["V"], raw: ["r"] },
+    boolean: ["narrow", "n", "interactive", "i", "verbose", "V", "dry-run", "bump", "raw"],
   })
   const argv = parsedOptions._
 
@@ -115,6 +117,12 @@ export async function cli<Writer extends Writable["write"]>(
   }
   if (interactive !== undefined) {
     commandLineOptions.interactive = interactive
+  }
+  if (parsedOptions.raw !== undefined) {
+    commandLineOptions.raw = parsedOptions.raw
+  }
+  if (parsedOptions["raw-prefix"] !== undefined) {
+    commandLineOptions.rawPrefix = parsedOptions["raw-prefix"]
   }
   const options: MadWizardOptions = Object.assign(
     { name: process.env.GUIDEBOOK_NAME },
@@ -350,7 +358,7 @@ export async function cli<Writer extends Writable["write"]>(
       process.on("SIGTERM", cleanExitFromSIGTERM) // catch kill
 
       try {
-        await new Guide(task, blocks, choices, options, memoizer, undefined, write).run()
+        await new Guide(task, blocks, choices, options, memoizer, ui, write).run()
       } finally {
         if (options.verbose && task !== "run") {
           console.error(exitMessage)
