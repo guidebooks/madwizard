@@ -13,14 +13,13 @@
   },
   "scripts": {
     "lint": "cross-env eslint . --ext .js,.jsx,.ts,.tsx",
-    "devhack": "cross-env cp .github/enquirer-index.d.ts node_modules/enquirer/index.d.ts",
-    "watch": "npm run devhack && cross-env tsc --build . --watch",
-    "build": "npm run devhack && tsc --build .",
+    "watch": "cross-env tsc --build . --watch",
+    "clean": "tsc --build . --clean",
+    "build": "tsc --build .",
     "test": "node --no-warnings dist/test",
     "format": "cross-env prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",
     "format:test:input": "cross-env prettier --write test/inputs",
     "mirror": "T=$(mktemp -d); (cd $T && git clone --depth=1 git@github.com:guidebooks/store.git) && echo \"mirror stage in $T/store\" && ./bin/madwizard.js mirror $T/store/guidebooks $PWD/dist/store",
-    "prepack": "npm run build && npm run mirror && npm test && cp src/version.json dist/version.json",
     "prepare": "cross-env husky install"
   },
   "keywords": [
