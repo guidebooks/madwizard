@@ -1,3 +1,10 @@
+## [1.7.2](https://github.com/guidebooks/madwizard/compare/1.7.1...1.7.2) (2022-11-11)
+
+### Bug Fixes
+
+- add sourcemaps ([64041b6](https://github.com/guidebooks/madwizard/commit/64041b6d6115cbbb250b6cf952196bad96531613))
+- restore prepack script ([251ad25](https://github.com/guidebooks/madwizard/commit/251ad256a9b6f0b1e1e5b0721299639760707f25))
+
 ## [1.7.1](https://github.com/guidebooks/madwizard/compare/1.7.0...1.7.1) (2022-11-11)
 
 ### Bug Fixes
