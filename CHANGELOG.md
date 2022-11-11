@@ -1,3 +1,9 @@
+## [1.7.1](https://github.com/guidebooks/madwizard/compare/1.7.0...1.7.1) (2022-11-11)
+
+### Bug Fixes
+
+- improve exporting of enquirer type overrides ([2ab83c3](https://github.com/guidebooks/madwizard/commit/2ab83c3608b3376eabfd86b6b184020577381c9f))
+
 # [1.7.0](https://github.com/guidebooks/madwizard/compare/1.6.5...1.7.0) (2022-11-10)
 
 ### Bug Fixes
