@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-import type { Select, MultiSelect, Form } from "enquirer"
-export { Select, MultiSelect, Form }
+import type Enquirer from "./enquirer"
+
+export type Select = Enquirer.Select
+export type MultiSelect = Enquirer.MultiSelect
+export type Form = Enquirer.Form
 
 export type Prompt = Select | MultiSelect | Form
 

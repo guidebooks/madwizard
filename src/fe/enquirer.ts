@@ -4,7 +4,10 @@
  * property of `tsconfig.json`.
  */
 
-import { SymbolsType } from "ansi-colors"
+/** @starpit 2022111 Turn this into a plain ts file to facilitate exporting type overrides to npm :( */
+/* eslint-disable */
+
+import { symbols } from "ansi-colors"
 import { EventEmitter } from "events"
 
 declare class Enquirer extends EventEmitter {
@@ -134,12 +137,10 @@ declare namespace Enquirer {
         ) => SelectQuestion.ChoiceOptions[] | Promise<SelectQuestion.ChoiceOptions[]>
       } & types.QuestionBase
 
-      export type SingleOptions = { multiple?: false } & Type &
-        Options &
+      export type SingleOptions = { multiple?: false } /*Type &*/ & Options &
         types.Initializer<string | number, string> &
         types.Formatter<string, string>
-      export type MultipleOptions = { multiple: true } & Type &
-        Options &
+      export type MultipleOptions = { multiple: true } /*Type &*/ & Options &
         types.Initializer<string | number, string[]> &
         types.Formatter<string, string[]>
       export type Single = { type: "autocomplete" } & SingleOptions
@@ -479,58 +480,58 @@ declare namespace Enquirer {
       /**
        * `undefined` on windows, `✘` on other platforms.
        */
-      ballotCross?: SymbolsType["ballotCross"]
-      ballotDisabled: SymbolsType["ballotDisabled"]
-      ballotOff: SymbolsType["ballotOff"]
-      ballotOn: SymbolsType["ballotOn"]
-      bullet: SymbolsType["bullet"]
+      ballotCross?: typeof symbols["ballotCross"]
+      ballotDisabled: typeof symbols["ballotDisabled"]
+      ballotOff: typeof symbols["ballotOff"]
+      ballotOn: typeof symbols["ballotOn"]
+      bullet: typeof symbols["bullet"]
       /**
        * `√` on windows, `✔` on other platforms.
        */
-      check: SymbolsType["check"]
+      check: typeof symbols["check"]
       /**
        * `×` on windows, `✖` on other platforms.
        */
-      cross: SymbolsType["cross"]
+      cross: typeof symbols["cross"]
       /**
        * `...` on windows, `…` on other platforms.
        */
-      ellipsis: SymbolsType["ellipsis"]
-      heart: SymbolsType["heart"]
-      info: SymbolsType["info"]
-      line: SymbolsType["line"]
-      middot: SymbolsType["middot"]
+      ellipsis: typeof symbols["ellipsis"]
+      heart: typeof symbols["heart"]
+      info: typeof symbols["info"]
+      line: typeof symbols["line"]
+      middot: typeof symbols["middot"]
       /**
        * `>` on windows, `▸` on linux, and `❯` on other platforms.
        */
-      pointer: SymbolsType["middot"]
+      pointer: typeof symbols["middot"]
       /**
        * `»` on windows, `‣` on linux, and `›` on other platforms.
        */
-      pointerSmall: SymbolsType["pointerSmall"]
-      question: SymbolsType["question"]
+      pointerSmall: typeof symbols["pointerSmall"]
+      question: typeof symbols["question"]
       /**
        * `undefined` on windows, `？` on other platforms.
        */
-      questionFull?: SymbolsType["questionFull"]
+      questionFull?: typeof symbols["questionFull"]
       /**
        * `?` on windows, `﹖` on other platforms.
        */
-      questionSmall: SymbolsType["questionSmall"]
+      questionSmall: typeof symbols["questionSmall"]
       /**
        * `( )` on windows, `◯` on other platforms.
        */
-      radioOff: SymbolsType["radioOff"]
+      radioOff: typeof symbols["radioOff"]
       /**
        * `(*)` on windows, `◉` on other platforms.
        */
-      radioOn: SymbolsType["radioOn"]
-      starsOff: SymbolsType["starsOff"]
-      starsOn: SymbolsType["starsOn"]
+      radioOn: typeof symbols["radioOn"]
+      starsOff: typeof symbols["starsOff"]
+      starsOn: typeof symbols["starsOn"]
       /**
        * `‼` on windows, `⚠` on other platforms.
        */
-      warning: SymbolsType["warning"]
+      warning: typeof symbols["warning"]
 
       // symbols overridden by enquirer
       upDownDoubleArrow: "⇕"
@@ -544,7 +545,7 @@ declare namespace Enquirer {
       ellipsisSmall: "…"
       fullBlock: "█"
       identicalTo: "≡"
-      indicator: SymbolsType["check"]
+      indicator: typeof symbols["check"]
       leftAngle: "‹"
       mark: "※"
       minus: "−"
@@ -566,14 +567,14 @@ declare namespace Enquirer {
       stars: { on: "★"; off: "☆"; disabled: "☆" }
       folder: { on: "▼"; off: "▶"; disabled: "▶" }
       prefix: {
-        pending: SymbolsType["question"]
-        submitted: SymbolsType["check"]
-        cancelled: SymbolsType["cross"]
+        pending: typeof symbols["question"]
+        submitted: typeof symbols["check"]
+        cancelled: typeof symbols["cross"]
       }
       separator: {
-        pending: SymbolsType["pointerSmall"]
-        submitted: SymbolsType["middot"]
-        cancelled: SymbolsType["middot"]
+        pending: typeof symbols["pointerSmall"]
+        submitted: typeof symbols["middot"]
+        cancelled: typeof symbols["middot"]
       }
       radio: {
         /**
@@ -1081,4 +1082,4 @@ declare namespace Enquirer {
   }
 }
 
-export = Enquirer
+export default Enquirer
