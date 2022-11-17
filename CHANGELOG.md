@@ -1,3 +1,9 @@
+# [1.8.0](https://github.com/guidebooks/madwizard/compare/1.7.3...1.8.0) (2022-11-17)
+
+### Features
+
+- propagate description to Choice model ([33f61ff](https://github.com/guidebooks/madwizard/commit/33f61ff037419f2e1790c44eb54051742d340a43))
+
 ## [1.7.3](https://github.com/guidebooks/madwizard/compare/1.7.2...1.7.3) (2022-11-13)
 
 ## [1.7.2](https://github.com/guidebooks/madwizard/compare/1.7.1...1.7.2) (2022-11-11)
