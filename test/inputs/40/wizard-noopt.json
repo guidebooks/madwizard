@@ -81,7 +81,6 @@
       ]
     },
     "step": {
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "Tab1a",
@@ -198,7 +197,6 @@
     },
     "step": {
       "name": "Nested Ordering Test 1",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "Tab1",

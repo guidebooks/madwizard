@@ -39,7 +39,6 @@
     },
     "step": {
       "name": "Text versus HTML?",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "Text",

@@ -4,6 +4,7 @@
       "group": "Tab1",
       "groupContext": "test/inputs/16/in",
       "title": "MainTitle",
+      "description": "MainDescription\n",
       "source": "placeholder",
       "provenance": ["test/inputs/16/in"],
       "choices": [
@@ -58,7 +59,7 @@
     },
     "step": {
       "name": "MainTitle",
-      "description": "This step requires you to choose how to proceed",
+      "description": "MainDescription\n",
       "content": [
         {
           "title": "Tab1",

@@ -142,6 +142,7 @@ export type ChoicePart<T extends Unordered | Ordered = Unordered> = Title &
 export type Choice<T extends Unordered | Ordered = Unordered> = Source &
   T &
   Title &
+  Description &
   Partial<Provenance> & {
     /** identifier for this choice */
     group: ChoiceGroup

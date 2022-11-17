@@ -20,6 +20,7 @@ export default function mock(group: string): Choice {
   return {
     source: undefined,
     title: "",
+    description: "",
     choices: [],
     group,
     groupContext: group,

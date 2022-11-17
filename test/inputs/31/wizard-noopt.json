@@ -75,7 +75,6 @@
     },
     "step": {
       "name": "Pick your Poison (XXXXXX)",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "11111aaaa",
@@ -246,7 +245,6 @@
     },
     "step": {
       "name": "Pick your Poison (YYYYYY)",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "11111aaaa",

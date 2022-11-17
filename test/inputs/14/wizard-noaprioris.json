@@ -56,7 +56,6 @@
     },
     "step": {
       "name": "Testing tab expansion",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "3",

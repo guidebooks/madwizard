@@ -90,7 +90,6 @@
     },
     "step": {
       "name": "Conditional Inline of Imports",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "Tab1",

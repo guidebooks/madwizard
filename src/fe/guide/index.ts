@@ -108,6 +108,7 @@ export class Guide {
     // need to waste time computing the question models for subsequent questions
     const questions: Question[] = choices.slice(0, 1).map(({ step, graph: choice }, stepIdx) => {
       const name = step.name || chalk.red("Missing name")
+      const { description } = step
       const message =
         chalk.inverse.bold(` Choice ${choiceIter + stepIdx + 1} `) +
         `${step.name ? chalk.bold(` ${step.name} `) : chalk.inverse.red(" Missing name ")}`
@@ -139,6 +140,7 @@ export class Guide {
             return {
               type: "AlreadyAnswered",
               name,
+              description,
               message,
               answer: suggestion,
             }
@@ -156,6 +158,7 @@ export class Guide {
               return {
                 type: "AlreadyAnswered",
                 name,
+                description,
                 message,
                 answer: suggestion,
               }
@@ -169,6 +172,7 @@ export class Guide {
             return {
               type: "AlreadyAnswered",
               name,
+              description,
               message,
               answer: suggestion,
             }
@@ -201,6 +205,7 @@ export class Guide {
         return {
           type: "form" as const,
           name,
+          description,
           message,
           choices,
         }
@@ -225,6 +230,7 @@ export class Guide {
         return {
           type: isMulti ? ("multiselect" as const) : ("select" as const),
           name,
+          description,
           message:
             message +
             (!isMulti
@@ -265,7 +271,7 @@ export class Guide {
   }
 
   /** Present the given question to the user */
-  private async ask(opts: Question) {
+  private async ask(opts: Question & { description?: string }) {
     if (isAlreadyAnswered(opts)) {
       // Then there is nothing to ask the user, since this question
       // already has an answer, likely by using a previous answer from
@@ -304,6 +310,8 @@ export class Guide {
                 ask: {
                   type: prompt.type,
                   name: prompt.name,
+                  description: opts.description,
+                  initial: prompt.initial,
                   choices: prompt.choices,
                 },
               }) +

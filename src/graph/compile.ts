@@ -162,6 +162,9 @@ export async function compile(
       const groupContextForTitle = parentGroupContext.length > 0 ? ` (${parentGroupContext})` : ""
       const title = (parent.groupDetail.title || "") + groupContextForTitle
 
+      const lastNesting = currentNesting[currentNesting.length - 1]
+      const description = lastNesting && isImportNesting(lastNesting) ? lastNesting.graph.description : ""
+
       const provenance = currentProvenance()
 
       // keep madwizard/aprioris/... etc. anything internal to
@@ -180,6 +183,7 @@ export async function compile(
         group: parent.group,
         groupContext,
         title: title.length === 0 ? undefined : title,
+        description,
         source: parent.groupDetail.source,
         provenance,
         choices: [newChoice(block, parent, isDeepest)],
