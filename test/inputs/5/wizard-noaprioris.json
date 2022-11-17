@@ -26,7 +26,6 @@
     },
     "step": {
       "name": "EEE",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "TabE1",
@@ -209,7 +208,6 @@
     },
     "step": {
       "name": "Main Tasks",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "Tab1",

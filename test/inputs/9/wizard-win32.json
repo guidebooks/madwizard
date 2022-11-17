@@ -76,7 +76,6 @@
     "status": "success",
     "step": {
       "name": "DDD",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "SubTab1",

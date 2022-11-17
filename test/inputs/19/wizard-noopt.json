@@ -636,7 +636,6 @@
     },
     "step": {
       "name": "Install Ray",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "Local Install",

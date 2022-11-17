@@ -734,7 +734,6 @@
     },
     "step": {
       "name": "Install Ray",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "Local Install",
@@ -896,7 +895,6 @@
     },
     "step": {
       "name": "Run a Ray Job",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "Example: Using Ray Tasks to Parallelize a Function",

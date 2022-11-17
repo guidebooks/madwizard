@@ -82,7 +82,6 @@
     "status": "success",
     "step": {
       "name": "Conditional Imports of Validated Code Blocks",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "Tab1",

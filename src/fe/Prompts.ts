@@ -20,7 +20,7 @@ export type Select = Enquirer.Select
 export type MultiSelect = Enquirer.MultiSelect
 export type Form = Enquirer.Form
 
-export type Prompt = Select | MultiSelect | Form
+export type Prompt = (Select | MultiSelect | Form) & { description?: string }
 
 export function isSelect(prompt: Prompt): prompt is Select {
   return prompt.type === "select"

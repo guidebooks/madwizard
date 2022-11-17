@@ -50,7 +50,6 @@
     },
     "step": {
       "name": "EEE",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "TabE1",

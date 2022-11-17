@@ -26,7 +26,6 @@
     },
     "step": {
       "name": "EEE",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "TabE1",
@@ -93,7 +92,6 @@
     "status": "success",
     "step": {
       "name": "DDD",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "SubTab1",
@@ -149,7 +147,6 @@
     "status": "success",
     "step": {
       "name": "Main Tasks",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "Tab2",

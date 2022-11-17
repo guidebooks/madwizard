@@ -4,6 +4,7 @@
       "group": "Choose your path",
       "groupContext": "test/inputs/39/in",
       "title": "Expand tilde home directory in choice",
+      "description": "Then echo the result.\n",
       "source": "placeholder",
       "provenance": ["test/inputs/39/in"],
       "choices": [
@@ -29,7 +30,7 @@
     },
     "step": {
       "name": "Expand tilde home directory in choice",
-      "description": "This step requires you to choose how to proceed",
+      "description": "Then echo the result.\n",
       "content": [
         {
           "title": "Choose your path",

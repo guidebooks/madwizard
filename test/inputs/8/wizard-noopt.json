@@ -224,7 +224,6 @@
     },
     "step": {
       "name": "Chooser",
-      "description": "This step requires you to choose how to proceed",
       "content": [
         {
           "title": "Tab1",

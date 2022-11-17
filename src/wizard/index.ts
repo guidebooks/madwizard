@@ -126,8 +126,7 @@ function wizardStepForChoiceOnFrontier(
     status,
     step: {
       name: graph.title,
-      description: "This step requires you to choose how to proceed",
-      // TODO: introduction: graph.description,
+      description: graph.description, // "This step requires you to choose how to proceed",
       content: graph.choices.map((_) => ({
         title: _.title,
         group: graph.group,
