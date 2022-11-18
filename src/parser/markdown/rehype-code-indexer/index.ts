@@ -307,12 +307,15 @@ export function rehypeCodeIndexer(
                         })
                       }
                     } else if (isImports(_.properties)) {
+                      //const description = getDescription(_.properties)
+                      const description = extractFirstParagraph(_)
                       addNesting(attributes, {
                         kind: "Import",
                         source: _,
                         barrier: isBarrier(_.properties),
                         key: getImportKey(_.properties),
                         title: getImportTitle(_.properties),
+                        description,
                         filepath: getImportFilepath(_.properties),
                         validate: getValidate(_.properties),
                         group: getImportGroup(_.properties),

@@ -42,6 +42,7 @@
                         {
                           "key": "somekey",
                           "title": "Conda: Installation",
+                          "description": "Conda is an open-source package management system and environment management system that runs on Windows, macOS, and Linux. Conda quickly installs, runs, and updates packages and their dependencies. Conda easily creates, saves, loads, and switches between environments on your local computer. It was created for Python programs but it can package and distribute software for any language.\n",
                           "filepath": "test/inputs/23/python/conda/install",
                           "graph": {
                             "key": "somekey",
@@ -50,6 +51,7 @@
                                 "group": "Install Miniconda####Install Anaconda",
                                 "groupContext": "test/inputs/23/python/conda/install",
                                 "title": "Choose a Conda Installation Method",
+                                "description": "Conda is an open-source package management system and environment management system that runs on Windows, macOS, and Linux. Conda quickly installs, runs, and updates packages and their dependencies. Conda easily creates, saves, loads, and switches between environments on your local computer. It was created for Python programs but it can package and distribute software for any language.\n",
                                 "source": "placeholder",
                                 "provenance": ["test/inputs/23/python/conda/install"],
                                 "choices": [
@@ -322,6 +324,7 @@
               {
                 "key": "somekey",
                 "title": "Install kubectl",
+                "description": "Runs commands against Kubernetes clusters. You can use `kubectl` to deploy applications, inspect and manage cluster resources, and view logs.\n",
                 "filepath": "test/inputs/23/kubernetes/kubectl",
                 "graph": {
                   "key": "somekey",
@@ -330,6 +333,7 @@
                       "group": "Linux####Windows####MacOS",
                       "groupContext": "test/inputs/23/kubernetes/kubectl",
                       "title": "Install kubectl",
+                      "description": "Runs commands against Kubernetes clusters. You can use `kubectl` to deploy applications, inspect and manage cluster resources, and view logs.\n",
                       "source": "placeholder",
                       "provenance": ["test/inputs/23/kubernetes/kubectl"],
                       "choices": [
@@ -458,6 +462,7 @@
               {
                 "key": "somekey",
                 "title": "Install Helm v3",
+                "description": "This guide shows how to install the Helm CLI. Helm can be installed either from source, or from pre-built binary releases.\n",
                 "filepath": "test/inputs/23/kubernetes/helm3",
                 "graph": {
                   "key": "somekey",
@@ -466,6 +471,7 @@
                       "group": "MacOS####Linux####Windows",
                       "groupContext": "test/inputs/23/kubernetes/helm3",
                       "title": "Install Helm v3",
+                      "description": "This guide shows how to install the Helm CLI. Helm can be installed either from source, or from pre-built binary releases.\n",
                       "source": "placeholder",
                       "provenance": ["test/inputs/23/kubernetes/helm3"],
                       "choices": [
@@ -552,6 +558,7 @@
               {
                 "key": "somekey",
                 "title": "Choose a Kubernetes context",
+                "description": "Runs commands against Kubernetes clusters. You can use `kubectl` to deploy applications, inspect and manage cluster resources, and view logs.\n",
                 "filepath": "test/inputs/23/kubernetes/context",
                 "graph": {
                   "key": "somekey",
@@ -559,6 +566,7 @@
                     {
                       "key": "somekey",
                       "title": "Install kubectl",
+                      "description": "Runs commands against Kubernetes clusters. You can use `kubectl` to deploy applications, inspect and manage cluster resources, and view logs.\n",
                       "filepath": "test/inputs/23/kubernetes/kubectl",
                       "graph": {
                         "key": "somekey",
@@ -567,6 +575,7 @@
                             "group": "Linux####Windows####MacOS",
                             "groupContext": "test/inputs/23/kubernetes/kubectl",
                             "title": "Install kubectl",
+                            "description": "Runs commands against Kubernetes clusters. You can use `kubectl` to deploy applications, inspect and manage cluster resources, and view logs.\n",
                             "source": "placeholder",
                             "provenance": ["test/inputs/23/kubernetes/kubectl"],
                             "choices": [
@@ -696,6 +705,7 @@
                       "group": "fakeit",
                       "groupContext": "test/inputs/23/kubernetes/context",
                       "title": "Choose a Kubernetes context",
+                      "description": "Runs commands against Kubernetes clusters. You can use `kubectl` to deploy applications, inspect and manage cluster resources, and view logs.\n",
                       "source": "placeholder",
                       "provenance": ["test/inputs/23/kubernetes/context"],
                       "choices": [
@@ -849,6 +859,7 @@
                           {
                             "key": "somekey",
                             "title": "Install Ray Data",
+                            "description": "Ray Datasets are the standard way to load and exchange data in Ray libraries and applications. They provide basic distributed data transformations such as `map`, `filter`, and `repartition`, and are compatible with a variety of file formats, data sources, and distributed frameworks.\n",
                             "filepath": "test/inputs/23/data",
                             "graph": {
                               "key": "somekey",

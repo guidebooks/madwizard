@@ -30,6 +30,7 @@
               {
                 "key": "somekey",
                 "title": "Install kubectl",
+                "description": "Runs commands against Kubernetes clusters. You can use `kubectl` to deploy applications, inspect and manage cluster resources, and view logs.\n",
                 "filepath": "test/inputs/19/snippets/kubectl",
                 "graph": {
                   "key": "somekey",
@@ -58,6 +59,7 @@
               {
                 "key": "somekey",
                 "title": "Install Helm",
+                "description": "This guide shows how to install the Helm CLI. Helm can be installed either from source, or from pre-built binary releases.\n",
                 "filepath": "test/inputs/19/snippets/helm3",
                 "graph": {
                   "key": "somekey",
