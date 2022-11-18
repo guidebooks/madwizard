@@ -1,3 +1,9 @@
+## [1.8.3](https://github.com/guidebooks/madwizard/compare/1.8.2...1.8.3) (2022-11-18)
+
+### Bug Fixes
+
+- restore prepack ([1847d58](https://github.com/guidebooks/madwizard/commit/1847d589ddbae151426e9f0b2159d680a897ec09))
+
 ## [1.8.2](https://github.com/guidebooks/madwizard/compare/1.8.1...1.8.2) (2022-11-18)
 
 ### Bug Fixes
