@@ -1,3 +1,9 @@
+## [1.8.2](https://github.com/guidebooks/madwizard/compare/1.8.1...1.8.2) (2022-11-18)
+
+### Bug Fixes
+
+- improved descriptions for nested imported guidebooks ([573c885](https://github.com/guidebooks/madwizard/commit/573c88577888086353a347504da009f5e88e6abe))
+
 ## [1.8.1](https://github.com/guidebooks/madwizard/compare/1.8.0...1.8.1) (2022-11-17)
 
 ### Bug Fixes
