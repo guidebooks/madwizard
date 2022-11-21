@@ -139,7 +139,7 @@ export default function collapse<T extends Unordered | Ordered = Unordered, G ex
 ): G | Promise<G> {
   if (
     options &&
-    options.optimize &&
+    options.optimize !== undefined &&
     (options.optimize === false || // all optimizations disabled
       (options.optimize !== true && options.optimize.validate === false)) // this optimization disabled
   ) {
