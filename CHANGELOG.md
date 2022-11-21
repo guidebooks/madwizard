@@ -1,3 +1,9 @@
+## [1.8.5](https://github.com/guidebooks/madwizard/compare/1.8.4...1.8.5) (2022-11-21)
+
+### Bug Fixes
+
+- do not initially clear when in raw mode ([fa9c8d2](https://github.com/guidebooks/madwizard/commit/fa9c8d2b64b050e5ac5c75fda6a02df7ad5e1424))
+
 ## [1.8.4](https://github.com/guidebooks/madwizard/compare/1.8.3...1.8.4) (2022-11-21)
 
 ### Bug Fixes
