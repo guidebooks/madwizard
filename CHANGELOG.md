@@ -1,3 +1,9 @@
+## [1.8.4](https://github.com/guidebooks/madwizard/compare/1.8.3...1.8.4) (2022-11-21)
+
+### Bug Fixes
+
+- do not initially display guidebook title when in raw mode ([c793451](https://github.com/guidebooks/madwizard/commit/c793451a153e41a3f96af8c432eacf469a6fdf65))
+
 ## [1.8.3](https://github.com/guidebooks/madwizard/compare/1.8.2...1.8.3) (2022-11-18)
 
 ### Bug Fixes
