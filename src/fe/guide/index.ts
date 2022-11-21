@@ -529,6 +529,11 @@ export class Guide {
 
   /** Emit the title and description of the given `graph` */
   private presentGuidebookTitle(graph: Graph) {
+    if (this.options.raw) {
+      // do not display guidebook title if we are in "raw" mode
+      return
+    }
+
     const title = extractTitle(graph)
     const description = extractDescription(graph)
     if (title) {
