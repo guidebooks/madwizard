@@ -593,7 +593,8 @@ export class Guide {
   }
 
   public async run() {
-    if (this.options.clear !== false && this.options.interactive) {
+    if (!this.options.raw && this.options.clear !== false && this.options.interactive) {
+      // note: do not clear the terminal in raw mode
       console.clear()
     }
 
