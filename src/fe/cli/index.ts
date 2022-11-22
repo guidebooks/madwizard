@@ -357,6 +357,10 @@ export async function cli<Writer extends Writable["write"]>(
       process.on("SIGINT", cleanExitFromSIGINT) // catch ctrl-c
       process.on("SIGTERM", cleanExitFromSIGTERM) // catch kill
 
+      if (options.onBeforeRun) {
+        options.onBeforeRun({ cleanExit })
+      }
+
       try {
         await new Guide(task, blocks, choices, options, memoizer, ui, write).run()
       } finally {

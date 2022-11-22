@@ -47,6 +47,9 @@ export interface RunOptions {
    */
   clean: boolean
 
+  /** Callback prior to running the guidebook */
+  onBeforeRun(opts: { cleanExit(): void }): void
+
   /** Assert answers to certain questions */
   assertions: Record<string, string>
 }
