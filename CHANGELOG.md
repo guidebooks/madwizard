@@ -1,3 +1,9 @@
+# [1.9.0](https://github.com/guidebooks/madwizard/compare/1.8.5...1.9.0) (2022-11-22)
+
+### Features
+
+- add `onBeforeRun` support, to allow cleanup registration ([8e0375b](https://github.com/guidebooks/madwizard/commit/8e0375ba68492041b1ffdb2d1ada29ed4eabc96c))
+
 ## [1.8.5](https://github.com/guidebooks/madwizard/compare/1.8.4...1.8.5) (2022-11-21)
 
 ### Bug Fixes
