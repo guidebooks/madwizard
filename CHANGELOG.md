@@ -1,3 +1,9 @@
+## [1.9.1](https://github.com/guidebooks/madwizard/compare/1.9.0...1.9.1) (2022-11-23)
+
+### Bug Fixes
+
+- make sure to redact RAY_ADDRESS env var ([d28db32](https://github.com/guidebooks/madwizard/commit/d28db3232ab2785bb9ce609cdbf170ca04cd5d1a))
+
 # [1.9.0](https://github.com/guidebooks/madwizard/compare/1.8.5...1.9.0) (2022-11-22)
 
 ### Features
