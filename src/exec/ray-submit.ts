@@ -127,6 +127,7 @@ async function saveEnvToFile(
   // visibility in the ray workers; keep it as __PATH for debugging
   const curatedEnvVars = Object.assign({ __PATH: memos.env.PATH }, memos.env)
   delete curatedEnvVars.PATH
+  delete curatedEnvVars.RAY_ADDRESS
 
   const runtimeEnv: Record<string, any> = Object.assign(
     {},
