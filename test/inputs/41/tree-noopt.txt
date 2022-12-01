@@ -1,0 +1,6 @@
+Sequence
+├── export KEY=333
+└── Missing heading for choice
+    └── Option 2: Alternate plan
+        └── echo "Error if we get here"
+            exit 90
