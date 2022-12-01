@@ -83,7 +83,12 @@ function expansionPattern() {
 
 /** @return the pattern we use to denote a dynamic expansion expression with a message to print while expanding */
 function expansionPatternWithMessage() {
-  return /^\s*expand\((.+)\s*(,\s*(.+))\)\s*$/
+  return /^\s*expand\((.+)\s*,\s*(.+)\s*\)\s*$/
+}
+
+/** @return the pattern we use to denote a dynamic expansion expression with a message to print while expanding, and a memoization key */
+function expansionPatternWithMessageAndKey() {
+  return /^\s*expand\((.+)\s*,\s*(.+)\s*,\s*(.+)\s*\)\s*$/
 }
 
 /** Does the given Choice (i.e. a tab group) include a dynamic expansion? */
@@ -91,15 +96,19 @@ function isExpansionGroup(graph: Choice) {
   return expansionPattern().test(graph.group)
 }
 
-type ExpansionExpression = { expr: string; message?: string }
+type ExpansionExpression = { expr: string; message?: string; key?: string }
 
 /** Is the given Choice member (i.e. a tab) a dynamic expansion? */
 function isExpansion(part: ChoicePart): ExpansionExpression {
-  const match = part.title.match(expansionPatternWithMessage()) || part.title.match(expansionPattern())
+  const match =
+    part.title.match(expansionPatternWithMessageAndKey()) ||
+    part.title.match(expansionPatternWithMessage()) ||
+    part.title.match(expansionPattern())
   if (match) {
     return {
       expr: match[1],
-      message: match[3],
+      message: match[2],
+      key: match[3],
     }
   }
 }
@@ -149,16 +158,25 @@ async function doExpand(
  *
  */
 async function getOrExpand(
+  choice: Choice,
   part: ChoicePart,
   expansionExpr: ExpansionExpression,
   memos: Memos,
   options: Partial<ExecutorOptions> & { debug: ReturnType<typeof Debug> },
   inRetry = false
 ) {
-  // is it memoized?
-  if (!memos.expansionMemo[expansionExpr.expr]) {
+  // First, check if this expansion is memoized.
+  const memoKey = expansionExpr.expr
+
+  if (expansionExpr.key && memos.env[expansionExpr.key]) {
+    // then the guide has specified that the expansion should be given
+    // by the environment variable `expansionExpr.key`
+    const value = memos.env[expansionExpr.key]
+    memos.expansionMemo[memoKey] = Promise.resolve([value])
+    memos.suggestions.set(choice, value)
+  } else if (!memos.expansionMemo[memoKey]) {
     // not yet, call `doExpand()` to do the actual expansion work
-    memos.expansionMemo[expansionExpr.expr] = doExpand(expansionExpr, memos, options)
+    memos.expansionMemo[memoKey] = doExpand(expansionExpr, memos, options)
   } else {
     // then we may have a memoized result; first, we will need to
     // check whether it is `null`, indicating a failed expansion in
@@ -166,7 +184,7 @@ async function getOrExpand(
     options.debug(expansionExpr, "memoized")
   }
 
-  const myMemo = memos.expansionMemo[expansionExpr.expr]
+  const myMemo = memos.expansionMemo[memoKey]
   const response = await myMemo // <-- the memoized response
 
   if (response === null) {
@@ -175,15 +193,15 @@ async function getOrExpand(
     if (inRetry) {
       // then the retry also failed; give up :(
       options.debug(expansionExpr, "inval")
-      delete memos.expansionMemo[expansionExpr.expr]
+      delete memos.expansionMemo[memoKey]
     } else {
       // then the previous expansion failed, try one more time
       options.debug(expansionExpr, "redo")
-      if (memos.expansionMemo[expansionExpr.expr] === myMemo) {
+      if (memos.expansionMemo[memoKey] === myMemo) {
         options.debug(expansionExpr, "redo-inval")
-        delete memos.expansionMemo[expansionExpr.expr]
+        delete memos.expansionMemo[memoKey]
       }
-      return getOrExpand(part, expansionExpr, memos, options, true) // initiate retry
+      return getOrExpand(choice, part, expansionExpr, memos, options, true) // initiate retry
     }
   }
 
@@ -212,7 +230,7 @@ async function expandOneChoice(
           if (!expansionExpr) {
             return updateContent(part)
           } else {
-            return getOrExpand(part, expansionExpr, memos, options)
+            return getOrExpand(graph, part, expansionExpr, memos, options)
           }
         })
       )

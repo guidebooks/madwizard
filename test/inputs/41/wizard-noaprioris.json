@@ -1,0 +1,46 @@
+[
+  {
+    "graph": {
+      "body": "export KEY=333",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\nexport KEY=333\n```"
+    }
+  },
+  {
+    "graph": {
+      "group": "expand(garbage this should fail if ever executed, Testing env var keying, KEY)####Alternate plan",
+      "groupContext": "expand(garbage this should fail if ever executed, Testing env var keying, KEY)####Alternate plan",
+      "source": "placeholder",
+      "choices": [
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"Error if we get here\"\nexit 90",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Alternate plan"
+        }
+      ]
+    },
+    "step": {
+      "content": [
+        {
+          "title": "Alternate plan",
+          "group": "expand(garbage this should fail if ever executed, Testing env var keying, KEY)####Alternate plan",
+          "member": 1,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  }
+]
