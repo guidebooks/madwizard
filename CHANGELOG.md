@@ -1,3 +1,14 @@
+## [1.10.1](https://github.com/guidebooks/madwizard/compare/1.9.1...1.10.1) (2022-12-01)
+
+### Bug Fixes
+
+- restore prepack ([1260320](https://github.com/guidebooks/madwizard/commit/1260320f2e371287d692eecafa75d89bc7ae7cb5))
+
+### Features
+
+- allow guidebooks to specify a choice via env var ([b61305c](https://github.com/guidebooks/madwizard/commit/b61305c71ac021a1010b2de6ff00d8e07681c8ce))
+- ray-submit should activate a venv if RAY_VENV_PATH is defined ([fcd9939](https://github.com/guidebooks/madwizard/commit/fcd99391326305aa295f11ef3ef7452ef1c7ae27))
+
 ## [1.9.1](https://github.com/guidebooks/madwizard/compare/1.9.0...1.9.1) (2022-11-23)
 
 ### Bug Fixes
