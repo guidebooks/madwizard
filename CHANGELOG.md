@@ -1,3 +1,9 @@
+## [1.10.2](https://github.com/guidebooks/madwizard/compare/1.10.1...1.10.2) (2022-12-02)
+
+### Bug Fixes
+
+- choice expansion fails for commands that contain commas ([d1ea652](https://github.com/guidebooks/madwizard/commit/d1ea6522553ac889ec683f89dd9aef7b978f176a))
+
 ## [1.10.1](https://github.com/guidebooks/madwizard/compare/1.9.1...1.10.1) (2022-12-01)
 
 ### Bug Fixes
