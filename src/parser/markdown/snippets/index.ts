@@ -332,7 +332,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
       snippetDatas[0]
 
     if (isError(snippetData)) {
-      const msg = `failed to fetch snippet content: ${_snippetFileName} from ${srcFilePath}`
+      const msg = `failed to fetch snippet content (try running with DEBUG=madwizard/fetch/snippets): ${_snippetFileName} from ${srcFilePath}`
       debug(`${chalk.red(mainSymbols.cross)} ${_snippetFileName}`)
       if (failFast) {
         throw new Error(msg)
