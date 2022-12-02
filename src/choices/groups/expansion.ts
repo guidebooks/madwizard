@@ -83,12 +83,12 @@ function expansionPattern() {
 
 /** @return the pattern we use to denote a dynamic expansion expression with a message to print while expanding */
 function expansionPatternWithMessage() {
-  return /^\s*expand\((.+)\s*,\s*(.+)\s*\)\s*$/
+  return /^\s*expand\((.+)\s*,\s*([\w\s]+)\s*\)\s*$/
 }
 
 /** @return the pattern we use to denote a dynamic expansion expression with a message to print while expanding, and a memoization key */
 function expansionPatternWithMessageAndKey() {
-  return /^\s*expand\((.+)\s*,\s*(.+)\s*,\s*(.+)\s*\)\s*$/
+  return /^\s*expand\((.+)\s*,\s*([\w\s]+)\s*,\s*([\w\s]+)\s*\)\s*$/
 }
 
 /** Does the given Choice (i.e. a tab group) include a dynamic expansion? */
