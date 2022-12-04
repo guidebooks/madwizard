@@ -51,18 +51,21 @@ export async function madwizardRead(
         const withDotMd = new VFile(file)
         withSlashIndexDotMd.path = join(store, file.path, "index.md")
         withDotMd.path = join(store, file.path + ".md")
+        const possibilities = [withSlashIndexDotMd, withDotMd]
 
         try {
           // try ml/ray/run/index.md and ml/ray/run.md, and return
           // whichever first succeeds
-          return await Promise.any([withSlashIndexDotMd, withDotMd].map((_) => vfileRead(_)))
+          Debug("madwizard/read/1")(store, possibilities)
+          return await Promise.any(possibilities.map((_) => vfileRead(_)))
         } catch (err) {
-          Debug("madwizard/read")(err)
+          Debug("madwizard/read/2")(possibilities, err)
           // fallthrough
         }
       }
 
       // normal file read, without any store/ prefixing
+      Debug("madwizard/read/3")(file.path)
       return await vfileRead(file)
     } catch (err) {
       if (err.code === "EISDIR" || (err.code === "ENOENT" && !/\.md/.test(file.path))) {
@@ -95,14 +98,14 @@ export async function madwizardRead(
         nFile.path = path
         return await madwizardRead(nFile)
       } catch (err2) {
-        Debug("madwizard/read")(err2)
+        Debug("madwizard/read/4")(err2)
         try {
           const path = toRawGithubUserContent(`${base}/index${ext}`)
           const nFile = new VFile(file)
           nFile.path = path
           return await madwizardRead(nFile)
         } catch (err3) {
-          Debug("madwizard/read")(err3)
+          Debug("madwizard/read/5")(err3)
           throw err
         }
       }
