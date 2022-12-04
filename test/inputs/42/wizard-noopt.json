@@ -1,0 +1,106 @@
+[
+  {
+    "graph": {
+      "group": "Tab1####Tab2####Tab3####Tab4",
+      "groupContext": "test/inputs/42/in",
+      "title": "Testing!",
+      "source": "placeholder",
+      "provenance": ["test/inputs/42/in"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo AAA",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Tab1",
+          "description": "\nDescription without newline after tab [with link](https://foo.com). That link should be visible."
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo BBB",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Tab2",
+          "description": "Description with newline after tab [with link](https://foo.com). That link should also be visible.\n"
+        },
+        {
+          "member": 2,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo CCC",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Tab3",
+          "description": "\nDescription without newline after tab **with bold**. This text should also be visible."
+        },
+        {
+          "member": 3,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo DDD",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Tab4",
+          "description": "\nDescription without newline after tab *with emphasis*. This text should also be visible."
+        }
+      ]
+    },
+    "step": {
+      "name": "Testing!",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "Tab1####Tab2####Tab3####Tab4",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "\nDescription without newline after tab [with link](https://foo.com). That link should be visible."
+        },
+        {
+          "title": "Tab2",
+          "group": "Tab1####Tab2####Tab3####Tab4",
+          "member": 1,
+          "isFirstChoice": true,
+          "description": "Description with newline after tab [with link](https://foo.com). That link should also be visible.\n"
+        },
+        {
+          "title": "Tab3",
+          "group": "Tab1####Tab2####Tab3####Tab4",
+          "member": 2,
+          "isFirstChoice": true,
+          "description": "\nDescription without newline after tab **with bold**. This text should also be visible."
+        },
+        {
+          "title": "Tab4",
+          "group": "Tab1####Tab2####Tab3####Tab4",
+          "member": 3,
+          "isFirstChoice": true,
+          "description": "\nDescription without newline after tab *with emphasis*. This text should also be visible."
+        }
+      ]
+    }
+  }
+]

@@ -31,6 +31,7 @@ import { isExecutable } from "../../../codeblock/isCodeBlock.js"
 import { getTipTitle, isTipWithFullTitle } from "../rehype-tip/index.js"
 import isElementWithProperties, {
   hasContentChildren,
+  isInlineContent,
   isParagraph,
   isText,
   isNonEmptyTextOrParagraph,
@@ -78,7 +79,31 @@ function extractFirstParagraph(parent: Parent, after?: Node) {
     const firstChild = parent.children[pIdx]
     if (firstChild) {
       if (isText(firstChild)) {
-        return firstChild.value
+        // we need to accumulate children up until we see a newline
+        const accum = []
+        let iter = pIdx - 1
+        while (++iter < parent.children.length) {
+          const child = parent.children[iter]
+          if (!isInlineContent(child) || (iter > pIdx && isText(child) && /^\n/.test(child.value))) {
+            // found a prefix newline, or some non-inline content
+            // (e.g. <pre> has implicit linebreak surrounds); note
+            // that we do not include the pre (or whatever) in the
+            // accum, since the newline is at the start
+            break
+          } else {
+            accum.push(toMarkdownString(child))
+            if (isText(child) && /\n$/.test(child.value)) {
+              // found a trailing newline! include the content here
+              break
+            }
+          }
+        }
+
+        // then rejoin them. for some reason, toMarkdownString adds
+        // newlines to the end of links that aren't there in its own
+        // model, and neither are they in the original
+        // source. sigh. so we hack them out here.
+        return accum.map((_) => _.replace(/\n$/, "")).join("")
       } else if (isParagraph(firstChild)) {
         return toMarkdownString(firstChild)
       }
@@ -95,6 +120,7 @@ function extractFirstParagraph(parent: Parent, after?: Node) {
       return para
     }
   }
+
   /*const firstChild = parent.children[startIdx]
   if (after) return firstChild && isElementWithProperties(firstChild) && firstChild.tagName
   if (firstChild && isElementWithProperties(firstChild) && firstChild.tagName === "p") {

@@ -1,0 +1,9 @@
+Test choice descriptions with non-plain text
+├── Option 1: Tab1
+│   └── echo AAA
+├── Option 2: Tab2
+│   └── echo BBB
+├── Option 3: Tab3
+│   └── echo CCC
+└── Option 4: Tab4
+    └── echo DDD

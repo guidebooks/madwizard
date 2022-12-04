@@ -330,7 +330,7 @@
                             ]
                           },
                           "title": "New Dataset from Range",
-                          "description": "\nGet started by creating Datasets from synthetic data using\n"
+                          "description": "\nGet started by creating Datasets from synthetic data using"
                         },
                         {
                           "member": 1,
@@ -345,7 +345,7 @@
                             ]
                           },
                           "title": "New Dataset from File",
-                          "description": "\nDatasets can be created from files on local disk or remote datasources\nsuch as S3. Any filesystem "
+                          "description": "\nDatasets can be created from files on local disk or remote datasources\nsuch as S3. Any filesystem [supported by pyarrow](http://arrow.apache.org/docs/python/generated/pyarrow.fs.FileSystem.html)"
                         }
                       ]
                     }

@@ -16,6 +16,7 @@
 
 import { u } from "unist-builder"
 import { Raw } from "hast-util-raw"
+import { Node as UNode } from "unist"
 import { toMdast } from "hast-util-to-mdast"
 import { Content, Element, Parent } from "hast"
 import { visit, CONTINUE, SKIP } from "unist-util-visit"
@@ -163,7 +164,8 @@ function munge(root: Node): Node {
   return paragraphs(stringifyTabs(pruneComments(pruneImports(root))))
 }
 
-export type Something = Node | Content | Parent
+/** The types of content that we know how to turn into a markdown string */
+export type Something = Node | Content | Parent | UNode
 
 function hasValue(node: Something): node is Something & { value: string } {
   return typeof (node as { value: string }).value === "string"
