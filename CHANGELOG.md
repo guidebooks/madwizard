@@ -1,3 +1,11 @@
+## [1.10.3](https://github.com/guidebooks/madwizard/compare/1.10.2...1.10.3) (2022-12-04)
+
+### Bug Fixes
+
+- choice descriptions with non-plain text may be cropped ([a1872ec](https://github.com/guidebooks/madwizard/commit/a1872ecdb10670a62d5348cf341108f2aaa915fe))
+- relative imports chained off an implicit .../index file are broken ([3a5c215](https://github.com/guidebooks/madwizard/commit/3a5c215f890a93499ceb78b6b3eff0c189b871b7))
+- when snippet fetch fails, help user set up debug output ([cad6834](https://github.com/guidebooks/madwizard/commit/cad6834d6b48106006796903d3e43836641ecbc8))
+
 ## [1.10.2](https://github.com/guidebooks/madwizard/compare/1.10.1...1.10.2) (2022-12-02)
 
 ### Bug Fixes
