@@ -1,0 +1,2 @@
+echo AAA
+AAA

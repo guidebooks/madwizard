@@ -1,0 +1,24 @@
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Testing!",
+      "title": "Testing!",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo AAA",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Testing!"
+    }
+  }
+]

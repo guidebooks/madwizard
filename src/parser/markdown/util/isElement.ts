@@ -17,12 +17,39 @@
 import { Node, Parent } from "unist"
 import { Element, ElementContent, Literal, Root, Text } from "hast"
 
+type ElementWithTag<T extends string> = Element & { tagName: T }
+type Pre = ElementWithTag<"pre">
+type Anchor = ElementWithTag<"a">
+type Strong = ElementWithTag<"strong">
+type Em = ElementWithTag<"em">
+
 export function isLiteral(node: Node): node is Literal {
   return typeof (node as Literal).value === "string"
 }
 
 export function isText(node: Node): node is Text {
   return node.type === "text" && typeof (node as Text).value === "string"
+}
+
+export function isPre(node: Node): node is Pre {
+  return isElementWithProperties(node) && node.tagName === "pre"
+}
+
+export function isAnchor(node): node is Anchor {
+  return isElementWithProperties(node) && node.tagName === "a"
+}
+
+export function isStrong(node): node is Strong {
+  return isElementWithProperties(node) && node.tagName === "strong"
+}
+
+export function isEm(node): node is Em {
+  return isElementWithProperties(node) && node.tagName === "em"
+}
+
+/** Is this content without an implicit prefix line break? */
+export function isInlineContent(node: Node): boolean {
+  return isText(node) || isAnchor(node) || isStrong(node) || isEm(node)
 }
 
 export function isParagraph(node: Node): node is Element & { tagName: "p" } {
