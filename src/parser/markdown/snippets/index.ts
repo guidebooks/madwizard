@@ -81,6 +81,17 @@ function toString(data: string | object) {
   return (typeof data === "string" ? data : JSON.stringify(data)).replace(/\n$/, "")
 }
 
+/** e.g. ml/codeflare some "absolute" reference to the store */
+function isAbsoluteStoreRef(filepath: string, opts: Options) {
+  return (
+    !isUrl(filepath) &&
+    !!opts.madwizardOptions &&
+    !!opts.madwizardOptions.store &&
+    !isAbsolute(filepath) &&
+    !/^\./.test(filepath)
+  )
+}
+
 /** Rewrite any relative <img> and <a> links to use the given basePath */
 function rerouteLinks(basePath: string, data: string) {
   return data.replace(
@@ -217,11 +228,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
     }
 
     // is this an "absolute" reference to a base store path?
-    const isStoreRef =
-      !isUrl(_snippetFileName) &&
-      !!opts.madwizardOptions &&
-      !!opts.madwizardOptions.store &&
-      !/^\./.test(_snippetFileName)
+    const isStoreRef = isAbsoluteStoreRef(_snippetFileName, opts)
 
     // the resolved filepath of the snippet
     const snippetFileName = isStoreRef ? _snippetFileName : expandHomeDir(_snippetFileName)
@@ -267,9 +274,12 @@ function inlineSnippets(opts: Options & InternalOptions) {
     const candidates =
       (await altBasePaths).length > 0
         ? await altBasePaths
+        : isAbsoluteStoreRef(srcFilePath, opts)
+        ? [srcFilePath, dirname(srcFilePath)].map((_) => join(opts.madwizardOptions.store, _))
         : [
             snippetBasePath,
             snippetBasePath && relative(snippetBasePath, srcFilePath), // chained relative imports/includes
+            srcFilePath,
             snippetBasePath && RE_DOCS_URL.test(snippetBasePath)
               ? dirname(snippetBasePath.match(RE_DOCS_URL)[1])
               : undefined,
