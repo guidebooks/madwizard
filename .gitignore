@@ -11,3 +11,5 @@ node_modules
 
 # mirrored guidebook store
 store
+
+tsconfig.tsbuildinfo

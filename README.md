@@ -2,11 +2,17 @@
 
 # <img src=".github/madwizard.gif" title="madwizard" height="32"> Turn Markdown into Wizards
 
-MadWizard is a library that scans a given markdown file and
-automatically constructs a task graph. It also includes a CLI client
-to allow interacting with the library, either to visualize the task
-graph (the `plan` command) or to step through the plan via an
-interactive wizard (the `guide` command).
+`madwizard` allows you to:
+
+1. test your markdown documentation
+2. automatically generate wizards that step your users through your documentation
+
+You can interact with `madwizard` in one of four ways:
+
+a) As a **test rig**; point to your documentation and madwizard can generate initial desired output models, and then regression test updates on your side against the desired output.
+b) As a library that generates **task graph and wizard models from markdown**.
+c) As an **ASCII CLI tool** that executes the wizard model, stepping users through the choices they need to make and the tasks that should be performed on their systems.
+d) Finally, madwizard's wizard executor supports callbacks, allowing you to wrote your own custom (even graphical) UI.
 
 ## Gallery
 
@@ -20,95 +26,24 @@ You may find the source for these [here](https://github.com/guidebooks/store/tre
 
 ## Installation
 
-```shell
-npm install -g madwizard
-```
-
-## Special Markdown Features
-
-- You may offer a choice to the user by using [PyMdown's tabbed syntax](https://facelessuser.github.io/pymdown-extensions/extensions/tabbed/)
-
-- Code blocks may request that a guidebook exits early, but with a
-  normal 0 overall exit code, by exiting that shell block with a `90`
-  exit code (there is no particular meaning to this exit code):
-  ```shell
-  echo "Stopping execution normally"
-  exit 90
-  ```
-
-## Usage
-
-Point madwizard at a local or remote markdown file, and choose a
-[command](#cli-client-commands) to execute. By default, the `guide`
-command will be executed.
+If you wish to consume this as a library, then:
 
 ```shell
-madwizard [<command>] <input filepath or URL>.md
+npm install madwizard
 ```
 
-### CLI Client Commands
-
-- `guide`: Present a wizard that walks you through the choices and task execution for the given markdown. [default command, if none is specified]
-- `plan`: Only plan (and then visualize) the tasks specified by a given document.
-- `vetoes`: Print the list of vetoable choices. You may then call `guide` or `plan` with `--veto=x,y,z` where `x`, `y`, and `z` are members of that list.
-- `version`: The version of madwizard you have installed.
-
-#### Advanced Usage
-
-- `--veto=x,y,z`: A command-separated list of choices to override.
-- `-O0,--no-optimize`: do not attempt any fancy optimizations on the task graph.
-- `--no-aprioris`: do not scan the environment to determine the answer to questions.
-
-#### Miscelleneous Options
-
-- `-n/--narrow`: restrict the amount of each code block that is displayed.
-- `--mkdocs=url`: If you need to pass the URI of your mkdocs.yml
-
-#### Debug Commands
-
-- `timing`: In case you are curious as to why madwizard is slow.
-- `fetch`: In case you suspect that madwizard is not properly fetching your file snippets.
-- `json`: Emit the wizard model in JSON form.
-- `topmatter`: Show the progress of processing the topmatter of the given document (and its imports).
-- `groups`: Show how madwizard has modeled the choices represented by the given document.
-
-## MadWizard Development
-
-To start up the watcher:
+If you wish to consume this as a CLI, then:
 
 ```shell
-npm ci
-npm run watch
+npm install -g madwizard-cli
 ```
 
-Releases are typically done via:
+The CLI includes a build of the [guidebook
+store](https://github.com/guidebooks/store). For example, to choose
+one of your Kubernetes namespaces, try `madwizard
+kubernetes/choose/ns`.
 
-```shell
-npm run build
-release-it # must be separately installed, e.g. via `npm install -g release-it`
-```
+## Next Steps
 
-## Running Tests
-
-To run tests:
-
-```shell
-npm test # will run all tests
-npm test 21 22 # will run just those two inputs
-```
-
-The assumption is that test inputs are numbered directories under `test/inputs`. Each such directory is assumed to have:
-
-- in.md; the input markdown file
-- tree.txt; the expected output of `./bin/madwizard plan <that_in.md>`
-- wizard.json; ibid for `./bin/madwizard json test <that_in.md>`
-- run.txt; ibid for `./bin/madwizard run test <that_in.md>`
-
-If your input has expected variances with optimizations disabled, then also:
-
-- tree-noopt.txt, wizard-noopt.txt; the expected outputs with `-O0`
-- tree-noaprioris.txt, wizard-noaprioris.txt; ibid for `--no-aprioris`
-
-If you wish to assert answers to certain choices, then also:
-
-- assert.txt; of the form `choice=value`, one per line
+- [How to code a wizard in markdown](./docs/markdown#readme)
+- [Contributing](./docs/dev#readme)
