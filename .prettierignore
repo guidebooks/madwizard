@@ -1,2 +1,2 @@
-test/inputs/**/*.md
+packages/*/test/inputs/**/*.md
 
