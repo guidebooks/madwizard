@@ -23,7 +23,8 @@
     "prepare": "cross-env husky install"
   },
   "workspaces": [
-    "packages/madwizard"
+    "packages/madwizard",
+    "packages/madwizard-cli"
   ],
   "keywords": [
     "markdown",
