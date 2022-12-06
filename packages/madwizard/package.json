@@ -7,10 +7,6 @@
   "type": "module",
   "types": "dist/index.d.ts",
   "sideEffects": false,
-  "bin": {
-    "mw": "./bin/madwizard.js",
-    "madwizard": "./bin/madwizard.js"
-  },
   "scripts": {
     "test": "node --no-warnings dist/test",
     "prepack": "npm test && cp src/version.json dist/version.json"
