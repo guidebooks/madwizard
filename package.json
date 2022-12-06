@@ -72,7 +72,14 @@
   "release-it": {
     "npm": false,
     "plugins": {
-      "@release-it-plugins/workspaces": true
+      "@release-it-plugins/workspaces": true,
+      "@release-it/conventional-changelog": {
+        "preset": "angular",
+        "infile": "CHANGELOG.md"
+      },
+      "@release-it/bumper": {
+        "out": "packages/madwizard/src/version.json"
+      }
     }
   },
   "devDependencies": {
