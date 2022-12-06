@@ -17,7 +17,7 @@
     }
   },
   "dependencies": {
-    "madwizard": "*",
-    "@guidebooks/store": "^1.7.1"
+    "@guidebooks/store": "^1.7.1",
+    "madwizard": "^1.10.3"
   }
 }
