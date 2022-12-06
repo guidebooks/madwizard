@@ -49,11 +49,13 @@ export function provenanceOfFilepath(filepath: string) {
  *
  */
 export function canonicalProvenanceOf(filepath: string, options: MadWizardOptions) {
-  return filepath
-    .replace(options.store, "")
-    .replace(/\.md/g, "")
-    .replace(/^\.?\//, "")
-    .replace(/\/index$/, "")
+  if (filepath) {
+    return filepath
+      .replace(options.store, "")
+      .replace(/\.md/g, "")
+      .replace(/^\.?\//, "")
+      .replace(/\/index$/, "")
+  }
 }
 
 /** Determine the `Provenance` of the given `SubTask` */
