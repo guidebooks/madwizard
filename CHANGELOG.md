@@ -1,3 +1,33 @@
+## [2.0.3](https://github.com/guidebooks/madwizard/compare/2.0.2...2.0.3) (2022-12-06)
+
+Changelog:
+
+- fix: packages/madwizard should build prior to packing (4c1cc52)
+- chore: remove bin from top-level package.json (e33a13b)
+- fix: move npmignore into packages/madwizard (f78e60d)
+
+## [2.0.2](https://github.com/guidebooks/madwizard/compare/2.0.1...2.0.2) (2022-12-06)
+
+no changes
+
+## [2.0.1](https://github.com/guidebooks/madwizard/compare/2.0.0...2.0.1) (2022-12-06)
+
+no changes
+
+## [2.0.0](https://github.com/guidebooks/madwizard/compare/1.10.3...2.0.0) (2022-12-06)
+
+### Bug Fixes
+
+- graph formation fails for top-level code blocks ([f40575b](https://github.com/guidebooks/madwizard/commit/f40575ba709c3e6d7490a149da18b317067eeaaa))
+
+### Features
+
+- refactor into npm workspaces ([9ce3cf8](https://github.com/guidebooks/madwizard/commit/9ce3cf84f33ca11ba12a71f38796c3e95d1eeab2))
+
+### BREAKING CHANGES
+
+Note: the `madwizard` CLI will now be published in the `madwizard-cli` npm.
+
 ## [1.10.3](https://github.com/guidebooks/madwizard/compare/1.10.2...1.10.3) (2022-12-04)
 
 ### Bug Fixes

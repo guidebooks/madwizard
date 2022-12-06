@@ -27,17 +27,6 @@
   "bugs": {
     "url": "https://github.com/guidebooks/madwizard/issues"
   },
-  "release-it": {
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "angular",
-        "infile": "CHANGELOG.md"
-      },
-      "@release-it/bumper": {
-        "out": "src/version.json"
-      }
-    }
-  },
   "devDependencies": {
     "@types/columnify": "^1.5.1",
     "@types/debug": "^4.1.7",
