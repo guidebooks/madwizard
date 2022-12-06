@@ -75,7 +75,7 @@
   "release-it": {
     "npm": false,
     "plugins": {
-      "release-it-workspaces": true
+      "@release-it-plugins/workspaces": true
     }
   },
   "devDependencies": {
