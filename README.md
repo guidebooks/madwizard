@@ -9,10 +9,10 @@
 
 You can interact with `madwizard` in one of four ways:
 
-a) As a **test rig**; point to your documentation and madwizard can generate initial desired output models, and then regression test updates on your side against the desired output.
-b) As a library that generates **task graph and wizard models from markdown**.
-c) As an **ASCII CLI tool** that executes the wizard model, stepping users through the choices they need to make and the tasks that should be performed on their systems.
-d) Finally, madwizard's wizard executor supports callbacks, allowing you to wrote your own custom (even graphical) UI.
+- As a **test rig**; point to your documentation and madwizard can generate initial desired output models, and then regression test updates on your side against the desired output.
+- As a library that generates **task graph and wizard models from markdown**.
+- As an **ASCII CLI tool** that executes the wizard model, stepping users through the choices they need to make and the tasks that should be performed on their systems.
+- Finally, madwizard's wizard executor supports callbacks, allowing you to wrote your own custom (even graphical) UI.
 
 ## Gallery
 
