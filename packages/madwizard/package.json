@@ -9,7 +9,8 @@
   "sideEffects": false,
   "scripts": {
     "test": "node --no-warnings dist/test",
-    "prepack": "npm test && cp src/version.json dist/version.json"
+    "build": "tsc --build .",
+    "prepack": "npm run build && npm test && cp src/version.json dist/version.json"
   },
   "keywords": [
     "markdown",
