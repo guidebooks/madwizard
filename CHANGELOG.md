@@ -1,3 +1,9 @@
+## [2.0.4](https://github.com/guidebooks/madwizard/compare/2.0.3...2.0.4) (2022-12-06)
+
+### Bug Fixes
+
+- move changelog management back to top-level ([d6d6cb2](https://github.com/guidebooks/madwizard/commit/d6d6cb27a61db2fe9b90823829c89312daebea9d))
+
 ## [2.0.3](https://github.com/guidebooks/madwizard/compare/2.0.2...2.0.3) (2022-12-06)
 
 Changelog:
