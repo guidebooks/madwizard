@@ -4,7 +4,7 @@
 
 READMEs are a great way to share, but not always the most useful way
 to accomplish a task. Documentation is prone to rot. Screenshots and
-command lines invariable go out of date. Sometimes a README may never
+command lines invariably go out of date. Sometimes a README may never
 have worked as written, due to gaps in the documented tasks,
 divergences from the implementation, or incompletely specified
 prerequisites.
