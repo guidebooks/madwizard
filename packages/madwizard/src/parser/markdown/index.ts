@@ -36,6 +36,7 @@ import { hackMarkdownSource } from "./hack.js"
 import remarkDirective from "remark-directive"
 
 import inlineSnippets from "./snippets/index.js"
+export { inlineSnippets }
 import { toRawGithubUserContent } from "./snippets/urls.js"
 
 import frontmatter from "remark-frontmatter"
