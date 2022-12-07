@@ -1,3 +1,9 @@
+# [2.1.0](https://github.com/guidebooks/madwizard/compare/2.0.4...2.1.0) (2022-12-07)
+
+### Features
+
+- expose `Parser.inlineSnippets()` ([91d59b0](https://github.com/guidebooks/madwizard/commit/91d59b0de4827b4304ca90bf314ba9afbdfeba06))
+
 ## [2.0.4](https://github.com/guidebooks/madwizard/compare/2.0.3...2.0.4) (2022-12-06)
 
 ### Bug Fixes
