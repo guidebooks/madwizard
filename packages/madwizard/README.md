@@ -2,17 +2,40 @@
 
 # <img src=".github/madwizard.gif" title="madwizard" height="32"> Turn Markdown into Wizards
 
-`madwizard` allows you to:
+READMEs are a great way to share, but not always the most useful way
+to accomplish a task. Documentation is prone to rot. Screenshots and
+command lines invariable go out of date. Sometimes a README may never
+have worked as written, due to gaps in the documented tasks,
+divergences from the implementation, or incompletely specified
+prerequisites.
 
-1. test your markdown documentation
-2. automatically generate wizards that step your users through your documentation
+Even for complete and up-to-date READMEs, it is often unclear how to
+turn the documentation into a reliable plan of execution. Which code
+blocks are optional? Which have I already done on my laptop? How
+about in my cluster? How much of the overly general documentation is
+relevant to my system?
 
-You can interact with `madwizard` in one of four ways:
+With `madwizard`, you can automate testing and consumption of
+documentation. Point `madwizard` at markdown, and it can generate an
+execution plan, and help you (and your users) execute these reliably.
 
-- As a **test rig**; point to your documentation and madwizard can generate initial desired output models, and then regression test updates on your side against the desired output.
-- As a library that generates **task graph and wizard models from markdown**.
-- As an **ASCII CLI tool** that executes the wizard model, stepping users through the choices they need to make and the tasks that should be performed on their systems.
-- Finally, madwizard's wizard executor supports callbacks, allowing you to wrote your own custom (even graphical) UI.
+## The `madwizard` User Experience
+
+With `madwizard`, several interaction modes are possible.
+
+- **Task Graph Generation Library**: point to your markdown
+  documentation and `madwizard` generates an execution plan.
+
+- **Test Rig**: you may use `madwizard` to run through that plan in an
+  automated fashion.
+
+- **ASCII CLI Wizard**: the `madwizard` plan allows for choice, and
+  includes an executor that interrogates the user, enlisting their
+  help in guiding the plan, all within their terminal.
+
+- **Graphical Wizards**: the wizard executor supports inversion of
+  control, allowing you to intercept interrogations and present them
+  with custom, e.g. graphical, interfaces.
 
 ## Gallery
 
