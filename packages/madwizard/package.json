@@ -10,7 +10,7 @@
   "scripts": {
     "test": "node --no-warnings dist/test",
     "build": "tsc --build .",
-    "prepack": "npm run build && ([ -n \"$NO_TEST\" ] || npm test) && cp src/version.json dist/version.json"
+    "prepack": "npm run build && ([ -n \"$NO_TEST\" ] || npm test)"
   },
   "keywords": [
     "markdown",
