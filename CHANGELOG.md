@@ -1,3 +1,9 @@
+## [2.3.1](https://github.com/guidebooks/madwizard/compare/2.3.0...2.3.1) (2022-12-08)
+
+### Bug Fixes
+
+- madwizard launcher has leftover debug and points to old madwizard-cli/dist ([eb736bc](https://github.com/guidebooks/madwizard/commit/eb736bc7e894987c93a004e09e59db43ef39f31f))
+
 # [2.3.0](https://github.com/guidebooks/madwizard/compare/2.2.7...2.3.0) (2022-12-08)
 
 ### Features

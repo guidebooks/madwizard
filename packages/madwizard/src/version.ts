@@ -15,5 +15,5 @@
  */
 
 export async function version() {
-  console.log("2.3.0")
+  console.log("2.3.1")
 }
