@@ -1,12 +1,21 @@
-#!/usr/bin/env node
+/*
+ * Copyright 2022 The Kubernetes Authors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 /* eslint-env node */
 /* ^^^ rather than add env: node globally in package.json */
-
-import { cli } from "madwizard/dist/fe/cli/index.js"
-import { dirname, join } from "path"
-import { createRequire } from "module"
-const require = createRequire(import.meta.url)
 
 /**
  * This is a trivial front-end to the CLI module that quickly loads
@@ -15,15 +24,19 @@ const require = createRequire(import.meta.url)
  *
  */
 
+import { cli } from "madwizard/dist/fe/cli/index.js" // load just the CLI bits
+import { dirname, join } from "path"
+
+/** MadWizardOptions */
+const opts = {}
+
 if (!process.env.MWSTORE && !process.argv.find((_) => /-s|--store/.test(_))) {
-  // we will use the built-in store (the one shipped with the
-  // `@guidebook/store` npm)
-  const store =
+  // use the built-in store shipped with the `@guidebook/store` npm
+  opts.store =
     process.env.GUIDEBOOK_STORE || join(dirname(require.resolve("@guidebooks/store/package.json")), "dist/store")
-  process.argv.push(`--store=${store}`)
 }
 
-cli(process.argv.slice(1)).catch((err) => {
+cli(process.argv.slice(1), undefined, opts).catch((err) => {
   if (process.env.DEBUG) {
     console.log(err)
   } else if (err && err.message) {
