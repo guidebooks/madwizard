@@ -49,13 +49,13 @@ You may find the source for these [here](https://github.com/guidebooks/store/tre
 
 ## Installation
 
-If you wish to consume this as a library, then:
+If you wish to consume `madwizard` as a library, then:
 
 ```shell
 npm install madwizard
 ```
 
-If you wish to consume this as a CLI, then:
+If you wish to consume `madwizard` as a CLI, then:
 
 ```shell
 npm install -g madwizard-cli
