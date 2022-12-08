@@ -19,10 +19,10 @@
     "test": "./bin/madwizard version"
   },
   "dependencies": {
-    "@guidebooks/store": "^1.7.1",
-    "madwizard": "^2.2.1"
+    "@guidebooks/store": "^1.7.1"
   },
   "devDependencies": {
-    "esbuild": "^0.16.2"
+    "esbuild": "^0.16.2",
+    "madwizard": "^2.2.1"
   }
 }
