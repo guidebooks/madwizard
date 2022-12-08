@@ -1,3 +1,9 @@
+## [2.2.7](https://github.com/guidebooks/madwizard/compare/2.2.6...2.2.7) (2022-12-08)
+
+### Bug Fixes
+
+- move prepublishOnly to release-it before:init ([b1870b6](https://github.com/guidebooks/madwizard/commit/b1870b69b85ace4e247d052db618d22c8853ae5e))
+
 ## [2.2.6](https://github.com/guidebooks/madwizard/compare/2.2.5...2.2.6) (2022-12-08)
 
 ## [2.2.5](https://github.com/guidebooks/madwizard/compare/2.2.4...2.2.5) (2022-12-08)
