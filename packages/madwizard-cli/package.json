@@ -4,12 +4,21 @@
   "description": "Turn Markdown into Wizards, CLI front end",
   "type": "module",
   "sideEffects": false,
-  "bin": {
-    "mw": "./madwizard.js",
-    "madwizard": "./madwizard.js"
+  "directories": {
+    "bin": "./bin"
+  },
+  "scripts": {
+    "clean": "rm madwizard.min.cjs",
+    "bundle": "esbuild ./madwizard.js --bundle --platform=node --outfile=./madwizard.min.cjs --external:@guidebooks/store/package.json",
+    "build": "npm run bundle -- --minify",
+    "watch": "npm run bundle -- --watch",
+    "test": "./bin/madwizard version"
   },
   "dependencies": {
     "@guidebooks/store": "^1.7.1",
     "madwizard": "^2.1.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.16.2"
   }
 }
