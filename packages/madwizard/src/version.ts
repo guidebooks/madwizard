@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import versionRecord from "./version.json" assert { type: "json" }
-
 export async function version() {
-  console.log(versionRecord.version)
+  console.log("2.1.0")
 }
