@@ -16,7 +16,8 @@
     "format": "cross-env prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",
     "format:test:input": "cross-env prettier --write test/inputs",
     "postinstall": "cd packages/madwizard-cli && mkdir -p dist && cp -a node_modules/@guidebooks/store/dist/store dist",
-    "prepack": "npm run build && npm run prepack --workspaces --if-present",
+    "prepublishOnly": "npm run build",
+    "prepack": "npm run prepack --workspaces --if-present",
     "prepare": "cross-env husky install"
   },
   "workspaces": [
