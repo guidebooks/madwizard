@@ -1,0 +1,6 @@
+# `madwizard` CLI
+
+This package offers a simple front-end launcher to
+[`madwizard`](https://github.com/guidebooks/madwizard). It does not
+include a store. The `madwizard-cli` package includes this core CLI
+wrapper and also ships with a guidebook store.

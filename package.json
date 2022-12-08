@@ -15,11 +15,11 @@
     "test": "cross-env npm run test --workspaces --if-present",
     "format": "cross-env prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",
     "format:test:input": "cross-env prettier --write test/inputs",
-    "postinstall": "cd packages/madwizard-cli && mkdir -p dist && cp -a node_modules/@guidebooks/store/dist/store dist",
     "prepare": "cross-env husky install"
   },
   "workspaces": [
     "packages/madwizard",
+    "packages/madwizard-cli-core",
     "packages/madwizard-cli"
   ],
   "keywords": [
