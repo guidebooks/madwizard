@@ -29,13 +29,13 @@ With `madwizard`, several interaction modes are possible.
 - **Test Rig**: you may use `madwizard` to run through that plan in an
   automated fashion.
 
-- **ASCII CLI Wizard**: the `madwizard` plan allows for choice, and
-  includes an executor that interrogates the user, enlisting their
-  help in guiding the plan, all within their terminal.
+- **ASCII CLI Wizards**: a `madwizard` plan allows for choice, and
+  includes an executor that interrogates the user using a familiar
+  terminal Q&A experience, enlisting their help in guiding the plan.
 
 - **Graphical Wizards**: the wizard executor supports inversion of
-  control, allowing you to intercept interrogations and present them
-  with custom, e.g. graphical, interfaces.
+  control, whereby a Q&A exchange may be intercepted and presented
+  with a custom, e.g. graphical, interface.
 
 ## Gallery
 
