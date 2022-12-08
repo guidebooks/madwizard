@@ -8,14 +8,6 @@
     "mw": "./madwizard.js",
     "madwizard": "./madwizard.js"
   },
-  "release-it": {
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "angular",
-        "infile": "CHANGELOG.md"
-      }
-    }
-  },
   "dependencies": {
     "@guidebooks/store": "^1.7.1",
     "madwizard": "^2.1.0"
