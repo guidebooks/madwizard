@@ -3,6 +3,7 @@
 /* eslint-env node */
 /* ^^^ rather than add env: node globally in package.json */
 
+import { cli } from "madwizard/dist/fe/cli/index.js"
 import { dirname, join } from "path"
 import { createRequire } from "module"
 const require = createRequire(import.meta.url)
@@ -14,15 +15,6 @@ const require = createRequire(import.meta.url)
  *
  */
 
-/**
- * Here, we handle either being run as a `bin` of an installed npm
- * (isNpx===true), or being run directly.
- */
-const isNpx = process.env.npm_command === "exec"
-
-/** Find the root directory to our cli module shortcut */
-const madwizard = isNpx ? "madwizard" : "../madwizard"
-
 if (!process.env.MWSTORE && !process.argv.find((_) => /-s|--store/.test(_))) {
   // we will use the built-in store (the one shipped with the
   // `@guidebook/store` npm)
@@ -31,13 +23,11 @@ if (!process.env.MWSTORE && !process.argv.find((_) => /-s|--store/.test(_))) {
   process.argv.push(`--store=${store}`)
 }
 
-import(madwizard + "/dist/fe/cli/index.js")
-  .then((_) => _.cli(process.argv.slice(1)))
-  .catch((err) => {
-    if (process.env.DEBUG) {
-      console.log(err)
-    } else if (err && err.message) {
-      console.log(err.message)
-    }
-    process.exit(1)
-  })
+cli(process.argv.slice(1)).catch((err) => {
+  if (process.env.DEBUG) {
+    console.log(err)
+  } else if (err && err.message) {
+    console.log(err.message)
+  }
+  process.exit(1)
+})
