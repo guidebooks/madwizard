@@ -16,8 +16,7 @@
     "bundle": "esbuild ./madwizard.js --bundle --platform=node --outfile=./dist/madwizard.min.cjs --external:@guidebooks/store/package.json",
     "build": "npm run bundle -- --minify",
     "watch": "npm run bundle -- --watch",
-    "test": "./bin/madwizard version",
-    "postinstall": "mkdir -p dist && cp -a node_modules/@guidebooks/store/dist/store dist"
+    "test": "./bin/madwizard version"
   },
   "devDependencies": {
     "@guidebooks/store": "^1.7.1",
