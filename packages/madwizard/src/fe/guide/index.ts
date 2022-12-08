@@ -282,10 +282,6 @@ export class Guide {
       return opts.answer
     }
 
-    if (process.env.MWCLEAR) {
-      console.clear()
-    }
-
     const prompt = this.isSelect(opts)
       ? new enquirer.Select(opts)
       : this.isMultiSelect(opts)
@@ -548,20 +544,34 @@ export class Guide {
     }
   }
 
+  /** It may be desired to clear the screen before asking the first question */
+  private get shouldClearOnFirstQuestion() {
+    return (
+      process.env.MWCLEAR_INITIAL || (!this.options.raw && this.options.clear !== false && this.options.interactive)
+    )
+  }
+
+  /** It may be desired to clear the screen between every question */
+  private get shouldClearOnEveryQuestion() {
+    return process.env.MWCLEAR
+  }
+
   /** Iterate until all choices have been resolved */
   private async resolveChoices(iter = 0, choiceIter = 0, previous?: Wizard) {
     const qs = await this.questions(choiceIter, previous)
     const { graph, choices, preChoiceTasks, postChoiceTasks, questions, wizard } = qs
 
-    if (iter === 0) {
-      if (this.isGuided) {
-        if (process.env.MWCLEAR_INITIAL) {
+    if (this.isGuided) {
+      if (iter === 0) {
+        if (this.shouldClearOnFirstQuestion) {
           // clear the console before presenting the guide, but after
           // the initial compilation, and before presenting the guidebook title
           console.clear()
         }
 
         this.presentGuidebookTitle(graph)
+      } else if (this.shouldClearOnEveryQuestion) {
+        console.clear()
       }
     }
 
@@ -593,11 +603,6 @@ export class Guide {
   }
 
   public async run() {
-    if (!this.options.raw && this.options.clear !== false && this.options.interactive) {
-      // note: do not clear the terminal in raw mode
-      console.clear()
-    }
-
     // a name we might want to associate with the run, in the logs
     const name = this.options.name ? ` (${this.options.name})` : ""
 
