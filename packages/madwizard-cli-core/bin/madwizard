@@ -5,10 +5,9 @@ SCRIPTDIR=$(cd $(dirname "$0") && pwd)
 if [ -d "$SCRIPTDIR"/../dist ]; then
    DIST="$SCRIPTDIR"/../dist
 else
-   DIST="$SCRIPTDIR"/../madwizard-cli/dist
+   DIST="$SCRIPTDIR"/../madwizard-cli-core/dist
 fi
 
-echo "!!!!!!! $SCRIPTDIR/../@guideboks/store/dist/store"
 if [ -d "$SCRIPTDIR"/../@guideboks/store/dist/store ]; then
    # we are running as an npm
    export GUIDEBOOK_STORE="$SCRIPTDIR"/../@guideboks/store/dist/store
