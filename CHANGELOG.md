@@ -1,3 +1,15 @@
+# [2.2.0](https://github.com/guidebooks/madwizard/compare/2.1.0...2.2.0) (2022-12-08)
+
+### Bug Fixes
+
+- avoid a version.json file ([74b77ba](https://github.com/guidebooks/madwizard/commit/74b77bae3d2512dbed12d0b07509fa55fdd16a5d))
+- avoid dynamic import of madwizard in madwizard-cli ([219ce2d](https://github.com/guidebooks/madwizard/commit/219ce2d2479e6258ea5877f8d01780b5a5e181f6))
+- improve logic for initial clear screen ([cca9d27](https://github.com/guidebooks/madwizard/commit/cca9d2740d0516b2de5a40ef041b7564a5fd0881))
+
+### Features
+
+- use esbuild to bundle an optimized madwizard-cli ([d6b003e](https://github.com/guidebooks/madwizard/commit/d6b003eaca9409bd916168f3ada858a2f230dfae))
+
 # [2.1.0](https://github.com/guidebooks/madwizard/compare/2.0.4...2.1.0) (2022-12-07)
 
 ### Features
