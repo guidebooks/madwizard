@@ -78,7 +78,7 @@
         "infile": "CHANGELOG.md"
       },
       "@release-it/bumper": {
-        "out": "packages/madwizard/src/version.json"
+        "out": "packages/madwizard/src/version.ts"
       }
     }
   },
