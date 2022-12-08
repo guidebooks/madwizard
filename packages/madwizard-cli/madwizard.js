@@ -25,15 +25,12 @@
  */
 
 import { cli } from "madwizard/dist/fe/cli/index.js" // load just the CLI bits
-import { dirname, join } from "path"
 
 /** MadWizardOptions */
 const opts = {}
 
 if (!process.env.MWSTORE && !process.argv.find((_) => /-s|--store/.test(_))) {
-  // use the built-in store shipped with the `@guidebook/store` npm
-  opts.store =
-    process.env.GUIDEBOOK_STORE || join(dirname(require.resolve("@guidebooks/store/package.json")), "dist/store")
+  opts.store = process.env.GUIDEBOOK_STORE
 }
 
 cli(process.argv.slice(1), undefined, opts).catch((err) => {

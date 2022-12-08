@@ -5,8 +5,8 @@
   "type": "module",
   "sideEffects": false,
   "files": [
-    "./bin/madwizard",
-    "./dist/madwizard.min.cjs"
+    "./bin/*",
+    "./dist/*"
   ],
   "directories": {
     "bin": "./bin"
@@ -16,12 +16,11 @@
     "bundle": "esbuild ./madwizard.js --bundle --platform=node --outfile=./dist/madwizard.min.cjs --external:@guidebooks/store/package.json",
     "build": "npm run bundle -- --minify",
     "watch": "npm run bundle -- --watch",
-    "test": "./bin/madwizard version"
-  },
-  "dependencies": {
-    "@guidebooks/store": "^1.7.1"
+    "test": "./bin/madwizard version",
+    "postinstall": "mkdir -p dist && cp -a node_modules/@guidebooks/store/dist/store dist"
   },
   "devDependencies": {
+    "@guidebooks/store": "^1.7.1",
     "esbuild": "^0.16.2",
     "madwizard": "^2.2.2"
   }
