@@ -1,3 +1,9 @@
+## [2.2.3](https://github.com/guidebooks/madwizard/compare/2.2.2...2.2.3) (2022-12-08)
+
+### Bug Fixes
+
+- madwizard-cli should have a devdep on @guidebooks/store ([7fe3082](https://github.com/guidebooks/madwizard/commit/7fe3082af2a5c91b811ca6d961a4e280ca729888))
+
 ## [2.2.2](https://github.com/guidebooks/madwizard/compare/2.2.1...2.2.2) (2022-12-08)
 
 ## [2.2.1](https://github.com/guidebooks/madwizard/compare/2.2.0...2.2.1) (2022-12-08)
