@@ -15,7 +15,9 @@
   "keywords": [
     "markdown",
     "wizard",
-    "task graph"
+    "task graph",
+    "testing",
+    "documentation"
   ],
   "author": "@starpit",
   "license": "Apache-2.0",

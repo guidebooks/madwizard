@@ -4,6 +4,20 @@
   "description": "Turn Markdown into Wizards, CLI front end (w/o store)",
   "type": "module",
   "sideEffects": false,
+  "keywords": [
+    "markdown",
+    "wizard",
+    "task graph",
+    "testing",
+    "documentation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guidebooks/madwizard"
+  },
+  "bugs": {
+    "url": "https://github.com/guidebooks/madwizard/issues"
+  },
   "files": [
     "./bin/*",
     "./dist/*"
