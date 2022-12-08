@@ -1,3 +1,9 @@
+## [2.2.1](https://github.com/guidebooks/madwizard/compare/2.2.0...2.2.1) (2022-12-08)
+
+### Bug Fixes
+
+- remove leftover copy of version.json ([69cc569](https://github.com/guidebooks/madwizard/commit/69cc5697d2454860a9648d61cb481257507fe9e7))
+
 # [2.2.0](https://github.com/guidebooks/madwizard/compare/2.1.0...2.2.0) (2022-12-08)
 
 ### Bug Fixes
