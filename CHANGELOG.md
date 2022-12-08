@@ -1,3 +1,9 @@
+# [2.3.0](https://github.com/guidebooks/madwizard/compare/2.2.7...2.3.0) (2022-12-08)
+
+### Features
+
+- create new madwizard-cli-core that is the cli without a store dependence ([a18949f](https://github.com/guidebooks/madwizard/commit/a18949f392d1c4896afe657a04d36a9ac04d88f3))
+
 ## [2.2.7](https://github.com/guidebooks/madwizard/compare/2.2.6...2.2.7) (2022-12-08)
 
 ### Bug Fixes
