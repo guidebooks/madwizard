@@ -1,3 +1,9 @@
+## [2.2.5](https://github.com/guidebooks/madwizard/compare/2.2.4...2.2.5) (2022-12-08)
+
+### Bug Fixes
+
+- prepack does not properly build madwizard-cli.min.js ([eb5526b](https://github.com/guidebooks/madwizard/commit/eb5526b8bcc2c7dded14c064939829e33f89dc15))
+
 ## [2.2.4](https://github.com/guidebooks/madwizard/compare/2.2.3...2.2.4) (2022-12-08)
 
 ### Bug Fixes
