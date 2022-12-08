@@ -1,3 +1,9 @@
+## [2.2.4](https://github.com/guidebooks/madwizard/compare/2.2.3...2.2.4) (2022-12-08)
+
+### Bug Fixes
+
+- madwizard-cli should not have a postinstall script ([cf768c1](https://github.com/guidebooks/madwizard/commit/cf768c1ff97669071fef85a053c69217d386fabd))
+
 ## [2.2.3](https://github.com/guidebooks/madwizard/compare/2.2.2...2.2.3) (2022-12-08)
 
 ### Bug Fixes

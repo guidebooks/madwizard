@@ -1,6 +1,6 @@
 {
   "name": "madwizard-cli",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "Turn Markdown into Wizards, CLI front end",
   "type": "module",
   "sideEffects": false,
@@ -21,6 +21,6 @@
   "devDependencies": {
     "@guidebooks/store": "^1.7.1",
     "esbuild": "^0.16.2",
-    "madwizard": "^2.2.3"
+    "madwizard": "^2.2.4"
   }
 }
