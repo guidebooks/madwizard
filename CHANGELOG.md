@@ -1,3 +1,9 @@
+## [2.3.4](https://github.com/guidebooks/madwizard/compare/2.3.3...2.3.4) (2022-12-09)
+
+### Bug Fixes
+
+- regression in release-it hook ([e58c71e](https://github.com/guidebooks/madwizard/commit/e58c71eeac789da363455ad1091df63846eecc73))
+
 ## [2.3.3](https://github.com/guidebooks/madwizard/compare/2.3.2...2.3.3) (2022-12-09)
 
 ### Bug Fixes
