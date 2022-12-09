@@ -75,7 +75,11 @@
     "npm": false,
     "hooks": {
       "before:init": [
-        "npm run build"
+        "npm run build",
+        "cd packages/madwizard-cli/bin && rm madwizard && cp ../../madwizard-cli-core/bin/madwizard ."
+      ],
+      "after:release": [
+        "cd packages/madwizard-cli/bin && rm madwizard && ln -s ../../madwizard-cli-core/bin/madwizard"
       ]
     },
     "plugins": {
