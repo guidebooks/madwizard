@@ -1,3 +1,9 @@
+## [2.3.6](https://github.com/guidebooks/madwizard/compare/2.3.5...2.3.6) (2022-12-09)
+
+### Bug Fixes
+
+- madwizard-cli's madwizard launcher cannot find min.js ([136fa50](https://github.com/guidebooks/madwizard/commit/136fa5014e073018cb28bd5d8d8eda9539d15e31))
+
 ## [2.3.5](https://github.com/guidebooks/madwizard/compare/2.3.4...2.3.5) (2022-12-09)
 
 ### Bug Fixes
