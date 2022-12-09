@@ -1,3 +1,10 @@
+## [2.3.3](https://github.com/guidebooks/madwizard/compare/2.3.2...2.3.3) (2022-12-09)
+
+### Bug Fixes
+
+- `madwizard` still not available in published `madwizard-cli` ([a79de34](https://github.com/guidebooks/madwizard/commit/a79de34bcfebe2981f9c16b1b73f26ff596b8450))
+- avoid manipulating files in release-it's before:init ([8e7988f](https://github.com/guidebooks/madwizard/commit/8e7988f2ebe412ff6b8680d377e26610b4723295))
+
 ## [2.3.2](https://github.com/guidebooks/madwizard/compare/2.3.1...2.3.2) (2022-12-09)
 
 ### Bug Fixes
