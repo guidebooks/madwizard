@@ -14,6 +14,18 @@
  * limitations under the License.
  */
 
-export default function version() {
-  return "2.3.6"
+import { CommandModule } from "yargs"
+
+import { MadWizardOptions } from "../../MadWizardOptions.js"
+import Opts, { assembleOptions } from "../options.js"
+
+export default function profileModule(providedOptions: MadWizardOptions): CommandModule<Opts, Opts> {
+  return {
+    command: "profile",
+    describe: "Print out the set of choices for the selected profile",
+    handler: async (argv) => {
+      const options = assembleOptions(providedOptions, argv)
+      await import("../../profiles/index.js").then((_) => _.default(argv._, options))
+    },
+  }
 }

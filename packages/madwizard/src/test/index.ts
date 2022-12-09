@@ -226,7 +226,7 @@ function testRunTask(test: Test, input: string, suffix: string, options: Options
 
   const configs = [
     { noProfile: false, noAssertions: false },
-    { noProfile: false, noAssertions: true },
+    // @starpit 20221209 we have no expected output for this case: { noProfile: false, noAssertions: true },
   ]
   configs.forEach((config) => {
     const cliOptions = getCLIOptions(input, config)

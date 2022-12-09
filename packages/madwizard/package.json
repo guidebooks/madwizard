@@ -10,6 +10,7 @@
   "scripts": {
     "test": "node --no-warnings dist/test",
     "build": "tsc --build .",
+    "format:test:input": "cross-env prettier --write test/inputs --ignore-path ../../.prettierignore",
     "prepack": "npm run build && ([ -n \"$NO_TEST\" ] || npm test)"
   },
   "keywords": [
@@ -44,6 +45,7 @@
     "@types/uuid": "^9.0.0",
     "@types/which": "^2.0.1",
     "@types/write-file-atomic": "^4.0.0",
+    "@types/yargs": "^17.0.17",
     "@types/yargs-parser": "^21.0.0",
     "@typescript-eslint/eslint-plugin": "^5.46.0",
     "@typescript-eslint/parser": "^5.46.0",
@@ -87,6 +89,7 @@
     "vfile": "^5.3.6",
     "which": "^3.0.0",
     "write-file-atomic": "^5.0.0",
+    "yargs": "^17.6.2",
     "yargs-parser": "^21.1.1"
   }
 }

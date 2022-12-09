@@ -52,8 +52,3 @@ export function validTasks(): Task[] {
   const normalTasks: Task[] = ["profile", "plan", "guide", "run", "json", "version", "vetoes", "build", "mirror"]
   return normalTasks.concat(validDebugTasks())
 }
-
-/** @return whether the given `task` is an instance of the valid CLI `Task` types */
-export function isValidTask(task: string): task is Task {
-  return validTasks().includes(task as Task)
-}
