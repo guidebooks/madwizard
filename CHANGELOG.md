@@ -1,3 +1,9 @@
+## [2.3.5](https://github.com/guidebooks/madwizard/compare/2.3.4...2.3.5) (2022-12-09)
+
+### Bug Fixes
+
+- madwizard-cli does not expose bin to npm ([82eb500](https://github.com/guidebooks/madwizard/commit/82eb5009252c4988a624e5c8897903b0d1e8bbfe))
+
 ## [2.3.4](https://github.com/guidebooks/madwizard/compare/2.3.3...2.3.4) (2022-12-09)
 
 ### Bug Fixes
