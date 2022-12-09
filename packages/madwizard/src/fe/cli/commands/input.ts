@@ -14,6 +14,17 @@
  * limitations under the License.
  */
 
-export default function version() {
-  return "2.3.6"
+import { Argv } from "yargs"
+
+import Opts from "../options"
+
+export type InputOpts = Opts & {
+  input: string
+}
+
+export function inputBuilder(yargs: Argv<Opts>): Argv<InputOpts> {
+  return yargs.positional("input", {
+    type: "string",
+    describe: "Input markdown file",
+  })
 }

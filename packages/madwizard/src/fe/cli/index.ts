@@ -14,23 +14,71 @@
  * limitations under the License.
  */
 
-import yargs from "yargs-parser"
+import chalk from "chalk"
 import { Writable } from "stream"
+import yargs, { Argv } from "yargs"
 
-import usage from "./usage.js"
-import defaultOptions from "./defaults.js"
 import { UI } from "../tree/index.js"
-import { DebugTask, isDebugTask, isValidTask, taskHasNoArgs } from "./tasks.js"
+import version from "../../version.js"
+// import { DebugTask, isDebugTask } from "./tasks.js"
+
+import jsonModule from "./commands/json.js"
+import planModule from "./commands/plan.js"
+import buildModule from "./commands/build.js"
+import mirrorModule from "./commands/mirror.js"
+import profileModule from "./commands/profile.js"
+import guideModule, { guideHandler } from "./commands/guide.js"
 
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
-function assertExhaustive(value: never, message = "Reached unexpected case in exhaustive switch"): never {
-  throw new Error(message)
+type Opts = {
+  "--"?: string[]
+
+  /** Name for the set of stored answers to questions */
+  profile?: string | false
+
+  /** Path to guidebook store */
+  store?: string
+
+  narrow?: boolean
+  raw?: boolean
+  "raw-prefix"?: string
+  quiet?: boolean
+
+  /** Emit extra low-level content, such as command lines and env var updates */
+  verbose?: boolean
+
+  /**
+   * Assert an answer to a question (of the form question=answer,
+   * where question is the path of the guidebook containing the
+   * question).
+   */
+  assert?: string
+
+  /**
+   * Whereas assert means ignore the answer in the profile, use the
+   * value provided here, veto means just ignore the answer to the
+   * question in the profile (also of the form question=answer, where
+   * question is the path of the guidebook containing the question).
+   */
+  veto?: string
+
+  /** Whether or not to use platform detection logic */
+  aprioris?: boolean
+
+  /** Optimization settings */
+  optimize?: number | false
+
+  /** Accept all prior choices */
+  yes?: boolean
 }
 
-async function enableTracing(task: DebugTask, subtask = "*") {
-  await import("debug").then((_) => _.default.enable(`madwizard/${task.replace(/^debug:/, "")}/${subtask}`))
-}
+//async function enableTracing(task: DebugTask, subtask = "*") {
+//  await import("debug").then((_) => _.default.enable(`madwizard/${task.replace(/^debug:/, "")}/${subtask}`))
+//}
+
+/** Example command lines */
+const examples: [[string, string]] = [[chalk.yellow("$0 guide demo/hello"), "A hello world example"]]
 
 export async function cli<Writer extends Writable["write"]>(
   _argv: string[],
@@ -38,367 +86,125 @@ export async function cli<Writer extends Writable["write"]>(
   providedOptions: MadWizardOptions = {},
   ui?: UI<string>
 ) {
-  const parsedOptions = yargs(_argv, {
-    configuration: { "populate--": true }, // parse out the "-- <rest>" part of the command line
-    alias: { profile: ["p"], narrow: ["n"], interactive: ["i"], verbose: ["V"], raw: ["r"] },
-    boolean: ["narrow", "n", "interactive", "i", "verbose", "V", "dry-run", "bump", "raw"],
-  })
-  const argv = parsedOptions._
-
-  if (argv[1] === "version") {
-    return import("../../version.js").then((_) => _.version())
-  }
-
-  const [{ newChoiceState }, { compile, order, vetoesToString }] = await Promise.all([
-    import("../../choices/index.js"),
-    import("../../graph/index.js"),
-  ])
-
-  const task = !argv[2] && !taskHasNoArgs(argv[1]) ? "guide" : (argv[1] || "").toString()
-  const input = (argv[2] || argv[1] || "").toString()
-
-  const veto = !parsedOptions.veto ? undefined : new RegExp(parsedOptions.veto)
-  const mkdocs = parsedOptions.mkdocs
-  const narrow = parsedOptions.narrow
-  const profileFromCommandLine = parsedOptions.profile === false ? undefined : parsedOptions.profile
-  const noProfile = parsedOptions.profile === false
-  const profilesPath = parsedOptions["profiles-path"]
-
-  // don't actually execute anything, but making choices and
-  // validation and expanding lists is ok
-  const dryRun = parsedOptions["dry-run"]
-
-  const interactive = parsedOptions.interactive
-  const noOptimize =
-    parsedOptions.O === 0 || parsedOptions.optimize === false || parsedOptions.optimize === 0 || undefined
-  const noAprioris =
-    parsedOptions["aprioris"] === false ||
-    (typeof providedOptions.optimize === "object" && providedOptions.optimize.aprioris === false)
-  const noValidate = parsedOptions["validate"] === false
-  const verbose = parsedOptions.verbose
-
-  // optimization settings
-  const optimize = noOptimize ? false : { aprioris: !noAprioris, validate: !noValidate }
-
-  // base uri of guidebook store; this will allow users to type
-  // shortnames for books in the store
-  const store = parsedOptions.store
-
-  const commandLineOptions: MadWizardOptions = {}
-  if (interactive !== undefined) {
-    commandLineOptions.interactive = interactive
-  }
-  if (veto !== undefined) {
-    commandLineOptions.veto = veto
-  }
-  if (dryRun !== undefined) {
-    commandLineOptions.dryRun = dryRun
-  }
-  if (mkdocs !== undefined) {
-    commandLineOptions.mkdocs = mkdocs
-  }
-  if (profileFromCommandLine !== undefined) {
-    commandLineOptions.profile = profileFromCommandLine
-  }
-  if (narrow !== undefined) {
-    commandLineOptions.narrow = narrow
-  }
-  if (optimize !== undefined) {
-    commandLineOptions.optimize = optimize
-  }
-  if (profilesPath !== undefined) {
-    commandLineOptions.profilesPath = profilesPath
-  }
-  if (store !== undefined) {
-    commandLineOptions.store = store
-  }
-  if (verbose !== undefined) {
-    commandLineOptions.verbose = verbose
-  }
-  if (interactive !== undefined) {
-    commandLineOptions.interactive = interactive
-  }
-  if (parsedOptions.raw !== undefined) {
-    commandLineOptions.raw = parsedOptions.raw
-  }
-  if (parsedOptions["raw-prefix"] !== undefined) {
-    commandLineOptions.rawPrefix = parsedOptions["raw-prefix"]
-  }
-  const options: MadWizardOptions = Object.assign(
-    { name: process.env.GUIDEBOOK_NAME },
-    defaultOptions,
-    commandLineOptions,
-    providedOptions
-  )
-
-  if (!task || !input) {
-    return usage(argv)
-  }
-
-  if (!isValidTask(task)) {
-    return usage(argv, `Invalid task: ${task}`)
-  }
-
-  if (isDebugTask(task)) {
-    await enableTracing(task)
-  }
-
-  // restore choices from profile
-  const profile = options.profile
-  const suggestions = noProfile
-    ? newChoiceState(profile)
-    : await import("../../profiles/restore.js").then((_) => _.default(options, profile))
-
-  // if we are doing a run, then use the suggestions as the final
-  // choices; otherwise, treat them just as suggestions in the guide
-  const choices = task === "run" ? suggestions : newChoiceState(profile)
-
-  // A handler to serialize choices. We will call this after every
-  // choice. At exit, make sure to wait for the last persist to finish.
-  let lastPersist: ReturnType<typeof setTimeout>
-  let lastPersistPromise: Promise<void>
-  const persistChoices = () => import("../../profiles/persist.js").then((_) => _.default(options, choices, suggestions))
-  if (!noProfile && !process.env.QUIET_CONSOLE) {
-    choices.onChoice(() => {
-      // persist choices after every choice is made, and remember the
-      // async, so we can wait for it on exit
-      if (lastPersist) {
-        clearTimeout(lastPersist)
-      }
-
-      lastPersist = setTimeout(() => {
-        lastPersist = undefined
-        lastPersistPromise = persistChoices().then(() => {
-          lastPersistPromise = undefined
-        })
-      }, 50)
-    })
-  }
-
-  // bump the `lastUsedTime` attribute
-  if (!process.env.QUIET_CONSOLE && !noProfile && options.bump !== false) {
-    choices.profile.lastUsedTime = Date.now()
-    persistChoices()
-  }
-
-  // assert a choice to have a given value, from programmatic options
-  if (providedOptions && typeof providedOptions.assertions === "object") {
-    Object.entries(providedOptions.assertions).forEach(([key, value]) => {
-      choices.setKey(key, value)
-    })
-  }
-
-  // assert a choice to have a given value, from command line
-  if (parsedOptions.assert) {
-    const assertions = Array.isArray(parsedOptions.assert) ? parsedOptions.assert : [parsedOptions.assert]
-    assertions
-      .map((_) => _.split(/=/))
-      .forEach(([key, value]) => {
-        choices.setKey(key, value)
+  return new Promise((resolve, reject) => {
+    const parser: Argv<Opts> = yargs()
+      .scriptName(chalk.bold("madwizard"))
+      .version(version())
+      .wrap(null) // no artificial wrapping
+      .updateStrings({
+        "Options:": chalk.bold.blue("Options:"),
+        "Commands:": chalk.bold.blue("Commands:"),
+        "Examples:": chalk.bold.blue("Examples:"),
+        boolean: chalk.cyan("boolean"),
+        string: chalk.cyan("string"),
+        number: chalk.cyan("number"),
+        "default:": chalk.yellow("default:"),
       })
-  }
+      .parserConfiguration({
+        // parse out the "-- <rest>" part of the command line
+        "populate--": true,
+      })
+      .options({
+        profile: {
+          alias: "p",
+          type: "string",
+          describe: "Use a given named profile to remember your choices",
+        },
+        store: {
+          type: "string",
+          describe: "Path to root of guidebook store",
+        },
+        interactive: {
+          alias: "i",
+          type: "boolean",
+          default: true,
+          describe: "Always ask questions",
+        },
+        yes: {
+          alias: "y",
+          type: "boolean",
+          describe: "Auto-accept all prior answers from your profile",
+        },
+        narrow: {
+          alias: "n",
+          type: "boolean",
+          describe: "Try to fit in a narrower viewport",
+        },
+        verbose: {
+          alias: "V",
+          type: "boolean",
+          describe: "Emit extra low-level content, such as command lines and env var updates",
+        },
+        raw: {
+          alias: "r",
+          type: "boolean",
+          describe: "Advanced usage: emit computer-readable output for Q&A interactions",
+        },
+        "raw-prefix": {
+          type: "string",
+          describe: "Advanced usage: when emitting raw output, prefix every line with this string",
+        },
+        aprioris: {
+          type: "boolean",
+          default: true,
+          describe: "Whether or not to use automatic platform detection logic",
+        },
+        optimize: {
+          alias: "O",
+          type: "number",
+          default: 1,
+          describe: "Whether or not to optimize the plan",
+        },
+        quiet: {
+          alias: "q",
+          type: "boolean",
+          describe: "Try to emit as little superfluous output as possible",
+        },
+        assert: {
+          type: "string",
+          describe: 'Assert the answer to a question (of the form "question=answer")',
+        },
+        veto: {
+          type: "string",
+          describe: 'Veto the answer to a question that may be in the profile (of the form "question=answer")',
+        },
+      })
+      .showHelpOnFail(false, "Specify --help for available options")
+      .help()
+      .alias("help", "h")
+      .example(examples)
+      .command(guideModule("guide", resolve, reject, providedOptions, write, ui))
+      .command(guideModule("run", resolve, reject, providedOptions, write, ui))
+      .command(buildModule(resolve, reject, providedOptions))
+      .command(mirrorModule(resolve, reject, providedOptions))
+      .command(jsonModule(resolve, reject, providedOptions, write))
+      .command(planModule(resolve, reject, providedOptions, write))
+      .command(profileModule(providedOptions))
 
-  // build and mirror: these allow for static/ahead-of-time fetching
-  // and inlining of content. This can be helpful to allow shipping
-  // "frozen" forms of content with a build, and capturing remote
-  // content at the same time. By inlining the content ("build", and
-  // mirror calls build over a directory tree), you can also amortize
-  // the cost of many file reads/remote fetches per run.
-  if (task === "build") {
-    const { inliner } = await import("../../parser/markdown/snippets/inliner.js")
-    await inliner(input, argv[3].toString(), argv[4].toString(), options)
-    return
-  } else if (task === "mirror") {
-    const { mirror } = await import("../../parser/markdown/snippets/mirror.js")
-    await mirror(input, argv[3].toString(), undefined, options)
-    return
-  } else if (task === "profile") {
-    return import("../profiles/index.js").then((_) => _.default(argv, options))
-  }
+      .demandCommand()
+      .strict()
+      .fail((msg, err, yargs) => {
+        if (!err && /Unknown argument/.test(msg)) {
+          // failsafe: assume they are running a guide
+          guideHandler("guide", providedOptions, { input: _argv[1], _: _argv, $0: "madwizard" }, write, ui).then(
+            resolve,
+            reject
+          )
+        } else {
+          yargs.showHelp()
+          reject(err)
+        }
+      })
 
-  /** @return the block model, either by using a precompiled model from the store, or by parsing the source */
-  const getBlocksModel = async () => {
-    // check to see if the compiled model exists
-    const [{ access, readFile }, { targetPathForAst }] = await Promise.all([
-      import("fs/promises"),
-      import("../../parser/markdown/snippets/mirror-paths.js"),
-    ])
+    return parser.parseAsync(_argv.slice(1))
+  })
+}
 
-    const ast1 = targetPathForAst(input + "/index.md", options.store)
-    const ast2 = targetPathForAst(input + ".md", options.store)
-    const mightBeAst = !/\.md$/.test(input) && !/^http/.test(options.store)
-    const [exists1, exists2] = await Promise.all([
-      !mightBeAst
-        ? ""
-        : access(ast1)
-            .then(() => ast1)
-            .catch(() => ""),
-      !mightBeAst
-        ? ""
-        : access(ast2)
-            .then(() => ast2)
-            .catch(() => ""),
-    ])
-    if (exists1 || exists2) {
-      // yes! the pre-parsed ast model exists
-      const { populateAprioris } = await import("../../choices/groups/index.js")
-      await populateAprioris(choices, options)
-      return JSON.parse(await readFile(exists1 || exists2).then((_) => _.toString()))
-    } else {
-      // no! we need to parse it from the source (much slower)
-      const [{ madwizardRead }, { parse }] = await Promise.all([
-        import("./madwizardRead.js"),
-        import("../../parser/index.js"),
-      ])
-      await import("debug").then((_) => _.default("madwizard/fe/cli")("using guidebook " + input))
-      return parse(input, madwizardRead, choices, undefined, options).then((_) => _.blocks)
-    }
-  }
+/*    
 
-  // this is the block model we parse from the source
-  const blocks = await getBlocksModel()
 
-  // @return a new Memoizer
-  const makeMemos = async () => {
-    const Memoizer = await import("../../memoization/index.js").then((_) => _.Memoizer)
-    const memos = new Memoizer(suggestions)
-
-    // allow guidebooks to selectively inject -- <rest> arguments into shell commands
-    memos.env.GUIDEBOOK_DASHDASH = parsedOptions["--"] ? parsedOptions["--"].join(" ") : ""
-
-    return memos
-  }
-
-  switch (task) {
-    case "version":
-      break
-
-    case "debug:graph":
-    case "debug:topmatter":
-      // these tasks depend only on `parse` having been called
-      break
-
-    case "debug:groups":
-    case "debug:timing":
-    case "debug:fetch": {
-      // print out timing
-      const memos = await makeMemos()
-      const graph = await compile(blocks, choices, memos, options)
-      await import("../../wizard/index.js").then((_) => _.wizardify(graph, memos))
-
-      await import("../tree/index.js").then((_) => new _.Treeifier(new _.DevNullUI()).toTree(order(graph)))
-      break
-    }
-
-    case "plan":
-      await import("../tree/index.js").then((_) =>
-        _.prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
-      )
-      break
-
-    case "vetoes": {
+    /* .command("vetos", "", async () => {
       (write || process.stdout.write.bind(process.stdout))(
         await vetoesToString(blocks, choices, await makeMemos(), options)
       )
-      break
-    }
-
-    case "json": {
-      const { EOL } = await import("os")
-      const memos = await makeMemos()
-      const graph = await compile(blocks, choices, memos, options)
-      const wizard = await import("../../wizard/index.js").then((_) => _.wizardify(graph, memos))
-      ;(write || process.stdout.write.bind(process.stdout))(
-        JSON.stringify(
-          wizard,
-          (key, value) => {
-            if (key === "source" || key === "position") {
-              return "placeholder"
-            } else if (key === "key" || key === "id") {
-              return "somekey"
-            } else if (key === "description" && !value) {
-              return undefined
-            } else if (key === "nesting" && Array.isArray(value)) {
-              return undefined
-            } else if (key === "barrier" && value === false) {
-              return undefined
-            } else if (key === "status" && value === "blank") {
-              return undefined
-            } else {
-              return value
-            }
-          },
-          2
-        ) + EOL
-      )
-      break
-    }
-
-    case "run":
-    case "guide": {
-      // a name we might want to associate with the run, in the logs
-      const name = options.name ? ` (${options.name})` : ""
-
-      const exitMessage = `⚠️ Exiting${name} now, please wait for us to gracefully clean things up`
-      const [memoizer, Guide] = await Promise.all([makeMemos(), import("../guide/index.js").then((_) => _.Guide)])
-
-      /** Kill any spawned subprocesses */
-      const cleanExit = memoizer.cleanup.bind(memoizer)
-      const cleanExitFromSIGINT = () => {
-        console.error("Received interrupt")
-        console.error(exitMessage)
-        cleanExit("SIGINT")
-      }
-      const cleanExitFromSIGTERM = () => {
-        console.error("Received termination request")
-        console.error(exitMessage)
-        cleanExit("SIGTERM")
-      }
-      process.on("SIGINT", cleanExitFromSIGINT) // catch ctrl-c
-      process.on("SIGTERM", cleanExitFromSIGTERM) // catch kill
-
-      if (options.onBeforeRun) {
-        options.onBeforeRun({ cleanExit })
-      }
-
-      try {
-        await new Guide(task, blocks, choices, options, memoizer, ui, write).run()
-      } finally {
-        if (options.verbose && task !== "run") {
-          console.error(exitMessage)
-        }
-        if (!noProfile) {
-          if (lastPersistPromise) {
-            // wait for the last choice persistence operation to
-            // complete before we exit
-            await lastPersistPromise
-          } else if (lastPersist) {
-            // then we have a scheduled async; cancel that and save
-            // immediately
-            clearTimeout(lastPersist)
-            await persistChoices()
-          }
-        }
-
-        if (options.clean !== false) {
-          cleanExit()
-        }
-
-        // in case we were launched as part of some parent, not a
-        // standalone process, make sure to deregister here:
-        process.off("SIGINT", cleanExitFromSIGINT) // catch ctrl-c
-        process.off("SIGTERM", cleanExitFromSIGTERM) // catch kill
-      }
-
-      return {
-        cleanExit,
-        env: memoizer.env,
-      }
-    }
-
-    default:
-      // if our switch isn't exhaustive, you will see this typescript error:
-      // Argument of type 'string' is not assignable to parameter of type 'never'.
-      assertExhaustive(task)
-  }
-}
+      }) */

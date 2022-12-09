@@ -14,7 +14,6 @@
     "build": "cross-env tsc --build . && npm run build --workspaces --if-present",
     "test": "cross-env npm run test --workspaces --if-present",
     "format": "cross-env prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",
-    "format:test:input": "cross-env prettier --write test/inputs",
     "prepare": "cross-env husky install"
   },
   "workspaces": [

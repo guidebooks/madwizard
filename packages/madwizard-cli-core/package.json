@@ -30,7 +30,7 @@
     "bundle": "esbuild ./madwizard.js --bundle --platform=node --outfile=./dist/madwizard.min.cjs --external:@guidebooks/store/package.json",
     "build": "npm run bundle -- --minify",
     "watch": "npm run bundle -- --watch",
-    "test": "./bin/madwizard version",
+    "test": "./bin/madwizard --version --",
     "prepack": "npm run build"
   },
   "devDependencies": {

@@ -16,4 +16,4 @@ elif [ -d "$SCRIPTDIR"/../../../node_modules/@guidebooks/store/dist/store ]; the
    export GUIDEBOOK_STORE="$SCRIPTDIR"/../../../node_modules/@guidebooks/store/dist/store
 fi
 
-node "$DIST"/madwizard.min.cjs $@
+node "$DIST"/madwizard.min.cjs "$@"

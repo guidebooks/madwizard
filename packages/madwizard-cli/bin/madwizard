@@ -15,4 +15,4 @@ else
    export GUIDEBOOK_STORE="$SCRIPTDIR"/../../@guidebooks/store/dist/store
 fi
 
-node "$DIST"/madwizard.min.cjs $@
+node "$DIST"/madwizard.min.cjs "$@"
