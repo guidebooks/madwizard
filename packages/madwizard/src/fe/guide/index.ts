@@ -547,7 +547,8 @@ export class Guide {
   /** It may be desired to clear the screen before asking the first question */
   private get shouldClearOnFirstQuestion() {
     return (
-      process.env.MWCLEAR_INITIAL || (!this.options.raw && this.options.clear !== false && this.options.interactive)
+      process.env.MWCLEAR_INITIAL ||
+      (!this.options.raw && this.options.clear !== false && this.options.interactive && process.env.DEBUG === undefined)
     )
   }
 
