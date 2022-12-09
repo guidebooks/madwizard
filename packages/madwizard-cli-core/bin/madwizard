@@ -4,8 +4,6 @@ SCRIPTDIR=$(cd $(dirname "$0") && pwd)
 # we really want instead of dirname
 if [ -d "$SCRIPTDIR"/../dist ]; then
    DIST=$(cd "$SCRIPTDIR"/../dist && pwd)
-elif [ -d "$SCRIPTDIR"/../node_modules/madwizard-cli-core ]; then
-   DIST=$(cd "$SCRIPTDIR"/../node_modules/madwizard-cli-core/dist && pwd)
 else
    DIST=$(cd "$SCRIPTDIR"/../madwizard-cli-core/dist && pwd)
 fi
@@ -13,9 +11,6 @@ fi
 if [ -d "$SCRIPTDIR"/../@guideboks/store/dist/store ]; then
    # we are running as an npm
    export GUIDEBOOK_STORE="$SCRIPTDIR"/../@guideboks/store/dist/store
-elif [ -d "$SCRIPTDIR"/../node_modules/@guidebooks/store/dist/store ]; then
-   # we are running as madwizard-cli with -core in a subdir node_modules
-   export GUIDEBOOK_STORE="$SCRIPTDIR"/../node_modules/@guidebooks/store/dist/store
 elif [ -d "$SCRIPTDIR"/../../../node_modules/@guidebooks/store/dist/store ]; then
    # we are running as madwizard-cli
    export GUIDEBOOK_STORE="$SCRIPTDIR"/../../../node_modules/@guidebooks/store/dist/store
