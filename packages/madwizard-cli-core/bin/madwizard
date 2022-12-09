@@ -1,18 +1,16 @@
 SCRIPTDIR=$(cd $(dirname "$0") && pwd)
 
-# ugh, macos prior to 12.3 didn't support readlink -f, which is what
-# we really want instead of dirname
-if [ -d "$SCRIPTDIR"/../dist ]; then
-   DIST="$SCRIPTDIR"/../dist
-else
-   DIST="$SCRIPTDIR"/../madwizard-cli-core/dist
-fi
-
 if [ -d "$SCRIPTDIR"/../@guideboks/store/dist/store ]; then
    # we are running as an npm
+   DIST="$SCRIPTDIR"/../dist
    export GUIDEBOOK_STORE="$SCRIPTDIR"/../@guideboks/store/dist/store
+elif [ -d "$SCRIPTDIR"/../dist ]; then
+   # we are running as the top-level helper script (in the madwizard repo, which is a symlink)
+   DIST="$SCRIPTDIR"/../packages/madwizard-cli-core/dist
+   export GUIDEBOOK_STORE="$SCRIPTDIR"/../../../xnode_modules/@guideboks/store/dist/store
 elif [ -d "$SCRIPTDIR"/../../../node_modules/@guidebooks/store/dist/store ]; then
    # we are running as madwizard-cli
+   DIST="$SCRIPTDIR"/../madwizard-cli-core/dist
    export GUIDEBOOK_STORE="$SCRIPTDIR"/../../../node_modules/@guidebooks/store/dist/store
 fi
 
