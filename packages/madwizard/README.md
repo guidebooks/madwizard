@@ -1,13 +1,13 @@
 [![Node.js CI](https://github.com/guidebooks/madwizard/actions/workflows/test.yml/badge.svg)](https://github.com/guidebooks/madwizard/actions/workflows/test.yml) [![npm version](https://badge.fury.io/js/madwizard.svg)](https://badge.fury.io/js/madwizard)
 
-# <img src=".github/madwizard.gif" title="madwizard" height="32"> Turn Markdown into Wizards
+# <img src=".github/madwizard.gif" title="madwizard" height="32"> Automatic Wizards, from Markdown
 
-READMEs are a great way to share, but not always the most useful way
-to accomplish a task. Documentation is prone to rot. Screenshots and
-command lines invariably go out of date. Sometimes a README may never
-have worked as written, due to gaps in the documented tasks,
-divergences from the implementation, or incompletely specified
-prerequisites.
+READMEs are a great way disseminate broad knowledge, but can often be
+a frustrating way to accomplish a specific task. Documentation is
+prone to rot. Screenshots and command lines invariably go out of
+date. Sometimes a README may never have worked as written, due to gaps
+in the documented tasks, divergences from the implementation, or
+incompletely specified prerequisites.
 
 Even for complete and up-to-date READMEs, it is often unclear how to
 turn the documentation into a reliable plan of execution. Which code
@@ -15,9 +15,9 @@ blocks are optional? Which have I already done on my laptop? How
 about in my cluster? How much of the overly general documentation is
 relevant to my system?
 
-With `madwizard`, you can automate testing and consumption of
-documentation. Point `madwizard` at markdown, and it can generate an
-execution plan, and help you (and your users) execute these reliably.
+`madwizard` automates testing and consumption of documentation. Point
+`madwizard` at markdown, and it can generate an execution plan, and
+help you (and your users) execute these reliably.
 
 ## The `madwizard` User Experience
 
