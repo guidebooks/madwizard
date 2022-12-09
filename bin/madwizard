@@ -1,0 +1,6 @@
+TOP=$(cd $(dirname "$0")/.. && pwd)
+
+DIST="$TOP"/packages/madwizard-cli-core/dist
+export GUIDEBOOK_STORE="$TOP"/node_modules/@guidebooks/store/dist/store
+
+node "$DIST"/madwizard.min.cjs $@

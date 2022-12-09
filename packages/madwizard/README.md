@@ -61,10 +61,18 @@ If you wish to consume `madwizard` as a CLI, then:
 npm install -g madwizard-cli
 ```
 
-The CLI includes a build of the [guidebook
-store](https://github.com/guidebooks/store). For example, to choose
-one of your Kubernetes namespaces, try `madwizard
-kubernetes/choose/ns`.
+The CLI includes a copy of the [guidebook
+store](https://github.com/guidebooks/store).
+
+## Kicking the Tires
+
+After installing `madwizard-cli`, you can try some of the demo guidebooks:
+
+```shell
+madwizard demo/hello
+madwizard demo/choice
+madwizard kubernetes/choose/ns
+```
 
 ## Next Steps
 
