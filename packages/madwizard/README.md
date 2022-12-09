@@ -23,8 +23,8 @@ execution plan, and help you (and your users) execute these reliably.
 
 With `madwizard`, several interaction modes are possible.
 
-- **Task Graph Generation Library**: point to your markdown
-  documentation and `madwizard` generates an execution plan.
+- **Task Graph Library**: point to your markdown documentation and
+  `madwizard` generates an execution plan.
 
 - **Test Rig**: you may use `madwizard` to run through that plan in an
   automated fashion.
@@ -37,32 +37,17 @@ With `madwizard`, several interaction modes are possible.
   control, whereby a Q&A exchange may be intercepted and presented
   with a custom, e.g. graphical, interface.
 
-## Gallery
-
-You may find the source for these [here](https://github.com/guidebooks/store/tree/main/guidebooks).
-
-<a target="_blank" href="https://asciinema.org/a/0jFdCBTs76MVzHXZ94FFHg2aR"><img width="260" alt="ibm/cloud/ce/job/run" title="ibm/cloud/ce/job/run" src="https://asciinema.org/a/0jFdCBTs76MVzHXZ94FFHg2aR.svg"></a>
-<a target="_blank" href="https://asciinema.org/a/KXm9iScAAwEzDi6WIxSMbxhwh"><img width="260" alt="ibm/cloud/ce/app/deploy" title="ibm/cloud/ce/app/deploy" src="https://asciinema.org/a/KXm9iScAAwEzDi6WIxSMbxhwh.svg"></a>
-<a target="_blank" href="https://asciinema.org/a/Pnbg3QnT9ujj0YAfEizOyNkzi"><img width="260" alt="knative/provision" title="knative/provision" src="https://asciinema.org/a/Pnbg3QnT9ujj0YAfEizOyNkzi.svg"></a>
-<a target="_blank" href="https://asciinema.org/a/Z5CCiLaJl0gSaeZ7suxPkajKV"><img width="260" alt="ml/ray/run" title="ml/ray/run" src="https://asciinema.org/a/Z5CCiLaJl0gSaeZ7suxPkajKV.svg"></a>
-<a target="_blank" href="https://asciinema.org/a/FdrDQaBUIIZiKPts9kwp6iogo"><img width="260" alt="test/iter8/load/http" title="test/iter8/load/http" src="https://asciinema.org/a/FdrDQaBUIIZiKPts9kwp6iogo.svg"></a>
-
 ## Installation
 
-If you wish to consume `madwizard` as a library, then:
-
 ```shell
-npm install madwizard
+npm install madwizard        # consume as a library
+npm install -g madwizard-cli # consume as a CLI tool
 ```
 
-If you wish to consume `madwizard` as a CLI, then:
-
-```shell
-npm install -g madwizard-cli
-```
-
-The CLI includes a copy of the [guidebook
-store](https://github.com/guidebooks/store).
+The CLI package includes a copy of the [guidebook
+store](https://github.com/guidebooks/store). If you want to roll your
+own collection of guidebooks, you can install `madwizard-cli-core`,
+which is the same, but without a copy of the guidebook store.
 
 ## Kicking the Tires
 
