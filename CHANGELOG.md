@@ -1,3 +1,9 @@
+## [2.3.2](https://github.com/guidebooks/madwizard/compare/2.3.1...2.3.2) (2022-12-09)
+
+### Bug Fixes
+
+- madwizard-cli installed as npm may not expose `madwizard` ([b732359](https://github.com/guidebooks/madwizard/commit/b7323598d860521e9baf9dfaaf779317f4ee28c6))
+
 ## [2.3.1](https://github.com/guidebooks/madwizard/compare/2.3.0...2.3.1) (2022-12-08)
 
 ### Bug Fixes
