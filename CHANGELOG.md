@@ -1,3 +1,9 @@
+# [2.4.0](https://github.com/guidebooks/madwizard/compare/2.3.6...2.4.0) (2022-12-10)
+
+### Features
+
+- clean up cli to use yargs and pretty help ([dd9e62c](https://github.com/guidebooks/madwizard/commit/dd9e62cf296c448df4826876159624697c073f43))
+
 ## [2.3.6](https://github.com/guidebooks/madwizard/compare/2.3.5...2.3.6) (2022-12-09)
 
 ### Bug Fixes
