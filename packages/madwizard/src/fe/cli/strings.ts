@@ -16,11 +16,19 @@
 
 import chalk from "chalk"
 
+export function group(name: string) {
+  return chalk.bold.blue(name)
+}
+
+function type(type: string) {
+  return chalk.cyan(type)
+}
+
 export default {
-  "Options:": chalk.bold.blue("Options:"),
-  "Commands:": chalk.bold.blue("Commands:"),
-  "Examples:": chalk.bold.blue("Examples:"),
-  boolean: chalk.cyan("boolean"),
+  "Options:": group("Options:"),
+  "Commands:": group("Commands:"),
+  "Examples:": group("Examples:"),
+  boolean: type("boolean"),
   string: chalk.cyan("string"),
   number: chalk.cyan("number"),
   "default:": chalk.yellow("default:"),
