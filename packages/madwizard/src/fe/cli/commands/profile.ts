@@ -14,18 +14,69 @@
  * limitations under the License.
  */
 
-import { CommandModule } from "yargs"
+import { Argv, CommandModule } from "yargs"
 
+import Opts from "../options.js"
 import { MadWizardOptions } from "../../MadWizardOptions.js"
-import Opts, { assembleOptions } from "../options.js"
+
+type NamedProfileOpts = Opts & {
+  profileName: string
+}
+
+type NamedProfile2Opts = {
+  profileName2: string
+}
+
+function namedProfileBuilder(yargs: Argv<Opts>): Argv<NamedProfileOpts> {
+  return yargs.positional("profileName", {
+    type: "string",
+    describe: "Name of a profile",
+  })
+}
+
+function srcAndTargetNamedProfileBuilder(yargs: Argv<Opts>): Argv<NamedProfileOpts & NamedProfile2Opts> {
+  return namedProfileBuilder(yargs).positional("profileName2", {
+    type: "string",
+    describe: "Name of target profile",
+  })
+}
 
 export default function profileModule(providedOptions: MadWizardOptions): CommandModule<Opts, Opts> {
   return {
     command: "profile",
     describe: "Print out the set of choices for the selected profile",
-    handler: async (argv) => {
-      const options = assembleOptions(providedOptions, argv)
-      await import("../../profiles/index.js").then((_) => _.default(argv._, options))
+    builder: (yargs) =>
+      yargs
+        .command({
+          command: "get",
+          handler: async () => {
+            const [ui, profiles] = await Promise.all([
+              import("../../profiles/table.js").then((_) => _.default),
+              import("../../../profiles/list.js").then((_) => _.default(providedOptions)),
+            ])
+            console.log(ui(profiles))
+          },
+        })
+        .command({
+          command: "delete <profileName>",
+          builder: namedProfileBuilder,
+          handler: async (argv) => {
+            const { profileName } = argv
+            await import("../../../profiles/delete.js").then((_) => _.default(providedOptions, profileName))
+          },
+        })
+        .command({
+          command: "clone <profileName>",
+          builder: srcAndTargetNamedProfileBuilder,
+          handler: async (argv) => {
+            const { profileName, profileName2 } = argv
+            await import("../../../profiles/clone.js").then((_) =>
+              _.default(providedOptions, profileName, profileName2)
+            )
+          },
+        }),
+    handler: async () => {
+      throw new Error("Missing subcommand")
     },
   }
 }
