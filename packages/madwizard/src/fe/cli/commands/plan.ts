@@ -15,13 +15,35 @@
  */
 
 import { Writable } from "stream"
-import { Arguments, CommandModule } from "yargs"
+import { Arguments, Argv, CommandModule } from "yargs"
 
 import { MadWizardOptions } from "../../MadWizardOptions.js"
 
+import { group } from "../strings.js"
 import Opts, { assembleOptions } from "../options.js"
 import { InputOpts, inputBuilder } from "./input.js"
 import { getBlocksModel, loadAssertions } from "./util.js"
+
+import { commonOptions, CommonOpts } from "./guide.js"
+
+type PlanOpts = InputOpts &
+  CommonOpts & {
+    /** Try to fit in a narrower viewport */
+    narrow?: boolean
+  }
+
+const planOptions = {
+  narrow: {
+    alias: "n",
+    type: "boolean" as const,
+    group: group("Plan Options:"),
+    describe: "Try to fit in a narrower viewport",
+  },
+}
+
+function builder(yargs: Argv<Opts>): Argv<PlanOpts> {
+  return inputBuilder(yargs).options(planOptions).options(commonOptions)
+}
 
 async function planHandler<Writer extends Writable["write"]>(
   providedOptions: MadWizardOptions,
@@ -50,7 +72,7 @@ export default function planModule<Writer extends Writable["write"]>(
   return {
     command: "plan <input>",
     describe: "Parse a given markdown and pretty print the execution plan",
-    builder: inputBuilder,
+    builder,
     handler: async (argv) => planHandler(providedOptions, argv, write).then(resolve, reject),
   }
 }

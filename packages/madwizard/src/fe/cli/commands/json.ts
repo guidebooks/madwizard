@@ -15,13 +15,21 @@
  */
 
 import { Writable } from "stream"
-import { Arguments, CommandModule } from "yargs"
+import { Arguments, Argv, CommandModule } from "yargs"
 
 import { MadWizardOptions } from "../../MadWizardOptions.js"
 
 import Opts, { assembleOptions } from "../options.js"
 import { InputOpts, inputBuilder } from "./input.js"
 import { getBlocksModel, loadAssertions, loadSuggestions, makeMemos } from "./util.js"
+
+import { CommonOpts, commonOptions } from "./guide.js"
+
+type JsonOpts = InputOpts & CommonOpts
+
+function builder(yargs: Argv<Opts>): Argv<JsonOpts> {
+  return inputBuilder(yargs).options(commonOptions)
+}
 
 async function jsonHandler<Writer extends Writable["write"]>(
   providedOptions: MadWizardOptions,
@@ -75,7 +83,7 @@ export default function jsonModule<Writer extends Writable["write"]>(
   return {
     command: "json <input>",
     describe: "Parse a given markdown and print the raw execution plan model as JSON",
-    builder: inputBuilder,
+    builder,
     handler: (argv) => jsonHandler(providedOptions, argv, write).then(resolve, reject),
   }
 }

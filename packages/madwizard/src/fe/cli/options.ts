@@ -21,21 +21,11 @@ import defaultOptions from "./defaults.js"
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
 export type Opts = {
-  "--"?: string[]
-
   /** Name for the set of stored answers to questions */
   profile?: string | false
 
   /** Path to guidebook store */
   store?: string
-
-  narrow?: boolean
-  raw?: boolean
-  "raw-prefix"?: string
-  quiet?: boolean
-
-  /** Emit extra low-level content, such as command lines and env var updates */
-  verbose?: boolean
 
   /**
    * Assert an answer to a question (of the form question=answer,
@@ -58,11 +48,8 @@ export type Opts = {
   /** Optimization settings */
   optimize?: number | false
 
-  /** Accept all prior choices */
-  yes?: boolean
-
-  /** Run in interactive mode, and overridden by value of `yes` (default: true) */
-  interactive?: boolean
+  /** Internal: everything after the -- on the command line */
+  "--"?: string[]
 }
 
 /**
@@ -70,11 +57,11 @@ export type Opts = {
  * `providedOptions` with options flowing in from the command line.
  *
  */
-export function assembleOptions(
+export function assembleOptions<T>(
   providedOptions: MadWizardOptions,
-  commandLineOptions: Arguments<Opts>
-): MadWizardOptions & Omit<Opts, "optimize" | "veto"> {
-  const opts: MadWizardOptions = Object.assign(
+  commandLineOptions: Arguments<T>
+): MadWizardOptions & T /* Omit<Opts, "optimize" | "veto"> */ {
+  const opts: MadWizardOptions & T = Object.assign(
     { name: process.env.GUIDEBOOK_NAME },
     defaultOptions,
     commandLineOptions,
@@ -98,65 +85,22 @@ export function assembleOptions(
     : providedOptions.optimize
   opts.optimize = optimize
 
-  if (commandLineOptions.veto !== undefined) {
-    opts.veto = new RegExp(commandLineOptions.veto)
-  }
-
   return opts
 }
 
-const basic = group("Basic:")
-const expert = group("Expert:")
-const developers = group("For Developers:")
+const expert = group("Expert Options:")
 
 /** Yargs `.options()` struct */
-export const commandLineOptions = {
+export const globalCommandLineOptions = {
   profile: {
     alias: "p",
     type: "string" as const,
-    group: basic,
     describe: "Use a given named profile to remember your choices",
   },
   store: {
     alias: "s",
     type: "string" as const,
-    group: basic,
     describe: "Path to root of guidebook store",
-  },
-  interactive: {
-    alias: "i",
-    type: "boolean" as const,
-    default: true,
-    group: expert,
-    describe: "Always ask questions",
-  },
-  yes: {
-    alias: "y",
-    type: "boolean" as const,
-    group: basic,
-    describe: "Auto-accept all prior answers from your profile",
-  },
-  narrow: {
-    alias: "n",
-    type: "boolean" as const,
-    group: expert,
-    describe: "Try to fit in a narrower viewport",
-  },
-  verbose: {
-    alias: "V",
-    type: "boolean" as const,
-    describe: "Emit extra low-level content, such as command lines and env var updates",
-  },
-  raw: {
-    alias: "r",
-    type: "boolean" as const,
-    group: developers,
-    describe: "Emit computer-readable output for Q&A interactions",
-  },
-  "raw-prefix": {
-    type: "string" as const,
-    group: developers,
-    describe: "When emitting raw output, prefix every line with this string",
   },
   aprioris: {
     type: "boolean" as const,
@@ -170,12 +114,6 @@ export const commandLineOptions = {
     default: 1,
     group: expert,
     describe: "Whether or not to optimize the plan",
-  },
-  quiet: {
-    alias: "q",
-    type: "boolean" as const,
-    group: basic,
-    describe: "Try to emit as little superfluous output as possible",
   },
   assert: {
     type: "string" as const,
