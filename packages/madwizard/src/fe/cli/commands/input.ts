@@ -16,7 +16,7 @@
 
 import { Argv } from "yargs"
 
-import Opts from "../options"
+import Opts from "../options.js"
 
 export type InputOpts = Opts & {
   input: string
