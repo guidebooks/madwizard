@@ -27,6 +27,7 @@ import plan from "./commands/plan.js"
 import build from "./commands/build.js"
 import guide from "./commands/guide.js"
 import mirror from "./commands/mirror.js"
+import profile from "./commands/profile.js"
 
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
@@ -56,6 +57,7 @@ export async function cli<Writer extends Writable["write"]>(
       .parserConfiguration(parserConfiguration)
       .command(guide("guide", resolve, reject, providedOptions, write, ui))
       .command(guide("run", resolve, reject, providedOptions, write, ui))
+      .command(profile(providedOptions))
       .command(build(resolve, reject, providedOptions))
       .command(mirror(resolve, reject, providedOptions))
       .command(json(resolve, reject, providedOptions, write))
