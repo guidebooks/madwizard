@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { ParserConfigurationOptions } from "yargs"
+import { Arguments, ParserConfigurationOptions } from "yargs"
 
+import { group } from "./strings.js"
 import defaultOptions from "./defaults.js"
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
@@ -71,7 +72,7 @@ export type Opts = {
  */
 export function assembleOptions(
   providedOptions: MadWizardOptions,
-  commandLineOptions: Opts
+  commandLineOptions: Arguments<Opts>
 ): MadWizardOptions & Omit<Opts, "optimize" | "veto"> {
   const opts: MadWizardOptions = Object.assign(
     { name: process.env.GUIDEBOOK_NAME },
@@ -104,30 +105,41 @@ export function assembleOptions(
   return opts
 }
 
+const basic = group("Basic:")
+const expert = group("Expert:")
+const developers = group("For Developers:")
+
+/** Yargs `.options()` struct */
 export const commandLineOptions = {
   profile: {
     alias: "p",
     type: "string" as const,
+    group: basic,
     describe: "Use a given named profile to remember your choices",
   },
   store: {
+    alias: "s",
     type: "string" as const,
+    group: basic,
     describe: "Path to root of guidebook store",
   },
   interactive: {
     alias: "i",
     type: "boolean" as const,
     default: true,
+    group: expert,
     describe: "Always ask questions",
   },
   yes: {
     alias: "y",
     type: "boolean" as const,
+    group: basic,
     describe: "Auto-accept all prior answers from your profile",
   },
   narrow: {
     alias: "n",
     type: "boolean" as const,
+    group: expert,
     describe: "Try to fit in a narrower viewport",
   },
   verbose: {
@@ -138,34 +150,41 @@ export const commandLineOptions = {
   raw: {
     alias: "r",
     type: "boolean" as const,
-    describe: "Advanced usage: emit computer-readable output for Q&A interactions",
+    group: developers,
+    describe: "Emit computer-readable output for Q&A interactions",
   },
   "raw-prefix": {
     type: "string" as const,
-    describe: "Advanced usage: when emitting raw output, prefix every line with this string",
+    group: developers,
+    describe: "When emitting raw output, prefix every line with this string",
   },
   aprioris: {
     type: "boolean" as const,
     default: true,
+    group: expert,
     describe: "Whether or not to use automatic platform detection logic",
   },
   optimize: {
     alias: "O",
     type: "number" as const,
     default: 1,
+    group: expert,
     describe: "Whether or not to optimize the plan",
   },
   quiet: {
     alias: "q",
     type: "boolean" as const,
+    group: basic,
     describe: "Try to emit as little superfluous output as possible",
   },
   assert: {
     type: "string" as const,
+    group: expert,
     describe: 'Assert the answer to a question (of the form "question=answer")',
   },
   veto: {
     type: "string" as const,
+    group: expert,
     describe: 'Veto the answer to a question that may be in the profile (of the form "question=answer")',
   },
 }
