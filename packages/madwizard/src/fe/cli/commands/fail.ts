@@ -26,10 +26,11 @@ export default function fail(
   argv: string[]
 ) {
   return async function fail(msg: string, err: Error) {
-    if (!err && /Unknown argument/.test(msg)) {
+    if (!err && /Unknown argument:/.test(msg)) {
       // failsafe: assume they are running a guide
       try {
-        return yargs.parseAsync(["guide", ...argv]).then(resolve, reject)
+        await yargs.parseAsync(["guide", ...argv]).then(resolve)
+        return
       } catch (err) {
         // intentional fallthrough
       }
