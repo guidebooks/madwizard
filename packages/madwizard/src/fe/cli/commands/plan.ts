@@ -24,7 +24,7 @@ import Opts, { assembleOptions } from "../options.js"
 import { InputOpts, inputBuilder } from "./input.js"
 import { getBlocksModel, loadAssertions } from "./util.js"
 
-import { commonOptions, CommonOpts } from "./guide.js"
+import { commonOptions, CommonOpts } from "./guide/options.js"
 
 type PlanOpts = InputOpts &
   CommonOpts & {

@@ -15,96 +15,21 @@
  */
 
 import { Writable } from "stream"
-import { Arguments, Argv, CommandModule } from "yargs"
+import { Arguments } from "yargs"
 
-import { UI } from "../../tree/index.js"
-import { MadWizardOptions } from "../../MadWizardOptions.js"
+import { UI } from "../../../tree/index.js"
+import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
-import { group } from "../strings.js"
-import { InputOpts, inputBuilder } from "./input.js"
-import Opts, { assembleOptions } from "../options.js"
-import { getBlocksModel, loadAssertions, loadSuggestions, makeMemos } from "./util.js"
+import { getBlocksModel, loadAssertions, loadSuggestions, makeMemos } from "../util.js"
 
-export type CommonOpts = {
-  /** Emit extra low-level content, such as command lines and env var updates */
-  verbose?: boolean
+import { GuideOpts, assembleOptionsForGuide } from "./options.js"
 
-  /** Try to emit as little superfluous output as possible */
-  quiet?: boolean
+export type GuideRet = {
+  cleanExit: () => void
+  env: typeof process.env
 }
 
-type GuideOpts = InputOpts &
-  CommonOpts & {
-    /** Accept all prior choices */
-    yes?: boolean
-
-    /** Run in interactive mode, and overridden by value of `yes` (default: true) */
-    interactive?: boolean
-
-    /** Emit computer-readable output for Q&A interactions */
-    raw?: boolean
-
-    /** When emitting raw output, prefix every line with this string */
-    "raw-prefix"?: string
-  }
-
-const mainGroup = group("Guide Options:")
-const expertGroup = group("Guide Options (Advanced):")
-const developersGroup = group("Guide Options (Developers):")
-
-export const commonOptions = {
-  verbose: {
-    alias: "V",
-    type: "boolean" as const,
-    group: mainGroup,
-    describe: "Emit extra low-level content, such as command lines and env var updates",
-  },
-  quiet: {
-    alias: "q",
-    type: "boolean" as const,
-    group: expertGroup,
-    describe: "Try to emit as little superfluous output as possible",
-  },
-}
-
-const guideOptions = {
-  yes: {
-    alias: "y",
-    type: "boolean" as const,
-    group: mainGroup,
-    describe: "Auto-accept all prior answers from your profile",
-  },
-  interactive: {
-    alias: "i",
-    type: "boolean" as const,
-    default: true,
-    group: expertGroup,
-    describe: "Always ask questions",
-  },
-  raw: {
-    alias: "r",
-    type: "boolean" as const,
-    group: developersGroup,
-    describe: "Emit computer-readable output for Q&A interactions",
-  },
-  "raw-prefix": {
-    type: "string" as const,
-    group: developersGroup,
-    describe: "When emitting raw output, prefix every line with this string",
-  },
-}
-
-function assembleOptionsForGuide(providedOptions: MadWizardOptions, commandLineOptions: Arguments<GuideOpts>) {
-  return Object.assign({}, assembleOptions(providedOptions, commandLineOptions), {
-    veto: commandLineOptions.veto === undefined ? undefined : new RegExp(commandLineOptions.veto),
-  })
-}
-
-function builder(yargs: Argv<Opts>): Argv<GuideOpts> {
-  return inputBuilder(yargs).options(guideOptions).options(commonOptions)
-}
-
-async function guideHandler<Writer extends Writable["write"]>(
+export default async function guideHandler<Writer extends Writable["write"]>(
   task: "run" | "guide",
   providedOptions: MadWizardOptions,
   argv: Arguments<GuideOpts>,
@@ -119,7 +44,7 @@ async function guideHandler<Writer extends Writable["write"]>(
     process.env.QUIET_CONSOLE = "true"
   }
 
-  const newChoiceState = await import("../../../choices/index.js").then((_) => _.newChoiceState)
+  const newChoiceState = await import("../../../../choices/index.js").then((_) => _.newChoiceState)
 
   // restore choices from profile
   const profile = options.profile
@@ -134,7 +59,7 @@ async function guideHandler<Writer extends Writable["write"]>(
   let lastPersist: ReturnType<typeof setTimeout>
   let lastPersistPromise: Promise<void>
   const persistChoices = () =>
-    import("../../../profiles/persist.js").then((_) => _.default(options, choices, suggestions))
+    import("../../../../profiles/persist.js").then((_) => _.default(options, choices, suggestions))
   if (!noProfile && !process.env.QUIET_CONSOLE) {
     choices.onChoice(() => {
       // persist choices after every choice is made, and remember the
@@ -167,7 +92,7 @@ async function guideHandler<Writer extends Writable["write"]>(
   const exitMessage = `⚠️ Exiting${name} now, please wait for us to gracefully clean things up`
   const [memoizer, Guide] = await Promise.all([
     makeMemos(suggestions, argv),
-    import("../../guide/index.js").then((_) => _.Guide),
+    import("../../../guide/index.js").then((_) => _.Guide),
   ])
 
   /** Kill any spawned subprocesses */
@@ -221,27 +146,5 @@ async function guideHandler<Writer extends Writable["write"]>(
   return {
     cleanExit,
     env: memoizer.env,
-  }
-}
-
-export type GuideRet = {
-  cleanExit: () => void
-  env: typeof process.env
-}
-
-export default function guideModule<Writer extends Writable["write"]>(
-  task: "run" | "guide",
-  resolve: (ret: GuideRet) => void,
-  reject: (err: Error) => void,
-  providedOptions: MadWizardOptions,
-  write?: Writer,
-  ui?: UI<string>
-): CommandModule<Opts, GuideOpts> {
-  return {
-    command: `${task} <input>`,
-    describe: "Parse and run a given markdown using an interactive wizard",
-    builder,
-    handler: async (argv: Arguments<GuideOpts>) =>
-      await guideHandler(task, providedOptions, argv, write, ui).then(resolve, reject),
   }
 }

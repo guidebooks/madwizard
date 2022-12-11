@@ -23,7 +23,7 @@ import Opts, { assembleOptions } from "../options.js"
 import { InputOpts, inputBuilder } from "./input.js"
 import { getBlocksModel, loadAssertions, loadSuggestions, makeMemos } from "./util.js"
 
-import { CommonOpts, commonOptions } from "./guide.js"
+import { CommonOpts, commonOptions } from "./guide/options.js"
 
 type JsonOpts = InputOpts & CommonOpts
 

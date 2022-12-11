@@ -25,7 +25,7 @@ import fail from "./commands/fail.js"
 import json from "./commands/json.js"
 import plan from "./commands/plan.js"
 import build from "./commands/build.js"
-import guide from "./commands/guide.js"
+import guide from "./commands/guide/index.js"
 import mirror from "./commands/mirror.js"
 import profile from "./commands/profile.js"
 
