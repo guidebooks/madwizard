@@ -21,7 +21,6 @@ import yargs, { Argv } from "yargs"
 import { UI } from "../tree/index.js"
 import version from "../../version.js"
 
-import examples from "./examples.js"
 import fail from "./commands/fail.js"
 import json from "./commands/json.js"
 import plan from "./commands/plan.js"
@@ -32,6 +31,7 @@ import mirror from "./commands/mirror.js"
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
 import strings from "./strings.js"
+import examples from "./examples.js"
 import { Opts, commandLineOptions, parserConfiguration } from "./options.js"
 
 export async function cli<Writer extends Writable["write"]>(
