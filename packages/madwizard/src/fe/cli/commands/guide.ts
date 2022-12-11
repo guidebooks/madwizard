@@ -15,18 +15,96 @@
  */
 
 import { Writable } from "stream"
-import { Arguments, CommandModule } from "yargs"
+import { Arguments, Argv, CommandModule } from "yargs"
 
 import { UI } from "../../tree/index.js"
 import { MadWizardOptions } from "../../MadWizardOptions.js"
 
-import Opts, { assembleOptions } from "../options.js"
+import { group } from "../strings.js"
 import { InputOpts, inputBuilder } from "./input.js"
+import Opts, { assembleOptions } from "../options.js"
 import { getBlocksModel, loadAssertions, loadSuggestions, makeMemos } from "./util.js"
 
-type GuideOpts = InputOpts
+export type CommonOpts = {
+  /** Emit extra low-level content, such as command lines and env var updates */
+  verbose?: boolean
 
-export async function guideHandler<Writer extends Writable["write"]>(
+  /** Try to emit as little superfluous output as possible */
+  quiet?: boolean
+}
+
+type GuideOpts = InputOpts &
+  CommonOpts & {
+    /** Accept all prior choices */
+    yes?: boolean
+
+    /** Run in interactive mode, and overridden by value of `yes` (default: true) */
+    interactive?: boolean
+
+    /** Emit computer-readable output for Q&A interactions */
+    raw?: boolean
+
+    /** When emitting raw output, prefix every line with this string */
+    "raw-prefix"?: string
+  }
+
+const mainGroup = group("Guide Options:")
+const expertGroup = group("Guide Options (Advanced):")
+const developersGroup = group("Guide Options (Developers):")
+
+export const commonOptions = {
+  verbose: {
+    alias: "V",
+    type: "boolean" as const,
+    group: mainGroup,
+    describe: "Emit extra low-level content, such as command lines and env var updates",
+  },
+  quiet: {
+    alias: "q",
+    type: "boolean" as const,
+    group: expertGroup,
+    describe: "Try to emit as little superfluous output as possible",
+  },
+}
+
+const guideOptions = {
+  yes: {
+    alias: "y",
+    type: "boolean" as const,
+    group: mainGroup,
+    describe: "Auto-accept all prior answers from your profile",
+  },
+  interactive: {
+    alias: "i",
+    type: "boolean" as const,
+    default: true,
+    group: expertGroup,
+    describe: "Always ask questions",
+  },
+  raw: {
+    alias: "r",
+    type: "boolean" as const,
+    group: developersGroup,
+    describe: "Emit computer-readable output for Q&A interactions",
+  },
+  "raw-prefix": {
+    type: "string" as const,
+    group: developersGroup,
+    describe: "When emitting raw output, prefix every line with this string",
+  },
+}
+
+function assembleOptionsForGuide(providedOptions: MadWizardOptions, commandLineOptions: Arguments<GuideOpts>) {
+  return Object.assign({}, assembleOptions(providedOptions, commandLineOptions), {
+    veto: commandLineOptions.veto === undefined ? undefined : new RegExp(commandLineOptions.veto),
+  })
+}
+
+function builder(yargs: Argv<Opts>): Argv<GuideOpts> {
+  return inputBuilder(yargs).options(guideOptions).options(commonOptions)
+}
+
+async function guideHandler<Writer extends Writable["write"]>(
   task: "run" | "guide",
   providedOptions: MadWizardOptions,
   argv: Arguments<GuideOpts>,
@@ -36,7 +114,7 @@ export async function guideHandler<Writer extends Writable["write"]>(
   const { input } = argv
   const noProfile = argv.profile === false
 
-  const options = assembleOptions(providedOptions, argv)
+  const options = assembleOptionsForGuide(providedOptions, argv)
   if (options.quiet) {
     process.env.QUIET_CONSOLE = "true"
   }
@@ -162,7 +240,7 @@ export default function guideModule<Writer extends Writable["write"]>(
   return {
     command: `${task} <input>`,
     describe: "Parse and run a given markdown using an interactive wizard",
-    builder: inputBuilder,
+    builder,
     handler: async (argv: Arguments<GuideOpts>) =>
       await guideHandler(task, providedOptions, argv, write, ui).then(resolve, reject),
   }

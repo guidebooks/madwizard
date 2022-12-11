@@ -33,7 +33,7 @@ import { MadWizardOptions } from "../MadWizardOptions.js"
 
 import strings from "./strings.js"
 import examples from "./examples.js"
-import { Opts, commandLineOptions, parserConfiguration } from "./options.js"
+import { Opts, globalCommandLineOptions, parserConfiguration } from "./options.js"
 
 export async function cli<Writer extends Writable["write"]>(
   _argv: string[],
@@ -52,7 +52,7 @@ export async function cli<Writer extends Writable["write"]>(
       .example(examples())
       .version(version())
       .updateStrings(strings) // pretty-print some of the help output
-      .options(commandLineOptions)
+      .options(globalCommandLineOptions)
       .scriptName(chalk.bold("madwizard"))
       .parserConfiguration(parserConfiguration)
       .command(guide("guide", resolve, reject, providedOptions, write, ui))
