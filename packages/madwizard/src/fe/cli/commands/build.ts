@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Argv, CommandModule } from "yargs"
+import { Arguments, Argv, CommandModule } from "yargs"
 
 import Opts, { assembleOptions } from "../options.js"
 import { MadWizardOptions } from "../../MadWizardOptions.js"
@@ -41,7 +41,7 @@ function buildBuilder(yargs: Argv<Opts>): Argv<BuildOpts> {
     })
 }
 
-async function buildHandler(providedOptions: MadWizardOptions, argv: BuildOpts) {
+async function buildHandler(providedOptions: MadWizardOptions, argv: Arguments<BuildOpts>) {
   // build and mirror: these allow for static/ahead-of-time
   // fetching and inlining of content. This can be helpful to
   // allow shipping "frozen" forms of content with a build, and
