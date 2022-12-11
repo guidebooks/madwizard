@@ -35,11 +35,13 @@ import examples from "./examples.js"
 import { Opts, commandLineOptions, parserConfiguration } from "./options.js"
 
 export async function cli<Writer extends Writable["write"]>(
-  argv: string[],
+  _argv: string[],
   write?: Writer,
   providedOptions: MadWizardOptions = {},
   ui?: UI<string>
 ) {
+  const argv = _argv.slice(1)
+
   return new Promise((resolve, reject) => {
     const parser: Argv<Opts> = yargs()
       .help() // install a --help handler
@@ -59,9 +61,10 @@ export async function cli<Writer extends Writable["write"]>(
       .command(json(resolve, reject, providedOptions, write))
       .command(plan(resolve, reject, providedOptions, write))
       .showHelpOnFail(false, "Specify --help for available options")
-      .fail(fail(resolve, reject, providedOptions, argv, write, ui))
 
-    return parser.parseAsync(argv.slice(1))
+    parser.fail(fail(parser, resolve, reject, argv))
+
+    return parser.parseAsync(argv)
   })
 }
 

@@ -15,33 +15,29 @@
  */
 
 import { Argv } from "yargs"
-import { Writable } from "stream"
-
-import { UI } from "../../tree/index.js"
-import { MadWizardOptions } from "../../MadWizardOptions.js"
 
 import Opts from "../options.js"
-import { GuideRet, guideHandler } from "./guide.js"
 
 /** Create a `yargs` fail function */
-export default function fail<Writer extends Writable["write"]>(
-  resolve: (ret: GuideRet) => void,
+export default function fail(
+  yargs: Argv<Opts>,
+  resolve: (ret: unknown) => void,
   reject: (err: Error) => void,
-  providedOptions: MadWizardOptions,
-  argv: string[],
-  write?: Writer,
-  ui?: UI<string>
+  argv: string[]
 ) {
-  return function fail(msg: string, err: Error, yargs: Argv<Opts>) {
+  return async function fail(msg: string, err: Error) {
     if (!err && /Unknown argument/.test(msg)) {
       // failsafe: assume they are running a guide
-      guideHandler("guide", providedOptions, { input: argv[1], _: argv, $0: "madwizard" }, write, ui).then(
-        resolve,
-        reject
-      )
-    } else {
-      yargs.showHelp()
-      reject(err)
+      try {
+        return yargs.parseAsync(["guide", ...argv]).then(resolve, reject)
+      } catch (err) {
+        // intentional fallthrough
+      }
+
+      // intentional fallthrough
     }
+
+    yargs.showHelp()
+    reject(err)
   }
 }
