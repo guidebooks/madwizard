@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import { ParserConfigurationOptions } from "yargs"
+
 import defaultOptions from "./defaults.js"
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
-type Opts = {
+export type Opts = {
   "--"?: string[]
 
   /** Name for the set of stored answers to questions */
@@ -57,6 +59,9 @@ type Opts = {
 
   /** Accept all prior choices */
   yes?: boolean
+
+  /** Run in interactive mode, and overridden by value of `yes` (default: true) */
+  interactive?: boolean
 }
 
 /**
@@ -97,6 +102,77 @@ export function assembleOptions(
   }
 
   return opts
+}
+
+export const commandLineOptions = {
+  profile: {
+    alias: "p",
+    type: "string" as const,
+    describe: "Use a given named profile to remember your choices",
+  },
+  store: {
+    type: "string" as const,
+    describe: "Path to root of guidebook store",
+  },
+  interactive: {
+    alias: "i",
+    type: "boolean" as const,
+    default: true,
+    describe: "Always ask questions",
+  },
+  yes: {
+    alias: "y",
+    type: "boolean" as const,
+    describe: "Auto-accept all prior answers from your profile",
+  },
+  narrow: {
+    alias: "n",
+    type: "boolean" as const,
+    describe: "Try to fit in a narrower viewport",
+  },
+  verbose: {
+    alias: "V",
+    type: "boolean" as const,
+    describe: "Emit extra low-level content, such as command lines and env var updates",
+  },
+  raw: {
+    alias: "r",
+    type: "boolean" as const,
+    describe: "Advanced usage: emit computer-readable output for Q&A interactions",
+  },
+  "raw-prefix": {
+    type: "string" as const,
+    describe: "Advanced usage: when emitting raw output, prefix every line with this string",
+  },
+  aprioris: {
+    type: "boolean" as const,
+    default: true,
+    describe: "Whether or not to use automatic platform detection logic",
+  },
+  optimize: {
+    alias: "O",
+    type: "number" as const,
+    default: 1,
+    describe: "Whether or not to optimize the plan",
+  },
+  quiet: {
+    alias: "q",
+    type: "boolean" as const,
+    describe: "Try to emit as little superfluous output as possible",
+  },
+  assert: {
+    type: "string" as const,
+    describe: 'Assert the answer to a question (of the form "question=answer")',
+  },
+  veto: {
+    type: "string" as const,
+    describe: 'Veto the answer to a question that may be in the profile (of the form "question=answer")',
+  },
+}
+
+export const parserConfiguration: Partial<ParserConfigurationOptions> = {
+  // parse out the "-- <rest>" part of the command line
+  "populate--": true,
 }
 
 export default Opts
