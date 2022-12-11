@@ -146,7 +146,7 @@ export async function guideHandler<Writer extends Writable["write"]>(
   }
 }
 
-type GuideRet = {
+export type GuideRet = {
   cleanExit: () => void
   env: typeof process.env
 }
