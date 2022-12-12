@@ -1,3 +1,9 @@
+## [2.4.4](https://github.com/guidebooks/madwizard/compare/2.4.3...2.4.4) (2022-12-12)
+
+### Bug Fixes
+
+- pull in [@starpit](https://github.com/starpit) branch of enquirer to pull in fix for multi-line messages ([2ff0141](https://github.com/guidebooks/madwizard/commit/2ff0141a6ff6cb75088b30007b55ff158ac3c4e6))
+
 ## [2.4.3](https://github.com/guidebooks/madwizard/compare/2.4.2...2.4.3) (2022-12-12)
 
 ### Bug Fixes
