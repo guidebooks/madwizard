@@ -73,7 +73,7 @@
   "release-it": {
     "npm": false,
     "hooks": {
-      "before:init": [
+      "after:bump": [
         "npm run build"
       ]
     },
