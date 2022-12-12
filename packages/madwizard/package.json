@@ -61,7 +61,7 @@
     "cli-highlight": "^2.1.11",
     "columnify": "^1.6.0",
     "debug": "^4.3.4",
-    "enquirer": "^2.3.6",
+    "enquirer": "starpit/enquirer#starpit",
     "env-paths": "^2.2.1",
     "expand-home-dir": "^0.0.3",
     "figures": "^5.0.0",
