@@ -1,3 +1,15 @@
+## [2.4.1](https://github.com/guidebooks/madwizard/compare/2.4.0...2.4.1) (2022-12-12)
+
+### Bug Fixes
+
+- build command handler has incorrect argv type ([0d7a05e](https://github.com/guidebooks/madwizard/commit/0d7a05e75b9210963cadfc20245b0a1214c558ba))
+- cli fail handler can infinite loop ([4376e26](https://github.com/guidebooks/madwizard/commit/4376e2654a8e03ba4e1f998599e6202ff088d302))
+- cli fail handler does not actually work (needs tests) ([b6765b8](https://github.com/guidebooks/madwizard/commit/b6765b8ec7731391d4a3ad0fe00bc12d6c53e5d6))
+- group cli options for improved presentation in --help output ([a96191d](https://github.com/guidebooks/madwizard/commit/a96191d61d22755265b08f59f9320c16d9ed1f9a))
+- missing .js suffix for an import ([a23908e](https://github.com/guidebooks/madwizard/commit/a23908e732d522894fa67cd203ca7c544c3f3c50))
+- properly integrate profile command tree ([f29110e](https://github.com/guidebooks/madwizard/commit/f29110eeaa926641778aea345555142f9a13d02e))
+- refine yargs options to restrict number of global options ([67c2e16](https://github.com/guidebooks/madwizard/commit/67c2e16c6e1d4797754f383c27530ea02c35da02))
+
 # [2.4.0](https://github.com/guidebooks/madwizard/compare/2.3.6...2.4.0) (2022-12-10)
 
 ### Features
