@@ -1,3 +1,9 @@
+## [2.4.6](https://github.com/guidebooks/madwizard/compare/2.4.5...2.4.6) (2022-12-12)
+
+### Bug Fixes
+
+- undo an EOL change from prior commit ([13772d8](https://github.com/guidebooks/madwizard/commit/13772d860d5480bc5c757b9fc4e683fc251d2491))
+
 ## [2.4.5](https://github.com/guidebooks/madwizard/compare/2.4.4...2.4.5) (2022-12-12)
 
 ### Bug Fixes
