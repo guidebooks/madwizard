@@ -16,7 +16,6 @@
 
 import chalk from "chalk"
 
-/** Example command lines */
-export default function examples(): [[string, string]] {
-  return [[chalk.yellow("$0 guide demo"), "A guidebook that introduces guidebooks!"]]
+export default function advanced(describe: string) {
+  return chalk.yellow("Advanced: ") + describe
 }

@@ -43,7 +43,7 @@ function srcAndTargetNamedProfileBuilder(yargs: Argv<Opts>): Argv<NamedProfileOp
 
 export default function profileModule(providedOptions: MadWizardOptions): CommandModule<Opts, Opts> {
   return {
-    command: "profile",
+    command: "profile get|delete|clone",
     describe: "Print out the set of choices for the selected profile",
     builder: (yargs) =>
       yargs

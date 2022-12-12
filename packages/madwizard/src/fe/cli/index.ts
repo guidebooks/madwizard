@@ -24,7 +24,7 @@ import version from "../../version.js"
 import fail from "./commands/fail.js"
 import json from "./commands/json/index.js"
 import plan from "./commands/plan/index.js"
-import build from "./commands/build.js"
+// import build from "./commands/build.js"
 import guide from "./commands/guide/index.js"
 import mirror from "./commands/mirror.js"
 import profile from "./commands/profile.js"
@@ -56,12 +56,12 @@ export async function cli<Writer extends Writable["write"]>(
       .scriptName(chalk.bold("madwizard"))
       .parserConfiguration(parserConfiguration)
       .command(guide("guide", resolve, reject, providedOptions, write, ui))
-      .command(guide("run", resolve, reject, providedOptions, write, ui))
       .command(profile(providedOptions))
-      .command(build(resolve, reject, providedOptions))
+      // .command(build(resolve, reject, providedOptions))
+      .command(plan(resolve, reject, providedOptions, write))
       .command(mirror(resolve, reject, providedOptions))
       .command(json(resolve, reject, providedOptions, write))
-      .command(plan(resolve, reject, providedOptions, write))
+      .command(guide("run", resolve, reject, providedOptions, write, ui, false)) // false hides this from help
       .showHelpOnFail(false, "Specify --help for available options")
 
     parser.fail(fail(parser, resolve, reject, argv))

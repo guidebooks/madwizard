@@ -20,6 +20,7 @@ import { CommandModule } from "yargs"
 import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
 import Opts from "../../options.js"
+import advanced from "../advanced.js"
 import { InputOpts } from "../input.js"
 
 import builder from "./builder.js"
@@ -33,7 +34,7 @@ export default function planModule<Writer extends Writable["write"]>(
 ): CommandModule<Opts, InputOpts> {
   return {
     command: "plan <input>",
-    describe: "Parse a given markdown and pretty print the execution plan",
+    describe: advanced("Pretty print the execution plan for a given markdown"),
     builder,
     handler: async (argv) => handler(providedOptions, argv, write).then(resolve, reject),
   }

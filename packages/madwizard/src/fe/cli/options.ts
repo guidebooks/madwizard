@@ -16,7 +16,6 @@
 
 import { Arguments, ParserConfigurationOptions } from "yargs"
 
-import { group } from "./strings.js"
 import defaultOptions from "./defaults.js"
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
@@ -26,27 +25,6 @@ export type Opts = {
 
   /** Path to guidebook store */
   store?: string
-
-  /**
-   * Assert an answer to a question (of the form question=answer,
-   * where question is the path of the guidebook containing the
-   * question).
-   */
-  assert?: string
-
-  /**
-   * Whereas assert means ignore the answer in the profile, use the
-   * value provided here, veto means just ignore the answer to the
-   * question in the profile (also of the form question=answer, where
-   * question is the path of the guidebook containing the question).
-   */
-  veto?: string
-
-  /** Whether or not to use platform detection logic */
-  aprioris?: boolean
-
-  /** Optimization settings */
-  optimize?: number | false
 
   /** Internal: everything after the -- on the command line */
   "--"?: string[]
@@ -88,42 +66,18 @@ export function assembleOptions<T>(
   return opts
 }
 
-const expert = group("Expert Options:")
-
 /** Yargs `.options()` struct */
 export const globalCommandLineOptions = {
   profile: {
     alias: "p",
     type: "string" as const,
+    default: "default",
     describe: "Use a given named profile to remember your choices",
   },
   store: {
     alias: "s",
     type: "string" as const,
     describe: "Path to root of guidebook store",
-  },
-  aprioris: {
-    type: "boolean" as const,
-    default: true,
-    group: expert,
-    describe: "Whether or not to use automatic platform detection logic",
-  },
-  optimize: {
-    alias: "O",
-    type: "number" as const,
-    default: 1,
-    group: expert,
-    describe: "Whether or not to optimize the plan",
-  },
-  assert: {
-    type: "string" as const,
-    group: expert,
-    describe: 'Assert the answer to a question (of the form "question=answer")',
-  },
-  veto: {
-    type: "string" as const,
-    group: expert,
-    describe: 'Veto the answer to a question that may be in the profile (of the form "question=answer")',
   },
 }
 
