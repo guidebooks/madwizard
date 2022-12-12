@@ -1,3 +1,10 @@
+## [2.4.5](https://github.com/guidebooks/madwizard/compare/2.4.4...2.4.5) (2022-12-12)
+
+### Bug Fixes
+
+- improved fix for up/down arrow sometimes causing funky scrolling ([d91493a](https://github.com/guidebooks/madwizard/commit/d91493a4c180796e65ef31fea3791d64873121d1))
+- release-it hooks do not rebuild after src/version.ts is bumped ([2c90855](https://github.com/guidebooks/madwizard/commit/2c9085538d94359d85c4c6d4f2b65d16a3899eff))
+
 ## [2.4.4](https://github.com/guidebooks/madwizard/compare/2.4.3...2.4.4) (2022-12-12)
 
 ### Bug Fixes
