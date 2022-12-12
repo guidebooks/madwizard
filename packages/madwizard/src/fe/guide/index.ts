@@ -85,7 +85,7 @@ export class Guide {
 
   private get suggestionHint() {
     // reset the underlining from enquirer
-    return chalk.reset.yellow.dim("  ◄ you selected this last time")
+    return chalk.reset.yellow.dim("  ◄ prior choice")
   }
 
   /**

@@ -4,9 +4,6 @@
   "compilerOptions": {
     "composite": true,
     "rootDir": "src" /* Specify the root folder within your source files. */,
-    "outDir": "./dist" /* Specify an output folder for all emitted files. */,
-    "paths": {
-      "enquirer": ["./src/@types/enquirer/index.d.ts"]
-    }
+    "outDir": "./dist" /* Specify an output folder for all emitted files. */
   }
 }
