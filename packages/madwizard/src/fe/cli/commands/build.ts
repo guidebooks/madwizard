@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
-import { Arguments, Argv, CommandModule } from "yargs"
+/**
+ * Build and Mirror: these allow for static/ahead-of-time fetching and
+ * inlining of content. This can be helpful to allow shipping "frozen"
+ * forms of content with a build, and capturing remote content at the
+ * same time. By inlining the content ("build", and mirror calls build
+ * over a directory tree), you can also amortize the cost of many file
+ * reads/remote fetches per run.
+ *
+ */
+
+import { Argv, CommandModule } from "yargs"
 
 import Opts, { assembleOptions } from "../options.js"
 import { MadWizardOptions } from "../../MadWizardOptions.js"
@@ -41,19 +51,6 @@ function buildBuilder(yargs: Argv<Opts>): Argv<BuildOpts> {
     })
 }
 
-async function buildHandler(providedOptions: MadWizardOptions, argv: Arguments<BuildOpts>) {
-  // build and mirror: these allow for static/ahead-of-time
-  // fetching and inlining of content. This can be helpful to
-  // allow shipping "frozen" forms of content with a build, and
-  // capturing remote content at the same time. By inlining the
-  // content ("build", and mirror calls build over a directory
-  // tree), you can also amortize the cost of many file
-  // reads/remote fetches per run.
-  const options = assembleOptions(providedOptions, argv)
-  const { inliner } = await import("../../../parser/markdown/snippets/inliner.js")
-  await inliner(argv.input, argv.srcDir, argv.tgtPath, options)
-}
-
 export default function buildModule(
   resolve: (value: unknown) => void,
   reject: (err: Error) => void,
@@ -63,6 +60,10 @@ export default function buildModule(
     command: "build <srcDir> <input> <tgtPath>",
     describe: "Advanced usage: parse the given markdown",
     builder: buildBuilder,
-    handler: (argv) => buildHandler(providedOptions, argv).then(resolve, reject),
+    handler: async (argv) => {
+      const options = assembleOptions(providedOptions, argv)
+      const { inliner } = await import("../../../parser/markdown/snippets/inliner.js")
+      await inliner(argv.input, argv.srcDir, argv.tgtPath, options)
+    },
   }
 }

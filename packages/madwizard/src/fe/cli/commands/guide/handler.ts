@@ -22,7 +22,7 @@ import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
 import { getBlocksModel, loadAssertions, loadSuggestions, makeMemos } from "../util.js"
 
-import { GuideOpts, assembleOptionsForGuide } from "./options.js"
+import GuideOpts, { assembleOptionsForGuide } from "./options.js"
 
 export type GuideRet = {
   cleanExit: () => void

@@ -18,7 +18,7 @@ import { Argv } from "yargs"
 
 import Opts from "../../options.js"
 import { inputBuilder } from "../input.js"
-import { GuideOpts, commonOptions, guideOptions } from "./options.js"
+import GuideOpts, { commonOptions, guideOptions } from "./options.js"
 
 export default function builder(yargs: Argv<Opts>): Argv<GuideOpts> {
   return inputBuilder(yargs).options(guideOptions).options(commonOptions)
