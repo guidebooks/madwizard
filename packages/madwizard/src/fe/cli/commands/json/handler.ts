@@ -15,31 +15,24 @@
  */
 
 import { Writable } from "stream"
-import { Arguments, Argv, CommandModule } from "yargs"
+import { Arguments } from "yargs"
 
-import { MadWizardOptions } from "../../MadWizardOptions.js"
+import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
-import Opts, { assembleOptions } from "../options.js"
-import { InputOpts, inputBuilder } from "./input.js"
-import { getBlocksModel, loadAssertions, loadSuggestions, makeMemos } from "./util.js"
+import { assembleOptions } from "../../options.js"
+import { getBlocksModel, loadAssertions, loadSuggestions, makeMemos } from "../util.js"
 
-import { CommonOpts, commonOptions } from "./guide/options.js"
+import JsonOpts from "./options.js"
 
-type JsonOpts = InputOpts & CommonOpts
-
-function builder(yargs: Argv<Opts>): Argv<JsonOpts> {
-  return inputBuilder(yargs).options(commonOptions)
-}
-
-async function jsonHandler<Writer extends Writable["write"]>(
+export default async function jsonHandler<Writer extends Writable["write"]>(
   providedOptions: MadWizardOptions,
-  argv: Arguments<InputOpts>,
+  argv: Arguments<JsonOpts>,
   write?: Writer
 ) {
   const [{ EOL }, { newChoiceState }, { compile }] = await Promise.all([
     import("os"),
-    import("../../../choices/index.js"),
-    import("../../../graph/index.js"),
+    import("../../../../choices/index.js"),
+    import("../../../../graph/index.js"),
   ])
 
   const options = assembleOptions(providedOptions, argv)
@@ -48,7 +41,7 @@ async function jsonHandler<Writer extends Writable["write"]>(
   const memos = await makeMemos(suggestions, argv)
   const blocks = await getBlocksModel(argv.input, choices, options)
   const graph = await compile(blocks, choices, memos, options)
-  const wizard = await import("../../../wizard/index.js").then((_) => _.wizardify(graph, memos))
+  const wizard = await import("../../../../wizard/index.js").then((_) => _.wizardify(graph, memos))
   ;(write || process.stdout.write.bind(process.stdout))(
     JSON.stringify(
       wizard,
@@ -72,18 +65,4 @@ async function jsonHandler<Writer extends Writable["write"]>(
       2
     ) + EOL
   )
-}
-
-export default function jsonModule<Writer extends Writable["write"]>(
-  resolve: (value: unknown) => void,
-  reject: (err: Error) => void,
-  providedOptions: MadWizardOptions,
-  write: Writer
-): CommandModule<Opts, InputOpts> {
-  return {
-    command: "json <input>",
-    describe: "Parse a given markdown and print the raw execution plan model as JSON",
-    builder,
-    handler: (argv) => jsonHandler(providedOptions, argv, write).then(resolve, reject),
-  }
 }

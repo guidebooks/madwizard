@@ -22,7 +22,7 @@ import { UI } from "../tree/index.js"
 import version from "../../version.js"
 
 import fail from "./commands/fail.js"
-import json from "./commands/json.js"
+import json from "./commands/json/index.js"
 import plan from "./commands/plan/index.js"
 import build from "./commands/build.js"
 import guide from "./commands/guide/index.js"
