@@ -1,3 +1,10 @@
+## [2.4.3](https://github.com/guidebooks/madwizard/compare/2.4.2...2.4.3) (2022-12-12)
+
+### Bug Fixes
+
+- add profile sub-command descriptions (so they show up in help/usage) ([bea8df7](https://github.com/guidebooks/madwizard/commit/bea8df7d3cc4158f13b1ed4380cfaf8fc10c6d47))
+- minor wordsmithing on guide command description ([9d81930](https://github.com/guidebooks/madwizard/commit/9d819303b0a4986a01e0c92f4f82544702601f6f))
+
 ## [2.4.2](https://github.com/guidebooks/madwizard/compare/2.4.1...2.4.2) (2022-12-12)
 
 ### Bug Fixes
