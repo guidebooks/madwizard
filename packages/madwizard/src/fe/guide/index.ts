@@ -180,7 +180,7 @@ export class Guide {
         }
       }
 
-      const choices = content.map((tile, idx, A) => {
+      const choices = content.map((tile) => {
         const isSuggested = suggestion === tile.title
 
         return {
@@ -190,9 +190,7 @@ export class Guide {
           message:
             chalk.bold(tile.title) +
             (isSuggested ? this.suggestionHint : "") +
-            (!tile.description
-              ? ""
-              : chalk.reset(EOL) + this.format(tile.description) + (idx < A.length - 1 ? chalk.reset(EOL) : "")),
+            (!tile.description ? "" : chalk.reset(EOL) + this.format(tile.description) + chalk.reset(EOL)),
         }
       })
 
