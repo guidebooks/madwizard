@@ -30,7 +30,7 @@ export type CommonOpts = {
   quiet?: boolean
 }
 
-export type GuideOpts = InputOpts &
+type GuideOpts = InputOpts &
   CommonOpts & {
     /** Accept all prior choices */
     yes?: boolean
@@ -96,3 +96,5 @@ export function assembleOptionsForGuide(providedOptions: MadWizardOptions, comma
     veto: commandLineOptions.veto === undefined ? undefined : new RegExp(commandLineOptions.veto),
   })
 }
+
+export default GuideOpts

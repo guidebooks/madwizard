@@ -23,7 +23,7 @@ import { MadWizardOptions } from "../../../MadWizardOptions.js"
 import Opts from "../../options.js"
 
 import builder from "./builder.js"
-import { GuideOpts } from "./options.js"
+import GuideOpts from "./options.js"
 import handler, { GuideRet } from "./handler.js"
 
 export default function guideModule<Writer extends Writable["write"]>(

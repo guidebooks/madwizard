@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Arguments, Argv, CommandModule } from "yargs"
+import { Argv, CommandModule } from "yargs"
 
 import Opts, { assembleOptions } from "../options.js"
 import { MadWizardOptions } from "../../MadWizardOptions.js"
@@ -36,12 +36,6 @@ function mirrorBuilder(yargs: Argv<Opts>): Argv<MirrorOpts> {
     })
 }
 
-async function mirrorHandler(providedOptions: MadWizardOptions, argv: Arguments<MirrorOpts>) {
-  const options = assembleOptions(providedOptions, argv)
-  const { mirror } = await import("../../../parser/markdown/snippets/mirror.js")
-  await mirror(argv.srcDir, argv.tgtDir, undefined, options)
-}
-
 export default function mirrorModule(
   resolve: (value: unknown) => void,
   reject: (err: Error) => void,
@@ -51,6 +45,10 @@ export default function mirrorModule(
     command: "mirror <srcDir> <tgtDir>",
     describe: "Advanced usage: parse and optimize a given directory of markdowns",
     builder: mirrorBuilder,
-    handler: (argv) => mirrorHandler(providedOptions, argv).then(resolve, reject),
+    handler: async (argv) => {
+      const options = assembleOptions(providedOptions, argv)
+      const { mirror } = await import("../../../parser/markdown/snippets/mirror.js")
+      await mirror(argv.srcDir, argv.tgtDir, undefined, options)
+    },
   }
 }
