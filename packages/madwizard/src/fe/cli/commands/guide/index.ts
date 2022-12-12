@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import chalk from "chalk"
 import { Writable } from "stream"
 import { Arguments, CommandModule } from "yargs"
 
@@ -33,7 +34,7 @@ export default function guideModule<Writer extends Writable["write"]>(
   providedOptions: MadWizardOptions,
   write?: Writer,
   ui?: UI<string>,
-  describe: CommandModule["describe"] = "Parse and run a given markdown using an interactive wizard"
+  describe: CommandModule["describe"] = "View an interactive " + chalk.cyan("wizard") + " for a markdown file"
 ): CommandModule<Opts, GuideOpts> {
   return {
     command: `${task} <input>`,
