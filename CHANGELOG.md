@@ -1,3 +1,9 @@
+## [2.4.2](https://github.com/guidebooks/madwizard/compare/2.4.1...2.4.2) (2022-12-12)
+
+### Bug Fixes
+
+- more cleanup of options, descriptions and underlying code ([c81459a](https://github.com/guidebooks/madwizard/commit/c81459a2bbccbb3f96728a65d61ad79418121a72))
+
 ## [2.4.1](https://github.com/guidebooks/madwizard/compare/2.4.0...2.4.1) (2022-12-12)
 
 ### Bug Fixes
