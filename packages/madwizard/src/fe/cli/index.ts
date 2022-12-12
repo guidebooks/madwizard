@@ -23,7 +23,7 @@ import version from "../../version.js"
 
 import fail from "./commands/fail.js"
 import json from "./commands/json.js"
-import plan from "./commands/plan.js"
+import plan from "./commands/plan/index.js"
 import build from "./commands/build.js"
 import guide from "./commands/guide/index.js"
 import mirror from "./commands/mirror.js"
