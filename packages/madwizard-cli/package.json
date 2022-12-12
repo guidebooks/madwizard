@@ -27,7 +27,7 @@
     "test": "./test/run.sh"
   },
   "dependencies": {
-    "@guidebooks/store": "^1.9.0",
+    "@guidebooks/store": "^1.9.1",
     "madwizard-cli-core": "^2.4.2"
   }
 }
