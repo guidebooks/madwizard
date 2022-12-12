@@ -43,12 +43,13 @@ function srcAndTargetNamedProfileBuilder(yargs: Argv<Opts>): Argv<NamedProfileOp
 
 export default function profileModule(providedOptions: MadWizardOptions): CommandModule<Opts, Opts> {
   return {
-    command: "profile get|delete|clone",
-    describe: "Print out the set of choices for the selected profile",
+    command: "profile <subcommand>",
+    describe: "Commands for view, listing, deleting, and copying profiles",
     builder: (yargs) =>
       yargs
         .command({
           command: "get",
+          describe: "List your named profiles",
           handler: async () => {
             const [ui, profiles] = await Promise.all([
               import("../../profiles/table.js").then((_) => _.default),
@@ -58,7 +59,8 @@ export default function profileModule(providedOptions: MadWizardOptions): Comman
           },
         })
         .command({
-          command: "delete <profileName>",
+          command: "delete <profile>",
+          describe: "Delete a named profile",
           builder: namedProfileBuilder,
           handler: async (argv) => {
             const { profileName } = argv
@@ -66,7 +68,8 @@ export default function profileModule(providedOptions: MadWizardOptions): Comman
           },
         })
         .command({
-          command: "clone <profileName>",
+          command: "clone <srcProfile> <dstProfile>",
+          describe: "Copy the choices in a source profile to a new destination profile",
           builder: srcAndTargetNamedProfileBuilder,
           handler: async (argv) => {
             const { profileName, profileName2 } = argv
