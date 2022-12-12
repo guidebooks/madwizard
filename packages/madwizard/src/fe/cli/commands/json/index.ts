@@ -18,6 +18,7 @@ import { Writable } from "stream"
 import { CommandModule } from "yargs"
 
 import Opts from "../../options.js"
+import advanced from "../advanced.js"
 import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
 import builder from "./builder.js"
@@ -32,7 +33,7 @@ export default function jsonModule<Writer extends Writable["write"]>(
 ): CommandModule<Opts, JsonOpts> {
   return {
     command: "json <input>",
-    describe: "Parse a given markdown and print the raw execution plan model as JSON",
+    describe: advanced("Print the raw execution plan model as JSON"),
     builder,
     handler: (argv) => handler(providedOptions, argv, write).then(resolve, reject),
   }

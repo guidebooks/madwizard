@@ -32,11 +32,12 @@ export default function guideModule<Writer extends Writable["write"]>(
   reject: (err: Error) => void,
   providedOptions: MadWizardOptions,
   write?: Writer,
-  ui?: UI<string>
+  ui?: UI<string>,
+  describe: CommandModule["describe"] = "Parse and run a given markdown using an interactive wizard"
 ): CommandModule<Opts, GuideOpts> {
   return {
     command: `${task} <input>`,
-    describe: "Parse and run a given markdown using an interactive wizard",
+    describe,
     builder,
     handler: async (argv: Arguments<GuideOpts>) =>
       await handler(task, providedOptions, argv, write, ui).then(resolve, reject),

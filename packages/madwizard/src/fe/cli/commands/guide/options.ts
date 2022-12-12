@@ -28,6 +28,27 @@ export type CommonOpts = {
 
   /** Try to emit as little superfluous output as possible */
   quiet?: boolean
+
+  /**
+   * Assert an answer to a question (of the form question=answer,
+   * where question is the path of the guidebook containing the
+   * question).
+   */
+  assert?: string
+
+  /**
+   * Whereas assert means ignore the answer in the profile, use the
+   * value provided here, veto means just ignore the answer to the
+   * question in the profile (also of the form question=answer, where
+   * question is the path of the guidebook containing the question).
+   */
+  veto?: string
+
+  /** Whether or not to use platform detection logic */
+  aprioris?: boolean
+
+  /** Optimization settings */
+  optimize?: number | false
 }
 
 type GuideOpts = InputOpts &
@@ -61,6 +82,29 @@ export const commonOptions = {
     type: "boolean" as const,
     group: expertGroup,
     describe: "Try to emit as little superfluous output as possible",
+  },
+  aprioris: {
+    type: "boolean" as const,
+    default: true,
+    group: expertGroup,
+    describe: "Whether or not to use automatic platform detection logic",
+  },
+  optimize: {
+    alias: "O",
+    type: "number" as const,
+    default: 1,
+    group: expertGroup,
+    describe: "Whether or not to optimize the plan",
+  },
+  assert: {
+    type: "string" as const,
+    group: expertGroup,
+    describe: 'Assert the answer to a question (of the form "question=answer")',
+  },
+  veto: {
+    type: "string" as const,
+    group: expertGroup,
+    describe: 'Veto the answer to a question that may be in the profile (of the form "question=answer")',
   },
 }
 

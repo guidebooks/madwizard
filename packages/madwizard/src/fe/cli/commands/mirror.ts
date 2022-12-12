@@ -16,6 +16,7 @@
 
 import { Argv, CommandModule } from "yargs"
 
+import advanced from "./advanced.js"
 import Opts, { assembleOptions } from "../options.js"
 import { MadWizardOptions } from "../../MadWizardOptions.js"
 
@@ -43,7 +44,7 @@ export default function mirrorModule(
 ): CommandModule<Opts, MirrorOpts> {
   return {
     command: "mirror <srcDir> <tgtDir>",
-    describe: "Advanced usage: parse and optimize a given directory of markdowns",
+    describe: advanced("Preprocess a directory of markdowns to allow for faster loading"),
     builder: mirrorBuilder,
     handler: async (argv) => {
       const options = assembleOptions(providedOptions, argv)
