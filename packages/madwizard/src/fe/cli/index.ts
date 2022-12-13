@@ -15,8 +15,9 @@
  */
 
 import chalk from "chalk"
+import { basename } from "path"
 import { Writable } from "stream"
-import yargs, { Argv } from "yargs"
+import yargs from "yargs"
 
 import { UI } from "../tree/index.js"
 import version from "../../version.js"
@@ -33,7 +34,11 @@ import { MadWizardOptions } from "../MadWizardOptions.js"
 
 import strings from "./strings.js"
 import examples from "./examples.js"
-import { Opts, globalCommandLineOptions, parserConfiguration } from "./options.js"
+import { globalCommandLineOptions, parserConfiguration } from "./options.js"
+
+function hasCode(err?: Error): err is Error & { code: number | string } {
+  return err && typeof (err as unknown as { code: number | string }).code !== undefined
+}
 
 export async function cli<Writer extends Writable["write"]>(
   _argv: string[],
@@ -44,7 +49,20 @@ export async function cli<Writer extends Writable["write"]>(
   const argv = _argv.slice(1)
 
   return new Promise((resolve, reject) => {
-    const parser: Argv<Opts> = yargs()
+    const reject2 = (err: Error) => {
+      reject(
+        hasCode(err) && err.code === "ENOENT"
+          ? new Error(
+              chalk.red(
+                "Guidebook not found: " +
+                  err.message.replace(/ENOENT: no such file or directory, open '(.+)'/, (_, p1) => basename(p1))
+              )
+            )
+          : err
+      )
+    }
+
+    const parser = yargs()
       .help() // install a --help handler
       .strict() // fail if an option is not recognized
       .wrap(null) // no artificial wrapping
@@ -55,18 +73,18 @@ export async function cli<Writer extends Writable["write"]>(
       .options(globalCommandLineOptions)
       .scriptName(chalk.bold("madwizard"))
       .parserConfiguration(parserConfiguration)
-      .command(guide("guide", resolve, reject, providedOptions, write, ui))
+      .command(guide("guide", resolve, reject2, providedOptions, write, ui))
       .command(profile(providedOptions))
-      // .command(build(resolve, reject, providedOptions))
-      .command(plan(resolve, reject, providedOptions, write))
-      .command(mirror(resolve, reject, providedOptions))
-      .command(json(resolve, reject, providedOptions, write))
-      .command(guide("run", resolve, reject, providedOptions, write, ui, false)) // false hides this from help
+      // .command(build(resolve, reject2, providedOptions))
+      .command(plan(resolve, reject2, providedOptions, write))
+      .command(mirror(resolve, reject2, providedOptions))
+      .command(json(resolve, reject2, providedOptions, write))
+      .command(guide("run", resolve, reject2, providedOptions, write, ui, false)) // false hides this from help
       .showHelpOnFail(false, "Specify --help for available options")
 
-    parser.fail(fail(parser, resolve, reject, argv))
+    parser.fail(fail(parser, resolve, reject2, argv))
 
-    return parser.parseAsync(argv)
+    return parser.parseAsync(argv).catch(reject2)
   })
 }
 
