@@ -1,3 +1,9 @@
+## [2.4.7](https://github.com/guidebooks/madwizard/compare/2.4.6...2.4.7) (2022-12-13)
+
+### Bug Fixes
+
+- improve error reporting of 'guidebook not found' case ([8aef1fd](https://github.com/guidebooks/madwizard/commit/8aef1fdd83bcfbeb4bff8f247b3fed36d7a29594))
+
 ## [2.4.6](https://github.com/guidebooks/madwizard/compare/2.4.5...2.4.6) (2022-12-12)
 
 ### Bug Fixes
