@@ -1,3 +1,5 @@
+## [2.4.8](https://github.com/guidebooks/madwizard/compare/2.4.7...2.4.8) (2022-12-15)
+
 ## [2.4.7](https://github.com/guidebooks/madwizard/compare/2.4.6...2.4.7) (2022-12-13)
 
 ### Bug Fixes
