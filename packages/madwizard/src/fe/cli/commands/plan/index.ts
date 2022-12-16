@@ -27,8 +27,6 @@ import builder from "./builder.js"
 import handler from "./handler.js"
 
 export default function planModule<Writer extends Writable["write"]>(
-  resolve: (value: unknown) => void,
-  reject: (err: Error) => void,
   providedOptions: MadWizardOptions,
   write: Writer
 ): CommandModule<Opts, InputOpts> {
@@ -36,6 +34,6 @@ export default function planModule<Writer extends Writable["write"]>(
     command: "plan <input>",
     describe: advanced("Pretty print the execution plan for a given markdown"),
     builder,
-    handler: async (argv) => handler(providedOptions, argv, write).then(resolve, reject),
+    handler: (argv) => handler(providedOptions, argv, write),
   }
 }

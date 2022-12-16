@@ -25,8 +25,7 @@ import version from "../../version.js"
 import fail from "./commands/fail.js"
 import json from "./commands/json/index.js"
 import plan from "./commands/plan/index.js"
-// import build from "./commands/build.js"
-import guide from "./commands/guide/index.js"
+import guide, { GuideRet } from "./commands/guide/index.js"
 import mirror from "./commands/mirror.js"
 import profile from "./commands/profile.js"
 
@@ -48,7 +47,7 @@ export async function cli<Writer extends Writable["write"]>(
 ) {
   const argv = _argv.slice(1)
 
-  return new Promise((resolve, reject) => {
+  return new Promise<GuideRet>((resolve, reject) => {
     const reject2 = (err: Error) => {
       reject(
         hasCode(err) && err.code === "ENOENT"
@@ -75,14 +74,13 @@ export async function cli<Writer extends Writable["write"]>(
       .parserConfiguration(parserConfiguration)
       .command(guide("guide", resolve, reject2, providedOptions, write, ui))
       .command(profile(providedOptions))
-      // .command(build(resolve, reject2, providedOptions))
-      .command(plan(resolve, reject2, providedOptions, write))
-      .command(mirror(resolve, reject2, providedOptions))
-      .command(json(resolve, reject2, providedOptions, write))
+      .command(plan(providedOptions, write))
+      .command(mirror(providedOptions))
+      .command(json(providedOptions, write))
       .command(guide("run", resolve, reject2, providedOptions, write, ui, false)) // false hides this from help
       .showHelpOnFail(false, "Specify --help for available options")
 
-    parser.fail(fail(parser, resolve, reject2, argv))
+    parser.fail(fail(parser, argv))
 
     return parser.parseAsync(argv).catch(reject2)
   })

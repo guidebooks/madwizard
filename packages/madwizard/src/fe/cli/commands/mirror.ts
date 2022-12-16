@@ -37,11 +37,7 @@ function mirrorBuilder(yargs: Argv<Opts>): Argv<MirrorOpts> {
     })
 }
 
-export default function mirrorModule(
-  resolve: (value: unknown) => void,
-  reject: (err: Error) => void,
-  providedOptions: MadWizardOptions
-): CommandModule<Opts, MirrorOpts> {
+export default function mirrorModule(providedOptions: MadWizardOptions): CommandModule<Opts, MirrorOpts> {
   return {
     command: "mirror <srcDir> <tgtDir>",
     describe: advanced("Preprocess a directory of markdowns to allow for faster loading"),

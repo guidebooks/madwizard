@@ -19,17 +19,12 @@ import { Argv } from "yargs"
 import Opts from "../options.js"
 
 /** Create a `yargs` fail function */
-export default function fail(
-  yargs: Argv<Opts>,
-  resolve: (ret: unknown) => void,
-  reject: (err: Error) => void,
-  argv: string[]
-) {
+export default function fail(yargs: Argv<Opts>, argv: string[]) {
   return async function fail(msg: string, err: Error) {
     if (!err && /Unknown argument:/.test(msg)) {
       // failsafe: assume they are running a guide
       try {
-        await yargs.parseAsync(["guide", ...argv]).then(resolve)
+        await yargs.parseAsync(["guide", ...argv])
         return
       } catch (err) {
         // intentional fallthrough
@@ -39,6 +34,6 @@ export default function fail(
     }
 
     yargs.showHelp()
-    reject(err)
+    throw err
   }
 }

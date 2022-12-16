@@ -26,8 +26,6 @@ import handler from "./handler.js"
 import JsonOpts from "./options.js"
 
 export default function jsonModule<Writer extends Writable["write"]>(
-  resolve: (value: unknown) => void,
-  reject: (err: Error) => void,
   providedOptions: MadWizardOptions,
   write: Writer
 ): CommandModule<Opts, JsonOpts> {
@@ -35,6 +33,6 @@ export default function jsonModule<Writer extends Writable["write"]>(
     command: "json <input>",
     describe: advanced("Print the raw execution plan model as JSON"),
     builder,
-    handler: (argv) => handler(providedOptions, argv, write).then(resolve, reject),
+    handler: (argv) => handler(providedOptions, argv, write),
   }
 }

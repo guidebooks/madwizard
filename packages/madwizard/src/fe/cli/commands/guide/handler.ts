@@ -25,7 +25,7 @@ import { getBlocksModel, loadAssertions, loadSuggestions, makeMemos } from "../u
 import GuideOpts, { assembleOptionsForGuide } from "./options.js"
 
 export type GuideRet = {
-  cleanExit: () => void
+  cleanExit: (signal?: "SIGINT" | "SIGTERM") => void
   env: typeof process.env
 }
 
