@@ -27,6 +27,8 @@ import builder from "./builder.js"
 import GuideOpts from "./options.js"
 import handler, { GuideRet } from "./handler.js"
 
+export { GuideRet }
+
 export default function guideModule<Writer extends Writable["write"]>(
   task: "run" | "guide",
   resolve: (ret: GuideRet) => void,

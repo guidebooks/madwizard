@@ -26,9 +26,9 @@ import fail from "./commands/fail.js"
 import json from "./commands/json/index.js"
 import plan from "./commands/plan/index.js"
 // import build from "./commands/build.js"
-import guide from "./commands/guide/index.js"
 import mirror from "./commands/mirror.js"
 import profile from "./commands/profile.js"
+import guideMod, { GuideRet } from "./commands/guide/index.js"
 
 import { MadWizardOptions } from "../MadWizardOptions.js"
 
@@ -38,6 +38,46 @@ import { globalCommandLineOptions, parserConfiguration } from "./options.js"
 
 function hasCode(err?: Error): err is Error & { code: number | string } {
   return err && typeof (err as unknown as { code: number | string }).code !== undefined
+}
+
+export async function guide<Writer extends Writable["write"]>(
+  _argv: string[],
+  write?: Writer,
+  providedOptions: MadWizardOptions = {},
+  ui?: UI<string>
+) {
+  const argv = _argv.slice(1)
+
+  return new Promise<GuideRet>((resolve, reject) => {
+    const reject2 = (err: Error) => {
+      reject(
+        hasCode(err) && err.code === "ENOENT"
+          ? new Error(
+              chalk.red(
+                "Guidebook not found: " +
+                  err.message.replace(/ENOENT: no such file or directory, open '(.+)'/, (_, p1) => basename(p1))
+              )
+            )
+          : err
+      )
+    }
+
+    yargs()
+      .help() // install a --help handler
+      .strict() // fail if an option is not recognized
+      .wrap(null) // no artificial wrapping
+      .demandCommand() // fail if yargs doesn't find one of our commands
+      .example(examples())
+      .version(version())
+      .updateStrings(strings) // pretty-print some of the help output
+      .options(globalCommandLineOptions)
+      .scriptName(chalk.bold("madwizard"))
+      .parserConfiguration(parserConfiguration)
+      .command(guideMod("guide", resolve, reject2, providedOptions, write, ui))
+      .showHelpOnFail(false, "Specify --help for available options")
+      .parseAsync(argv)
+      .catch(reject2)
+  })
 }
 
 export async function cli<Writer extends Writable["write"]>(
@@ -73,13 +113,13 @@ export async function cli<Writer extends Writable["write"]>(
       .options(globalCommandLineOptions)
       .scriptName(chalk.bold("madwizard"))
       .parserConfiguration(parserConfiguration)
-      .command(guide("guide", resolve, reject2, providedOptions, write, ui))
+      .command(guideMod("guide", resolve, reject2, providedOptions, write, ui))
       .command(profile(providedOptions))
       // .command(build(resolve, reject2, providedOptions))
       .command(plan(resolve, reject2, providedOptions, write))
       .command(mirror(resolve, reject2, providedOptions))
       .command(json(resolve, reject2, providedOptions, write))
-      .command(guide("run", resolve, reject2, providedOptions, write, ui, false)) // false hides this from help
+      .command(guideMod("run", resolve, reject2, providedOptions, write, ui, false)) // false hides this from help
       .showHelpOnFail(false, "Specify --help for available options")
 
     parser.fail(fail(parser, resolve, reject2, argv))
