@@ -1,3 +1,10 @@
+## [2.4.9](https://github.com/guidebooks/madwizard/compare/2.4.8...2.4.9) (2022-12-16)
+
+### Bug Fixes
+
+- guide export `cleanExit()` method needs to accept a signal parameter ([b623626](https://github.com/guidebooks/madwizard/commit/b623626ec20447a7de4c847f3f6aeef41c554a0a))
+- improve return type of `cli` export ([3ed3633](https://github.com/guidebooks/madwizard/commit/3ed363345fc4a013b9d1b865348fedf8817f7eda))
+
 ## [2.4.8](https://github.com/guidebooks/madwizard/compare/2.4.7...2.4.8) (2022-12-15)
 
 ## [2.4.7](https://github.com/guidebooks/madwizard/compare/2.4.6...2.4.7) (2022-12-13)
