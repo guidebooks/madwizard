@@ -18,13 +18,6 @@
   "bugs": {
     "url": "https://github.com/guidebooks/madwizard/issues"
   },
-  "files": [
-    "./bin/*",
-    "./dist/*"
-  ],
-  "directories": {
-    "bin": "./bin"
-  },
   "scripts": {
     "clean": "rm madwizard.min.cjs",
     "bundle": "esbuild ./madwizard.js --bundle --platform=node --outfile=./dist/madwizard.min.cjs --external:@guidebooks/store/package.json",
