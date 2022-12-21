@@ -21,6 +21,7 @@ import defaultProfileName from "./defaultName.js"
 import { MadWizardOptions } from "../fe/index.js"
 
 export * from "./paths.js"
+export * from "./Profile.js"
 
 export { default as list } from "./list.js"
 export { default as touch } from "./touch.js"
