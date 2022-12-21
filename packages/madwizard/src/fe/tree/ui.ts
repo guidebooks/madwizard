@@ -15,7 +15,6 @@
  */
 
 import terminalLink from "terminal-link"
-import { highlight } from "cli-highlight"
 import chalk, { Modifiers, Color } from "chalk"
 
 import { Status } from "../../graph/index.js"
@@ -76,7 +75,7 @@ export class AnsiUI implements UI<string> {
     const outerSuffix = hasValidation ? chalk.bold.yellow(" †") : ""
     const innerSuffix = optional ? " [OPTIONAL]" : ""
     const color = optional ? chalk.magenta.dim : chalk.magenta
-    const bodyUI = highlight(body, { language })
+    const bodyUI = body // from cli-highlight: highlight(body, { language })
 
     return (language === "shell" ? color(bodyUI) : bodyUI) + color(innerSuffix) + outerSuffix
   }
