@@ -1,3 +1,9 @@
+# [2.5.0](https://github.com/guidebooks/madwizard/compare/2.4.11...2.5.0) (2022-12-21)
+
+### Features
+
+- remove fancy code highlighting from AnsiUI ([efd8531](https://github.com/guidebooks/madwizard/commit/efd853157b8cb5a668d9f3c3cb563615abe9c6b6))
+
 ## [2.4.11](https://github.com/guidebooks/madwizard/compare/2.4.10...2.4.11) (2022-12-21)
 
 ### Bug Fixes
