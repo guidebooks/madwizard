@@ -1,3 +1,10 @@
+## [2.4.10](https://github.com/guidebooks/madwizard/compare/2.4.9...2.4.10) (2022-12-21)
+
+### Bug Fixes
+
+- madwizard-cli-core is not publishing dist ([1ec9c5b](https://github.com/guidebooks/madwizard/commit/1ec9c5b7ab178a90063eb57f41b3f2fcf70e3050))
+- minor performance tweak to Profile ([db6dd35](https://github.com/guidebooks/madwizard/commit/db6dd35a31c026cc15c0acccb789e1ef44da8f0e))
+
 ## [2.4.9](https://github.com/guidebooks/madwizard/compare/2.4.8...2.4.9) (2022-12-16)
 
 ### Bug Fixes
