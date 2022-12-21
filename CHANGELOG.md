@@ -1,3 +1,9 @@
+## [2.4.11](https://github.com/guidebooks/madwizard/compare/2.4.10...2.4.11) (2022-12-21)
+
+### Bug Fixes
+
+- Profiles does not export Profile type ([d1fd6e3](https://github.com/guidebooks/madwizard/commit/d1fd6e3d45c971fa4c6ea010fecaacaa43b14d3f))
+
 ## [2.4.10](https://github.com/guidebooks/madwizard/compare/2.4.9...2.4.10) (2022-12-21)
 
 ### Bug Fixes
