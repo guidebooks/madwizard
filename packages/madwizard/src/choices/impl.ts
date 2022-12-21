@@ -16,8 +16,8 @@
 
 import { Choice } from "../graph/index.js"
 import ChoiceEventManager from "./events.js"
-import { Profile, copyWithName } from "../profiles/index.js"
 import { ChoiceState, ChoicesMap, Key } from "./index.js"
+import { Profile, copyWithName } from "../profiles/Profile.js"
 
 export default class ChoiceStateImpl extends ChoiceEventManager implements ChoiceState {
   public constructor(

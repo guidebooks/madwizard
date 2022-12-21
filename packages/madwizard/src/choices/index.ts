@@ -16,7 +16,7 @@
 
 import ChoiceStateImpl from "./impl.js"
 import { Choice } from "../graph/index.js"
-import { Profile, isProfile } from "../profiles/index.js"
+import { Profile, isProfile } from "../profiles/Profile.js"
 import { ChoiceHandlerRegistration } from "./events.js"
 import { Choice as CodeBlockChoice } from "../codeblock/CodeBlockProps.js"
 
