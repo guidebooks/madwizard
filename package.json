@@ -89,14 +89,14 @@
     }
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.46.1",
-    "@typescript-eslint/parser": "^5.46.1",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.29.0",
+    "eslint": "^8.30.0",
     "husky": "^8.0.2",
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.1",
-    "typedoc": "^0.23.22",
+    "typedoc": "^0.23.23",
     "typedoc-plugin-markdown": "^3.14.0",
     "typescript": "^4.9.4",
     "uvu": "^0.5.6"
