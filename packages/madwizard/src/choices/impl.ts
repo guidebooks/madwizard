@@ -116,7 +116,7 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
   }
 
   /** State representing form completion */
-  public formComplete(choice: Choice, value: Record<string, string>) {
+  public formComplete(choice: Choice, value: string[] | Record<string, string>) {
     return this.set(choice, JSON.stringify(value))
   }
 

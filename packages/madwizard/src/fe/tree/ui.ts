@@ -21,6 +21,9 @@ import { Status } from "../../graph/index.js"
 
 export type Decoration = Modifiers | Color
 
+type ValidQuestion = import("enquirer").Prompt
+type ValidAnswer = string | string[] | import("enquirer").prompt.FormQuestion.Answer
+
 export interface UI<Content> {
   span(body: string, ...decorations: Decoration[]): Content
   code(body: string, language: string, optional?: boolean, hasValidation?: boolean): Content
@@ -29,7 +32,7 @@ export interface UI<Content> {
   title(title: Content | string | (Content | string)[], status?: Status): Content
   open?(filepath: string): Content
   markdown(body: string): Content
-  ask(prompt: import("enquirer").Prompt): Promise<string | Record<string, string>>
+  ask(prompt: ValidQuestion): Promise<ValidAnswer>
 }
 
 export class DevNullUI implements UI<string> {
@@ -124,7 +127,7 @@ export class AnsiUI implements UI<string> {
       .replace(this.CODEBLOCK_REGEX, (_, p1) => this.code(p1, "markdown"))
   }
 
-  public ask(prompt: import("enquirer").Prompt): Promise<string | Record<string, string>> {
+  public async ask(prompt: ValidQuestion): Promise<ValidAnswer> {
     return prompt.run()
   }
 }

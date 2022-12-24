@@ -42,7 +42,7 @@ export interface ChoiceState {
   offChoice: ChoiceHandlerRegistration
 
   /** State representing form completion */
-  formComplete(choice: Choice, value: Record<string, string>): boolean
+  formComplete(choice: Choice, value: string[] | Record<string, string>): boolean
 
   /** Extract form responses */
   form(choice: Choice): Record<string, string>
