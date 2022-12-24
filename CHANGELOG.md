@@ -1,3 +1,9 @@
+## [2.5.1](https://github.com/guidebooks/madwizard/compare/2.5.0...2.5.1) (2022-12-24)
+
+### Bug Fixes
+
+- missing typing for string[] answers from multiselect ([2a1a955](https://github.com/guidebooks/madwizard/commit/2a1a955879833a1f03e6ba9b0e20c868763731fc))
+
 # [2.5.0](https://github.com/guidebooks/madwizard/compare/2.4.11...2.5.0) (2022-12-21)
 
 ### Features
