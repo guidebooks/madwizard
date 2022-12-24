@@ -254,7 +254,7 @@ export class Guide {
     }
   }
 
-  private incorporateAnswers(choiceStep: ChoiceStep, answer: string | enquirer.prompt.FormQuestion.Answer) {
+  private incorporateAnswers(choiceStep: ChoiceStep, answer: string | string[] | enquirer.prompt.FormQuestion.Answer) {
     if (typeof answer === "string") {
       this.choices.set(choiceStep.graph, answer)
     } else {
