@@ -239,7 +239,12 @@ export class Guide {
           choices,
           validate: !isMulti ? undefined : (value) => Array.isArray(value) && value.length > 0, // reject no selections for multi
           initial:
-            isMulti && Array.isArray(previouslySelectedOptions) ? (previouslySelectedOptions as string[]) : undefined,
+            isMulti && Array.isArray(previouslySelectedOptions)
+              ? (previouslySelectedOptions as string[]).filter(
+                  // filter out previously selected options that no longer exist in the latest guidebook
+                  (suggestion) => !!content.find((_) => _.title === suggestion)
+                )
+              : undefined,
         }
       }
     })
