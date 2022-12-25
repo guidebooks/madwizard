@@ -1,3 +1,9 @@
+## [2.5.2](https://github.com/guidebooks/madwizard/compare/2.5.1...2.5.2) (2022-12-25)
+
+### Bug Fixes
+
+- multiselect fails if prior choices are not valid choices in latest guidebook ([9911072](https://github.com/guidebooks/madwizard/commit/991107237c80207d190d08086a981f217cd09ca5))
+
 ## [2.5.1](https://github.com/guidebooks/madwizard/compare/2.5.0...2.5.1) (2022-12-24)
 
 ### Bug Fixes
