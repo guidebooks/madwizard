@@ -89,11 +89,11 @@
     }
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.47.0",
-    "@typescript-eslint/parser": "^5.47.0",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.30.0",
-    "husky": "^8.0.2",
+    "eslint": "^8.31.0",
+    "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.1",
     "typedoc": "^0.23.23",

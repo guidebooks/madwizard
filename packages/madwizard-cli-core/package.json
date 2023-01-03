@@ -27,7 +27,7 @@
     "prepack": "npm run build"
   },
   "devDependencies": {
-    "esbuild": "^0.16.10",
+    "esbuild": "^0.16.13",
     "madwizard": "^2.5.2"
   }
 }
