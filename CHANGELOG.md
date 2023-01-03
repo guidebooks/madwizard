@@ -1,3 +1,9 @@
+## [2.5.3](https://github.com/guidebooks/madwizard/compare/2.5.2...2.5.3) (2023-01-03)
+
+### Bug Fixes
+
+- is not expanded for non-forms ([ffe8c53](https://github.com/guidebooks/madwizard/commit/ffe8c53189f969cafcbef274ca593996f9e07f67))
+
 ## [2.5.2](https://github.com/guidebooks/madwizard/compare/2.5.1...2.5.2) (2022-12-25)
 
 ### Bug Fixes
