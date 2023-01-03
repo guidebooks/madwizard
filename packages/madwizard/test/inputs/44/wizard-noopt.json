@@ -1,0 +1,90 @@
+[
+  {
+    "graph": {
+      "group": "AAA####BBB",
+      "groupContext": "test/inputs/44/in",
+      "title": "Nested Choice string injection",
+      "description": "We expect the ${choice} strings to be replaced with NNN/BBB, respectively.\n",
+      "source": "placeholder",
+      "provenance": ["test/inputs/44/in"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "key": "somekey",
+                "title": "nested",
+                "filepath": "test/inputs/44/nested",
+                "graph": {
+                  "key": "somekey",
+                  "sequence": [
+                    {
+                      "group": "NNN",
+                      "groupContext": "test/inputs/44/nested",
+                      "source": "placeholder",
+                      "provenance": ["test/inputs/44/nested"],
+                      "choices": [
+                        {
+                          "member": 0,
+                          "graph": {
+                            "key": "somekey",
+                            "sequence": [
+                              {
+                                "body": "echo ${choice}",
+                                "language": "shell",
+                                "id": "somekey"
+                              }
+                            ]
+                          },
+                          "title": "NNN"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                "source": "placeholder"
+              }
+            ]
+          },
+          "title": "AAA",
+          "description": "\nTesting nested AAA expansion."
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo BBB",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "BBB"
+        }
+      ]
+    },
+    "step": {
+      "name": "Nested Choice string injection",
+      "description": "We expect the ${choice} strings to be replaced with NNN/BBB, respectively.\n",
+      "content": [
+        {
+          "title": "AAA",
+          "group": "AAA####BBB",
+          "member": 0,
+          "isFirstChoice": true,
+          "description": "\nTesting nested AAA expansion."
+        },
+        {
+          "title": "BBB",
+          "group": "AAA####BBB",
+          "member": 1,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  }
+]

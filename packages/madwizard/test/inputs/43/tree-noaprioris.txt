@@ -1,0 +1,5 @@
+Choice string injection
+├── Option 1: AAA
+│   └── echo AAA
+└── Option 2: BBB
+    └── echo BBB

@@ -138,6 +138,10 @@ export type ChoicePart<T extends Unordered | Ordered = Unordered> = Title &
     graph: Sequence<T>
   }
 
+export function isPartOfForm(part: ChoicePart): part is ChoicePart & Required<FormElement> {
+  return typeof part.form === "object"
+}
+
 /** An choice/question */
 export type Choice<T extends Unordered | Ordered = Unordered> = Source &
   T &

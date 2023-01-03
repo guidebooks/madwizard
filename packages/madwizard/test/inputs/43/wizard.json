@@ -1,0 +1,60 @@
+[
+  {
+    "graph": {
+      "group": "AAA####BBB",
+      "groupContext": "test/inputs/43/in",
+      "title": "Choice string injection",
+      "description": "We expect the ${choice} strings to be replaced with AAA/BBB, respectively.\n",
+      "source": "placeholder",
+      "provenance": ["test/inputs/43/in"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo AAA",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "AAA"
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo BBB",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "BBB"
+        }
+      ]
+    },
+    "step": {
+      "name": "Choice string injection",
+      "description": "We expect the ${choice} strings to be replaced with AAA/BBB, respectively.\n",
+      "content": [
+        {
+          "title": "AAA",
+          "group": "AAA####BBB",
+          "member": 0,
+          "isFirstChoice": true
+        },
+        {
+          "title": "BBB",
+          "group": "AAA####BBB",
+          "member": 1,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  }
+]
