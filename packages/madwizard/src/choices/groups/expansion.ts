@@ -23,7 +23,15 @@ import { Debug } from "./debug.js"
 import { ChoiceState } from "../index.js"
 import { Memos } from "../../memoization/index.js"
 import { ExecutorOptions } from "../../exec/Executor.js"
-import { Graph, Choice, ChoicePart, blocks, findChoicesOnFrontier } from "../../graph/index.js"
+import {
+  Graph,
+  Choice,
+  ChoicePart,
+  blocks,
+  blocksUpToChoiceFrontier,
+  findChoicesOnFrontier,
+  isPartOfForm,
+} from "../../graph/index.js"
 
 /** Map from `ExpansionExpression.expr` to a list of expanded choices */
 export type ExpansionMap = Record<string, Promise<string[] | null>>
@@ -37,7 +45,10 @@ function expandHomeDir(path: string) {
   return join(homedir, path.slice(2))
 }
 
-export function updateContent<Part extends { graph: Graph; description?: string }>(part: Part, choice = ""): Part {
+export function updateContent<Part extends { graph: Graph; description?: string }>(
+  part: Part,
+  choiceString = ""
+): Part {
   const pattern1 = /\$\{?choice\}?/gi
   const pattern2a = /\${uuid}/gi
   const pattern2b = /\$uuid/gi
@@ -45,11 +56,14 @@ export function updateContent<Part extends { graph: Graph; description?: string 
   let _uuid: string
   const uuid = () => _uuid || (_uuid = v4())
   const replace = (str: string) =>
-    (choice ? str.replace(pattern1, typeof choice === "string" ? expandHomeDir(choice) : choice) : str)
+    (choiceString
+      ? str.replace(pattern1, typeof choiceString === "string" ? expandHomeDir(choiceString) : choiceString)
+      : str
+    )
       .replace(pattern2a, uuid())
       .replace(pattern2b, uuid())
 
-  blocks(part.graph).forEach((_) => {
+  blocksUpToChoiceFrontier(part.graph).forEach((_) => {
     if (typeof _.body === "string") {
       _.body = replace(_.body)
     }
@@ -242,7 +256,13 @@ async function expandOneChoice(
       graph.choices = newChoices
     }
   } else {
-    graph.choices = graph.choices.map((_) => updateContent(_))
+    graph.choices = graph.choices.map((_) => {
+      // form choices are a bit of a special case: the value is
+      // supplied by the user at runtime, not by the static structure of the
+      // choice (which is given by `_.title`, here)
+      const choiceString = !isPartOfForm(_) ? _.title : undefined
+      return updateContent(_, choiceString)
+    })
   }
 }
 

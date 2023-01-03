@@ -1,0 +1,7 @@
+Nested Choice string injection
+├── Option 1: AAA
+│   └── nested
+│       └── Option 1: NNN
+│           └── echo ${choice}
+└── Option 2: BBB
+    └── echo BBB

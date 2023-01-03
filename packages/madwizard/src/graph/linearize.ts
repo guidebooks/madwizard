@@ -71,9 +71,10 @@ export function nodes<T extends Unordered | Ordered, F extends Graph<T>>(
 export function blocks<T extends Unordered | Ordered>(
   graph: Graph<T>,
   choices: "all" | "default-path" | ChoiceState = "default-path",
-  includeOptional = false
+  includeOptional = false,
+  expandNestedChoices = true
 ): (CodeBlockProps & T)[] {
-  const subblocks = (subgraph: Graph<T>) => blocks(subgraph, choices, includeOptional)
+  const subblocks = (subgraph: Graph<T>) => blocks(subgraph, choices, includeOptional, expandNestedChoices)
 
   if (!graph) {
     return []
@@ -86,7 +87,9 @@ export function blocks<T extends Unordered | Ordered>(
   } else if (isTitledSteps<T>(graph)) {
     return graph.steps.map((_) => _.graph).flatMap(subblocks)
   } else if (isChoice<T>(graph)) {
-    if (choices === "all") {
+    if (!expandNestedChoices) {
+      return []
+    } else if (choices === "all") {
       // return the union across all choices
       return graph.choices.map((_) => _.graph).flatMap(subblocks)
     } else {
@@ -98,6 +101,10 @@ export function blocks<T extends Unordered | Ordered>(
   } else {
     return []
   }
+}
+
+export function blocksUpToChoiceFrontier<T extends Unordered | Ordered>(graph: Graph<T>): (CodeBlockProps & T)[] {
+  return blocks(graph, undefined, undefined, false)
 }
 
 /**
