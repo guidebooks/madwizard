@@ -1,3 +1,9 @@
+# [2.6.0](https://github.com/guidebooks/madwizard/compare/2.5.3...2.6.0) (2023-01-04)
+
+### Features
+
+- support input from stdin and passed programmatically ([c175bc4](https://github.com/guidebooks/madwizard/commit/c175bc4a52129c86ff9d2e64136031b4a8c4c255))
+
 ## [2.5.3](https://github.com/guidebooks/madwizard/compare/2.5.2...2.5.3) (2023-01-03)
 
 ### Bug Fixes
