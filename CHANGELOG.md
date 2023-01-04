@@ -1,3 +1,13 @@
+# [3.0.0](https://github.com/guidebooks/madwizard/compare/2.6.0...3.0.0) (2023-01-04)
+
+### Features
+
+- allow clients to pass in a raw api callback function ([a759a89](https://github.com/guidebooks/madwizard/commit/a759a89d61e755f32881c9d5d633b0aace4fd56e))
+
+### BREAKING CHANGES
+
+- previously, the `raw` parameter was a boolean, and the "raw prefix" was specified via a separate option. With this PR, `raw` is now either a string (in which case it serves the role of raw prefix); or a function (in which case the alternate callback API is used).
+
 # [2.6.0](https://github.com/guidebooks/madwizard/compare/2.5.3...2.6.0) (2023-01-04)
 
 ### Features
