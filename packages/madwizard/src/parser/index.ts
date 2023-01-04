@@ -18,7 +18,7 @@ import { VFileCompatible } from "vfile"
 import { extname as pathExtname } from "path"
 
 import { ChoiceState } from "../choices/index.js"
-import { MadWizardOptions } from "../fe/index.js"
+import { MadWizardOptionsWithInput } from "../fe/index.js"
 import { Reader } from "./markdown/fetch.js"
 
 export * from "./markdown/index.js"
@@ -42,7 +42,7 @@ export async function parse(
   reader: Reader,
   choices?: ChoiceState,
   uuid?: string,
-  madwizardOptions?: MadWizardOptions
+  madwizardOptions?: MadWizardOptionsWithInput
 ) {
   const ext = extname(input)
   if (ext === ".md" || !ext) {

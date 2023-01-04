@@ -34,7 +34,13 @@ export async function madwizardRead(
   store = "https://github.com/guidebooks/store/blob/main/guidebooks",
   searchStore = false
 ): Promise<VFile> {
-  if (/^https?:/.test(file.path)) {
+  if (file.path === "-") {
+    // read from stdin
+    Debug("madwizard/read/0")("reading from stdin")
+    const { readFileSync } = await import("fs")
+    file.value = await readFileSync(0, "utf-8")
+    return file
+  } else if (/^https?:/.test(file.path)) {
     // remote fetch
     const res = await get(file.path)
     file.value = (await res.buffer()).toString()

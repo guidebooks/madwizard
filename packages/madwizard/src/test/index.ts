@@ -27,6 +27,7 @@ import { createRequire } from "module"
 import { readdirSync, readFileSync } from "fs"
 
 import { CLI, MadWizardOptions } from "../index.js"
+import programmaticInputs from "./programmatic-inputs.js"
 
 const require = createRequire(import.meta.url)
 const inputDir = join(dirname(require.resolve(".")), "../../test/inputs")
@@ -192,6 +193,27 @@ function testPlanTask(test: Test, input: string, suffix: string, _options: Optio
   })
 }
 
+function testRunTaskWithProgrammaticInput(test: Test, input: string, expectedOutput: string) {
+  test(`run with programmatic input ${input}`, async () => {
+    let actualOutput = ""
+    const write = (msg: string) => {
+      actualOutput += msg
+      return true
+    }
+
+    const profile = uuid()
+    const { name: profilesPath } = tmpDirSync()
+
+    const store = process.cwd()
+    await CLI.cli(
+      ["test", "run", "-"],
+      write,
+      Object.assign({ store, input, clear: false, profile, profilesPath, profileSaveDelay: 0 })
+    )
+    assert.equal(stripAnsi(actualOutput.trim()), stripAnsi(expectedOutput.trim()), "tree should match")
+  })
+}
+
 /** "madwizard json" */
 function testJsonTask(test: Test, input: string, suffix: string, _options: Options) {
   getEnv(input)
@@ -255,11 +277,7 @@ function testRunTask(test: Test, input: string, suffix: string, options: Options
         // also test output of error messages
         write(err.message)
       }
-      assert.equal(
-        stripAnsi(actualOutput.toString().trim()),
-        stripAnsi(expectedOutput.trim()),
-        "run output should match"
-      )
+      assert.equal(stripAnsi(actualOutput.trim()), stripAnsi(expectedOutput.trim()), "run output should match")
     })
   })
 }
@@ -269,6 +287,15 @@ const justTheseInputs =
 
 const tasks = ["plan", "wizard", "run"]
 const suites = options.flatMap(({ suffix }) => tasks.map((task) => suite(`${task} ${suffix || "default options"}`)))
+
+if (!justTheseInputs || justTheseInputs.size === 0) {
+  const psuite = suite("plan with programmatic input")
+  suites.push(psuite)
+  programmaticInputs.forEach(({ input, output }) => {
+    testRunTaskWithProgrammaticInput(psuite, input, output)
+  })
+}
+
 /**
  * Assumption: test inputs are numbered directories. All other
  * directories are ignored.

@@ -98,3 +98,6 @@ export type MadWizardOptions = Partial<CompilerOptions> &
   Partial<DisplayOptions> &
   Partial<FetchOptions> &
   Partial<RunOptions>
+
+/** The front-end modules allow passing through input programmatically */
+export type MadWizardOptionsWithInput = MadWizardOptions & { input?: string }

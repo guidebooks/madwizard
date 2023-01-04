@@ -17,7 +17,7 @@
 import { Arguments } from "yargs"
 
 import { ChoiceState } from "../../../choices/index.js"
-import { MadWizardOptions } from "../../MadWizardOptions.js"
+import { MadWizardOptions, MadWizardOptionsWithInput } from "../../MadWizardOptions.js"
 
 import Opts from "../options.js"
 
@@ -64,40 +64,42 @@ export function loadAssertions(
 }
 
 /** @return the block model, either by using a precompiled model from the store, or by parsing the source */
-export async function getBlocksModel(input: string, choices: ChoiceState, options: MadWizardOptions) {
+export async function getBlocksModel(input: string, choices: ChoiceState, options: MadWizardOptionsWithInput) {
   // check to see if the compiled model exists
   const [{ access, readFile }, { targetPathForAst }] = await Promise.all([
     import("fs/promises"),
     import("../../../parser/markdown/snippets/mirror-paths.js"),
   ])
 
-  const ast1 = targetPathForAst(input + "/index.md", options.store)
-  const ast2 = targetPathForAst(input + ".md", options.store)
-  const mightBeAst = !/\.md$/.test(input) && !/^http/.test(options.store)
-  const [exists1, exists2] = await Promise.all([
-    !mightBeAst
-      ? ""
-      : access(ast1)
-          .then(() => ast1)
-          .catch(() => ""),
-    !mightBeAst
-      ? ""
-      : access(ast2)
-          .then(() => ast2)
-          .catch(() => ""),
-  ])
-  if (exists1 || exists2) {
-    // yes! the pre-parsed ast model exists
-    const { populateAprioris } = await import("../../../choices/groups/index.js")
-    await populateAprioris(choices, options)
-    return JSON.parse(await readFile(exists1 || exists2).then((_) => _.toString()))
-  } else {
-    // no! we need to parse it from the source (much slower)
-    const [{ madwizardRead }, { parse }] = await Promise.all([
-      import("../madwizardRead.js"),
-      import("../../../parser/index.js"),
+  if (input !== "-") {
+    const ast1 = targetPathForAst(input + "/index.md", options.store)
+    const ast2 = targetPathForAst(input + ".md", options.store)
+    const mightBeAst = !/\.md$/.test(input) && !/^http/.test(options.store)
+    const [exists1, exists2] = await Promise.all([
+      !mightBeAst
+        ? ""
+        : access(ast1)
+            .then(() => ast1)
+            .catch(() => ""),
+      !mightBeAst
+        ? ""
+        : access(ast2)
+            .then(() => ast2)
+            .catch(() => ""),
     ])
-    await import("debug").then((_) => _.default("madwizard/fe/cli")("using guidebook " + input))
-    return parse(input, madwizardRead, choices, undefined, options).then((_) => _.blocks)
+    if (exists1 || exists2) {
+      // yes! the pre-parsed ast model exists
+      const { populateAprioris } = await import("../../../choices/groups/index.js")
+      await populateAprioris(choices, options)
+      return JSON.parse(await readFile(exists1 || exists2).then((_) => _.toString()))
+    } // intentionally fall-through
   }
+
+  // if we get here, then we need to parse it from the source (much slower)
+  const [{ madwizardRead }, { parse }] = await Promise.all([
+    import("../madwizardRead.js"),
+    import("../../../parser/index.js"),
+  ])
+  await import("debug").then((_) => _.default("madwizard/fe/cli")("using guidebook " + input))
+  return parse(input, madwizardRead, choices, undefined, options).then((_) => _.blocks)
 }

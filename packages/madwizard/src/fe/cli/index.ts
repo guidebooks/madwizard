@@ -30,7 +30,7 @@ import mirror from "./commands/mirror.js"
 import profile from "./commands/profile.js"
 import guideMod, { GuideRet } from "./commands/guide/index.js"
 
-import { MadWizardOptions } from "../MadWizardOptions.js"
+import { MadWizardOptionsWithInput } from "../MadWizardOptions.js"
 
 import strings from "./strings.js"
 import examples from "./examples.js"
@@ -43,7 +43,7 @@ function hasCode(err?: Error): err is Error & { code: number | string } {
 export async function guide<Writer extends Writable["write"]>(
   _argv: string[],
   write?: Writer,
-  providedOptions: MadWizardOptions = {},
+  providedOptions: MadWizardOptionsWithInput = {},
   ui?: UI<string>
 ) {
   const argv = _argv.slice(1)
@@ -83,7 +83,7 @@ export async function guide<Writer extends Writable["write"]>(
 export async function cli<Writer extends Writable["write"]>(
   _argv: string[],
   write?: Writer,
-  providedOptions: MadWizardOptions = {},
+  providedOptions: MadWizardOptionsWithInput = {},
   ui?: UI<string>
 ) {
   const argv = _argv.slice(1)
