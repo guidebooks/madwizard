@@ -22,7 +22,7 @@ import { Status } from "../../graph/index.js"
 export type Decoration = Modifiers | Color
 
 type ValidQuestion = import("enquirer").Prompt
-type ValidAnswer = string | string[] | import("enquirer").prompt.FormQuestion.Answer
+export type ValidAnswer = string | string[] | import("enquirer").prompt.FormQuestion.Answer
 
 export interface UI<Content> {
   span(body: string, ...decorations: Decoration[]): Content

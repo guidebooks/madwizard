@@ -42,9 +42,6 @@ const defaults: MadWizardOptions = {
    * have launched (via `shell.async`).
    */
   clean: true,
-
-  /** In raw mode, any raw models emitted to the stdout will be prefixed with this string [default: "MADWIZARD_RAW"] */
-  rawPrefix: "MADWIZARD_RAW",
 }
 
 export default defaults

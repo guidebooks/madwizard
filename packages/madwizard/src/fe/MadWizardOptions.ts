@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { CompilerOptions } from "../graph/compile"
+import { RawImpl } from "./raw/index.js"
+import { CompilerOptions } from "../graph/compile.js"
 
 export interface RunOptions {
   /**
@@ -54,7 +55,7 @@ export interface RunOptions {
   assertions: Record<string, string>
 }
 
-export interface DisplayOptions {
+export interface DisplayOptions<R extends RawImpl = RawImpl> {
   /** name to display in log messages */
   name: string
 
@@ -70,11 +71,13 @@ export interface DisplayOptions {
   /** Bump the lastUsedTime attribute of the profile? [default: true] */
   bump: boolean
 
-  /** In raw mode, any questions will be emitted as a raw json model to the stdout */
-  raw: boolean
-
-  /** In raw mode, any raw models emitted to the stdout will be prefixed with this string [default: "MADWIZARD_RAW"] */
-  rawPrefix: string
+  /**
+   * In raw mode, any questions will be emitted as a raw json model
+   * either to stdout (if `raw` is a string; with control limits
+   * prefixed by this given string ) or to a callback (if `raw` is a
+   * function).
+   */
+  raw: R
 }
 
 export interface FetchOptions {
@@ -94,8 +97,8 @@ export interface FetchOptions {
   dataPath: string
 }
 
-export type MadWizardOptions = Partial<CompilerOptions> &
-  Partial<DisplayOptions> &
+export type MadWizardOptions<R extends RawImpl = RawImpl> = Partial<CompilerOptions> &
+  Partial<DisplayOptions<R>> &
   Partial<FetchOptions> &
   Partial<RunOptions>
 

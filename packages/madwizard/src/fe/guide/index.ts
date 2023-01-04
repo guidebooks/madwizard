@@ -25,6 +25,7 @@ import { EventEmitter } from "events"
 
 import { taskRunner, Task } from "./taskrunner.js"
 
+import isRaw from "../raw/index.js"
 import { eqSet } from "../../util/set.js"
 import { MadWizardOptions } from "../../index.js"
 import { ChoiceState } from "../../choices/index.js"
@@ -293,44 +294,9 @@ export class Guide {
       ? new enquirer.MultiSelect(opts)
       : new enquirer.Form(opts)
 
-    if (this.options.raw) {
-      const readline = await import("readline")
-      const r1 = readline.createInterface({
-        terminal: false,
-        input: process.stdin,
-        output: process.stdout,
-      })
-
-      const answer = await new Promise<string | Record<string, string>>((resolve, reject) => {
-        try {
-          r1.question(
-            this.options.rawPrefix +
-              " " +
-              JSON.stringify({
-                type: "ask",
-                ask: {
-                  type: prompt.type,
-                  name: prompt.name,
-                  description: opts.description,
-                  initial: prompt.initial,
-                  choices: prompt.choices,
-                },
-              }) +
-              "\n",
-            (resp) => {
-              r1.close()
-              try {
-                resolve(JSON.parse(resp) as Record<string, string>)
-              } catch (err) {
-                resolve(resp)
-              }
-            }
-          )
-        } catch (err) {
-          reject(err)
-        }
-      })
-      return answer
+    if (isRaw(this.options)) {
+      const { ask } = await import("../raw/ask.js")
+      return ask(prompt, opts.description, this.options)
     } else {
       return this.ui.ask(prompt)
     }
@@ -530,7 +496,7 @@ export class Guide {
 
   /** Emit the title and description of the given `graph` */
   private presentGuidebookTitle(graph: Graph) {
-    if (this.options.raw) {
+    if (isRaw(this.options)) {
       // do not display guidebook title if we are in "raw" mode
       return
     }
@@ -553,7 +519,10 @@ export class Guide {
   private get shouldClearOnFirstQuestion() {
     return (
       process.env.MWCLEAR_INITIAL ||
-      (!this.options.raw && this.options.clear !== false && this.options.interactive && process.env.DEBUG === undefined)
+      (!isRaw(this.options) &&
+        this.options.clear !== false &&
+        this.options.interactive &&
+        process.env.DEBUG === undefined)
     )
   }
 
@@ -582,9 +551,10 @@ export class Guide {
     }
 
     if (questions.length === 0) {
-      if (this.options.raw) {
+      if (isRaw(this.options)) {
         // notify the client that we are done with the Q&A part
-        console.log(this.options.rawPrefix + " " + JSON.stringify({ type: "qa-done" }) + "\n")
+        const { qadone } = await import("../raw/qadone.js")
+        await qadone(this.options)
       }
       return postChoiceTasks
     } else if (preChoiceTasks.length > 0) {
@@ -618,14 +588,10 @@ export class Guide {
       const tasksWereRun = await this.runTasks(tasks)
 
       if (tasksWereRun && this.isGuided) {
-        if (this.options.raw) {
+        if (isRaw(this.options)) {
           // notify the client that we are done with the Q&A part
-          console.log(
-            this.options.rawPrefix +
-              " " +
-              JSON.stringify({ type: "all-done", success: this.allDoneSuccessfully() }) +
-              "\n"
-          )
+          const { alldone } = await import("../raw/alldone.js")
+          await alldone(this.options, this.allDoneSuccessfully())
         }
 
         if (this.allDoneSuccessfully()) {
