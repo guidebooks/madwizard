@@ -14,5 +14,25 @@
  * limitations under the License.
  */
 
-export * from "./MadWizardOptions.js"
-export { RawEvent } from "./raw/RawEvent.js"
+import { Prompt } from "../Prompts.js"
+import { ValidAnswer } from "../tree/ui.js"
+
+export { ValidAnswer }
+
+export type RawAskEvent = {
+  type: "ask"
+  ask: Prompt
+  onChoose(value: ValidAnswer): void
+  onCancel(): void
+}
+
+export type RawQADoneEvent = {
+  type: "qa-done"
+}
+
+export type RawAllDoneEvent = {
+  type: "all-done"
+  success: boolean
+}
+
+export type RawEvent = RawAskEvent | RawQADoneEvent | RawAllDoneEvent

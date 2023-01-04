@@ -59,11 +59,8 @@ type GuideOpts = InputOpts &
     /** Run in interactive mode, and overridden by value of `yes` (default: true) */
     interactive?: boolean
 
-    /** Emit computer-readable output for Q&A interactions */
-    raw?: boolean
-
-    /** When emitting raw output, prefix every line with this string */
-    "raw-prefix"?: string
+    /** Emit computer-readable output for Q&A interactions. When emitting raw output, prefix every line with this string. */
+    raw?: string
   }
 
 const mainGroup = group("Guide Options:")
@@ -124,14 +121,10 @@ export const guideOptions = {
   },
   raw: {
     alias: "r",
-    type: "boolean" as const,
-    group: developersGroup,
-    describe: "Emit computer-readable output for Q&A interactions",
-  },
-  "raw-prefix": {
     type: "string" as const,
     group: developersGroup,
-    describe: "When emitting raw output, prefix every line with this string",
+    describe:
+      "Emit computer-readable output for Q&A interactions. When emitting raw output, prefix every line with this string.",
   },
 }
 
