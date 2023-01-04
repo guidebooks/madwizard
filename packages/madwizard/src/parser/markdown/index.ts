@@ -23,8 +23,8 @@ import remarkParse from "remark-parse"
 import remarkRehype from "remark-rehype"
 import { unified, PluggableList } from "unified"
 
-import { MadWizardOptions } from "../../fe/index.js"
 import { Reader, fetcherFor } from "./fetch.js"
+import { MadWizardOptions, MadWizardOptionsWithInput } from "../../fe/index.js"
 
 import { ChoiceState } from "../../choices/index.js"
 import { CodeBlockProps } from "../../codeblock/index.js"
@@ -135,10 +135,12 @@ export async function blockify(
   reader: Reader,
   choices?: ChoiceState,
   uuid?: string,
-  madwizardOptions: MadWizardOptions = {}
+  madwizardOptions: MadWizardOptionsWithInput = {}
 ) {
   const file =
-    typeof input === "string"
+    input === "-" && typeof madwizardOptions.input === "string"
+      ? new VFile({ cwd: process.cwd(), path: "-", value: madwizardOptions.input })
+      : typeof input === "string"
       ? await reader(
           new VFile({ cwd: process.cwd(), path: toRawGithubUserContent(expandHomeDir(input)) }),
           madwizardOptions.store,

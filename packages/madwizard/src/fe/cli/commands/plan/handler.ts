@@ -20,10 +20,10 @@ import { Arguments } from "yargs"
 import { InputOpts } from "../input.js"
 import { assembleOptions } from "../../options.js"
 import { getBlocksModel, loadAssertions } from "../util.js"
-import { MadWizardOptions } from "../../../MadWizardOptions.js"
+import { MadWizardOptionsWithInput } from "../../../MadWizardOptions.js"
 
 export default async function planHandler<Writer extends Writable["write"]>(
-  providedOptions: MadWizardOptions,
+  providedOptions: MadWizardOptionsWithInput,
   argv: Arguments<InputOpts>,
   write?: Writer
 ) {
@@ -34,7 +34,9 @@ export default async function planHandler<Writer extends Writable["write"]>(
     providedOptions,
     argv
   )
-  const blocks = await getBlocksModel(argv.input, choices, options)
+
+  // re: | "-", see https://github.com/yargs/yargs/issues/1312
+  const blocks = await getBlocksModel(argv.input || "-", choices, options)
   await import("../../../tree/index.js").then((_) =>
     _.prettyPrintUITreeFromBlocks(blocks, choices, Object.assign({ write }, options))
   )

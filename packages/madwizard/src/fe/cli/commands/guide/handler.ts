@@ -18,7 +18,7 @@ import { Writable } from "stream"
 import { Arguments } from "yargs"
 
 import { UI } from "../../../tree/index.js"
-import { MadWizardOptions } from "../../../MadWizardOptions.js"
+import { MadWizardOptionsWithInput } from "../../../MadWizardOptions.js"
 
 import { getBlocksModel, loadAssertions, loadSuggestions, makeMemos } from "../util.js"
 
@@ -31,7 +31,7 @@ export type GuideRet = {
 
 export default async function guideHandler<Writer extends Writable["write"]>(
   task: "run" | "guide",
-  providedOptions: MadWizardOptions,
+  providedOptions: MadWizardOptionsWithInput,
   argv: Arguments<GuideOpts>,
   write?: Writer,
   ui?: UI<string>
@@ -84,7 +84,8 @@ export default async function guideHandler<Writer extends Writable["write"]>(
   }
 
   // this is the block model we parse from the source
-  const blocks = await getBlocksModel(input, choices, options)
+  // re: | "-", see https://github.com/yargs/yargs/issues/1312
+  const blocks = await getBlocksModel(input || "-", choices, options)
 
   // a name we might want to associate with the run, in the logs
   const name = options.name ? ` (${options.name})` : ""
