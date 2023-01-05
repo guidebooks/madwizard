@@ -1,3 +1,9 @@
+# [3.1.0](https://github.com/guidebooks/madwizard/compare/3.0.0...3.1.0) (2023-01-05)
+
+### Features
+
+- allow clients to intercept shell executions ([d8ebde5](https://github.com/guidebooks/madwizard/commit/d8ebde58ef05fcc09e567ba5fcfdbbe692027df6))
+
 # [3.0.0](https://github.com/guidebooks/madwizard/compare/2.6.0...3.0.0) (2023-01-04)
 
 ### Features
