@@ -153,7 +153,7 @@
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
-                      "groupContext": "test/inputs/snippets/importd",
+                      "groupContext": "test/inputs/snippets/importd_1",
                       "title": "DDD",
                       "source": "placeholder",
                       "provenance": ["test/inputs/snippets/importd"],
@@ -240,7 +240,7 @@
                   "sequence": [
                     {
                       "group": "SubTab1####SubTab2",
-                      "groupContext": "test/inputs/snippets/importd",
+                      "groupContext": "test/inputs/snippets/importd_2",
                       "title": "DDD",
                       "source": "placeholder",
                       "provenance": ["test/inputs/snippets/importd"],

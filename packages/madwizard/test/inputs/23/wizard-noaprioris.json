@@ -14,7 +14,7 @@
             "sequence": [
               {
                 "group": "Intel####Apple Silicon",
-                "groupContext": "test/inputs/23/install",
+                "groupContext": "test/inputs/23/install_1",
                 "title": "Local Install",
                 "source": "placeholder",
                 "provenance": ["test/inputs/23/install"],
@@ -62,7 +62,7 @@
                                       "sequence": [
                                         {
                                           "group": "Windows####Linux####MacOS",
-                                          "groupContext": "test/inputs/23/python/conda/install",
+                                          "groupContext": "test/inputs/23/python/conda/install_1",
                                           "title": "Install Miniconda",
                                           "source": "placeholder",
                                           "provenance": ["test/inputs/23/python/conda/install"],
@@ -74,7 +74,7 @@
                                                 "sequence": [
                                                   {
                                                     "group": "Intel####ARM64",
-                                                    "groupContext": "test/inputs/23/python/conda/install",
+                                                    "groupContext": "test/inputs/23/python/conda/install_2",
                                                     "title": "Linux",
                                                     "source": "placeholder",
                                                     "provenance": ["test/inputs/23/python/conda/install"],
@@ -121,7 +121,7 @@
                                                 "sequence": [
                                                   {
                                                     "group": "Intel####Apple Silicon",
-                                                    "groupContext": "test/inputs/23/python/conda/install",
+                                                    "groupContext": "test/inputs/23/python/conda/install_3",
                                                     "title": "MacOS",
                                                     "source": "placeholder",
                                                     "provenance": ["test/inputs/23/python/conda/install"],
@@ -177,7 +177,7 @@
                                       "sequence": [
                                         {
                                           "group": "MacOS####Linux",
-                                          "groupContext": "test/inputs/23/python/conda/install",
+                                          "groupContext": "test/inputs/23/python/conda/install_4",
                                           "title": "Install Anaconda",
                                           "source": "placeholder",
                                           "provenance": ["test/inputs/23/python/conda/install"],
@@ -203,7 +203,7 @@
                                                 "sequence": [
                                                   {
                                                     "group": "x86####POWER8 and POWER9####AWS Graviton2/ARM64####IBM z/Linux and LinuxONE",
-                                                    "groupContext": "test/inputs/23/python/conda/install",
+                                                    "groupContext": "test/inputs/23/python/conda/install_5",
                                                     "title": "Linux",
                                                     "source": "placeholder",
                                                     "provenance": ["test/inputs/23/python/conda/install"],
@@ -374,7 +374,7 @@
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
-                                "groupContext": "test/inputs/23/kubernetes/kubectl",
+                                "groupContext": "test/inputs/23/kubernetes/kubectl_1",
                                 "title": "MacOS",
                                 "source": "placeholder",
                                 "provenance": ["test/inputs/23/kubernetes/kubectl"],
@@ -401,7 +401,7 @@
                                       "sequence": [
                                         {
                                           "group": "Intel####Apple Silicon",
-                                          "groupContext": "test/inputs/23/kubernetes/kubectl",
+                                          "groupContext": "test/inputs/23/kubernetes/kubectl_2",
                                           "title": "curl",
                                           "source": "placeholder",
                                           "provenance": ["test/inputs/23/kubernetes/kubectl"],
@@ -482,7 +482,7 @@
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
-                                "groupContext": "test/inputs/23/kubernetes/helm3",
+                                "groupContext": "test/inputs/23/kubernetes/helm3_1",
                                 "title": "MacOS",
                                 "source": "placeholder",
                                 "provenance": ["test/inputs/23/kubernetes/helm3"],
@@ -573,7 +573,7 @@
                         "sequence": [
                           {
                             "group": "Linux####Windows####MacOS",
-                            "groupContext": "test/inputs/23/kubernetes/kubectl",
+                            "groupContext": "test/inputs/23/kubernetes/kubectl_3",
                             "title": "Install kubectl",
                             "description": "Runs commands against Kubernetes clusters. You can use `kubectl` to deploy applications, inspect and manage cluster resources, and view logs.\n",
                             "source": "placeholder",
@@ -616,7 +616,7 @@
                                   "sequence": [
                                     {
                                       "group": "Homebrew####curl",
-                                      "groupContext": "test/inputs/23/kubernetes/kubectl",
+                                      "groupContext": "test/inputs/23/kubernetes/kubectl_4",
                                       "title": "MacOS",
                                       "source": "placeholder",
                                       "provenance": ["test/inputs/23/kubernetes/kubectl"],
@@ -643,7 +643,7 @@
                                             "sequence": [
                                               {
                                                 "group": "Intel####Apple Silicon",
-                                                "groupContext": "test/inputs/23/kubernetes/kubectl",
+                                                "groupContext": "test/inputs/23/kubernetes/kubectl_5",
                                                 "title": "curl",
                                                 "source": "placeholder",
                                                 "provenance": ["test/inputs/23/kubernetes/kubectl"],
@@ -891,7 +891,7 @@
                     },
                     {
                       "group": "New Dataset from Range####New Dataset from File",
-                      "groupContext": "test/inputs/23/in",
+                      "groupContext": "test/inputs/23/in_1",
                       "title": "Main Tasks",
                       "source": "placeholder",
                       "provenance": ["test/inputs/23/in"],

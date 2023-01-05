@@ -46,6 +46,7 @@ import {
 
 import provenanceOf from "./provenance.js"
 import optimize, { optimize2 } from "./optimize.js"
+import workaroundMultipleChoicesPerFile from "./workaroundMultipleChoicesPerFile.js"
 
 type ChoiceNesting = { parent: CodeBlockChoice; graph: Choice }
 type SubTaskNesting = { parent: CodeBlockImport; graph: SubTask }
@@ -382,10 +383,12 @@ export async function compile(
     const unoptimized =
       parts.length === 0
         ? undefined
-        : await doExpand(
-            parts.length === 1 ? parts[0] : ordering === "parallel" ? parallel(parts) : sequence(parts),
-            choices,
-            memos
+        : workaroundMultipleChoicesPerFile(
+            await doExpand(
+              parts.length === 1 ? parts[0] : ordering === "parallel" ? parallel(parts) : sequence(parts),
+              choices,
+              memos
+            )
           )
 
     debug("optimizing")

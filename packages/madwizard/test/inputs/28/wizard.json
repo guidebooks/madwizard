@@ -14,7 +14,7 @@
             "sequence": [
               {
                 "group": "expand(echo 3 ; echo 4 ; echo 5)",
-                "groupContext": "test/inputs/28/in",
+                "groupContext": "test/inputs/28/in_1",
                 "title": "Tab1",
                 "source": "placeholder",
                 "provenance": ["test/inputs/28/in"],

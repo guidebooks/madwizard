@@ -14,7 +14,7 @@
             "sequence": [
               {
                 "group": "Linux####Windows####MacOS",
-                "groupContext": "test/inputs/19/in",
+                "groupContext": "test/inputs/19/in_1",
                 "title": "Local Install",
                 "source": "placeholder",
                 "provenance": ["test/inputs/19/in"],
@@ -54,7 +54,7 @@
                       "sequence": [
                         {
                           "group": "Intel####Apple Silicon",
-                          "groupContext": "test/inputs/19/in",
+                          "groupContext": "test/inputs/19/in_2",
                           "title": "MacOS",
                           "source": "placeholder",
                           "provenance": ["test/inputs/19/in"],
@@ -102,7 +102,7 @@
                                                 "sequence": [
                                                   {
                                                     "group": "Windows####MacOS####Linux",
-                                                    "groupContext": "test/inputs/19/snippets/conda",
+                                                    "groupContext": "test/inputs/19/snippets/conda_1",
                                                     "title": "Miniconda",
                                                     "source": "placeholder",
                                                     "provenance": ["test/inputs/19/snippets/conda"],
@@ -128,7 +128,7 @@
                                                           "sequence": [
                                                             {
                                                               "group": "Intel####Apple Silicon",
-                                                              "groupContext": "test/inputs/19/snippets/conda",
+                                                              "groupContext": "test/inputs/19/snippets/conda_2",
                                                               "title": "MacOS",
                                                               "source": "placeholder",
                                                               "provenance": ["test/inputs/19/snippets/conda"],
@@ -197,7 +197,7 @@
                                                 "sequence": [
                                                   {
                                                     "group": "Windows####MacOS####Linux",
-                                                    "groupContext": "test/inputs/19/snippets/conda",
+                                                    "groupContext": "test/inputs/19/snippets/conda_3",
                                                     "title": "Anaconda",
                                                     "source": "placeholder",
                                                     "provenance": ["test/inputs/19/snippets/conda"],
@@ -237,7 +237,7 @@
                                                           "sequence": [
                                                             {
                                                               "group": "x86####POWER8 and POWER9####AWS Graviton2/ARM64####IBM z/Linux and LinuxONE",
-                                                              "groupContext": "test/inputs/19/snippets/conda",
+                                                              "groupContext": "test/inputs/19/snippets/conda_4",
                                                               "title": "Linux",
                                                               "source": "placeholder",
                                                               "provenance": ["test/inputs/19/snippets/conda"],
@@ -398,7 +398,7 @@
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
-                                "groupContext": "test/inputs/19/snippets/kubectl",
+                                "groupContext": "test/inputs/19/snippets/kubectl_1",
                                 "title": "MacOS",
                                 "source": "placeholder",
                                 "provenance": ["test/inputs/19/snippets/kubectl"],
@@ -425,7 +425,7 @@
                                       "sequence": [
                                         {
                                           "group": "Intel####Apple Silicon",
-                                          "groupContext": "test/inputs/19/snippets/kubectl",
+                                          "groupContext": "test/inputs/19/snippets/kubectl_2",
                                           "title": "curl",
                                           "source": "placeholder",
                                           "provenance": ["test/inputs/19/snippets/kubectl"],
@@ -469,7 +469,7 @@
                                             "sequence": [
                                               {
                                                 "group": "Intel####Apple Silicon",
-                                                "groupContext": "test/inputs/19/snippets/kubectl",
+                                                "groupContext": "test/inputs/19/snippets/kubectl_3",
                                                 "title": "Installing a Specific Version",
                                                 "source": "placeholder",
                                                 "provenance": ["test/inputs/19/snippets/kubectl"],
@@ -553,7 +553,7 @@
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
-                                "groupContext": "test/inputs/19/snippets/helm3",
+                                "groupContext": "test/inputs/19/snippets/helm3_1",
                                 "title": "MacOS",
                                 "source": "placeholder",
                                 "provenance": ["test/inputs/19/snippets/helm3"],
