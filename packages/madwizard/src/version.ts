@@ -15,5 +15,5 @@
  */
 
 export default function version() {
-  return "3.1.1"
+  return "3.1.2"
 }

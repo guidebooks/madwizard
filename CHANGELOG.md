@@ -1,3 +1,9 @@
+## [3.1.2](https://github.com/guidebooks/madwizard/compare/3.1.1...3.1.2) (2023-01-05)
+
+### Bug Fixes
+
+- suboptimal workaround for multiple choices in a single file ([24ed4e2](https://github.com/guidebooks/madwizard/commit/24ed4e2345c9ff594a7dd6d97ae37f7700039c3a))
+
 ## [3.1.1](https://github.com/guidebooks/madwizard/compare/3.1.0...3.1.1) (2023-01-05)
 
 ### Bug Fixes
