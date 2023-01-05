@@ -371,6 +371,7 @@ export class Guide {
                         this.memos,
                         {
                           write: this.write,
+                          shell: this.options.shell,
                           dryRun: this.options.dryRun,
                           verbose: this.options.verbose,
                           profile: this.options.profile,
