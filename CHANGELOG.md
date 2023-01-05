@@ -1,3 +1,9 @@
+## [3.1.1](https://github.com/guidebooks/madwizard/compare/3.1.0...3.1.1) (2023-01-05)
+
+### Bug Fixes
+
+- remove leftover debugging output ([72c6ee2](https://github.com/guidebooks/madwizard/commit/72c6ee28a82747e8bfb64bb67cd581565ce8ccc8))
+
 # [3.1.0](https://github.com/guidebooks/madwizard/compare/3.0.0...3.1.0) (2023-01-05)
 
 ### Features
