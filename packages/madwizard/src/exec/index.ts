@@ -27,6 +27,7 @@ import raySubmit from "./ray-submit.js"
 import exporter, { isExport } from "./export.js"
 import addPipDependences from "./pip-install.js"
 import addCondaDependences from "./conda-install.js"
+import handledByClient from "./handled-by-client.js"
 
 export { Env, ExecOptions, isExport }
 
@@ -54,6 +55,7 @@ export async function shellExec(
       exporter(cmdline, memos, opts) || // export FOO=3
       which(cmdline) || // which foo
       pipShow(cmdline, memos) || // optimized pip show
+      handledByClient(cmdline, memos, opts) || // maybe the client wants to handle some executions directly?
       shell(cmdline, memos, opts, undefined, async) // vanilla shell exec
     )
   } else if (isPythonic(language)) {

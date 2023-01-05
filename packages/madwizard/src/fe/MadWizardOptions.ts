@@ -53,6 +53,15 @@ export interface RunOptions {
 
   /** Assert answers to certain questions */
   assertions: Record<string, string>
+
+  /**
+   * In case clients want to handle certain command line executions
+   * directly (rather than by shelling them out to a PTY).
+   */
+  shell: {
+    willHandle(cmdline: string | boolean): boolean
+    exec(cmdline: string | boolean, env: import("../memoization/index.js").Memos["env"]): Promise<"success">
+  }
 }
 
 export interface DisplayOptions<R extends RawImpl = RawImpl> {
