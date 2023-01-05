@@ -18,7 +18,6 @@ import { Memos } from "../memoization/index.js"
 import { ExecOptions } from "./options.js"
 
 export default function handledByClient(cmdline: string | boolean, memos: Memos, opts: ExecOptions = { quiet: false }) {
-  console.error("!!!!!!!!!!XXXXXX", cmdline, opts)
   if (typeof opts.shell === "object" && opts.shell.willHandle(cmdline)) {
     return opts.shell.exec(cmdline, memos.env)
   }
