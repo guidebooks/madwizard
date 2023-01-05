@@ -312,7 +312,7 @@
                     },
                     {
                       "group": "New Dataset from Range####New Dataset from File",
-                      "groupContext": "test/inputs/23/in",
+                      "groupContext": "test/inputs/23/in_1",
                       "title": "Main Tasks",
                       "source": "placeholder",
                       "provenance": ["test/inputs/23/in"],

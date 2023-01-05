@@ -49,6 +49,10 @@ export function assembleOptions<T>(
     providedOptions.interactive = false
   }
 
+  if (typeof opts.veto === "string") {
+    opts.veto = new RegExp(opts.veto)
+  }
+
   const noOptimize = commandLineOptions.optimize === 0 || commandLineOptions.optimize === false || undefined
   const noAprioris =
     commandLineOptions["aprioris"] === false ||

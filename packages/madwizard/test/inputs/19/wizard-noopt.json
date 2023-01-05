@@ -14,7 +14,7 @@
             "sequence": [
               {
                 "group": "Linux####Windows####MacOS",
-                "groupContext": "test/inputs/19/in",
+                "groupContext": "test/inputs/19/in_1",
                 "source": "placeholder",
                 "provenance": ["test/inputs/19/in"],
                 "choices": [
@@ -53,7 +53,7 @@
                       "sequence": [
                         {
                           "group": "Intel####Apple Silicon",
-                          "groupContext": "test/inputs/19/in",
+                          "groupContext": "test/inputs/19/in_2",
                           "source": "placeholder",
                           "provenance": ["test/inputs/19/in"],
                           "choices": [
@@ -100,7 +100,7 @@
                                                 "sequence": [
                                                   {
                                                     "group": "Windows####MacOS####Linux",
-                                                    "groupContext": "test/inputs/19/snippets/conda",
+                                                    "groupContext": "test/inputs/19/snippets/conda_1",
                                                     "source": "placeholder",
                                                     "provenance": ["test/inputs/19/snippets/conda"],
                                                     "choices": [
@@ -125,7 +125,7 @@
                                                           "sequence": [
                                                             {
                                                               "group": "Intel####Apple Silicon",
-                                                              "groupContext": "test/inputs/19/snippets/conda",
+                                                              "groupContext": "test/inputs/19/snippets/conda_2",
                                                               "source": "placeholder",
                                                               "provenance": ["test/inputs/19/snippets/conda"],
                                                               "choices": [
@@ -193,7 +193,7 @@
                                                 "sequence": [
                                                   {
                                                     "group": "Windows####MacOS####Linux",
-                                                    "groupContext": "test/inputs/19/snippets/conda",
+                                                    "groupContext": "test/inputs/19/snippets/conda_3",
                                                     "source": "placeholder",
                                                     "provenance": ["test/inputs/19/snippets/conda"],
                                                     "choices": [
@@ -232,7 +232,7 @@
                                                           "sequence": [
                                                             {
                                                               "group": "x86####POWER8 and POWER9####AWS Graviton2/ARM64####IBM z/Linux and LinuxONE",
-                                                              "groupContext": "test/inputs/19/snippets/conda",
+                                                              "groupContext": "test/inputs/19/snippets/conda_4",
                                                               "source": "placeholder",
                                                               "provenance": ["test/inputs/19/snippets/conda"],
                                                               "choices": [
@@ -392,7 +392,7 @@
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
-                                "groupContext": "test/inputs/19/snippets/kubectl",
+                                "groupContext": "test/inputs/19/snippets/kubectl_1",
                                 "source": "placeholder",
                                 "provenance": ["test/inputs/19/snippets/kubectl"],
                                 "choices": [
@@ -418,7 +418,7 @@
                                       "sequence": [
                                         {
                                           "group": "Intel####Apple Silicon",
-                                          "groupContext": "test/inputs/19/snippets/kubectl",
+                                          "groupContext": "test/inputs/19/snippets/kubectl_2",
                                           "source": "placeholder",
                                           "provenance": ["test/inputs/19/snippets/kubectl"],
                                           "choices": [
@@ -461,7 +461,7 @@
                                             "sequence": [
                                               {
                                                 "group": "Intel####Apple Silicon",
-                                                "groupContext": "test/inputs/19/snippets/kubectl",
+                                                "groupContext": "test/inputs/19/snippets/kubectl_3",
                                                 "source": "placeholder",
                                                 "provenance": ["test/inputs/19/snippets/kubectl"],
                                                 "choices": [
@@ -544,7 +544,7 @@
                             "sequence": [
                               {
                                 "group": "Homebrew####curl",
-                                "groupContext": "test/inputs/19/snippets/helm3",
+                                "groupContext": "test/inputs/19/snippets/helm3_1",
                                 "source": "placeholder",
                                 "provenance": ["test/inputs/19/snippets/helm3"],
                                 "choices": [

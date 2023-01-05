@@ -15,7 +15,7 @@
             "sequence": [
               {
                 "group": "SubTab1####SubTab2",
-                "groupContext": "test/inputs/15/in",
+                "groupContext": "test/inputs/15/in_1",
                 "title": "Tab1",
                 "source": "placeholder",
                 "provenance": ["test/inputs/15/in"],
