@@ -112,4 +112,4 @@ export type MadWizardOptions<R extends RawImpl = RawImpl> = Partial<CompilerOpti
   Partial<RunOptions>
 
 /** The front-end modules allow passing through input programmatically */
-export type MadWizardOptionsWithInput = MadWizardOptions & { input?: string }
+export type MadWizardOptionsWithInput = MadWizardOptions & { vfile?: import("vfile").VFile }

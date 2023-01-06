@@ -15,6 +15,7 @@
  */
 
 import slash from "slash"
+import { VFile } from "vfile"
 import { v4 as uuid } from "uuid"
 import { suite, Test } from "uvu"
 import * as assert from "uvu/assert"
@@ -193,23 +194,29 @@ function testPlanTask(test: Test, input: string, suffix: string, _options: Optio
   })
 }
 
-function testRunTaskWithProgrammaticInput(test: Test, input: string, expectedOutput: string) {
-  test(`run with programmatic input ${input}`, async () => {
+function testRunTaskWithProgrammaticInput(test: Test, value: string, path: string, expectedOutput: string) {
+  test(`run with programmatic input ${value}`, async () => {
     let actualOutput = ""
     const write = (msg: string) => {
       actualOutput += msg
       return true
     }
 
+    // this is the way programmatic input is specified
+    const vfile = new VFile({ value, path })
+
     const profile = uuid()
     const { name: profilesPath } = tmpDirSync()
 
     const store = process.cwd()
-    await CLI.cli(
-      ["test", "run", "-"],
-      write,
-      Object.assign({ store, input, clear: false, profile, profilesPath, profileSaveDelay: 0 })
-    )
+    await CLI.cli(["test", "run", "-"], write, {
+      store,
+      vfile,
+      clear: false,
+      profile,
+      profilesPath,
+      profileSaveDelay: 0,
+    })
     assert.equal(stripAnsi(actualOutput.trim()), stripAnsi(expectedOutput.trim()), "tree should match")
   })
 }
@@ -291,8 +298,8 @@ const suites = options.flatMap(({ suffix }) => tasks.map((task) => suite(`${task
 if (!justTheseInputs || justTheseInputs.size === 0) {
   const psuite = suite("plan with programmatic input")
   suites.push(psuite)
-  programmaticInputs.forEach(({ input, output }) => {
-    testRunTaskWithProgrammaticInput(psuite, input, output)
+  programmaticInputs.forEach(({ input, path, output }) => {
+    testRunTaskWithProgrammaticInput(psuite, input, path, output)
   })
 }
 
