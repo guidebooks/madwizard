@@ -564,7 +564,7 @@
                         "sequence": [
                           {
                             "group": "Linux####Windows####MacOS",
-                            "groupContext": "test/inputs/23/kubernetes/kubectl_3",
+                            "groupContext": "test/inputs/23/kubernetes/kubectl",
                             "title": "Install kubectl",
                             "description": "Runs commands against Kubernetes clusters. You can use `kubectl` to deploy applications, inspect and manage cluster resources, and view logs.\n",
                             "source": "placeholder",
@@ -607,7 +607,7 @@
                                   "sequence": [
                                     {
                                       "group": "Homebrew####curl",
-                                      "groupContext": "test/inputs/23/kubernetes/kubectl_4",
+                                      "groupContext": "test/inputs/23/kubernetes/kubectl_3",
                                       "source": "placeholder",
                                       "provenance": ["test/inputs/23/kubernetes/kubectl"],
                                       "choices": [
@@ -633,7 +633,7 @@
                                             "sequence": [
                                               {
                                                 "group": "Intel####Apple Silicon",
-                                                "groupContext": "test/inputs/23/kubernetes/kubectl_5",
+                                                "groupContext": "test/inputs/23/kubernetes/kubectl_4",
                                                 "source": "placeholder",
                                                 "provenance": ["test/inputs/23/kubernetes/kubectl"],
                                                 "choices": [

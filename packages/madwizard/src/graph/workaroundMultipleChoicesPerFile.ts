@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Graph, isSubTask, isChoice, isLeafNode, isSequence, isParallel, isTitledSteps } from "./index.js"
+import { isExpansionGroup } from "../choices/groups/expansion.js"
+import { Choice, Graph, isSubTask, isChoice, isLeafNode, isSequence, isParallel, isTitledSteps } from "./index.js"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function assertUnreachable(x: never): never {
@@ -22,21 +23,44 @@ function assertUnreachable(x: never): never {
 }
 
 /**
+ * This enables a full discrimination between two choices. Are they
+ * the same choice, imported twice, or are these two different choices
+ * inside a single file?
+ *
+ * Note: we must be careful not to consider an `expand(...)` (i.e. a
+ * choice whose options are dynamically expanded) as different from the
+ * same choice, after expansion).
+ */
+function fullKey(graph: Choice) {
+  return [
+    graph.groupContext,
+    ...(graph.provenance || []),
+    ...(isExpansionGroup(graph) ? [] : graph.choices.map((_) => _.title)),
+  ].join(",")
+}
+
+/**
  * Ideally, each choice should be in its own file, so that the
  * recording of what the user chose can be clearly identified (by the
- * path of that file within the store. Sometimes that is not
- * possible. This logic detects this situation and applies a non-ideal
- * correction.
+ * path of that file within the store).
+
+ * Sometimes that is not possible. This logic detects this situation
+ * and applies a non-ideal correction.
  *
- * Note: this will also incorrectly rename a guidebook that is
- * imported more than once. But the optimizer should remove any
- * duplicates.
+ * Note: we want to avoid incorrectly renaming a guidebook that is
+ * imported more than once. The optimizer may remove some duplicates
+ * (hence any renaming wouldn't matter), but it cannot always; e.g. if
+ * a duplicated guidebook is conditionally imported a second time,
+ * that choice will not be optimized away.
  *
- * I think the real fix here may require detecting more deeply the
- * syntactic structure of the imports. Hopefully this can tide us
- * over.
+ * Hence the `hash` versus `fullKey`. The hash is cheaper but may
+ * suffer from the Noted problem. The fullKey allows for a more
+ * careful discrimination between two choices.
  */
-export default function workaroundMultipleChoicesPerFile(graph: Graph, contextsSeenSoFar: Record<string, number> = {}) {
+export default function workaroundMultipleChoicesPerFile(
+  graph: Graph,
+  contextsSeenSoFar: Record<string, { graph: Choice; count: number }> = {}
+) {
   if (isSequence(graph)) {
     graph.sequence.forEach((_) => workaroundMultipleChoicesPerFile(_, contextsSeenSoFar))
   } else if (isParallel(graph)) {
@@ -52,9 +76,11 @@ export default function workaroundMultipleChoicesPerFile(graph: Graph, contextsS
       }
     })
   } else if (isChoice(graph)) {
-    const soFar = contextsSeenSoFar[graph.groupContext]
+    const hash = graph.groupContext
+
+    const soFar = contextsSeenSoFar[hash]
     if (!soFar) {
-      contextsSeenSoFar[graph.groupContext] = 1
+      contextsSeenSoFar[hash] = { graph, count: 1 }
     } else if (!/^madwizard/.test(graph.groupContext)) {
       // ignore internal/fabricated choices
       // this means that a single file has more than one choice. since
@@ -63,8 +89,12 @@ export default function workaroundMultipleChoicesPerFile(graph: Graph, contextsS
       // avoid the separate choices from colliding in the ChoiceState
       // model; that is the mnodel from a presented choice to ... what
       // the user actually choice from the list of options)
-      contextsSeenSoFar[graph.groupContext]++
-      graph.groupContext += `_${soFar}`
+
+      const equalityA = fullKey(soFar.graph)
+      const equalityB = fullKey(graph)
+      if (equalityA !== equalityB) {
+        graph.groupContext += `_${soFar.count++}`
+      }
     }
 
     graph.choices.forEach((_) => workaroundMultipleChoicesPerFile(_.graph, contextsSeenSoFar))
