@@ -129,7 +129,10 @@ export const guideOptions = {
 }
 
 export function assembleOptionsForGuide(providedOptions: MadWizardOptions, commandLineOptions: Arguments<GuideOpts>) {
+  const ifor = providedOptions.ifor || commandLineOptions.ifor
   return Object.assign({}, assembleOptions(providedOptions, commandLineOptions), {
+    interactive:
+      !ifor && !commandLineOptions.y ? providedOptions.interactive || commandLineOptions.i : !commandLineOptions.y,
     veto: commandLineOptions.veto === undefined ? undefined : new RegExp(commandLineOptions.veto),
   })
 }
