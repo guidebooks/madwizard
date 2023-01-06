@@ -106,7 +106,7 @@ function expansionPatternWithMessageAndKey() {
 }
 
 /** Does the given Choice (i.e. a tab group) include a dynamic expansion? */
-function isExpansionGroup(graph: Choice) {
+export function isExpansionGroup(graph: Choice) {
   return expansionPattern().test(graph.group)
 }
 
