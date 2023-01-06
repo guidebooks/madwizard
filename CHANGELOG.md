@@ -1,3 +1,13 @@
+# [4.0.0](https://github.com/guidebooks/madwizard/compare/3.1.2...4.0.0) (2023-01-06)
+
+### Bug Fixes
+
+- switch programmatic input from `input: string` to `vfile: VFile` ([ea1ac70](https://github.com/guidebooks/madwizard/commit/ea1ac70fa4488c0132fec12670d81d6a673c02df))
+
+### BREAKING CHANGES
+
+- this is to allow for specifying the filepath of the programmatic input.
+
 ## [3.1.2](https://github.com/guidebooks/madwizard/compare/3.1.1...3.1.2) (2023-01-05)
 
 ### Bug Fixes
