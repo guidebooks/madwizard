@@ -1,3 +1,11 @@
+## [4.0.1](https://github.com/guidebooks/madwizard/compare/4.0.0...4.0.1) (2023-01-06)
+
+### Bug Fixes
+
+- -y option was not working as intended ([8b14fde](https://github.com/guidebooks/madwizard/commit/8b14fde18c907e9aa6bd058e446b0a73477c673b))
+- add missing madwizard binary for madwizard-cli-core published npm ([cd6562a](https://github.com/guidebooks/madwizard/commit/cd6562aea08551a30e9b42268f1a43e00c2d281d))
+- improved fix for multiple choices in a single file ([fdf5192](https://github.com/guidebooks/madwizard/commit/fdf51924ac2f85a7948f33ccc8381cc9a270c1cf)), closes [#581](https://github.com/guidebooks/madwizard/issues/581)
+
 # [4.0.0](https://github.com/guidebooks/madwizard/compare/3.1.2...4.0.0) (2023-01-06)
 
 ### Bug Fixes
