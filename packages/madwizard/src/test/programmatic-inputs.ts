@@ -15,4 +15,4 @@
  */
 
 /** These will be passed as programmatic inputs to `madwizard run` */
-export default [{ input: "```shell\necho AAA\n```", output: "AAA" }]
+export default [{ input: "```shell\necho AAA\n```", path: "/xxx/yyy", output: "AAA" }]

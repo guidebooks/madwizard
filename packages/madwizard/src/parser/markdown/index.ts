@@ -138,8 +138,8 @@ export async function blockify(
   madwizardOptions: MadWizardOptionsWithInput = {}
 ) {
   const file =
-    input === "-" && typeof madwizardOptions.input === "string"
-      ? new VFile({ cwd: process.cwd(), path: "-", value: madwizardOptions.input })
+    input === "-" && typeof madwizardOptions.vfile === "object"
+      ? madwizardOptions.vfile
       : typeof input === "string"
       ? await reader(
           new VFile({ cwd: process.cwd(), path: toRawGithubUserContent(expandHomeDir(input)) }),
