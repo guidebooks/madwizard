@@ -128,11 +128,31 @@ export const guideOptions = {
   },
 }
 
+/**
+ * Combine `providedOptions` (those passed programatically) with
+ * `commandLineOptions` (those passed on the command line).
+ */
 export function assembleOptionsForGuide(providedOptions: MadWizardOptions, commandLineOptions: Arguments<GuideOpts>) {
+  // interactive... only for a specified guidebook?
   const ifor = providedOptions.ifor || commandLineOptions.ifor
+
+  // Logic: if programmatic options has an opinion, use that; if
+  // command line options has an opinion, use that; otherwise, default
+  // to interactive mode only if we aren't interactive just for a
+  // specified guidebook
+  const interactive =
+    providedOptions.interactive !== undefined
+      ? providedOptions.interactive
+      : commandLineOptions.interactive !== undefined
+      ? commandLineOptions.interactive
+      : commandLineOptions.y !== undefined
+      ? commandLineOptions.y
+      : ifor !== undefined
+      ? false
+      : true
+
   return Object.assign({}, assembleOptions(providedOptions, commandLineOptions), {
-    interactive:
-      !ifor && !commandLineOptions.y ? providedOptions.interactive || commandLineOptions.i : !commandLineOptions.y,
+    interactive,
     veto: commandLineOptions.veto === undefined ? undefined : new RegExp(commandLineOptions.veto),
   })
 }
