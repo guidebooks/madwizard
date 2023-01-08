@@ -1,3 +1,9 @@
+## [4.0.2](https://github.com/guidebooks/madwizard/compare/4.0.1...4.0.2) (2023-01-08)
+
+### Bug Fixes
+
+- guide interactive mode detection is buggy ([59e14b8](https://github.com/guidebooks/madwizard/commit/59e14b8afe04c115d8465a98917a2be1e2ca5efa))
+
 ## [4.0.1](https://github.com/guidebooks/madwizard/compare/4.0.0...4.0.1) (2023-01-06)
 
 ### Bug Fixes
