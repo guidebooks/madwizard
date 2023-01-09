@@ -1,3 +1,14 @@
+# [4.1.0](https://github.com/guidebooks/madwizard/compare/4.0.3...4.1.0) (2023-01-09)
+
+### Bug Fixes
+
+- export results in 'undefined' values for empty strings ([193449b](https://github.com/guidebooks/madwizard/commit/193449b507a97e93d0860b17c3dd25061b8cae79))
+
+### Features
+
+- finally block support ([f8ca3d5](https://github.com/guidebooks/madwizard/commit/f8ca3d5a447d7158d5c94fe3f2ca748157000c89))
+- **packages/madwizard-cli:** bump to store 1.11.0 to pick up image pull secret ([375ed65](https://github.com/guidebooks/madwizard/commit/375ed65d3b81def8c52e10286aa0f5254a94ce51))
+
 ## [4.0.3](https://github.com/guidebooks/madwizard/compare/4.0.2...4.0.3) (2023-01-09)
 
 ### Bug Fixes
