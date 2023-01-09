@@ -1,0 +1,6 @@
+export choice="n/a"
+export IMAGE_PULL_SECRET=$([ "${choice}" = "n/a" ] && echo "" || echo "${choice}")
+if [ -n "$IMAGE_PULL_SECRET" ]; then echo "FAIL"
+else echo "PASS"
+fi
+PASS

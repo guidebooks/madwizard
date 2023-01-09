@@ -55,7 +55,7 @@ export default function execAsExport(cmdline: string | boolean, memos: Memos, op
       return shellItOut(magicCmdline, memos, options)
         .then(() => options.capture.split(/\n/).filter(Boolean))
         .catch(() => [key, ""])
-        .then(([keyForUpdate, valueForUpdate]) => {
+        .then(([keyForUpdate, valueForUpdate = ""]) => {
           if (op === "unset") {
             // for unset foo, we only need the invalidate part
             if (opts.verbose && !opts.quiet) {

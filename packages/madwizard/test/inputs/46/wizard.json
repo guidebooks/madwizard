@@ -1,0 +1,35 @@
+[
+  {
+    "graph": {
+      "body": "export choice=\"n/a\"",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\nexport choice=\"n/a\"\n```"
+    }
+  },
+  {
+    "graph": {
+      "body": "export IMAGE_PULL_SECRET=$([ \"${choice}\" = \"n/a\" ] && echo \"\" || echo \"${choice}\")",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\nexport IMAGE_PULL_SECRET=$([ \"${choice}\" = \"n/a\" ] && echo \"\" || echo \"${choice}\")\n```"
+    }
+  },
+  {
+    "graph": {
+      "body": "if [ -n \"$IMAGE_PULL_SECRET\" ]; then echo \"FAIL\"\nelse echo \"PASS\"\nfi",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\nif [ -n \"$IMAGE_PULL_SECRET\" ]; then echo \"FAIL\"\nelse echo \"PASS\"\nfi\n```"
+    }
+  }
+]
