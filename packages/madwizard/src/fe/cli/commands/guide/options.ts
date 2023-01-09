@@ -115,7 +115,6 @@ export const guideOptions = {
   interactive: {
     alias: "i",
     type: "boolean" as const,
-    default: true,
     group: expertGroup,
     describe: "Always ask questions",
   },
@@ -146,7 +145,7 @@ export function assembleOptionsForGuide(providedOptions: MadWizardOptions, comma
       : commandLineOptions.interactive !== undefined
       ? commandLineOptions.interactive
       : commandLineOptions.y !== undefined
-      ? commandLineOptions.y
+      ? !commandLineOptions.y
       : ifor !== undefined
       ? false
       : true
