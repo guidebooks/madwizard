@@ -34,6 +34,14 @@ interface RuntimeEnvDependencies {
   }
 }
 
+/** Wrap the given command line with venv activation */
+function withVenv(cmdline: string) {
+  return (
+    'if [ -d "${RAY_VENV_PATH}" ] && [ -f "${RAY_VENV_PATH}"/bin/activate ]; then source "${RAY_VENV_PATH}"/bin/activate; fi; ' +
+    cmdline
+  )
+}
+
 /** Expand env vars */
 export function expand(expr: string | number, memos: Memos): string {
   return typeof expr === "undefined"
@@ -209,7 +217,7 @@ export default async function raySubmit(
             // termination request; if this is a normal exit, at the
             // end of the run, no need (and might be dangerous) to try
             // to stop the job.
-            shellSync("ray job stop ${JOB_ID}", memos)
+            shellSync(withVenv("ray job stop ${JOB_ID}"), memos)
           }
         },
       })
@@ -245,9 +253,7 @@ export default async function raySubmit(
           // formulate a ray job submit command line; `custom` will
           // assemble ` working directory `$MWDIR` and `$MWFILENAME`
           const python = language === "python" || /\.py$/.test(inputFile) ? "python3" : "" // FIXME generalize this
-          const systemPart =
-            'if [ -d "${RAY_VENV_PATH}" ] && [ -f "${RAY_VENV_PATH}"/bin/activate ]; then source "${RAY_VENV_PATH}"/bin/activate; fi; ' +
-            `ray job submit --runtime-env=${envFile} ${extraArgs}`
+          const systemPart = withVenv(`ray job submit --runtime-env=${envFile} ${extraArgs}`)
           const appPart = `${python} ${parsedOptions.input === false ? "" : inputFile} ${dashDash}`
           const cmdline = `${systemPart} -- ${appPart}`
           Debug("madwizard/exec/ray-submit")("env", memos.env || {})
