@@ -1,0 +1,13 @@
+Sequence
+├── s1
+│   ├── a
+│   │   └── echo AAA
+│   └── finally_a
+│       └── echo "finally after a"
+├── s2
+│   ├── c
+│   │   └── echo CCC
+│   └── finally_c
+│       └── echo "finally after c"
+└── finally_finally
+    └── echo "final finally"

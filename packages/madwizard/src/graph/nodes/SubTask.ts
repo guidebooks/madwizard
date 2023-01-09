@@ -23,7 +23,15 @@ import { TitledStep } from "./TitledSteps.js"
 import Graph, { sameGraph } from "../Graph.js"
 import { Ordered, Unordered } from "./Ordered.js"
 
-import { Barrier, Description, IdempotencyGroup, Source, Title, Validatable } from "../../codeblock/CodeBlockProps.js"
+import {
+  Barrier,
+  Description,
+  Finally,
+  IdempotencyGroup,
+  Source,
+  Title,
+  Validatable,
+} from "../../codeblock/CodeBlockProps.js"
 
 type SubTask<T extends Unordered | Ordered = Unordered> = Key &
   Source &
@@ -31,6 +39,7 @@ type SubTask<T extends Unordered | Ordered = Unordered> = Key &
   Title &
   Partial<Description> &
   Partial<Barrier> &
+  Partial<Finally> &
   Partial<Validatable> &
   Partial<IdempotencyGroup> &
   T & {
@@ -48,9 +57,10 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
   graph: Sequence<T>,
   source: Source["source"],
   barrier = false,
-  validate?: Validatable["validate"]
+  validate?: Validatable["validate"],
+  isFinally = false
 ): SubTask<Unordered> {
-  return {
+  const subtask: SubTask<Unordered> = {
     key,
     group,
     title,
@@ -61,6 +71,12 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
     barrier,
     validate,
   }
+
+  if (isFinally) {
+    subtask.isFinally = isFinally
+  }
+
+  return subtask
 }
 
 export function asSubTask(step: TitledStep): SubTask {
@@ -72,8 +88,22 @@ export function isSubTask<T extends Unordered | Ordered = Unordered>(graph: Grap
   return subtask && typeof subtask.key === "string" && typeof subtask.filepath === "string"
 }
 
-export function isSubTaskWithFilepath<T extends Unordered | Ordered = Unordered>(graph: Graph<T>): graph is SubTask<T> {
+export function isNotFinallySubTask<T extends Unordered | Ordered = Unordered>(
+  graph: Graph<T>
+): graph is SubTask<T> & { isFinally: false } {
+  return isSubTask(graph) && !graph.isFinally
+}
+
+export function isSubTaskWithFilepath<T extends Unordered | Ordered = Unordered>(
+  graph: Graph<T>
+): graph is SubTask<T> & { filepath: string } {
   return isSubTask(graph) && !!graph.filepath
+}
+
+export function isNotFinallySubTaskWithFilepath<T extends Unordered | Ordered = Unordered>(
+  graph: Graph<T>
+): graph is SubTask<T> & { isFinally: false } {
+  return isSubTaskWithFilepath(graph) && !graph.isFinally
 }
 
 /** @return whether `A` and `B` are identical `Graph` */

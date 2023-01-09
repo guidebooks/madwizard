@@ -1,0 +1,10 @@
+echo AAA
+AAA
+echo "finally after a"
+finally after a
+echo CCC
+CCC
+echo "finally after c"
+finally after c
+echo "final finally"
+final finally

@@ -1,0 +1,12 @@
+finally_finally
+├── Prerequisites
+│   ├── a
+│   │   └── echo AAA
+│   ├── finally_a
+│   │   └── echo "finally after a"
+│   ├── c
+│   │   └── echo CCC
+│   └── finally_c
+│       └── echo "finally after c"
+└── Main Tasks
+    └── echo "final finally"

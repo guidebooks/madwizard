@@ -1,0 +1,112 @@
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "a",
+      "title": "a",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo AAA",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "a"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "finally_a",
+      "title": "finally_a",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"finally after a\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "finally_a"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "c",
+      "title": "c",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo CCC",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "c"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "finally_c",
+      "title": "finally_c",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"finally after c\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "finally_c"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Main Tasks",
+      "title": "Main Tasks",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"final finally\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Main Tasks"
+    }
+  }
+]
