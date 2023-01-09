@@ -18,24 +18,20 @@ import { u } from "unist-builder"
 import {
   Choice,
   Graph,
-  Sequence,
-  SubTask,
-  emptySequence,
   extractTitle,
   extractDescription,
   hasSource,
-  isSubTask,
-  isSubTaskWithFilepath,
   isChoice,
   isSequence,
   isTitledSteps,
-  sequence,
-  subtask,
 } from "./index.js"
 import { Source } from "../codeblock/index.js"
 
 import { isParallel, parallel } from "./nodes/Parallel.js"
 import { hasTitle, hasTitleProperty } from "./nodes/EnTitled.js"
+import Sequence, { emptySequence, sequence } from "./nodes/Sequence.js"
+import SubTask, { isSubTask, isSubTaskWithFilepath, subtask } from "./nodes/SubTask.js"
+
 import { findChoicesOnFrontier as findChoiceFrontier } from "./choice-frontier.js"
 
 type LookupTable = Record<SubTask["key"], SubTask>

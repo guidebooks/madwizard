@@ -25,16 +25,14 @@
  *
  */
 
-import { Ordered, Unordered } from "./nodes/Ordered.js"
-export { Ordered, Unordered }
-
-export { default as Graph, OrderedGraph, hasSource, isBarrier, isEmpty, isValidatable } from "./Graph.js"
-export { default as LeafNode, OrderedLeafNode, isLeafNode, bodySource } from "./nodes/LeafNode.js"
+export { Ordered, Unordered } from "./nodes/Ordered.js"
 export { extractTitle, extractDescription } from "./nodes/EnTitled.js"
-export * from "./nodes/Sequence.js"
+export { default as SubTask, OrderedSubTask, isSubTask } from "./nodes/SubTask.js"
+export { default as Sequence, OrderedSequence, isSequence } from "./nodes/Sequence.js"
 export { default as Parallel, OrderedParallel, isParallel } from "./nodes/Parallel.js"
 export { default as TitledSteps, OrderedTitledSteps, isTitledSteps } from "./nodes/TitledSteps.js"
-export { default as SubTask, OrderedSubTask, isSubTask, isSubTaskWithFilepath, subtask } from "./nodes/SubTask.js"
+export { default as LeafNode, OrderedLeafNode, isLeafNode, bodySource } from "./nodes/LeafNode.js"
+export { default as Graph, OrderedGraph, hasSource, isBarrier, isEmpty, isValidatable } from "./Graph.js"
 export { default as Choice, OrderedChoice, ChoicePart, isChoice, isPartOfForm, choose } from "./nodes/Choice.js"
 
 export * from "./order.js"

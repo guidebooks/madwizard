@@ -17,12 +17,11 @@
 import { v4 } from "uuid"
 
 import Key from "./Key.js"
-import Graph, { sameGraph } from "../Graph.js"
-import { Ordered, Unordered } from "./Ordered.js"
-
 import Filepath from "./Filepath.js"
 import Sequence from "./Sequence.js"
 import { TitledStep } from "./TitledSteps.js"
+import Graph, { sameGraph } from "../Graph.js"
+import { Ordered, Unordered } from "./Ordered.js"
 
 import { Barrier, Description, IdempotencyGroup, Source, Title, Validatable } from "../../codeblock/CodeBlockProps.js"
 

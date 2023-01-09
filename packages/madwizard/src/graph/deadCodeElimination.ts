@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 
-import {
-  Graph,
-  Ordered,
-  Unordered,
-  emptySequence,
-  isSequence,
-  isParallel,
-  isSubTask,
-  isTitledSteps,
-  isChoice,
-} from "./index.js"
+import { Graph, Ordered, Unordered, isSequence, isParallel, isSubTask, isTitledSteps, isChoice } from "./index.js"
+
+import { emptySequence } from "./nodes/Sequence.js"
 
 /** Remove any subgraphs that contain no code blocks */
 function dce<T extends Unordered | Ordered, G extends Graph<T>>(graph: G): G {
