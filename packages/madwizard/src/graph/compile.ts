@@ -238,7 +238,8 @@ export async function compile(
         isDeepest ? seq(block) : emptySequence(),
         parent.source,
         parent.barrier,
-        parent.validate
+        parent.validate,
+        parent.isFinally
       )
     }
 

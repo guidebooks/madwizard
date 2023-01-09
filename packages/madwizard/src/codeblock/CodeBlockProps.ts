@@ -107,10 +107,16 @@ export interface Barrier {
   barrier?: boolean
 }
 
+/** Should this guidebook be executed when the parent guidebook completes? */
+export interface Finally {
+  isFinally: boolean
+}
+
 export type Import = Source &
   Title &
   Partial<Description> &
   Partial<Barrier> &
+  Partial<Finally> &
   Partial<IdempotencyGroup> &
   Partial<Validatable> &
   Kind<"Import"> & {

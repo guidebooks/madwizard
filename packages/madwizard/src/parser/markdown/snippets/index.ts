@@ -27,7 +27,14 @@ import { oraPromise } from "../../../util/ora-delayed-promise.js"
 import indent from "../util/indent.js"
 import { MadWizardOptions } from "../../../fe/index.js"
 import { tryFrontmatter } from "../frontmatter/frontmatter-parser.js"
-import { Import, getImportEnv, getImportGroup, getImportPath, hasImports } from "../frontmatter/KuiFrontmatter.js"
+import {
+  Import,
+  getImportEnv,
+  getImportGroup,
+  getImportPath,
+  hasImports,
+  hasFinally,
+} from "../frontmatter/KuiFrontmatter.js"
 
 // FIXME refactor this
 import { canonicalProvenanceOf } from "../../../graph/provenance.js"
@@ -374,7 +381,7 @@ function inlineSnippets(opts: Options & InternalOptions) {
 ${indent(errorMessage)}`
   }
 
-  const processImport = async (importStmt: Import, srcFilePath: string, provenance: string[]) => {
+  const processImport = async (importStmt: Import, srcFilePath: string, provenance: string[], isFinally = false) => {
     const env = getImportEnv(importStmt)
     const group = getImportGroup(importStmt)
     const snippetFileName = getImportPath(importStmt)
@@ -436,9 +443,9 @@ ${indent(errorMessage)}`
     return `
 ${colons}import{provenance=${provenance.concat([
       thisProvenance,
-    ])} filepath=${thisProvenance} attributes="${attributesEnc}"${title ? ` title="${title}"` : ""}${
-      group ? ` group="${group}"` : ""
-    }}
+    ])} isFinally="${isFinally}" filepath=${thisProvenance} attributes="${attributesEnc}"${
+      title ? ` title="${title}"` : ""
+    }${group ? ` group="${group}"` : ""}}
 ${setenv}
 ${body}
 ${colons}
@@ -450,12 +457,20 @@ ${clearenv}
   return async (data: string, srcFilePath: string, provenance: string[] = []): Promise<string> => {
     const { body, attributes } = tryFrontmatter(data)
 
-    let importedContent: Promise<string>
-    if (hasImports(attributes)) {
-      importedContent = Promise.all(attributes.imports.map((_) => processImport(_, srcFilePath, provenance))).then(
-        (_) => _.join("\n")
-      )
-    }
+    /** Guidebook imports from topmatter */
+    const importedContent = !hasImports(attributes)
+      ? undefined
+      : Promise.all(attributes.imports.map((_) => processImport(_, srcFilePath, provenance))).then((_) => _.join("\n"))
+
+    /** Guidebook finally imports from topmatter */
+    const finallyContent: Promise<string> = !hasFinally(attributes)
+      ? undefined
+      : Promise.all(attributes.finally.map((_) => processImport(_, srcFilePath, provenance, true))).then((_) =>
+          _.join("\n")
+        )
+
+    const noImportedContent = async () => !importedContent || (await importedContent).length === 0
+    const noFinallyContent = async () => !finallyContent || (await finallyContent).length === 0
 
     const mainContent = await Promise.all(
       (includeFrontmatter ? data : body).split(/\n/).map(async (line) => {
@@ -496,7 +511,7 @@ ${clearenv}
       })
     ).then((_) => _.join("\n"))
 
-    if (!importedContent || (await importedContent).length === 0) {
+    if ((await noImportedContent()) && (await noFinallyContent())) {
       return mainContent
     } else {
       const { body, bodyBegin } = tryFrontmatter(mainContent)
@@ -512,11 +527,14 @@ ${clearenv}
 
 <!-- Begin imported content for ${srcFilePath} -->
 
-${await importedContent}
+${(await noImportedContent()) ? "" : await importedContent}
 
 <!-- End imported content for ${srcFilePath} -->
 
-${body}`
+${body}
+
+${(await noFinallyContent()) ? "" : await finallyContent}
+`
     }
   }
 }

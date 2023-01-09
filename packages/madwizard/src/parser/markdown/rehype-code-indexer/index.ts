@@ -53,6 +53,7 @@ import {
 import { tryFrontmatter } from "../frontmatter/index.js"
 import {
   isBarrier,
+  isFinally,
   isOnAnImportChain,
   isImports,
   getImportGroup,
@@ -339,6 +340,7 @@ export function rehypeCodeIndexer(
                         kind: "Import",
                         source: _,
                         barrier: isBarrier(_.properties),
+                        isFinally: isFinally(_.properties),
                         key: getImportKey(_.properties),
                         title: getImportTitle(_.properties),
                         description,

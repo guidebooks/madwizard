@@ -109,7 +109,7 @@ interface Imports {
   imports: Import[]
 }
 
-export function hasImports(attributes: any): attributes is Imports {
+export function hasImports(attributes: KuiFrontmatter): attributes is KuiFrontmatter & Imports {
   return (
     attributes &&
     typeof attributes === "object" &&
@@ -124,9 +124,20 @@ export function hasImports(attributes: any): attributes is Imports {
   )
 }
 
+/** Guidebooks to execute when this guidebook completes */
+interface Finally {
+  finally: string[]
+}
+
+/** Does this provided a list of finalizer guidebooks? */
+export function hasFinally(fm: KuiFrontmatter): fm is KuiFrontmatter & Finally {
+  return Array.isArray(fm.finally)
+}
+
 type KuiFrontmatter = Partial<WizardSteps> &
   Partial<Barrier> &
   Partial<Imports> &
+  Partial<Finally> &
   Partial<Validatable> &
   Partial<CodeBlocks> & {
     /** Title of the Notebook */
