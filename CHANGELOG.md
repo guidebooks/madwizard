@@ -1,3 +1,13 @@
+# [4.2.0](https://github.com/guidebooks/madwizard/compare/4.1.0...4.2.0) (2023-01-09)
+
+### Bug Fixes
+
+- export Graph.sequence and Graph.sameGraph ([37b1842](https://github.com/guidebooks/madwizard/commit/37b18427ba60569379f44994ca6acb6c7a72d85e))
+
+### Features
+
+- **packages/madwizard-cli:** bump to store 1.11.1 to pick up image pull secret fix ([5b7f32d](https://github.com/guidebooks/madwizard/commit/5b7f32d2845bb5dc36409e464109651e018e9934))
+
 # [4.1.0](https://github.com/guidebooks/madwizard/compare/4.0.3...4.1.0) (2023-01-09)
 
 ### Bug Fixes
