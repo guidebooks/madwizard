@@ -16,24 +16,13 @@
 
 import Debug from "debug"
 
-import {
-  Choice,
-  ChoicePart,
-  Graph,
-  Ordered,
-  Parallel,
-  SubTask,
-  Sequence,
-  TitledStep,
-  TitledSteps,
-  Unordered,
-  emptySequence,
-  isSubTask,
-  isChoice,
-  isSequence,
-  isParallel,
-  isTitledSteps,
-} from "./index.js"
+import { Graph } from "./index.js"
+import { Ordered, Unordered } from "./nodes/Ordered.js"
+import SubTask, { isSubTask } from "./nodes/SubTask.js"
+import Parallel, { isParallel } from "./nodes/Parallel.js"
+import Choice, { ChoicePart, isChoice } from "./nodes/Choice.js"
+import Sequence, { isSequence, emptySequence } from "./nodes/Sequence.js"
+import TitledSteps, { TitledStep, isTitledSteps } from "./nodes/TitledSteps.js"
 
 import { CodeBlockProps } from "../codeblock/index.js"
 

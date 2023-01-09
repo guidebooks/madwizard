@@ -19,17 +19,16 @@ import { ChoiceState } from "../choices/index.js"
 import {
   Choice,
   Graph,
-  EnTitled,
   LeafNode,
-  hasTitle,
   isBarrier,
   isChoice,
   isParallel,
   isSequence,
   isSubTask,
   isTitledSteps,
-  withTitle,
 } from "./index.js"
+
+import EnTitled, { hasTitle, withTitle } from "./nodes/EnTitled.js"
 
 /** Choose `A` if it has a title, else `B` */
 function titlest(A: Graph, B?: EnTitled) {

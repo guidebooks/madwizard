@@ -26,11 +26,12 @@ import {
   emptySequence,
   extractTitle,
   hasSource,
-  parallel,
   seq,
   sequence,
   subtask,
 } from "./index.js"
+
+import { parallel } from "./nodes/Parallel.js"
 
 import { Memos } from "../memoization/index.js"
 import { ValidateOptions } from "./validate.js"

@@ -24,20 +24,18 @@ import {
   extractTitle,
   extractDescription,
   hasSource,
-  hasTitle,
-  hasTitleProperty,
   isSubTask,
   isSubTaskWithFilepath,
   isChoice,
   isSequence,
-  isParallel,
   isTitledSteps,
-  parallel,
   sequence,
   subtask,
 } from "./index.js"
 import { Source } from "../codeblock/index.js"
 
+import { isParallel, parallel } from "./nodes/Parallel.js"
+import { hasTitle, hasTitleProperty } from "./nodes/EnTitled.js"
 import { findChoicesOnFrontier as findChoiceFrontier } from "./choice-frontier.js"
 
 type LookupTable = Record<SubTask["key"], SubTask>
