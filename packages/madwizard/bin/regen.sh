@@ -31,7 +31,7 @@ export STORE="--store $PWD"
 FAKEENV=$(mktemp)
 
 echo -n A
-for i in {1..45}
+for i in {1..46}
 do
     if [ -n "$WHICH" ] && [ $i != $WHICH ]; then continue; fi
 
@@ -58,7 +58,7 @@ done
 echo
 
 echo -n B
-for i in {1..8} {11..18} {20..22} {24..45}
+for i in {1..8} {11..18} {20..22} {24..46}
 do
     if [ -n "$WHICH" ] && [ $i != $WHICH ]; then continue; fi
 
