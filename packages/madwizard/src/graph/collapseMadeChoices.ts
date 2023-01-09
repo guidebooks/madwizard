@@ -15,11 +15,12 @@
  */
 
 import { ChoiceState, updateContent } from "../choices/index.js"
+
+import { hasKey } from "./nodes/Key.js"
+
 import {
   Graph,
   emptySequence,
-  hasKey,
-  hasTitle,
   isChoice,
   isSequence,
   isParallel,
@@ -28,6 +29,8 @@ import {
   sequence,
   subtask,
 } from "./index.js"
+
+import { hasTitle } from "./nodes/EnTitled.js"
 
 function collapse(graph: Graph, choices: ChoiceState): Graph {
   if (isChoice(graph)) {
