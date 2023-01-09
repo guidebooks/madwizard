@@ -18,7 +18,9 @@ import Debug from "debug"
 
 import { Memos } from "../memoization/index.js"
 import { ChoiceState, expand } from "../choices/index.js"
-import { CompileOptions, Graph, sequence } from "./index.js"
+
+import { sequence } from "./nodes/Sequence.js"
+import { CompileOptions, Graph } from "./index.js"
 
 import hoistSubTasks from "./hoistSubTasks.js"
 import propagateTitles from "./propagateTitles.js"

@@ -18,20 +18,11 @@ import Debug from "debug"
 import { CodeBlockProps } from "../codeblock/index.js"
 import { ChoiceState, expand } from "../choices/index.js"
 import { ExecutorOptions } from "../exec/Executor.js"
-import {
-  Choice,
-  Graph,
-  SubTask,
-  TitledSteps,
-  emptySequence,
-  extractTitle,
-  hasSource,
-  seq,
-  sequence,
-  subtask,
-} from "./index.js"
+import { Choice, Graph, TitledSteps, extractTitle, hasSource } from "./index.js"
 
 import { parallel } from "./nodes/Parallel.js"
+import SubTask, { subtask } from "./nodes/SubTask.js"
+import { emptySequence, seq, sequence } from "./nodes/Sequence.js"
 
 import { Memos } from "../memoization/index.js"
 import { ValidateOptions } from "./validate.js"
