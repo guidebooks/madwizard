@@ -1,3 +1,10 @@
+## [4.0.3](https://github.com/guidebooks/madwizard/compare/4.0.2...4.0.3) (2023-01-09)
+
+### Bug Fixes
+
+- another fix for --yes support ([06c6599](https://github.com/guidebooks/madwizard/commit/06c65991418c8791128060ef5fc318bb5ae03fee))
+- ray-submit intrinsic does not use venv for ray job stop command ([fc81d53](https://github.com/guidebooks/madwizard/commit/fc81d53c37529437dc6350ff5c239ef225b30d35))
+
 ## [4.0.2](https://github.com/guidebooks/madwizard/compare/4.0.1...4.0.2) (2023-01-08)
 
 ### Bug Fixes
