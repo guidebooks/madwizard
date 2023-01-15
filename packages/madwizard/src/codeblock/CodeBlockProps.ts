@@ -107,16 +107,19 @@ export interface Barrier {
   barrier?: boolean
 }
 
-/** Should this guidebook be executed when the parent guidebook completes? */
-export interface Finally {
-  isFinally: boolean
+export interface FinallyFor {
+  /**
+   * Should this guidebook be executed when the given guidebook (this
+   * is its key) completes?
+   */
+  isFinallyFor: string
 }
 
 export type Import = Source &
   Title &
   Partial<Description> &
   Partial<Barrier> &
-  Partial<Finally> &
+  Partial<FinallyFor> &
   Partial<IdempotencyGroup> &
   Partial<Validatable> &
   Kind<"Import"> & {

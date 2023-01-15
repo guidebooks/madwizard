@@ -26,8 +26,8 @@ import { Ordered, Unordered } from "./Ordered.js"
 import {
   Barrier,
   Description,
-  Finally,
   IdempotencyGroup,
+  FinallyFor,
   Source,
   Title,
   Validatable,
@@ -39,14 +39,18 @@ type SubTask<T extends Unordered | Ordered = Unordered> = Key &
   Title &
   Partial<Description> &
   Partial<Barrier> &
-  Partial<Finally> &
+  Partial<FinallyFor> &
   Partial<Validatable> &
   Partial<IdempotencyGroup> &
   T & {
+    /** The nested graph that this SubTask wraps */
     graph: Sequence<T>
   }
 
 export type OrderedSubTask = SubTask<Ordered>
+
+export type FinallySubTask<T extends Unordered | Ordered = Unordered> = SubTask<T> & Required<FinallyFor>
+export type NormalSubTask<T extends Unordered | Ordered = Unordered> = SubTask<T>
 
 export function subtask<T extends Unordered | Ordered = Unordered>(
   key: string,
@@ -58,7 +62,7 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
   source: Source["source"],
   barrier = false,
   validate?: Validatable["validate"],
-  isFinally = false
+  isFinallyFor?: string
 ): SubTask<Unordered> {
   const subtask: SubTask<Unordered> = {
     key,
@@ -72,8 +76,8 @@ export function subtask<T extends Unordered | Ordered = Unordered>(
     validate,
   }
 
-  if (isFinally) {
-    subtask.isFinally = isFinally
+  if (isFinallyFor) {
+    subtask.isFinallyFor = isFinallyFor
   }
 
   return subtask
@@ -88,22 +92,20 @@ export function isSubTask<T extends Unordered | Ordered = Unordered>(graph: Grap
   return subtask && typeof subtask.key === "string" && typeof subtask.filepath === "string"
 }
 
-export function isNotFinallySubTask<T extends Unordered | Ordered = Unordered>(
+export function isNormalSubTask<T extends Unordered | Ordered = Unordered>(graph: Graph<T>): graph is SubTask<T> {
+  return isSubTask(graph) && !graph.isFinallyFor
+}
+
+export function isFinallySubTask<T extends Unordered | Ordered = Unordered>(
   graph: Graph<T>
-): graph is SubTask<T> & { isFinally: false } {
-  return isSubTask(graph) && !graph.isFinally
+): graph is FinallySubTask<T> {
+  return isSubTask<T>(graph) && !!graph.isFinallyFor
 }
 
 export function isSubTaskWithFilepath<T extends Unordered | Ordered = Unordered>(
   graph: Graph<T>
 ): graph is SubTask<T> & { filepath: string } {
   return isSubTask(graph) && !!graph.filepath
-}
-
-export function isNotFinallySubTaskWithFilepath<T extends Unordered | Ordered = Unordered>(
-  graph: Graph<T>
-): graph is SubTask<T> & { isFinally: false } {
-  return isSubTaskWithFilepath(graph) && !graph.isFinally
 }
 
 /** @return whether `A` and `B` are identical `Graph` */
@@ -115,6 +117,16 @@ export function sameSubTask(A: SubTask, B: SubTask) {
     A.barrier === B.barrier &&
     sameGraph(A.graph, B.graph) // eslint-disable-line @typescript-eslint/no-use-before-define
   )
+}
+
+/**
+ * Morph the given FinallySubTask to behave like a regular
+ * SubTask. This is useful when finally (hehe) executing the finally
+ * block.
+ *
+ */
+export function asNormalSubTask(A: FinallySubTask) {
+  return Object.assign({}, A, { isFinallyFor: undefined })
 }
 
 export default SubTask

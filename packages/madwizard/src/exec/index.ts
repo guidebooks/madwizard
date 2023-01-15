@@ -28,6 +28,7 @@ import exporter, { isExport } from "./export.js"
 import addPipDependences from "./pip-install.js"
 import addCondaDependences from "./conda-install.js"
 import handledByClient from "./handled-by-client.js"
+import madwizardFinally from "./finally/exec.js"
 
 export { Env, ExecOptions, isExport }
 
@@ -45,6 +46,7 @@ export async function shellExec(
     return (
       addPipDependences(cmdline, memos, exec) ||
       addCondaDependences(cmdline, memos, exec) ||
+      madwizardFinally(cmdline, memos, exec) ||
       (await raySubmit(cmdline, language, memos, opts, exec, async)) ||
       custom(cmdline, memos, opts, exec, async)
     )

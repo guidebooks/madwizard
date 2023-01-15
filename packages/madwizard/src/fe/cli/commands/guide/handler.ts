@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import chalk from "chalk"
 import { Writable } from "stream"
 import { Arguments } from "yargs"
 
@@ -90,33 +91,40 @@ export default async function guideHandler<Writer extends Writable["write"]>(
   // a name we might want to associate with the run, in the logs
   const name = options.name ? ` (${options.name})` : ""
 
-  const exitMessage = `⚠️ Exiting${name} now, please wait for us to gracefully clean things up`
+  const exitMessage = "⚠️  " + chalk.yellow(`Exiting${name} now, please wait for us to gracefully clean things up`)
   const [memoizer, Guide] = await Promise.all([
     makeMemos(suggestions, argv),
     import("../../../guide/index.js").then((_) => _.Guide),
   ])
 
+  const guide = new Guide(task, blocks, choices, options, memoizer, ui, write)
+
   /** Kill any spawned subprocesses */
-  const cleanExit = memoizer.cleanup.bind(memoizer)
-  const cleanExitFromSIGINT = () => {
+  const cleanExit = async (signal?: Parameters<import("../../../../memoization/index.js").Memos["cleanup"]>[0]) => {
+    if (signal) {
+      await guide.onExitSignalFromUser(signal)
+    }
+    await memoizer.cleanup(signal)
+  }
+  const cleanExitFromSIGINT = async () => {
     console.error("Received interrupt")
     console.error(exitMessage)
-    cleanExit("SIGINT")
+    await cleanExit("SIGINT")
   }
-  const cleanExitFromSIGTERM = () => {
+  const cleanExitFromSIGTERM = async () => {
     console.error("Received termination request")
     console.error(exitMessage)
-    cleanExit("SIGTERM")
+    await cleanExit("SIGTERM")
   }
-  process.on("SIGINT", cleanExitFromSIGINT) // catch ctrl-c
-  process.on("SIGTERM", cleanExitFromSIGTERM) // catch kill
+  process.once("SIGINT", cleanExitFromSIGINT) // catch ctrl-c
+  process.once("SIGTERM", cleanExitFromSIGTERM) // catch kill
 
   if (providedOptions.onBeforeRun) {
     providedOptions.onBeforeRun({ cleanExit })
   }
 
   try {
-    await new Guide(task, blocks, choices, options, memoizer, ui, write).run()
+    await guide.run()
   } finally {
     if (options.verbose && task !== "run") {
       console.error(exitMessage)

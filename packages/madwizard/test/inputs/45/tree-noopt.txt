@@ -1,13 +1,27 @@
 Sequence
+├── in
+│   ├── echo madwizard_finally_push "test/inputs/45/in"
+│   └── Finally: finally_finally
+│       └── echo "final finally"
 ├── s1
+│   ├── s1
+│   │   ├── echo madwizard_finally_push "test/inputs/45/s1"
+│   │   └── Finally: finally_a
+│   │       └── echo "finally after a"
 │   ├── a
-│   │   └── echo AAA
-│   └── finally_a
-│       └── echo "finally after a"
+│   │   └── sleep ${SLEEPTIME-0}
+│   │       echo AAA
+│   └── s1
+│       └── echo madwizard_finally_pop "test/inputs/45/s1"
 ├── s2
+│   ├── s2
+│   │   ├── echo madwizard_finally_push "test/inputs/45/s2"
+│   │   └── Finally: finally_c
+│   │       └── echo "finally after c"
 │   ├── c
-│   │   └── echo CCC
-│   └── finally_c
-│       └── echo "finally after c"
-└── finally_finally
-    └── echo "final finally"
+│   │   └── sleep ${SLEEPTIME2-0}
+│   │       echo CCC
+│   └── s2
+│       └── echo madwizard_finally_pop "test/inputs/45/s2"
+└── in
+    └── echo madwizard_finally_pop "test/inputs/45/in"

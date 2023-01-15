@@ -19,7 +19,6 @@ import { join } from "path"
 import expandHomeDir from "expand-home-dir"
 import { access, readFile } from "fs/promises"
 
-import { shellSync } from "./shell.js"
 import { ExecOptions } from "./options.js"
 import { Memos } from "../memoization/index.js"
 import custom, { CustomEnv } from "./custom.js"
@@ -207,20 +206,6 @@ export default async function raySubmit(
       //
       // Note: in guidebook source, only one \" is needed.
       // Here, we need \\" just to make nodejs's parser happy.
-
-      // make sure to kill the ray job before we go
-      memos.onExit.push({
-        name: "stop ray job",
-        cb: (signal?: "SIGINT" | "SIGTERM") => {
-          if (signal) {
-            // only stop the ray job if we got an interrupt or
-            // termination request; if this is a normal exit, at the
-            // end of the run, no need (and might be dangerous) to try
-            // to stop the job.
-            shellSync(withVenv("ray job stop ${JOB_ID}"), memos)
-          }
-        },
-      })
 
       const source = cmdline
       return custom(

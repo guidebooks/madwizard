@@ -1,6 +1,13 @@
 Sequence
-├── export choice="n/a"
-├── export IMAGE_PULL_SECRET=$([ "${choice}" = "n/a" ] && echo "" || echo "${choice}")
-└── if [ -n "$IMAGE_PULL_SECRET" ]; then echo "FAIL"
-    else echo "PASS"
-    fi
+├── in
+│   ├── echo madwizard_finally_push "test/inputs/46/in"
+│   └── Finally: finally_finally
+│       └── echo "final finally"
+├── s1
+│   └── Option 1: Choice 1
+│       ├── echo "C1"
+│       └── a
+│           └── sleep ${SLEEPTIME-0}
+│               echo AAA
+└── in
+    └── echo madwizard_finally_pop "test/inputs/46/in"

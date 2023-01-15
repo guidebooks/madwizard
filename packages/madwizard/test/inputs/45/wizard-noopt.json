@@ -2,6 +2,52 @@
   {
     "graph": {
       "key": "somekey",
+      "group": "in",
+      "title": "in",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo madwizard_finally_push \"test/inputs/45/in\"",
+            "language": "shell",
+            "exec": "madwizard_finally_push",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "in"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "s1",
+      "title": "s1",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo madwizard_finally_push \"test/inputs/45/s1\"",
+            "language": "shell",
+            "exec": "madwizard_finally_push",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "s1"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
       "group": "a",
       "title": "a",
       "filepath": "",
@@ -9,7 +55,7 @@
         "key": "somekey",
         "sequence": [
           {
-            "body": "echo AAA",
+            "body": "sleep ${SLEEPTIME-0}\necho AAA",
             "language": "shell",
             "id": "somekey"
           }
@@ -24,15 +70,16 @@
   {
     "graph": {
       "key": "somekey",
-      "group": "finally_a",
-      "title": "finally_a",
+      "group": "s1",
+      "title": "s1",
       "filepath": "",
       "graph": {
         "key": "somekey",
         "sequence": [
           {
-            "body": "echo \"finally after a\"",
+            "body": "echo madwizard_finally_pop \"test/inputs/45/s1\"",
             "language": "shell",
+            "exec": "madwizard_finally_pop",
             "id": "somekey"
           }
         ]
@@ -40,7 +87,30 @@
       "source": "placeholder"
     },
     "step": {
-      "name": "finally_a"
+      "name": "s1"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "s2",
+      "title": "s2",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo madwizard_finally_push \"test/inputs/45/s2\"",
+            "language": "shell",
+            "exec": "madwizard_finally_push",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "s2"
     }
   },
   {
@@ -53,7 +123,7 @@
         "key": "somekey",
         "sequence": [
           {
-            "body": "echo CCC",
+            "body": "sleep ${SLEEPTIME2-0}\necho CCC",
             "language": "shell",
             "id": "somekey"
           }
@@ -68,15 +138,16 @@
   {
     "graph": {
       "key": "somekey",
-      "group": "finally_c",
-      "title": "finally_c",
+      "group": "s2",
+      "title": "s2",
       "filepath": "",
       "graph": {
         "key": "somekey",
         "sequence": [
           {
-            "body": "echo \"finally after c\"",
+            "body": "echo madwizard_finally_pop \"test/inputs/45/s2\"",
             "language": "shell",
+            "exec": "madwizard_finally_pop",
             "id": "somekey"
           }
         ]
@@ -84,15 +155,37 @@
       "source": "placeholder"
     },
     "step": {
-      "name": "finally_c"
+      "name": "s2"
     }
   },
   {
     "graph": {
       "key": "somekey",
-      "group": "finally_finally",
-      "title": "finally_finally",
+      "group": "in",
+      "title": "in",
       "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo madwizard_finally_pop \"test/inputs/45/in\"",
+            "language": "shell",
+            "exec": "madwizard_finally_pop",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "in"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "finally_finally",
+      "filepath": "test/inputs/45/finally_finally",
       "graph": {
         "key": "somekey",
         "sequence": [
@@ -103,10 +196,55 @@
           }
         ]
       },
-      "source": "placeholder"
+      "source": "placeholder",
+      "isFinallyFor": "test/inputs/45/in"
     },
     "step": {
       "name": "finally_finally"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "finally_a",
+      "filepath": "test/inputs/45/finally_a",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"finally after a\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder",
+      "isFinallyFor": "test/inputs/45/s1"
+    },
+    "step": {
+      "name": "finally_a"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "finally_c",
+      "filepath": "test/inputs/45/finally_c",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"finally after c\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder",
+      "isFinallyFor": "test/inputs/45/s2"
+    },
+    "step": {
+      "name": "finally_c"
     }
   }
 ]
