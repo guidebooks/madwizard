@@ -97,36 +97,48 @@ class TaskWrapperImpl implements TaskWrapper {
   } */
 }
 
-export async function taskRunner(
-  tasks: Task[],
-  options: TaskRunnerOptions = {},
-  write = process.stdout.write.bind(process.stdout),
-  depth = 0
-) {
-  await promiseEach(tasks, async ({ title, task, spinner, quiet }, idx) => {
-    if (idx > 0 && !options.quiet && !quiet) {
-      // write(EOL)
-    }
+export default class TaskRunner {
+  private _isKilled = false
 
-    if (!spinner && title && !quiet) {
-      write(title)
-    }
+  public kill() {
+    this._isKilled = true
+  }
 
-    if (Array.isArray(task)) {
-      // subtasks
-      if (!options.quiet && !quiet) {
-        write(EOL)
+  public async run(
+    tasks: Task[],
+    options: TaskRunnerOptions = {},
+    write = process.stdout.write.bind(process.stdout),
+    depth = 0
+  ) {
+    await promiseEach(tasks, async ({ title, task, spinner, quiet }, idx) => {
+      if (this._isKilled) {
+        return
       }
-      await taskRunner(task, options, write, depth + 1)
-    } else {
-      const wrapper = new TaskWrapperImpl(title, write, quiet, !quiet && spinner ? ora(title).start() : undefined)
-      const response = await task(wrapper)
-      if (Array.isArray(response)) {
+
+      if (idx > 0 && !options.quiet && !quiet) {
+        // write(EOL)
+      }
+
+      if (!spinner && title && !quiet) {
+        write(title)
+      }
+
+      if (Array.isArray(task)) {
+        // subtasks
         if (!options.quiet && !quiet) {
           write(EOL)
         }
-        await taskRunner(response, options, write, depth + 1)
+        await this.run(task, options, write, depth + 1)
+      } else {
+        const wrapper = new TaskWrapperImpl(title, write, quiet, !quiet && spinner ? ora(title).start() : undefined)
+        const response = await task(wrapper)
+        if (Array.isArray(response)) {
+          if (!options.quiet && !quiet) {
+            write(EOL)
+          }
+          await this.run(response, options, write, depth + 1)
+        }
       }
-    }
-  })
+    })
+  }
 }

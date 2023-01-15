@@ -1,10 +1,18 @@
+echo madwizard_finally_push "test/inputs/45/in"
+echo madwizard_finally_push "test/inputs/45/s1"
+sleep ${SLEEPTIME-0}
 echo AAA
 AAA
+echo madwizard_finally_pop "test/inputs/45/s1"
 echo "finally after a"
 finally after a
+echo madwizard_finally_push "test/inputs/45/s2"
+sleep ${SLEEPTIME2-0}
 echo CCC
 CCC
+echo madwizard_finally_pop "test/inputs/45/s2"
 echo "finally after c"
 finally after c
+echo madwizard_finally_pop "test/inputs/45/in"
 echo "final finally"
 final finally

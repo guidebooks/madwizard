@@ -23,7 +23,7 @@ import { Writable } from "stream"
 import { mainSymbols } from "figures"
 import { EventEmitter } from "events"
 
-import { taskRunner, Task } from "./taskrunner.js"
+import TaskRunner, { Task } from "./taskrunner.js"
 
 import isRaw from "../raw/index.js"
 import { eqSet } from "../../util/set.js"
@@ -32,18 +32,34 @@ import { ChoiceState } from "../../choices/index.js"
 import { isEarlyExit } from "../../exec/EarlyExit.js"
 import { CodeBlockProps } from "../../codeblock/index.js"
 import { shellExec, isExport } from "../../exec/index.js"
+import { isFinallyPop } from "../../exec/finally/exec.js"
 import indent from "../../parser/markdown/util/indent.js"
 import { Memos, statusOf } from "../../memoization/index.js"
 import { UI, AnsiUI, prettyPrintUITreeFromBlocks } from "../tree/index.js"
-import { Graph, Status, blocks, compile, extractTitle, extractDescription, validate } from "../../graph/index.js"
+import {
+  Graph,
+  SubTask,
+  Status,
+  blocks,
+  compile,
+  extractTitle,
+  extractDescription,
+  validate,
+} from "../../graph/index.js"
+import optimize from "../../graph/optimize.js"
+
 import {
   ChoiceStep,
   TaskStep,
+  FinallyTaskStep,
   Wizard,
   isChoiceStep,
   isForm,
   isMultiSelect,
   isTaskStep,
+  isNormalTaskStep,
+  isFinallyTaskStep,
+  asNormalTaskStep,
   wizardify,
 } from "../../wizard/index.js"
 
@@ -76,6 +92,21 @@ export class Guide {
     private readonly write?: Writable["write"]
   ) {}
 
+  private exitSignalFromUser?: Parameters<Memos["cleanup"]>[0]
+  public async onExitSignalFromUser(signal?: Parameters<Memos["cleanup"]>[0]) {
+    this.exitSignalFromUser = signal
+
+    if (this._currentRunner) {
+      this._currentRunner.kill()
+    }
+
+    await this.runOnStackFinallies()
+  }
+
+  private get hasReceivedExitSignalFromUser() {
+    return !!this.exitSignalFromUser
+  }
+
   private get isGuided() {
     return this.task === "guide"
   }
@@ -87,6 +118,43 @@ export class Guide {
   private get suggestionHint() {
     // reset the underlining from enquirer
     return chalk.reset.yellow.dim("  ◄ prior choice")
+  }
+
+  /** Map from `isFinallyFor` to associated finally `TaskStep` */
+  private _finallies: Record<SubTask["isFinallyFor"], FinallyTaskStep> = {}
+
+  /** Current list of known finally tasks */
+  private get finallies(): FinallyTaskStep[] {
+    return Object.values(this._finallies)
+  }
+
+  /** Run any on-stack finallies */
+  private async runOnStackFinallies() {
+    await this.runFinallyTasks(
+      this.finallies.filter((_) => this.memos.finallyStack.includes(_.graph.isFinallyFor)).reverse()
+    )
+  }
+
+  /** Remember any finally blocks that we may want to execute on abnormal termination */
+  private setFinallies(steps: FinallyTaskStep[]) {
+    steps.forEach((_) => (this._finallies[_.graph.isFinallyFor] = _))
+    return steps
+  }
+
+  /** Disremember ... from `setFinallies` */
+  private async clearFinallies(finallies: FinallyTaskStep[]) {
+    finallies.forEach((_) => delete this._finallies[_.graph.isFinallyFor])
+  }
+
+  /**
+   * Execute any finally blocks associated with the given finally
+   * block context (this comes from an `isFinallyFor` property of a
+   * `SubTask`.
+   */
+  private async execAndClearFinally(ctx: string) {
+    const finallySteps = this.finallies.filter((_) => _.graph.isFinallyFor === ctx)
+    await this.runFinallyTasks(finallySteps)
+    this.clearFinallies(finallySteps)
   }
 
   /**
@@ -364,22 +432,29 @@ export class Guide {
                     await this.waitTillDone(taskIdx - 1)
 
                     const statusMemoKey = block.id
-                    status =
-                      (this.memos.statusMemo && this.memos.statusMemo[statusMemoKey] === "success" && "success") ||
-                      (await shellExec(
-                        block.body,
-                        this.memos,
-                        {
-                          write: this.write,
-                          shell: this.options.shell,
-                          dryRun: this.options.dryRun,
-                          verbose: this.options.verbose,
-                          profile: this.options.profile,
-                        },
-                        block.language,
-                        block.exec,
-                        block.async
-                      ))
+
+                    const popContext = isFinallyPop(block.body, block.exec)
+                    if (popContext) {
+                      await this.execAndClearFinally(popContext)
+                      status = "success"
+                    } else {
+                      status =
+                        (this.memos.statusMemo && this.memos.statusMemo[statusMemoKey] === "success" && "success") ||
+                        (await shellExec(
+                          block.body,
+                          this.memos,
+                          {
+                            write: this.write,
+                            shell: this.options.shell,
+                            dryRun: this.options.dryRun,
+                            verbose: this.options.verbose,
+                            profile: this.options.profile,
+                          },
+                          block.language,
+                          block.exec,
+                          block.async
+                        ))
+                    }
 
                     if (status == "success" && this.memos.statusMemo) {
                       this.memos.statusMemo[statusMemoKey] = status
@@ -465,7 +540,12 @@ export class Guide {
   }
 
   /** @return whether we actually ran them */
+  private _currentRunner: TaskRunner
   private async runTasks(taskSteps: TaskStep[], execution: "auto" | "step" | "dryr" = "auto"): Promise<boolean> {
+    if (taskSteps.length === 0) {
+      return false
+    }
+
     if (execution === "step") {
       console.log("🖐  Hit enter after every step to proceed to the next step, or ctrl+c to cancel.")
       console.log()
@@ -474,7 +554,10 @@ export class Guide {
     const stepIt = execution === "step"
     const dryRun = execution === "dryr"
 
-    const taskPromise = taskRunner(
+    const runner = new TaskRunner()
+    this._currentRunner = runner // ugh, to help with ctrl+c handling
+
+    const taskPromise = runner.run(
       taskSteps
         .filter((_) => _.status !== "success")
         .flatMap((_, idx, A) => [
@@ -491,8 +574,26 @@ export class Guide {
 
     this.markDone(0, "success")
     await taskPromise
+    this._currentRunner = undefined
 
     return true // we actually ran the tasks
+  }
+
+  private async runFinallyTasks(taskSteps: FinallyTaskStep[]) {
+    try {
+      return await this.runTasks(
+        await Promise.all(
+          taskSteps.map(asNormalTaskStep).map(async (_) =>
+            Object.assign({}, _, {
+              graph: await optimize(_.graph, this.choices, this.memos, this.options),
+            })
+          )
+        )
+      )
+    } catch (err) {
+      console.error("Error running finally tasks", err)
+      throw err
+    }
   }
 
   /** Emit the title and description of the given `graph` */
@@ -533,49 +634,65 @@ export class Guide {
   }
 
   /** Iterate until all choices have been resolved */
-  private async resolveChoices(iter = 0, choiceIter = 0, previous?: Wizard) {
+  private async resolveChoices(iter = 0, choiceIter = 0, previous?: Wizard): Promise<void> {
     const qs = await this.questions(choiceIter, previous)
-    const { graph, choices, preChoiceTasks, postChoiceTasks, questions, wizard } = qs
+    const { graph, choices, preChoiceTasks: pre, postChoiceTasks: post, questions, wizard } = qs
 
-    if (this.isGuided) {
-      if (iter === 0) {
-        if (this.shouldClearOnFirstQuestion) {
-          // clear the console before presenting the guide, but after
-          // the initial compilation, and before presenting the guidebook title
-          console.clear()
-        }
-
-        this.presentGuidebookTitle(graph)
-      } else if (this.shouldClearOnEveryQuestion) {
-        console.clear()
-      }
+    if (this.hasReceivedExitSignalFromUser) {
+      return
     }
 
-    if (questions.length === 0) {
-      if (isRaw(this.options)) {
-        // notify the client that we are done with the Q&A part
-        const { qadone } = await import("../raw/qadone.js")
-        await qadone(this.options)
-      }
-      return postChoiceTasks
-    } else if (preChoiceTasks.length > 0) {
-      await this.runTasks(preChoiceTasks)
-      return this.resolveChoices(iter + 1, choiceIter, wizard)
-      // ^^^ same choice iter, since we asked no questions this time
-    } else if (!this.isGuided) {
-      // we have unresolved questions, but were asked to run a non-guided execution :(
-      throw new Error(
-        `Unable to run this guidebook, due to ${questions.length} unresolved question${
-          questions.length === 1 ? "" : "s"
-        }`
-      )
-    } else {
-      const firstQuestion = questions[0]
+    const finallySteps = [...pre, ...post].filter(isFinallyTaskStep)
+    this.setFinallies(finallySteps)
 
-      // note that we ask one question at a time, because the answer
-      // to the first question may influence what question we ask next
-      await this.incorporateAnswers(choices[0], await this.ask(firstQuestion))
-      return this.resolveChoices(iter + 1, choiceIter + 1, wizard)
+    const preChoiceTasks = pre.filter(isNormalTaskStep)
+    const postChoiceTasks = post.filter(isNormalTaskStep)
+
+    try {
+      if (this.isGuided) {
+        if (iter === 0) {
+          if (this.shouldClearOnFirstQuestion) {
+            // clear the console before presenting the guide, but after
+            // the initial compilation, and before presenting the guidebook title
+            console.clear()
+          }
+
+          this.presentGuidebookTitle(graph)
+        } else if (this.shouldClearOnEveryQuestion) {
+          console.clear()
+        }
+      }
+
+      if (questions.length === 0) {
+        if (isRaw(this.options)) {
+          // notify the client that we are done with the Q&A part
+          const { qadone } = await import("../raw/qadone.js")
+          await qadone(this.options)
+        }
+        await this.runTasks(await postChoiceTasks)
+      } else if (preChoiceTasks.length > 0) {
+        await this.runTasks(preChoiceTasks)
+        return await this.resolveChoices(iter + 1, choiceIter, wizard)
+        // ^^^ same choice iter, since we asked no questions this time
+      } else if (!this.isGuided) {
+        // we have unresolved questions, but were asked to run a non-guided execution :(
+        throw new Error(
+          `Unable to run this guidebook, due to ${questions.length} unresolved question${
+            questions.length === 1 ? "" : "s"
+          }`
+        )
+      } else {
+        const firstQuestion = questions[0]
+
+        // note that we ask one question at a time, because the answer
+        // to the first question may influence what question we ask next
+        await this.incorporateAnswers(choices[0], await this.ask(firstQuestion))
+        return await this.resolveChoices(iter + 1, choiceIter + 1, wizard)
+      }
+    } finally {
+      // this shouldn't be necessary, in the absence of bugs;
+      // popContext should clear as they come
+      await this.clearFinallies(finallySteps)
     }
   }
 
@@ -583,12 +700,11 @@ export class Guide {
     // a name we might want to associate with the run, in the logs
     const name = this.options.name ? ` (${this.options.name})` : ""
 
-    const tasks = await this.resolveChoices()
     try {
-      // await this.showPlan(true, true)
-      const tasksWereRun = await this.runTasks(tasks)
+      await this.resolveChoices()
 
-      if (tasksWereRun && this.isGuided) {
+      // await this.showPlan(true, true)
+      if (this.isGuided) {
         if (isRaw(this.options)) {
           // notify the client that we are done with the Q&A part
           const { alldone } = await import("../raw/alldone.js")
@@ -604,7 +720,7 @@ export class Guide {
         }
       }
     } catch (err) {
-      if (!isEarlyExit(err)) {
+      if (!isEarlyExit(err) && !this.hasReceivedExitSignalFromUser) {
         throw new Error(chalk.red(mainSymbols.cross) + " Run failed" + name + ": " + err.message)
       }
     }

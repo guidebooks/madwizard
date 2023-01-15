@@ -44,6 +44,9 @@ export interface Memos {
   /** onExit handlers */
   onExit: { name: string; cb: (signal?: "SIGINT" | "SIGTERM") => void | Promise<void> }[]
 
+  /** Finally block context stack */
+  finallyStack: string[]
+
   /** Invalidate any memos that make use of the given shell variable */
   invalidate(variable: string): void
 
@@ -65,13 +68,16 @@ export class Memoizer implements Memos {
   public readonly env: typeof process.env = {}
 
   /** Any collected dependencies that need to be injected into the runtime */
-  public dependencies = {}
+  public readonly dependencies = {}
 
   /** Any forked subprocesses that we should wait for? */
-  public subprocesses: ChildProcess[] = []
+  public readonly subprocesses: ChildProcess[] = []
 
   /** onExit handlers */
-  public onExit: Memos["onExit"] = []
+  public readonly onExit: Memos["onExit"] = []
+
+  /** Finally block context stack */
+  public readonly finallyStack: string[] = []
 
   /** Invalidate any memos that make use of the given shell variable */
   public invalidate(variable: string): void {
@@ -91,7 +97,7 @@ export class Memoizer implements Memos {
   }
 
   /** Cleanup any state, e.g. spawned subprocesses */
-  public cleanup(signal?: "SIGINT" | "SIGTERM"): void {
+  public async cleanup(signal?: "SIGINT" | "SIGTERM"): Promise<void> {
     try {
       // re: `reverse()`, we intentionally iterate over the
       // subprocesses in *reverse* order. The assumption here is
@@ -99,14 +105,16 @@ export class Memoizer implements Memos {
       // subprocesses first, then the later kills may fail because
       // those later processes depend on state or connections being maintained by the earlier
       // ones; e.g. kubernetes port forwards.
-      this.onExit.reverse().forEach(({ name, cb }) => {
-        try {
-          Debug("madwizard/cleanup")(name)
-          cb(signal)
-        } catch (err) {
-          Debug("madwizard/cleanup")("error in onExit handler " + name, err)
-        }
-      })
+      await Promise.all(
+        this.onExit.reverse().map(async ({ name, cb }) => {
+          try {
+            Debug("madwizard/cleanup")(name)
+            await cb(signal)
+          } catch (err) {
+            Debug("madwizard/cleanup")("error in onExit handler " + name, err)
+          }
+        })
+      )
 
       if (this.subprocesses.length > 0) {
         let N = this.subprocesses.length

@@ -117,7 +117,7 @@ export class Treeifier<Content> {
       origin,
       {
         id: origin.order.toString(),
-        name: this.ui.title(title || basename(filepath)),
+        name: this.ui.title((origin.isFinallyFor ? "Finally: " : "") + (title || basename(filepath))),
         defaultExpanded: !this.isDone(rollupStatus) && depth < 2,
         children: children.length === 0 ? undefined : children,
         icon: hasIcon && this.ui.icon("Guidebook"),

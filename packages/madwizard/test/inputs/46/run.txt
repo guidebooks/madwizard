@@ -1,6 +1,9 @@
-export choice="n/a"
-export IMAGE_PULL_SECRET=$([ "${choice}" = "n/a" ] && echo "" || echo "${choice}")
-if [ -n "$IMAGE_PULL_SECRET" ]; then echo "FAIL"
-else echo "PASS"
-fi
-PASS
+echo madwizard_finally_push "test/inputs/46/in"
+sleep ${SLEEPTIME-0}
+echo AAA
+AAA
+echo "C1"
+C1
+echo madwizard_finally_pop "test/inputs/46/in"
+echo "final finally"
+final finally

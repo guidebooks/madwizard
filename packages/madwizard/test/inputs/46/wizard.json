@@ -1,35 +1,114 @@
 [
   {
     "graph": {
-      "body": "export choice=\"n/a\"",
-      "language": "shell",
-      "id": "somekey"
+      "key": "somekey",
+      "group": "in",
+      "title": "in",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo madwizard_finally_push \"test/inputs/46/in\"",
+            "language": "shell",
+            "exec": "madwizard_finally_push",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
     },
     "step": {
-      "name": "Missing title",
-      "content": "```shell\nexport choice=\"n/a\"\n```"
+      "name": "in"
     }
   },
   {
     "graph": {
-      "body": "export IMAGE_PULL_SECRET=$([ \"${choice}\" = \"n/a\" ] && echo \"\" || echo \"${choice}\")",
-      "language": "shell",
-      "id": "somekey"
+      "key": "somekey",
+      "group": "a",
+      "title": "a",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "sleep ${SLEEPTIME-0}\necho AAA",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
     },
     "step": {
-      "name": "Missing title",
-      "content": "```shell\nexport IMAGE_PULL_SECRET=$([ \"${choice}\" = \"n/a\" ] && echo \"\" || echo \"${choice}\")\n```"
+      "name": "a"
     }
   },
   {
     "graph": {
-      "body": "if [ -n \"$IMAGE_PULL_SECRET\" ]; then echo \"FAIL\"\nelse echo \"PASS\"\nfi",
-      "language": "shell",
-      "id": "somekey"
+      "key": "somekey",
+      "group": "s1",
+      "title": "s1",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"C1\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
     },
     "step": {
-      "name": "Missing title",
-      "content": "```shell\nif [ -n \"$IMAGE_PULL_SECRET\" ]; then echo \"FAIL\"\nelse echo \"PASS\"\nfi\n```"
+      "name": "s1"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "in",
+      "title": "in",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo madwizard_finally_pop \"test/inputs/46/in\"",
+            "language": "shell",
+            "exec": "madwizard_finally_pop",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "in"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "title": "finally_finally",
+      "filepath": "test/inputs/45/finally_finally",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"final finally\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder",
+      "isFinallyFor": "test/inputs/46/in"
+    },
+    "step": {
+      "name": "finally_finally"
     }
   }
 ]

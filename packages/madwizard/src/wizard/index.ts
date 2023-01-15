@@ -34,6 +34,14 @@ import {
   isBarrier,
   findChoiceFrontier,
 } from "../graph/index.js"
+import {
+  FinallySubTask,
+  NormalSubTask,
+  asNormalSubTask,
+  isSubTask,
+  isNormalSubTask,
+  isFinallySubTask,
+} from "../graph/nodes/SubTask.js"
 
 type Markdown = string | (() => string)
 
@@ -79,7 +87,8 @@ type WizardStepWithGraph<G extends Graph = Graph, C extends StepContent = StepCo
   graph: G
 }
 
-export type TaskStep = WizardStepWithGraph<Graph, Markdown>
+export type TaskStep<G extends Graph = Graph> = WizardStepWithGraph<G, Markdown>
+export type FinallyTaskStep = TaskStep<FinallySubTask>
 export type ChoiceStep = WizardStepWithGraph<Choice, Tile[]>
 
 export function isChoiceStep(step: WizardStepWithGraph): step is ChoiceStep {
@@ -88,6 +97,18 @@ export function isChoiceStep(step: WizardStepWithGraph): step is ChoiceStep {
 
 export function isTaskStep(step: WizardStepWithGraph): step is TaskStep {
   return !isChoiceStep(step)
+}
+
+export function isNormalTaskStep(step: WizardStepWithGraph): step is FinallyTaskStep {
+  return isTaskStep(step) && (!isSubTask(step.graph) || isNormalSubTask(step.graph))
+}
+
+export function isFinallyTaskStep(step: WizardStepWithGraph): step is FinallyTaskStep {
+  return isTaskStep(step) && isFinallySubTask(step.graph)
+}
+
+export function asNormalTaskStep(finallyStep: FinallyTaskStep): TaskStep<NormalSubTask> {
+  return Object.assign({}, finallyStep, { graph: asNormalSubTask(finallyStep.graph) })
 }
 
 /**
@@ -170,10 +191,11 @@ export function wizardify<T>(graph: Graph<T>, memos: Memos, options: Partial<Opt
 
     const { includeOptional } = options
 
-    const wizard = frontier.flatMap(({ prereqs, choice }, idx) => [
-      ...(!prereqs
+    const wizard = frontier.flatMap(({ prereqs, choice, finallies }, idx) => [
+      ...(!prereqs && !finallies
         ? []
-        : prereqs
+        : (prereqs || [])
+            .concat(finallies || [])
             .filter((_) => includeOptional || !isOptional(_))
             .map((_) => wizardStepForPrereq(_, memos, options.choices))),
       ...(!choice || (!includeOptional && isOptional(choice))

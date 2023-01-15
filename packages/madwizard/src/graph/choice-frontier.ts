@@ -16,19 +16,15 @@
 
 import { ChoiceState } from "../choices/index.js"
 
-import {
-  Choice,
-  Graph,
-  LeafNode,
-  isBarrier,
-  isChoice,
-  isParallel,
-  isSequence,
-  isSubTask,
-  isTitledSteps,
-} from "./index.js"
+import Graph, { isBarrier } from "./Graph.js"
 
+import LeafNode from "./nodes/LeafNode.js"
+import { isParallel } from "./nodes/Parallel.js"
+import { isSequence } from "./nodes/Sequence.js"
+import Choice, { isChoice } from "./nodes/Choice.js"
+import { isTitledSteps } from "./nodes/TitledSteps.js"
 import EnTitled, { hasTitle, withTitle } from "./nodes/EnTitled.js"
+import { FinallySubTask, isSubTask, isNormalSubTask } from "./nodes/SubTask.js"
 
 /** Choose `A` if it has a title, else `B` */
 function titlest(A: Graph, B?: EnTitled) {
@@ -49,6 +45,8 @@ function pushWithTitle(S: Graph[], A: LeafNode, B?: EnTitled, isPartOfBarrier = 
   }
 }
 
+type Frontier = { prereqs?: Graph[]; choice: Choice; finallies?: FinallySubTask[] }
+
 /**
  * Find the first set of `Choice` nodes, when scanning the given
  * `graph`. Do not scan under Choice nodes for nested choices... we
@@ -59,13 +57,15 @@ function pushWithTitle(S: Graph[], A: LeafNode, B?: EnTitled, isPartOfBarrier = 
 export function _findChoiceFrontier(
   graph: Graph,
   prereqs: Graph[],
+  finallies: FinallySubTask[],
   nearestEnclosingTitle?: EnTitled,
   isPartOfBarrier = false
-): { prereqs?: Graph[]; choice: Choice }[] {
+): Frontier[] {
   const recurse = (graph: Graph, title?: EnTitled) =>
     _findChoiceFrontier(
       graph,
       prereqs,
+      finallies,
       title || titlest(graph, nearestEnclosingTitle),
       isPartOfBarrier || isBarrier(graph)
     )
@@ -78,11 +78,23 @@ export function _findChoiceFrontier(
     // makes sure we attach all accumulated prereqs with this choice
     // (the slice), and then clear them out of the accumulated model
     // (the splice).
-    const frontier = [{ prereqs: prereqs.slice(), choice: graph }]
-    prereqs.splice(0, prereqs.length)
-    return frontier
+    const frontier: Frontier = { choice: graph }
+    if (prereqs.length > 0) {
+      frontier.prereqs = prereqs.slice()
+      prereqs.splice(0, prereqs.length)
+    }
+    if (finallies.length > 0) {
+      frontier.finallies = finallies.slice()
+      finallies.splice(0, finallies.length)
+    }
+    return [frontier]
   } else if (isSubTask(graph)) {
-    return recurse(graph.graph)
+    if (isNormalSubTask(graph)) {
+      return recurse(graph.graph)
+    } else {
+      finallies.push(graph)
+      return []
+    }
   } else if (isSequence(graph)) {
     return graph.sequence.flatMap(recurse2)
   } else if (isParallel(graph)) {
@@ -96,15 +108,23 @@ export function _findChoiceFrontier(
   }
 }
 
-export function findChoiceFrontier(graph: Graph) {
+export function findChoiceFrontier(graph: Graph): Frontier[] {
   const prereqs = []
-  const frontier = _findChoiceFrontier(graph, prereqs)
+  const finallies = []
+  const frontier = _findChoiceFrontier(graph, prereqs, finallies)
 
   // We may have post-choice code blocks, i.e. choices that are not
   // dependent on any choice. If so, tack these on the end of the
   // model as "prereqs" with no associated choice.
-  if (prereqs.length > 0) {
-    frontier.push({ prereqs, choice: undefined })
+  if (prereqs.length > 0 || finallies.length > 0) {
+    const last: Frontier = { choice: undefined }
+    if (prereqs.length > 0) {
+      last.prereqs = prereqs
+    }
+    if (finallies.length > 0) {
+      last.finallies = finallies
+    }
+    frontier.push(last)
   }
 
   return frontier
@@ -125,7 +145,7 @@ export function findChoicesOnFrontier(graph: Graph, choices?: ChoiceState): Choi
         return findChoicesOnFrontier(chosenSubtree.graph, choices)
       }
     }
-  } else if (isSubTask(graph)) {
+  } else if (isNormalSubTask(graph)) {
     return findChoicesOnFrontier(graph.graph, choices)
   } else if (isSequence(graph)) {
     return graph.sequence.flatMap((_) => findChoicesOnFrontier(_, choices))

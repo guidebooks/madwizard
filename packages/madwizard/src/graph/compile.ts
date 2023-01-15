@@ -15,16 +15,19 @@
  */
 
 import Debug from "debug"
-import { CodeBlockProps } from "../codeblock/index.js"
-import { ChoiceState, expand } from "../choices/index.js"
-import { ExecutorOptions } from "../exec/Executor.js"
-import { Choice, Graph, TitledSteps, extractTitle, hasSource } from "./index.js"
 
+import { Memos } from "../memoization/index.js"
+import { ChoiceState } from "../choices/index.js"
+import { CodeBlockProps } from "../codeblock/index.js"
+import { ExecutorOptions } from "../exec/Executor.js"
+
+import Graph from "./Graph.js"
+import Choice from "./nodes/Choice.js"
+import TitledSteps from "./nodes/TitledSteps.js"
 import { parallel } from "./nodes/Parallel.js"
 import SubTask, { subtask } from "./nodes/SubTask.js"
 import { emptySequence, seq, sequence } from "./nodes/Sequence.js"
 
-import { Memos } from "../memoization/index.js"
 import { ValidateOptions } from "./validate.js"
 
 import {
@@ -37,8 +40,7 @@ import {
 } from "../codeblock/CodeBlockProps.js"
 
 import provenanceOf from "./provenance.js"
-import optimize, { optimize2 } from "./optimize.js"
-import workaroundMultipleChoicesPerFile from "./workaroundMultipleChoicesPerFile.js"
+import optimize from "./optimize.js"
 
 type ChoiceNesting = { parent: CodeBlockChoice; graph: Choice }
 type SubTaskNesting = { parent: CodeBlockImport; graph: SubTask }
@@ -239,7 +241,7 @@ export async function compile(
         parent.source,
         parent.barrier,
         parent.validate,
-        parent.isFinally
+        parent.isFinallyFor
       )
     }
 
@@ -370,38 +372,17 @@ export async function compile(
     })
     debug("graph formation done")
 
-    const doExpand: (...params: Parameters<typeof expand>) => Graph | Promise<Graph> =
-      options.expand === false ? (x) => x : expand
-
     const unoptimized =
       parts.length === 0
         ? undefined
-        : workaroundMultipleChoicesPerFile(
-            await doExpand(
-              parts.length === 1 ? parts[0] : ordering === "parallel" ? parallel(parts) : sequence(parts),
-              choices,
-              memos
-            )
-          )
+        : parts.length === 1
+        ? parts[0]
+        : ordering === "parallel"
+        ? parallel(parts)
+        : sequence(parts)
 
     debug("optimizing")
-    const willNotOptimize = options.optimize === false
-    let optimized = willNotOptimize ? unoptimized : await optimize(unoptimized, choices, memos, options)
-    debug("optimizing done")
-
-    if (title && !extractTitle(optimized)) {
-      optimized = subtask(
-        title,
-        title,
-        title,
-        description,
-        "",
-        sequence([optimized]),
-        hasSource(unoptimized) ? unoptimized.source : undefined
-      )
-    }
-
-    return willNotOptimize ? unoptimized : await optimize2(optimized, choices, memos, doExpand)
+    return await optimize(unoptimized, choices, memos, options, title, description)
   } finally {
     debug("complete")
   }

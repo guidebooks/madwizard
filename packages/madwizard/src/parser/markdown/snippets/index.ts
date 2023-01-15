@@ -24,6 +24,8 @@ import { isAbsolute as pathIsAbsolute, dirname as pathDirname, join as pathJoin,
 import { isUrl, toRawGithubUserContent } from "./urls.js"
 import { oraPromise } from "../../../util/ora-delayed-promise.js"
 
+import codegenFinally from "../../../exec/finally/codegen.js"
+
 import indent from "../util/indent.js"
 import { MadWizardOptions } from "../../../fe/index.js"
 import { tryFrontmatter } from "../frontmatter/frontmatter-parser.js"
@@ -381,7 +383,12 @@ function inlineSnippets(opts: Options & InternalOptions) {
 ${indent(errorMessage)}`
   }
 
-  const processImport = async (importStmt: Import, srcFilePath: string, provenance: string[], isFinally = false) => {
+  const processImport = async (
+    importStmt: Import,
+    srcFilePath: string,
+    provenance: string[],
+    isFinallyFor?: string
+  ) => {
     const env = getImportEnv(importStmt)
     const group = getImportGroup(importStmt)
     const snippetFileName = getImportPath(importStmt)
@@ -441,11 +448,11 @@ ${indent(errorMessage)}`
 
     // note how we splice in `export FOO=bar` shell commands for any import env maps
     return `
-${colons}import{provenance=${provenance.concat([
-      thisProvenance,
-    ])} isFinally="${isFinally}" filepath=${thisProvenance} attributes="${attributesEnc}"${
-      title ? ` title="${title}"` : ""
-    }${group ? ` group="${group}"` : ""}}
+${colons}import{provenance=${provenance.concat([thisProvenance])} ${
+      isFinallyFor ? `isFinallyFor="${isFinallyFor}"` : ""
+    } filepath=${thisProvenance} attributes="${attributesEnc}"${title ? ` title="${title}"` : ""}${
+      group ? ` group="${group}"` : ""
+    }}
 ${setenv}
 ${body}
 ${colons}
@@ -463,11 +470,28 @@ ${clearenv}
       : Promise.all(attributes.imports.map((_) => processImport(_, srcFilePath, provenance))).then((_) => _.join("\n"))
 
     /** Guidebook finally imports from topmatter */
-    const finallyContent: Promise<string> = !hasFinally(attributes)
-      ? undefined
-      : Promise.all(attributes.finally.map((_) => processImport(_, srcFilePath, provenance, true))).then((_) =>
+    const isFinallyFor = canonicalProvenanceOf(srcFilePath, opts.madwizardOptions)
+    const finallyContent: string | Promise<string> = !hasFinally(attributes)
+      ? ""
+      : Promise.all(attributes.finally.map((_) => processImport(_, srcFilePath, provenance, isFinallyFor))).then((_) =>
           _.join("\n")
         )
+    const finallyPush = !hasFinally(attributes)
+      ? ""
+      : `
+${colonColonColon(nestingDepth)}import{provenance=fpush/${isFinallyFor} filepath=fpush/${isFinallyFor} }
+${codegenFinally("push", isFinallyFor)}
+${await finallyContent}
+${colonColonColon(nestingDepth)}
+`
+
+    const finallyPop = !hasFinally(attributes)
+      ? ""
+      : `
+${colonColonColon(nestingDepth)}import{provenance=fpop/${isFinallyFor} filepath=fpop/${isFinallyFor} }
+${codegenFinally("pop", isFinallyFor)}
+${colonColonColon(nestingDepth)}
+`
 
     const noImportedContent = async () => !importedContent || (await importedContent).length === 0
     const noFinallyContent = async () => !finallyContent || (await finallyContent).length === 0
@@ -523,9 +547,11 @@ ${clearenv}
               .slice(0, bodyBegin - 1)
               .join("\n")
 
-      return `${topmatter ? "\n" + topmatter : ""}
+      return `${topmatter ? "\n" + topmatter + "\n---" : ""}
 
 <!-- Begin imported content for ${srcFilePath} -->
+
+${await finallyPush}
 
 ${(await noImportedContent()) ? "" : await importedContent}
 
@@ -533,7 +559,7 @@ ${(await noImportedContent()) ? "" : await importedContent}
 
 ${body}
 
-${(await noFinallyContent()) ? "" : await finallyContent}
+${await finallyPop}
 `
     }
   }

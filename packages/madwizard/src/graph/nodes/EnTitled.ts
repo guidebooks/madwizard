@@ -23,14 +23,14 @@ import { isChoice } from "./Choice.js"
 import { hasFilepath } from "./Filepath.js"
 import { isTitledSteps } from "./TitledSteps.js"
 import { subtask, isSubTask } from "./SubTask.js"
-import { Description, Source, Title } from "../../codeblock/CodeBlockProps.js"
+import { Description, FinallyFor, Source, Title } from "../../codeblock/CodeBlockProps.js"
 
 /** A way of titling a task or choice */
-type EnTitled = Title & Partial<Description> & Partial<Source>
+type EnTitled = Title & Partial<Description> & Partial<Source> & Partial<FinallyFor>
 
 /** @return a `Graph` that inherits the given `EnTitled` properties */
-export function withTitle(block: LeafNode, { title, description, source }: EnTitled, barrier = false) {
-  return subtask(title, title, title, description, "", seq(block), source, barrier)
+export function withTitle(block: LeafNode, { title, description, source, isFinallyFor }: EnTitled, barrier = false) {
+  return subtask(title, title, title, description, "", seq(block), source, barrier, undefined, isFinallyFor)
 }
 
 export function hasTitleProperty(graph: Graph): graph is Graph & Title & Partial<Description> {

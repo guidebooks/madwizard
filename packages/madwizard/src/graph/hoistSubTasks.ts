@@ -30,7 +30,7 @@ import { Source } from "../codeblock/index.js"
 import { isParallel, parallel } from "./nodes/Parallel.js"
 import { hasTitle, hasTitleProperty } from "./nodes/EnTitled.js"
 import Sequence, { emptySequence, sequence } from "./nodes/Sequence.js"
-import SubTask, { isNotFinallySubTask, isSubTask, isNotFinallySubTaskWithFilepath, subtask } from "./nodes/SubTask.js"
+import SubTask, { isSubTask, isSubTaskWithFilepath, subtask } from "./nodes/SubTask.js"
 
 import { findChoicesOnFrontier as findChoiceFrontier } from "./choice-frontier.js"
 
@@ -76,7 +76,7 @@ function removeDuplicates(list: SubTask[]): SubTask[] {
 }
 
 function extractDominatedSubTasksUpToChoice(graph: Graph): SubTask[] {
-  if (isNotFinallySubTask(graph)) {
+  if (isSubTask(graph)) {
     const subgraphTasks = extractDominatedSubTasksUpToChoice(graph.graph)
     if (!graph.filepath) {
       // then this is a subtask that was made up internally, e.g. we
@@ -143,7 +143,7 @@ function pruneSubTasks(graph: SubTask, inheritedSubTasks: SubTask[], includingMe
  * need to repeat this fact in subtrees.
  */
 function pruneShadowedSubTasks(graph: Graph, inheritedSubTasks: SubTask[]): Graph | void {
-  if (isNotFinallySubTask(graph)) {
+  if (isSubTask(graph)) {
     return pruneSubTasks(graph, inheritedSubTasks)
   } else if (isSequence(graph)) {
     const elements = graph.sequence.map((_) => pruneShadowedSubTasks(_, inheritedSubTasks))
@@ -213,7 +213,7 @@ function findAndHoistChoiceFrontier(graph: void | Graph, inheritedSubTasks: SubT
         })
       }),
     })
-  } else if (isNotFinallySubTask(graph)) {
+  } else if (isSubTask(graph)) {
     const recurse = findAndHoistChoiceFrontier(graph.graph, inheritedSubTasks)
     return Object.assign({}, graph, { graph: recurse })
   } else if (isSequence(graph)) {
@@ -238,14 +238,14 @@ function findAndHoistChoiceFrontier(graph: void | Graph, inheritedSubTasks: SubT
 
 function extractTopLevelSubTasks(graph: Graph): { toplevelSubTasks: SubTask[]; residual: Graph } {
   if (isSequence(graph)) {
-    const toplevelSubTasks = graph.sequence.filter(isNotFinallySubTaskWithFilepath)
-    const residual = sequence(graph.sequence.filter((_) => !isNotFinallySubTaskWithFilepath(_)))
+    const toplevelSubTasks = graph.sequence.filter(isSubTaskWithFilepath)
+    const residual = sequence(graph.sequence.filter((_) => !isSubTaskWithFilepath(_)))
     return { toplevelSubTasks, residual }
   } else if (isParallel(graph)) {
-    const toplevelSubTasks = graph.parallel.filter(isNotFinallySubTask)
-    const residual = parallel(graph.parallel.filter((_) => !isNotFinallySubTask(_)))
+    const toplevelSubTasks = graph.parallel.filter(isSubTask)
+    const residual = parallel(graph.parallel.filter((_) => !isSubTask(_)))
     return { toplevelSubTasks, residual }
-  } else if (isNotFinallySubTaskWithFilepath(graph)) {
+  } else if (isSubTaskWithFilepath(graph)) {
     return { toplevelSubTasks: [graph], residual: emptySequence() }
   } else {
     return { toplevelSubTasks: [], residual: graph }

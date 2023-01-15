@@ -68,8 +68,8 @@ export function getImportFilepath(props: ImportProps) {
   return getImportKey(props)
 }
 
-export function isFinally(props: ImportProps) {
-  return props["data-kui-is-finally"]
+export function isFinallyFor(props: ImportProps) {
+  return props["data-kui-is-finally-for"]
 }
 
 export function getImportTitle(props: ImportProps) {
@@ -91,7 +91,7 @@ export function visitImportContainers(
     group: string
     title: string
     filepath: string
-    isFinally: string
+    isFinallyFor: string
     provenance: string
     env: Record<string, string>
     frontmatter: KuiFrontmatter
@@ -105,7 +105,7 @@ export function visitImportContainers(
         group: node.attributes.group,
         title: node.attributes.title,
         filepath: node.attributes.filepath,
-        isFinally: node.attributes.isFinally,
+        isFinallyFor: node.attributes.isFinallyFor,
         provenance: node.attributes.provenance,
         env: node.attributes.env,
         children: node.children,
@@ -154,7 +154,7 @@ export function remarkImports() {
       // snippets.md snippet inliner
       visitImportContainers(
         tree,
-        ({ node, group, env, title, frontmatter, filepath, isFinally, provenance, children }) => {
+        ({ node, group, env, title, frontmatter, filepath, isFinallyFor, provenance, children }) => {
           node.data = {
             hProperties: {
               containedCodeBlocks: [],
@@ -164,7 +164,7 @@ export function remarkImports() {
               "data-kui-is-barrier": frontmatter.barrier,
               "data-kui-idempotency-group": group,
               "data-kui-filepath": filepath,
-              "data-kui-is-finally": isFinally === "true",
+              "data-kui-is-finally-for": isFinallyFor,
               "data-kui-provenance": provenance,
               "data-kui-import-title": title || findFirstHeading(children) || basename(filepath),
             },

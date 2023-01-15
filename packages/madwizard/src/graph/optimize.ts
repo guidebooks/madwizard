@@ -19,8 +19,12 @@ import Debug from "debug"
 import { Memos } from "../memoization/index.js"
 import { ChoiceState, expand } from "../choices/index.js"
 
+import { CompileOptions } from "./compile.js"
+import Graph, { hasSource } from "./Graph.js"
+
+import { subtask } from "./nodes/SubTask.js"
 import { sequence } from "./nodes/Sequence.js"
-import { CompileOptions, Graph } from "./index.js"
+import { extractTitle } from "./nodes/EnTitled.js"
 
 import hoistSubTasks from "./hoistSubTasks.js"
 import propagateTitles from "./propagateTitles.js"
@@ -28,7 +32,9 @@ import collapseValidated from "./collapseValidated.js"
 import collapseMadeChoices from "./collapseMadeChoices.js"
 import deadCodeElimination from "./deadCodeElimination.js"
 
-export default async function optimize(graph: Graph, choices: ChoiceState, memos: Memos, options?: CompileOptions) {
+import workaroundMultipleChoicesPerFile from "./workaroundMultipleChoicesPerFile.js"
+
+async function optimize(graph: Graph, choices: ChoiceState, memos: Memos, options?: CompileOptions) {
   const debug = Debug("madwizard/timing/graph:optimize")
   debug("start")
 
@@ -50,7 +56,7 @@ export default async function optimize(graph: Graph, choices: ChoiceState, memos
 }
 
 /** Second-pass optimizations. Here we only expand nested expand(). */
-export async function optimize2(
+async function optimize2(
   graph: Graph,
   choices: ChoiceState,
   memos: Memos,
@@ -58,4 +64,40 @@ export async function optimize2(
 ) {
   const expanded = await doExpand(graph, choices, memos)
   return collapseMadeChoices(expanded, choices)
+}
+
+export default async function fullOptimize(
+  graph: Graph | undefined,
+  choices: ChoiceState,
+  memos: Memos,
+  options?: CompileOptions,
+  title?: string,
+  description?: string
+): Promise<Graph> {
+  if (!graph) {
+    return graph
+  }
+
+  const willNotOptimize = options.optimize === false
+
+  const doExpand: (...params: Parameters<typeof expand>) => Graph | Promise<Graph> =
+    options.expand === false ? (x) => x : expand
+
+  const unoptimized = workaroundMultipleChoicesPerFile(await doExpand(graph, choices, memos))
+
+  let optimized = willNotOptimize ? unoptimized : await optimize(unoptimized, choices, memos, options)
+
+  if (title && !extractTitle(optimized)) {
+    optimized = subtask(
+      title,
+      title,
+      title,
+      description,
+      "",
+      sequence([optimized]),
+      hasSource(unoptimized) ? unoptimized.source : undefined
+    )
+  }
+
+  return willNotOptimize ? unoptimized : await optimize2(optimized, choices, memos, doExpand)
 }
