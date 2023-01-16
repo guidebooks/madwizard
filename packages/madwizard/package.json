@@ -62,7 +62,7 @@
     "expand-home-dir": "^0.0.3",
     "figures": "^5.0.0",
     "front-matter": "^4.0.2",
-    "hast-util-raw": "^7.2.3",
+    "hast-util-raw": "^8.0.0",
     "hast-util-to-mdast": "^9.0.0",
     "hast-util-to-string": "^2.0.0",
     "js-yaml": "^4.1.0",
