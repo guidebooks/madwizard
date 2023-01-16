@@ -1,3 +1,9 @@
+# [4.3.0](https://github.com/guidebooks/madwizard/compare/4.2.0...4.3.0) (2023-01-16)
+
+### Features
+
+- execute finally blocks on abnormal (e.g. ctrl+c) termination ([708ad00](https://github.com/guidebooks/madwizard/commit/708ad009120118a840de41e272eaa53b84d3c63a))
+
 # [4.2.0](https://github.com/guidebooks/madwizard/compare/4.1.0...4.2.0) (2023-01-09)
 
 ### Bug Fixes
