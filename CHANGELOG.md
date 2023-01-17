@@ -1,3 +1,5 @@
+## [4.3.5](https://github.com/guidebooks/madwizard/compare/4.3.4...4.3.5) (2023-01-17)
+
 ## [4.3.4](https://github.com/guidebooks/madwizard/compare/4.3.3...4.3.4) (2023-01-17)
 
 ## [4.3.3](https://github.com/guidebooks/madwizard/compare/4.3.2...4.3.3) (2023-01-17)
