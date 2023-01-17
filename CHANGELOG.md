@@ -1,3 +1,9 @@
+## [4.3.2](https://github.com/guidebooks/madwizard/compare/4.3.1...4.3.2) (2023-01-17)
+
+### Bug Fixes
+
+- bump to '2.3.7' of enquirier starpit fork ([c44b87c](https://github.com/guidebooks/madwizard/commit/c44b87cfac5c03dba90de008a6eb24454efd46d9))
+
 ## [4.3.1](https://github.com/guidebooks/madwizard/compare/4.3.0...4.3.1) (2023-01-17)
 
 ### Bug Fixes
