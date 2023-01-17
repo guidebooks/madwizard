@@ -1,3 +1,9 @@
+## [4.3.3](https://github.com/guidebooks/madwizard/compare/4.3.2...4.3.3) (2023-01-17)
+
+### Bug Fixes
+
+- guide handler may double-invoke cleanExit ([cce1bd7](https://github.com/guidebooks/madwizard/commit/cce1bd7663af304a7f126f7ca5ab6a43298d6cf6))
+
 ## [4.3.2](https://github.com/guidebooks/madwizard/compare/4.3.1...4.3.2) (2023-01-17)
 
 ### Bug Fixes
