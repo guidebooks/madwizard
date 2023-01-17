@@ -15,6 +15,7 @@
  */
 
 import chalk from "chalk"
+import Debug from "debug"
 import { Writable } from "stream"
 import { Arguments } from "yargs"
 
@@ -100,16 +101,26 @@ export default async function guideHandler<Writer extends Writable["write"]>(
   const guide = new Guide(task, blocks, choices, options, memoizer, ui, write)
 
   /** Kill any spawned subprocesses */
+  let cleanExitPromise: Promise<void> | null = null
   const cleanExit = async (signal?: Parameters<import("../../../../memoization/index.js").Memos["cleanup"]>[0]) => {
-    await Promise.all([memoizer.cleanup(signal), signal ? guide.onExitSignalFromUser(signal) : Promise.resolve()])
+    if (!cleanExitPromise) {
+      // eslint-disable-next-line no-async-promise-executor
+      cleanExitPromise = new Promise(async (resolve) => {
+        Debug("madwizard/cleanup")("attempting a clean exit")
+        await Promise.all([memoizer.cleanup(signal), signal ? guide.onExitSignalFromUser(signal) : Promise.resolve()])
+        Debug("madwizard/cleanup")("attempting a clean exit... done")
+        resolve()
+      })
+    }
+    await cleanExitPromise
   }
   const cleanExitFromSIGINT = async () => {
-    console.error("Received interrupt")
+    Debug("madwizard/cleanup")("Received interrupt")
     console.error(exitMessage)
     await cleanExit("SIGINT")
   }
   const cleanExitFromSIGTERM = async () => {
-    console.error("Received termination request")
+    Debug("madwizard/cleanup")("Received termination request")
     console.error(exitMessage)
     await cleanExit("SIGTERM")
   }
