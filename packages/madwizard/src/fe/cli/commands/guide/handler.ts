@@ -101,10 +101,7 @@ export default async function guideHandler<Writer extends Writable["write"]>(
 
   /** Kill any spawned subprocesses */
   const cleanExit = async (signal?: Parameters<import("../../../../memoization/index.js").Memos["cleanup"]>[0]) => {
-    if (signal) {
-      await guide.onExitSignalFromUser(signal)
-    }
-    await memoizer.cleanup(signal)
+    await Promise.all([memoizer.cleanup(signal), signal ? guide.onExitSignalFromUser(signal) : Promise.resolve()])
   }
   const cleanExitFromSIGINT = async () => {
     console.error("Received interrupt")
