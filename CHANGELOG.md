@@ -1,3 +1,9 @@
+## [4.3.1](https://github.com/guidebooks/madwizard/compare/4.3.0...4.3.1) (2023-01-17)
+
+### Bug Fixes
+
+- SIGINT cleanup should kill guidebook asyncs right away ([69210b8](https://github.com/guidebooks/madwizard/commit/69210b8a161c81acd76a1b1061ef57a20faa092f))
+
 # [4.3.0](https://github.com/guidebooks/madwizard/compare/4.2.0...4.3.0) (2023-01-16)
 
 ### Features

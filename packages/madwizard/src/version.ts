@@ -15,5 +15,5 @@
  */
 
 export default function version() {
-  return "4.3.0"
+  return "4.3.1"
 }
