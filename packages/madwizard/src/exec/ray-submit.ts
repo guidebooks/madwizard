@@ -15,7 +15,7 @@
  */
 
 import Debug from "debug"
-import { join } from "path"
+import { join, resolve } from "path"
 import expandHomeDir from "expand-home-dir"
 import { access, readFile } from "fs/promises"
 
@@ -61,7 +61,7 @@ export function expand(expr: string | number, memos: Memos): string {
 /** Maybe the working directory as a requirements.txt? */
 async function addPipsFromTemplate(pips: Set<string>, parsedOptions: ParsedOptions, memos: Memos) {
   if (parsedOptions["working-dir"]) {
-    const workingDirPips = join(expand(parsedOptions["working-dir"], memos), "requirements.txt")
+    const workingDirPips = resolve(join(expand(parsedOptions["working-dir"], memos), "requirements.txt"))
     if (
       await access(workingDirPips)
         .then(() => true)
@@ -82,7 +82,7 @@ async function addPipsFromTemplate(pips: Set<string>, parsedOptions: ParsedOptio
 /** Maybe the working directory has a runtime-env.yaml we can use? */
 async function readRuntimeEnvFromTemplate(parsedOptions, memos: Memos) {
   if (parsedOptions["working-dir"]) {
-    const workingDirRuntimeEnv = join(expand(parsedOptions["working-dir"], memos), "runtime-env.yaml")
+    const workingDirRuntimeEnv = resolve(join(expand(parsedOptions["working-dir"], memos), "runtime-env.yaml"))
     if (
       await access(workingDirRuntimeEnv)
         .then(() => true)
@@ -147,7 +147,7 @@ async function saveEnvToFile(
   )
 
   if (parsedOptions["working-dir"]) {
-    runtimeEnv["working_dir"] = expand(parsedOptions["working-dir"], memos)
+    runtimeEnv["working_dir"] = resolve(expand(parsedOptions["working-dir"], memos))
   }
 
   /* if (parsedOptions["base-image"]) {
