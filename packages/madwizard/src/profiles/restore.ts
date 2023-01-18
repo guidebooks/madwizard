@@ -23,7 +23,7 @@ import { ChoiceState, deserialize, newChoiceState } from "../choices/index.js"
 
 /** Restore the named `profile` */
 export default async function restore(options: MadWizardOptions, profile: string): Promise<ChoiceState> {
-  const readFile = await import("fs").then((_) => _.readFile)
+  const readFile = options.fs?.readFile || (await import("fs").then((_) => _.readFile))
   const filepath = join(await profilesPath(options), profile)
 
   return new Promise((resolve, reject) => {

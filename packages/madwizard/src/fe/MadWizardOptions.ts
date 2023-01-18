@@ -106,10 +106,21 @@ export interface FetchOptions {
   dataPath: string
 }
 
+/** Allow clients to provide alternative impls of certain shell operations */
+type FileSystemOptions = {
+  fs: Partial<{
+    mkdirp(filepath: string): Promise<void>
+    readFile(filepath: string, cb: (err: NodeJS.ErrnoException | null, data: Buffer) => void): void
+    writeFile(filepath: string, cb: (err: NodeJS.ErrnoException | null) => void): void
+    writeFileAtomic: typeof import("write-file-atomic")
+  }>
+}
+
 export type MadWizardOptions<R extends RawImpl = RawImpl> = Partial<CompilerOptions> &
   Partial<DisplayOptions<R>> &
   Partial<FetchOptions> &
-  Partial<RunOptions>
+  Partial<RunOptions> &
+  Partial<FileSystemOptions>
 
 /** The front-end modules allow passing through input programmatically */
 export type MadWizardOptionsWithInput = MadWizardOptions & { vfile?: import("vfile").VFile }

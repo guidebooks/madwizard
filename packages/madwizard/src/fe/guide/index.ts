@@ -18,7 +18,6 @@ import Debug from "debug"
 import { EOL } from "os"
 import chalk from "chalk"
 import enquirer from "enquirer"
-import readline from "readline"
 import { Writable } from "stream"
 import { mainSymbols } from "figures"
 import { EventEmitter } from "events"
@@ -344,6 +343,15 @@ export class Guide {
     return opts.type === "multiselect"
   }
 
+  private async echo() {
+    return new (await import("./EchoStream.js")).default()
+  }
+
+  private async echoWrite() {
+    const echo = await this.echo()
+    return echo.write.bind(echo)
+  }
+
   /** Present the given question to the user */
   private async ask(opts: Question & { description?: string }) {
     if (isAlreadyAnswered(opts)) {
@@ -356,11 +364,20 @@ export class Guide {
       return opts.answer
     }
 
+    const withStdout = async <T extends Question>(opts: T) => {
+      return Object.assign(
+        {
+          stdout: isRaw(this.options) ? await this.echo() : undefined,
+        },
+        opts
+      )
+    }
+
     const prompt = this.isSelect(opts)
-      ? new enquirer.Select(opts)
+      ? new enquirer.Select(await withStdout(opts))
       : this.isMultiSelect(opts)
-      ? new enquirer.MultiSelect(opts)
-      : new enquirer.Form(opts)
+      ? new enquirer.MultiSelect(await withStdout(opts))
+      : new enquirer.Form(await withStdout(opts))
 
     if (isRaw(this.options)) {
       const { ask } = await import("../raw/ask.js")
@@ -475,13 +492,14 @@ export class Guide {
     }
   }
 
-  private waitForEnter() {
+  private async waitForEnter() {
     const mutedStdout = new Writable({
       write: function (chunk, encoding, callback) {
         callback()
       },
     })
 
+    const { default: readline } = await import("readline")
     const rl = readline.createInterface({
       input: process.stdin,
       output: mutedStdout,
@@ -569,7 +587,7 @@ export class Guide {
         quiet: !this.isGuided,
         concurrent: dryRun,
       },
-      this.write
+      this.write || (await this.echoWrite())
     )
 
     this.markDone(0, "success")
@@ -721,7 +739,11 @@ export class Guide {
       }
     } catch (err) {
       if (!isEarlyExit(err) && !this.hasReceivedExitSignalFromUser) {
-        throw new Error(chalk.red(mainSymbols.cross) + " Run failed" + name + ": " + err.message)
+        if (this.options.raw) {
+          throw err
+        } else {
+          throw new Error(chalk.red(mainSymbols.cross) + " Run failed" + name + ": " + err.message)
+        }
       }
     }
   }
