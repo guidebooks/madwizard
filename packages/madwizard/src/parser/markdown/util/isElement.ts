@@ -28,7 +28,13 @@ export function isLiteral(node: Node): node is Literal {
 }
 
 export function isText(node: Node): node is Text {
-  return node.type === "text" && typeof (node as Text).value === "string"
+  return (
+    node.type === "text" &&
+    typeof (node as Text).value === "string" &&
+    !/imports:/.test((node as Text).value) &&
+    !/^:+$/.test((node as Text).value)
+  )
+  // the latter two try to exclude import text from remark-import and snippets/index
 }
 
 export function isPre(node: Node): node is Pre {
@@ -58,10 +64,7 @@ export function isParagraph(node: Node): node is Element & { tagName: "p" } {
 
 /** imports: is leftover from remark-import */
 export function isNonEmptyTextOrParagraph(node: Node): node is Text | Element {
-  return (
-    (isText(node) && !!node.value.trim()) ||
-    (isParagraph(node) && isText(node.children[0]) && !/imports:/.test(node.children[0].value))
-  )
+  return (isText(node) && !!node.value.trim()) || (isParagraph(node) && isText(node.children[0]))
 }
 
 export function isParent(node: Node): node is Parent {
