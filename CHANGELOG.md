@@ -1,3 +1,13 @@
+# [4.4.0](https://github.com/guidebooks/madwizard/compare/4.3.5...4.4.0) (2023-01-18)
+
+### Bug Fixes
+
+- ray working directory does not handle cwd-relative paths ([d1f8db4](https://github.com/guidebooks/madwizard/commit/d1f8db41e272fd23eacc4b7ec4cd3f32c3bdadca))
+
+### Features
+
+- bump to latest @guidebooks/store@2.1.2 ([00c9bf0](https://github.com/guidebooks/madwizard/commit/00c9bf01741e9e5c4be2569d051088bf8467fecd))
+
 ## [4.3.5](https://github.com/guidebooks/madwizard/compare/4.3.4...4.3.5) (2023-01-17)
 
 ## [4.3.4](https://github.com/guidebooks/madwizard/compare/4.3.3...4.3.4) (2023-01-17)
