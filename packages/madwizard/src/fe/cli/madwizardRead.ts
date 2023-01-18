@@ -18,13 +18,13 @@ import Debug from "debug"
 import { VFile } from "vfile"
 import { isAbsolute, join } from "path"
 
-import fetch from "make-fetch-happen"
 import { read as vfileRead } from "to-vfile"
 
 import { cachePath } from "../../util/cache.js"
 import { toRawGithubUserContent } from "../../parser/markdown/snippets/urls.js"
 
 export async function get(uri: string) {
+  const { default: fetch } = await import("make-fetch-happen")
   return fetch(uri, { cachePath: cachePath() })
 }
 

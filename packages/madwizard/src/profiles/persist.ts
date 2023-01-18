@@ -31,7 +31,7 @@ export function isTemporary(profile: string) {
 }
 
 export async function save(choices: ChoiceState, options: MadWizardOptions = {}, profileName = choices.profile.name) {
-  const writeFile = await import("write-file-atomic").then((_) => _.default)
+  const writeFile = options.fs?.writeFileAtomic || (await import("write-file-atomic").then((_) => _.default))
   const filepath = join(await profilesPath(options, true), profileName)
 
   try {

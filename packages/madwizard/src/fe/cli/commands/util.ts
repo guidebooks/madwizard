@@ -66,12 +66,12 @@ export function loadAssertions(
 /** @return the block model, either by using a precompiled model from the store, or by parsing the source */
 export async function getBlocksModel(input: string, choices: ChoiceState, options: MadWizardOptionsWithInput) {
   // check to see if the compiled model exists
-  const [{ access, readFile }, { targetPathForAst }] = await Promise.all([
-    import("fs/promises"),
-    import("../../../parser/markdown/snippets/mirror-paths.js"),
-  ])
-
   if (input !== "-") {
+    const [{ access, readFile }, { targetPathForAst }] = await Promise.all([
+      import("fs/promises"),
+      import("../../../parser/markdown/snippets/mirror-paths.js"),
+    ])
+
     const ast1 = targetPathForAst(input + "/index.md", options.store)
     const ast2 = targetPathForAst(input + ".md", options.store)
     const mightBeAst = !/\.md$/.test(input) && !/^http/.test(options.store)

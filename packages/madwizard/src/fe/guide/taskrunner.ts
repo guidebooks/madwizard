@@ -16,6 +16,7 @@
 
 import { EOL } from "os"
 import ora, { Ora } from "ora"
+import { Writable } from "stream"
 import { mainSymbols } from "figures"
 import chalk, { ChalkInstance } from "chalk"
 import promiseEach from "../../util/promise-each.js"
@@ -55,7 +56,7 @@ export function skip(ora: Ora, text: string) {
 class TaskWrapperImpl implements TaskWrapper {
   public constructor(
     private readonly title: string,
-    private readonly write = process.stdout.write.bind(process.stdout),
+    private readonly write: Writable["write"] = process.stdout.write.bind(process.stdout),
     private readonly quiet = false,
     private readonly spinner?: ReturnType<typeof ora>
   ) {}
@@ -107,7 +108,7 @@ export default class TaskRunner {
   public async run(
     tasks: Task[],
     options: TaskRunnerOptions = {},
-    write = process.stdout.write.bind(process.stdout),
+    write: Writable["write"] = process.stdout.write.bind(process.stdout),
     depth = 0
   ) {
     await promiseEach(tasks, async ({ title, task, spinner, quiet }, idx) => {
