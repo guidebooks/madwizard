@@ -1,6 +1,6 @@
 {
   "name": "madwizard-cli-core",
-  "version": "4.4.0",
+  "version": "4.5.0",
   "description": "Turn Markdown into Wizards, CLI front end (w/o store)",
   "type": "module",
   "sideEffects": false,
@@ -31,6 +31,6 @@
   },
   "devDependencies": {
     "esbuild": "^0.16.15",
-    "madwizard": "^4.4.0"
+    "madwizard": "^4.5.0"
   }
 }

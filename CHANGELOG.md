@@ -1,3 +1,13 @@
+# [4.5.0](https://github.com/guidebooks/madwizard/compare/4.4.0...4.5.0) (2023-01-19)
+
+### Bug Fixes
+
+- guidebooks with finally blocks may result in choice description ::::: ([a8c37d9](https://github.com/guidebooks/madwizard/commit/a8c37d90dbd72c8df2994cfc4a4c5570c0023a19))
+
+### Features
+
+- improved support for running in browser ([fc44f62](https://github.com/guidebooks/madwizard/commit/fc44f62b970a88b3a99ab441ab53c127b4a1b844))
+
 # [4.4.0](https://github.com/guidebooks/madwizard/compare/4.3.5...4.4.0) (2023-01-18)
 
 ### Bug Fixes
