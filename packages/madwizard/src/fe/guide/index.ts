@@ -16,7 +16,7 @@
 
 import Debug from "debug"
 import { EOL } from "os"
-import chalk from "chalk"
+import { Chalk } from "chalk"
 import enquirer from "enquirer"
 import { Writable } from "stream"
 import { mainSymbols } from "figures"
@@ -88,7 +88,8 @@ export class Guide {
     private readonly options: MadWizardOptions,
     private readonly memos: Memos,
     private readonly ui: UI<string> = new AnsiUI(),
-    private readonly write?: Writable["write"]
+    private readonly write?: Writable["write"],
+    private readonly chalk = options.stdio ? new Chalk({ level: 2 }) : new Chalk()
   ) {}
 
   private exitSignalFromUser?: Parameters<Memos["cleanup"]>[0]
@@ -116,7 +117,7 @@ export class Guide {
 
   private get suggestionHint() {
     // reset the underlining from enquirer
-    return chalk.reset.yellow.dim("  ◄ prior choice")
+    return this.chalk.reset.yellow.dim("  ◄ prior choice")
   }
 
   /** Map from `isFinallyFor` to associated finally `TaskStep` */
@@ -175,11 +176,11 @@ export class Guide {
     // re: slice(0, 1), we ask one question at a time, so there is no
     // need to waste time computing the question models for subsequent questions
     const questions: Question[] = choices.slice(0, 1).map(({ step, graph: choice }, stepIdx) => {
-      const name = step.name || chalk.red("Missing name")
+      const name = step.name || this.chalk.red("Missing name")
       const { description } = step
       const message =
-        chalk.inverse.bold(` Choice ${choiceIter + stepIdx + 1} `) +
-        `${step.name ? chalk.bold(` ${step.name} `) : chalk.inverse.red(" Missing name ")}`
+        this.chalk.inverse.bold(` Choice ${choiceIter + stepIdx + 1} `) +
+        `${step.name ? this.chalk.bold(` ${step.name} `) : this.chalk.inverse.red(" Missing name ")}`
 
       const { content } = step
 
@@ -256,9 +257,9 @@ export class Guide {
           initial: thisChoiceIsAForm ? tile.form.defaultValue.toString() : undefined,
           isSuggested,
           message:
-            chalk.bold(tile.title) +
+            this.chalk.bold(tile.title) +
             (isSuggested ? this.suggestionHint : "") +
-            (!tile.description ? "" : chalk.reset(EOL) + this.format(tile.description) + chalk.reset(EOL)),
+            (!tile.description ? "" : this.chalk.reset(EOL) + this.format(tile.description) + this.chalk.reset(EOL)),
         }
       })
 
@@ -303,7 +304,10 @@ export class Guide {
             message +
             (!isMulti
               ? ""
-              : " " + chalk.dim(`(Note: ${`${chalk.bold("space")} selects and ${chalk.bold("enter")} accepts`})`)),
+              : " " +
+                this.chalk.dim(
+                  `(Note: ${`${this.chalk.bold("space")} selects and ${this.chalk.bold("enter")} accepts`})`
+                )),
           choices,
           validate: !isMulti ? undefined : (value) => Array.isArray(value) && value.length > 0, // reject no selections for multi
           initial:
@@ -352,6 +356,16 @@ export class Guide {
     return echo.write.bind(echo)
   }
 
+  private consoleLog(msg?: string) {
+    if (this.options.stdio?.stdout) {
+      this.options.stdio.stdout.write((msg || "") + "\n")
+    } else if (msg) {
+      console.log(msg)
+    } else {
+      console.log()
+    }
+  }
+
   /** Present the given question to the user */
   private async ask(opts: Question & { description?: string }) {
     if (isAlreadyAnswered(opts)) {
@@ -360,17 +374,21 @@ export class Guide {
       // the current profile. We still want to give some indication of
       // what's going on, though.
 
-      console.log(opts.message + chalk.dim(" · ") + chalk.cyan(opts.answer))
+      this.consoleLog(opts.message + this.chalk.dim(" · ") + this.chalk.cyan(opts.answer))
       return opts.answer
     }
 
     const withStdout = async <T extends Question>(opts: T) => {
-      return Object.assign(
-        {
-          stdout: isRaw(this.options) ? await this.echo() : undefined,
-        },
-        opts
-      )
+      const stdin = this.options.stdio?.stdin
+      const stdout = this.options.stdio?.stdout || (isRaw(this.options) ? await this.echo() : undefined)
+      const o: T & { stdin?: NodeJS.ReadableStream; stdout?: NodeJS.WritableStream } = Object.assign({}, opts)
+      if (stdin) {
+        o.stdin = stdin
+      }
+      if (stdout) {
+        o.stdout = stdout
+      }
+      return o
     }
 
     const prompt = this.isSelect(opts)
@@ -409,13 +427,15 @@ export class Guide {
     return {
       title: !this.isGuided
         ? ""
-        : (dryRun ? chalk.yellow(mainSymbols.questionMarkPrefix) : chalk.green(mainSymbols.play)) + " " + step.name,
+        : (dryRun ? this.chalk.yellow(mainSymbols.questionMarkPrefix) : this.chalk.green(mainSymbols.play)) +
+          " " +
+          step.name,
       quiet: subtasks.every((_) => this.beQuietForTaskRunner(_)),
       task: () =>
         subtasks.map(
           (block): Task => ({
             title: block.validate
-              ? chalk.dim("checking to see if this task has already been done\u2026")
+              ? this.chalk.dim("checking to see if this task has already been done\u2026")
               : this.options.verbose
               ? this.ui.code(block.body, block.language)
               : "",
@@ -435,7 +455,7 @@ export class Guide {
                   } catch (err) {
                     if (dryRun) {
                       this.debug("validation error", err)
-                      subtask.fail(dryRun ? "NOT READY" : undefined, undefined, dryRun ? chalk.yellow : undefined)
+                      subtask.fail(dryRun ? "NOT READY" : undefined, undefined, dryRun ? this.chalk.yellow : undefined)
                     } else {
                       // throw new ListrError(err, ListrErrorTypes.HAS_FAILED, task)
                       this.debug("Validation error", err)
@@ -481,7 +501,7 @@ export class Guide {
                   status = "error"
                   throw err
                 } finally {
-                  // subtask.title = chalk.magenta(block.body)
+                  // subtask.title = this.chalk.magenta(block.body)
                 }
               } finally {
                 markDone(status)
@@ -551,10 +571,10 @@ export class Guide {
     await prettyPrintUITreeFromBlocks(
       !skipOptionalBlocks ? this.blocks : this.blocks.filter((_) => !_.optional),
       this.choices,
-      { skipFirstTitle, /* indent: "  ",*/ narrow, root: chalk.blue.bold("The Plan") }
+      { skipFirstTitle, /* indent: "  ",*/ narrow, root: this.chalk.blue.bold("The Plan") }
     )
 
-    console.log()
+    this.consoleLog()
   }
 
   /** @return whether we actually ran them */
@@ -565,8 +585,8 @@ export class Guide {
     }
 
     if (execution === "step") {
-      console.log("🖐  Hit enter after every step to proceed to the next step, or ctrl+c to cancel.")
-      console.log()
+      this.consoleLog("🖐  Hit enter after every step to proceed to the next step, or ctrl+c to cancel.")
+      this.consoleLog()
     }
 
     const stepIt = execution === "step"
@@ -624,14 +644,14 @@ export class Guide {
     const title = extractTitle(graph)
     const description = extractDescription(graph)
     if (title) {
-      console.log(chalk.inverse.bold(` ${title.trim()} `))
+      this.consoleLog(this.chalk.inverse.bold(` ${title.trim()} `))
     }
     if (description) {
-      console.log(this.format(description))
+      this.consoleLog(this.format(description))
     }
 
     if (title || description) {
-      console.log()
+      this.consoleLog()
     }
   }
 
@@ -730,11 +750,11 @@ export class Guide {
         }
 
         if (this.allDoneSuccessfully()) {
-          console.log()
-          console.log("✨ Guidebook successful" + name)
+          this.consoleLog()
+          this.consoleLog("✨ Guidebook successful" + name)
         } else {
-          console.log()
-          console.log(chalk.red("Guidebook incomplete" + name))
+          this.consoleLog()
+          this.consoleLog(this.chalk.red("Guidebook incomplete" + name))
         }
       }
     } catch (err) {
@@ -742,7 +762,7 @@ export class Guide {
         if (this.options.raw) {
           throw err
         } else {
-          throw new Error(chalk.red(mainSymbols.cross) + " Run failed" + name + ": " + err.message)
+          throw new Error(this.chalk.red(mainSymbols.cross) + " Run failed" + name + ": " + err.message)
         }
       }
     }

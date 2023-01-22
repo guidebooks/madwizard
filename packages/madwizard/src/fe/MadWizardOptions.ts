@@ -59,8 +59,20 @@ export interface RunOptions {
    * directly (rather than by shelling them out to a PTY).
    */
   shell: {
+    /** Do you know how to handle the given `cmdline`? */
     willHandle(cmdline: string | boolean): boolean
+
+    /** Execute the given `cmdline` with the given `env` */
     exec(cmdline: string | boolean, env: import("../memoization/index.js").Memos["env"]): Promise<"success">
+  }
+
+  /** Optional conduit for process.stdin and process.stdout data */
+  stdio: {
+    /** Conduit for process.stdin data */
+    stdin: NodeJS.ReadableStream
+
+    /** Conduit for process.stdout data */
+    stdout: NodeJS.WritableStream
   }
 }
 
