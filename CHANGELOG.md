@@ -1,3 +1,9 @@
+# [4.6.0](https://github.com/guidebooks/madwizard/compare/4.5.0...4.6.0) (2023-01-22)
+
+### Features
+
+- allow clients to provide a stdio=stdin+stdout ([6fe5532](https://github.com/guidebooks/madwizard/commit/6fe553266fb2fc6375e22507e7db85477f50fb9a))
+
 # [4.5.0](https://github.com/guidebooks/madwizard/compare/4.4.0...4.5.0) (2023-01-19)
 
 ### Bug Fixes
