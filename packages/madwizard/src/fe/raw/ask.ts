@@ -18,45 +18,7 @@ import { Prompt } from "../Prompts.js"
 import { RawAskEvent, ValidAnswer } from "./RawEvent.js"
 import { isRawViaHandler, WithRawViaCLI, WithRawViaHandler } from "./index.js"
 
-async function askViaCLI(prompt: Prompt, description: string | undefined, rawPrefix: WithRawViaCLI["raw"]) {
-  const readline = await import("readline")
-  const r1 = readline.createInterface({
-    terminal: false,
-    input: process.stdin,
-    output: process.stdout,
-  })
-
-  return new Promise<ValidAnswer>((resolve, reject) => {
-    try {
-      r1.question(
-        rawPrefix +
-          " " +
-          JSON.stringify({
-            type: "ask",
-            ask: {
-              type: prompt.type,
-              name: prompt.name,
-              description: description,
-              initial: prompt.initial,
-              choices: prompt.choices,
-            },
-          }) +
-          "\n",
-        (resp) => {
-          r1.close()
-          try {
-            resolve(JSON.parse(resp) as Record<string, string>)
-          } catch (err) {
-            resolve(resp)
-          }
-        }
-      )
-    } catch (err) {
-      reject(err)
-    }
-  })
-}
-
+/** Ask a question via the raw api, using callback handlers */
 function askViaHandler(ask: Prompt, description: string, onRaw: WithRawViaHandler["raw"]) {
   return new Promise<ValidAnswer>((resolve, reject) => {
     const event: RawAskEvent = {
@@ -70,13 +32,14 @@ function askViaHandler(ask: Prompt, description: string, onRaw: WithRawViaHandle
   })
 }
 
+/** Ask a question via the raw api */
 export async function ask(ask: Prompt, description: string | undefined, options: WithRawViaCLI | WithRawViaHandler) {
   if (isRawViaHandler(options)) {
     return askViaHandler(ask, description, options.raw)
   } else {
     const { raw: rawPrefix } = options
     if (rawPrefix) {
-      return askViaCLI(ask, description, rawPrefix)
+      return import("./ask-via-stdin.js").then((_) => _.default(ask, description, rawPrefix))
     } else {
       throw new Error("Misconfiguration: raw mode requested, but neither onRaw nor rawPrefix provided")
     }
