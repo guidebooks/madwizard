@@ -1,3 +1,9 @@
+## [4.7.1](https://github.com/guidebooks/madwizard/compare/4.7.0...4.7.1) (2023-01-23)
+
+### Bug Fixes
+
+- remove use of readline ([9d1d349](https://github.com/guidebooks/madwizard/commit/9d1d349c58e998f498a691f32ddd90433c9ecc36))
+
 # [4.7.0](https://github.com/guidebooks/madwizard/compare/4.6.0...4.7.0) (2023-01-23)
 
 ### Features
