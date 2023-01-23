@@ -1,3 +1,9 @@
+# [4.7.0](https://github.com/guidebooks/madwizard/compare/4.6.0...4.7.0) (2023-01-23)
+
+### Features
+
+- switch enquirer from readline to keypress-browserify ([76024f6](https://github.com/guidebooks/madwizard/commit/76024f675d3a64e73b5bffd382a2ae177700b4bb))
+
 # [4.6.0](https://github.com/guidebooks/madwizard/compare/4.5.0...4.6.0) (2023-01-22)
 
 ### Features
