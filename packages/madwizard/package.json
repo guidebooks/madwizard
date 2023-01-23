@@ -57,7 +57,7 @@
     "chalk": "^5.2.0",
     "columnify": "^1.6.0",
     "debug": "^4.3.4",
-    "enquirer": "starpit/enquirer#starpit",
+    "enquirer": "starpit/enquirer#19b27f10d3304b4a3300b438592a004dc6ee1a7f",
     "env-paths": "^2.2.1",
     "expand-home-dir": "^0.0.3",
     "figures": "^5.0.0",
@@ -85,6 +85,8 @@
     "vfile": "^5.3.6",
     "which": "^3.0.0",
     "write-file-atomic": "^5.0.0",
+    "y18n": "^5.0.5",
+    "escalade": "^3.1.1",
     "yargs": "^17.6.2",
     "yargs-parser": "^21.1.1"
   }
