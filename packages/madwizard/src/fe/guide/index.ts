@@ -513,25 +513,10 @@ export class Guide {
   }
 
   private async waitForEnter() {
-    const mutedStdout = new Writable({
-      write: function (chunk, encoding, callback) {
-        callback()
-      },
-    })
-
-    const { default: readline } = await import("readline")
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: mutedStdout,
-    })
-
     return new Promise<void>((resolve) => {
-      rl.on("close", resolve)
-
-      rl.question("", () => {
-        rl.close()
-        resolve()
-      })
+      const stdin = this.options.stdio?.stdin || process.stdin
+      stdin.resume()
+      stdin.on("data", () => resolve())
     })
   }
 
