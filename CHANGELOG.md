@@ -1,3 +1,10 @@
+## [5.0.3](https://github.com/guidebooks/madwizard/compare/5.0.2...5.0.3) (2023-01-24)
+
+### Bug Fixes
+
+- favor handleByClient in exec ([8b3ba48](https://github.com/guidebooks/madwizard/commit/8b3ba48995adebdabb61cde82d16e626746bec91))
+- improve tracking of madwizard-internal command executions ([1e40a75](https://github.com/guidebooks/madwizard/commit/1e40a754d2044772ec5d414ad74970c307acef43))
+
 ## [5.0.2](https://github.com/guidebooks/madwizard/compare/5.0.1...5.0.2) (2023-01-24)
 
 ### Bug Fixes
