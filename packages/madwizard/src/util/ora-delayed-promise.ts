@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-import { oraPromise as theRealOraPromise, PromiseOptions } from "ora"
+import { PromiseOptions } from "ora"
 
 /** Fire of an `oraPromise` with a delay */
-export function oraPromise<T>(action: T | Promise<T>, options?: string | PromiseOptions<T>, delayMs = 500): Promise<T> {
+export async function oraPromise<T>(
+  action: T | Promise<T>,
+  options?: string | PromiseOptions<T>,
+  delayMs = 500
+): Promise<T> {
+  const { oraPromise: theRealOraPromise } = await import("ora")
+
   let isResolved = false
   Promise.resolve(action)
     .then(() => (isResolved = true))

@@ -15,9 +15,8 @@
  */
 
 import { ExecOptions } from "./options.js"
+import { MadWizardOptions } from "../fe/MadWizardOptions.js"
 
 export type Executor = (cmdline: string, opts?: ExecOptions) => Promise<string>
 
-export type ExecutorOptions = Partial<ExecOptions> & {
-  exec: Executor
-}
+export type ExecutorOptions = Partial<ExecOptions> & Pick<MadWizardOptions, "shell">
