@@ -2,6 +2,8 @@
 
 # <img src=".github/madwizard.gif" title="madwizard" height="32"> Automatic Wizards, from Markdown
 
+[**Live madwizard**](https://madwizard.io)
+
 READMEs are a great way disseminate broad knowledge, but can often be
 a frustrating way to accomplish a specific task. Documentation is
 prone to rot. Screenshots and command lines invariably go out of
