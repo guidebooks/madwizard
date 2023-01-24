@@ -66,7 +66,7 @@ export interface RunOptions {
     exec(
       cmdline: string | boolean,
       env: import("../memoization/index.js").Memos["env"]
-    ): Promise<string | boolean | number | string[] | number[] | boolean[]>
+    ): Promise<string | boolean | number | (string | boolean | number)[]>
   }
 
   /** Optional conduit for process.stdin and process.stdout data */
