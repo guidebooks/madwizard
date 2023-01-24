@@ -63,7 +63,10 @@ export interface RunOptions {
     willHandle(cmdline: string | boolean): boolean
 
     /** Execute the given `cmdline` with the given `env` */
-    exec(cmdline: string | boolean, env: import("../memoization/index.js").Memos["env"]): Promise<string>
+    exec(
+      cmdline: string | boolean,
+      env: import("../memoization/index.js").Memos["env"]
+    ): Promise<string | boolean | number | string[] | number[] | boolean[]>
   }
 
   /** Optional conduit for process.stdin and process.stdout data */
