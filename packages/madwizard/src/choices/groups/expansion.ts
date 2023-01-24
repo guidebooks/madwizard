@@ -282,7 +282,9 @@ export async function expand(
 
   if (choiceFrontier.length > 0) {
     await Promise.all(
-      choiceFrontier.map(expandOneChoice.bind(undefined, memos, { shell: options.shell, debug: Debug("expansion") }))
+      choiceFrontier.map(
+        expandOneChoice.bind(undefined, memos, { shell: options.shell, debug: Debug("expansion"), isInternal: true })
+      )
     )
   }
 

@@ -19,7 +19,7 @@ import { ExecOptions } from "./options.js"
 
 export default function handledByClient(cmdline: string | boolean, memos: Memos, opts: ExecOptions = { quiet: false }) {
   if (typeof opts.shell === "object" && opts.shell.willHandle(cmdline)) {
-    return opts.shell.exec(cmdline, memos.env).then((response) => {
+    return opts.shell.exec(cmdline, memos.env, opts.isInternal).then((response) => {
       if (typeof opts.capture === "string") {
         opts.capture = Array.isArray(response) ? response.join("\n") : response.toString()
       }
