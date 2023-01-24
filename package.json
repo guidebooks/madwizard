@@ -13,6 +13,7 @@
     "clean": "cross-env tsc --build . --clean && npm run clean --workspaces --if-present",
     "build": "cross-env tsc --build . && npm run build --workspaces --if-present",
     "test": "cross-env npm run test --workspaces --if-present",
+    "regen": "./packages/madwizard/bin/regen.sh",
     "format": "cross-env prettier --write '**/*.{scss,css,html,js,json,md,ts,tsx}'",
     "prepare": "cross-env husky install"
   },

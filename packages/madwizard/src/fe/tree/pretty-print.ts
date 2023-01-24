@@ -70,6 +70,8 @@ export function prettyPrintUITree(
   options: PrettyPrintOptions & MadWizardOptions,
   { depth, prefix, isLast }: State = { depth: 0, prefix: "", isLast: false }
 ) {
+  if (!graph) return
+
   const { write = defaultWriteStream(), symbols = Symbols.ansi, narrow, indent = "" } = options
 
   write(indent)
@@ -91,7 +93,7 @@ export function prettyPrintUITree(
     }
 
     if (node.children) {
-      node.children.forEach((child, idx, A) =>
+      node.children.filter(Boolean).forEach((child, idx, A) =>
         prettyPrintUITree([child], options, {
           prefix: prefix + nextPrefix,
           depth: depth + 1,

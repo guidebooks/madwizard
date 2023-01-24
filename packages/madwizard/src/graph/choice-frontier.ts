@@ -103,7 +103,9 @@ export function _findChoiceFrontier(
     return graph.steps.flatMap((_) => recurse(_.graph, _))
   } else {
     // leaf-most code blocks. no choices here.
-    pushWithTitle(prereqs, graph, nearestEnclosingTitle, isPartOfBarrier)
+    if (graph) {
+      pushWithTitle(prereqs, graph, nearestEnclosingTitle, isPartOfBarrier)
+    }
     return []
   }
 }

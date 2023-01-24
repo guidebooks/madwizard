@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 #
 # Use this to regenerate the test output. Take care to update the
 # index of the largest test input directory in the for loops below,
@@ -31,7 +33,7 @@ export STORE="--store $PWD"
 FAKEENV=$(mktemp)
 
 echo -n A
-for i in {1..47}
+for i in {1..48}
 do
     if [ -n "$WHICH" ] && [ $i != $WHICH ]; then continue; fi
 
@@ -45,7 +47,6 @@ do
     eval "set -o allexport; source $ENV; madwizard plan $STORE test/inputs/$i/in.md --no-aprioris $ASSERT > ./test/inputs/$i/tree-noaprioris.txt" &
     eval "set -o allexport; source $ENV; madwizard json $STORE test/inputs/$i/in.md --no-aprioris $ASSERT > ./test/inputs/$i/wizard-noaprioris.json" &
     eval "set -o allexport; source $ENV; madwizard run $STORE test/inputs/$i/in.md --verbose --no-profile --no-aprioris $ASSERT > ./test/inputs/$i/run-noaprioris.txt" &
-    if [ "$WHICH" = "40" ]; then echo "!!!!!!!!!! set -o allexport; source $ENV; madwizard run $STORE test/inputs/$i/in.md --verbose --no-profile --no-aprioris $ASSERT > ./test/inputs/$i/run-noaprioris.txt"; fi
 
     if [ -n "$VETO" ]; then
         eval "set -o allexport; source $ENV; madwizard plan $STORE test/inputs/$i/in.md $ASSERT $VETO > ./test/inputs/$i/tree-veto.txt" &
@@ -58,7 +59,7 @@ done
 echo
 
 echo -n B
-for i in {1..8} {11..18} {20..22} {24..47}
+for i in {1..8} {11..18} {20..22} {24..48}
 do
     if [ -n "$WHICH" ] && [ $i != $WHICH ]; then continue; fi
 
