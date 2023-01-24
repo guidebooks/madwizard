@@ -1,3 +1,9 @@
+## [5.0.1](https://github.com/guidebooks/madwizard/compare/5.0.0...5.0.1) (2023-01-24)
+
+### Bug Fixes
+
+- client-provided shell.exec should be allowed to return other primitive types ([4a9cd90](https://github.com/guidebooks/madwizard/commit/4a9cd90d799c446e4941fe29407c449823ddea58))
+
 # [5.0.0](https://github.com/guidebooks/madwizard/compare/4.7.2...5.0.0) (2023-01-24)
 
 ### Bug Fixes
