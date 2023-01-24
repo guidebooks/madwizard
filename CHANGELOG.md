@@ -1,3 +1,9 @@
+## [5.0.2](https://github.com/guidebooks/madwizard/compare/5.0.1...5.0.2) (2023-01-24)
+
+### Bug Fixes
+
+- shell.exec should allow mixed primitive arrays ([e9b7023](https://github.com/guidebooks/madwizard/commit/e9b7023080ee916f05b129ab0217734a7006cf1b))
+
 ## [5.0.1](https://github.com/guidebooks/madwizard/compare/5.0.0...5.0.1) (2023-01-24)
 
 ### Bug Fixes
