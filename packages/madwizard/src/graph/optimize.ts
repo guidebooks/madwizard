@@ -60,9 +60,10 @@ async function optimize2(
   graph: Graph,
   choices: ChoiceState,
   memos: Memos,
+  options: CompileOptions,
   doExpand: (...params: Parameters<typeof expand>) => Graph | Promise<Graph>
 ) {
-  const expanded = await doExpand(graph, choices, memos)
+  const expanded = await doExpand(graph, choices, memos, options)
   return collapseMadeChoices(expanded, choices)
 }
 
@@ -70,7 +71,7 @@ export default async function fullOptimize(
   graph: Graph | undefined,
   choices: ChoiceState,
   memos: Memos,
-  options?: CompileOptions,
+  options: CompileOptions,
   title?: string,
   description?: string
 ): Promise<Graph> {
@@ -83,7 +84,7 @@ export default async function fullOptimize(
   const doExpand: (...params: Parameters<typeof expand>) => Graph | Promise<Graph> =
     options.expand === false ? (x) => x : expand
 
-  const unoptimized = workaroundMultipleChoicesPerFile(await doExpand(graph, choices, memos))
+  const unoptimized = workaroundMultipleChoicesPerFile(await doExpand(graph, choices, memos, options))
 
   let optimized = willNotOptimize ? unoptimized : await optimize(unoptimized, choices, memos, options)
 
@@ -99,5 +100,5 @@ export default async function fullOptimize(
     )
   }
 
-  return willNotOptimize ? unoptimized : await optimize2(optimized, choices, memos, doExpand)
+  return willNotOptimize ? unoptimized : await optimize2(optimized, choices, memos, options, doExpand)
 }

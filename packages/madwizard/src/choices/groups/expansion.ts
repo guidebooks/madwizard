@@ -17,12 +17,13 @@
 import chalk from "chalk"
 import { v4 } from "uuid"
 import { join } from "path"
-import { oraPromise } from "../../util/ora-delayed-promise.js"
 
 import { Debug } from "./debug.js"
 import { ChoiceState } from "../index.js"
 import { Memos } from "../../memoization/index.js"
 import { ExecutorOptions } from "../../exec/Executor.js"
+import { MadWizardOptions } from "../../fe/MadWizardOptions.js"
+
 import {
   Graph,
   Choice,
@@ -145,12 +146,11 @@ async function doExpand(
   options: Partial<ExecutorOptions> & { debug: ReturnType<typeof Debug> }
 ): Promise<string[] | null> {
   try {
+    const { oraPromise } = await import("../../util/ora-delayed-promise.js")
     const response = await oraPromise(
-      (options.exec || (await import("../../exec/index.js").then((_) => _.shellExecToString)))(
-        expansionExpr.expr,
-        memos,
-        options
-      ),
+      (
+        await import("../../exec/index.js").then((_) => _.shellExecToString)
+      )(expansionExpr.expr, memos, options),
       chalk.dim(`Expanding ${chalk.blue(expansionExpr.message || expansionExpr.expr)}`)
     )
 
@@ -271,12 +271,19 @@ async function expandOneChoice(
  * updating content such as descriptions and code bodies (via
  * `updateContent`) as we go.
  */
-export async function expand(graph: Graph, choices: ChoiceState, memos: Memos) {
+export async function expand(
+  graph: Graph,
+  choices: ChoiceState,
+  memos: Memos,
+  options: Pick<MadWizardOptions, "shell">
+) {
   // all "first choices" that haven't already been assigned a decision
   const choiceFrontier = findChoicesOnFrontier(graph, choices)
 
   if (choiceFrontier.length > 0) {
-    await Promise.all(choiceFrontier.map(expandOneChoice.bind(undefined, memos, { debug: Debug("expansion") })))
+    await Promise.all(
+      choiceFrontier.map(expandOneChoice.bind(undefined, memos, { shell: options.shell, debug: Debug("expansion") }))
+    )
   }
 
   // expand uuid macro
