@@ -72,6 +72,7 @@ export async function doValidate(
   try {
     await (opts.validator || (await import("../exec/index.js").then((_) => _.shellExec)))(validate, memos, {
       quiet: true,
+      isInternal: true,
     })
     return "success"
   } catch (err) {

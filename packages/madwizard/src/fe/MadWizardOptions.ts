@@ -62,10 +62,15 @@ export interface RunOptions {
     /** Do you know how to handle the given `cmdline`? */
     willHandle(cmdline: string | boolean): boolean
 
-    /** Execute the given `cmdline` with the given `env` */
+    /**
+     * Execute the given `cmdline` with the given `env`. If
+     * `isInternal`, then this is a by-product of madwizard itself,
+     * not the guidebook.
+     */
     exec(
       cmdline: string | boolean,
-      env: import("../memoization/index.js").Memos["env"]
+      env: import("../memoization/index.js").Memos["env"],
+      isInternal: boolean
     ): Promise<string | boolean | number | (string | boolean | number)[]>
   }
 

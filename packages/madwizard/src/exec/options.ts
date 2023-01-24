@@ -39,4 +39,7 @@ export type ExecOptions = Partial<DisplayOptions> &
 
     /** optional writer, e.g. for tests to capture output */
     write?: Writable["write"]
+
+    /** Is this a by-product of madwizard, rather than the guidebook? */
+    isInternal?: boolean
   }
