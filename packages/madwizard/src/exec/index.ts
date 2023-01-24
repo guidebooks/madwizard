@@ -54,10 +54,10 @@ export async function shellExec(
     // then the code block has been declared with a `shell` or `bash`
     // or `sh` language
     return (
+      handledByClient(cmdline, memos, opts) || // maybe the client wants to handle some executions directly?
       exporter(cmdline, memos, opts) || // export FOO=3
       which(cmdline) || // which foo
       pipShow(cmdline, memos) || // optimized pip show
-      handledByClient(cmdline, memos, opts) || // maybe the client wants to handle some executions directly?
       shell(cmdline, memos, opts, undefined, async) // vanilla shell exec
     )
   } else if (isPythonic(language)) {
