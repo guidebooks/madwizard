@@ -1,3 +1,17 @@
+# [5.0.0](https://github.com/guidebooks/madwizard/compare/4.7.2...5.0.0) (2023-01-24)
+
+### Bug Fixes
+
+- guidebook without codeblocks causes null pointer exceptions ([ec6bea2](https://github.com/guidebooks/madwizard/commit/ec6bea28fd320cadd0a0c50fdb5915e97128eca7))
+
+### Features
+
+- support choice expansion via the client's `shell` ([b9fb2f4](https://github.com/guidebooks/madwizard/commit/b9fb2f434649f5c61ba6de042152761db1c6f2b8))
+
+### BREAKING CHANGES
+
+- This removes untested and unused `exec` support in the Graph submodule.
+
 ## [4.7.2](https://github.com/guidebooks/madwizard/compare/4.7.1...4.7.2) (2023-01-23)
 
 ### Bug Fixes
