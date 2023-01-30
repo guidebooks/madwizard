@@ -1,3 +1,9 @@
+## [5.0.4](https://github.com/guidebooks/madwizard/compare/5.0.3...5.0.4) (2023-01-30)
+
+### Bug Fixes
+
+- exec should trust client more broadly ([79e4bdc](https://github.com/guidebooks/madwizard/commit/79e4bdcc0699ba4bacc33c83080d2e2ef268e4d1))
+
 ## [5.0.3](https://github.com/guidebooks/madwizard/compare/5.0.2...5.0.3) (2023-01-24)
 
 ### Bug Fixes
