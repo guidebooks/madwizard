@@ -41,7 +41,12 @@ export async function shellExec(
   exec?: CustomExecutable["exec"] /* execute code block with custom exec, rather than `sh` */,
   async?: boolean /* fire and forget, until this process exits? */
 ): Promise<"success"> {
-  if (exec) {
+  // maybe the client wants to handle some executions directly?
+  const respFromClient = handledByClient(cmdline, memos, opts)
+
+  if (respFromClient) {
+    return respFromClient
+  } else if (exec) {
     // then the source has provided a custom executor
     return (
       addPipDependences(cmdline, memos, exec) ||
@@ -54,7 +59,6 @@ export async function shellExec(
     // then the code block has been declared with a `shell` or `bash`
     // or `sh` language
     return (
-      handledByClient(cmdline, memos, opts) || // maybe the client wants to handle some executions directly?
       exporter(cmdline, memos, opts) || // export FOO=3
       which(cmdline) || // which foo
       pipShow(cmdline, memos) || // optimized pip show
