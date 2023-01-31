@@ -1,3 +1,9 @@
+## [5.0.5](https://github.com/guidebooks/madwizard/compare/5.0.4...5.0.5) (2023-01-31)
+
+### Bug Fixes
+
+- handled-by-client execs should be passed through the `exec` attr ([f0a5a7c](https://github.com/guidebooks/madwizard/commit/f0a5a7c566bc526ab575bf98ce95481e4501a4ae))
+
 ## [5.0.4](https://github.com/guidebooks/madwizard/compare/5.0.3...5.0.4) (2023-01-30)
 
 ### Bug Fixes
