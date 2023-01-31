@@ -16,10 +16,16 @@
 
 import { Memos } from "../memoization/index.js"
 import { ExecOptions } from "./options.js"
+import { CustomExecutable } from "../codeblock/index.js"
 
-export default function handledByClient(cmdline: string | boolean, memos: Memos, opts: ExecOptions = { quiet: false }) {
-  if (typeof opts.shell === "object" && opts.shell.willHandle(cmdline)) {
-    return opts.shell.exec(cmdline, memos.env, opts.isInternal).then((response) => {
+export default function handledByClient(
+  cmdline: string | boolean,
+  memos: Memos,
+  opts: ExecOptions = { quiet: false },
+  exec?: CustomExecutable["exec"]
+) {
+  if (typeof opts.shell === "object" && opts.shell.willHandle(cmdline, exec)) {
+    return opts.shell.exec(cmdline, memos.env, opts.isInternal, exec).then((response) => {
       if (typeof opts.capture === "string") {
         opts.capture = Array.isArray(response) ? response.join("\n") : response.toString()
       }

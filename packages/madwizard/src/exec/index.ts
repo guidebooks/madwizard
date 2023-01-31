@@ -42,7 +42,7 @@ export async function shellExec(
   async?: boolean /* fire and forget, until this process exits? */
 ): Promise<"success"> {
   // maybe the client wants to handle some executions directly?
-  const respFromClient = handledByClient(cmdline, memos, opts)
+  const respFromClient = handledByClient(cmdline, memos, opts, exec)
 
   if (respFromClient) {
     return respFromClient
