@@ -16,6 +16,7 @@
 
 import { RawImpl } from "./raw/index.js"
 import { CompilerOptions } from "../graph/compile.js"
+import { CustomExecutable } from "../codeblock/index.js"
 
 export interface RunOptions {
   /**
@@ -60,7 +61,7 @@ export interface RunOptions {
    */
   shell: {
     /** Do you know how to handle the given `cmdline`? */
-    willHandle(cmdline: string | boolean): boolean
+    willHandle(cmdline: string | boolean, exec?: CustomExecutable["exec"]): boolean
 
     /**
      * Execute the given `cmdline` with the given `env`. If
@@ -70,7 +71,8 @@ export interface RunOptions {
     exec(
       cmdline: string | boolean,
       env: import("../memoization/index.js").Memos["env"],
-      isInternal: boolean
+      isInternal: boolean,
+      exec?: CustomExecutable["exec"]
     ): Promise<string | boolean | number | (string | boolean | number)[]>
   }
 
