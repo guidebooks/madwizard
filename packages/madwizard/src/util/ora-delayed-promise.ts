@@ -29,10 +29,14 @@ export async function oraPromise<T>(
     .then(() => (isResolved = true))
     .catch(() => (isResolved = true))
 
+  // re: hideCursor: false, ugh, otherwise ctrl+c doesn't work reliably
+  // https://github.com/sindresorhus/ora/issues/27
+  // https://github.com/tapjs/signal-exit/issues/49
+
   if (!isResolved) {
     setTimeout(() => {
       if (!isResolved) {
-        theRealOraPromise(Promise.resolve(action), options).catch(() => {
+        theRealOraPromise(Promise.resolve(action), Object.assign({ hideCursor: false }, options)).catch(() => {
           /* the caller will be alerted by our `return action` */
         })
       }

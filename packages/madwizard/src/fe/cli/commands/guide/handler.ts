@@ -106,9 +106,14 @@ export default async function guideHandler<Writer extends Writable["write"]>(
     if (!cleanExitPromise) {
       // eslint-disable-next-line no-async-promise-executor
       cleanExitPromise = new Promise(async (resolve) => {
-        Debug("madwizard/cleanup")("attempting a clean exit")
-        await Promise.all([memoizer.cleanup(signal), signal ? guide.onExitSignalFromUser(signal) : Promise.resolve()])
-        Debug("madwizard/cleanup")("attempting a clean exit... done")
+        try {
+          Debug("madwizard/cleanup")("attempting a clean exit")
+          await Promise.all([memoizer.cleanup(signal), signal ? guide.onExitSignalFromUser(signal) : Promise.resolve()])
+        } catch (err) {
+          console.error(err)
+        } finally {
+          Debug("madwizard/cleanup")("attempting a clean exit... done")
+        }
         resolve()
       })
     }
