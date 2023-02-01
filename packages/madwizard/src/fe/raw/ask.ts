@@ -33,7 +33,7 @@ function askViaHandler(ask: Prompt, description: string, onRaw: WithRawViaHandle
 }
 
 /** Ask a question via the raw api */
-export async function ask(ask: Prompt, description: string | undefined, options: WithRawViaCLI | WithRawViaHandler) {
+export function ask(ask: Prompt, description: string | undefined, options: WithRawViaCLI | WithRawViaHandler) {
   if (isRawViaHandler(options)) {
     return askViaHandler(ask, description, options.raw)
   } else {
