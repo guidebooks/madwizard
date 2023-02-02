@@ -1,3 +1,9 @@
+## [5.0.6](https://github.com/guidebooks/madwizard/compare/5.0.5...5.0.6) (2023-02-02)
+
+### Bug Fixes
+
+- improved behavior w.r.t. ctrl+c cleanup ([ed7abfb](https://github.com/guidebooks/madwizard/commit/ed7abfbca1f1b85ede03280d6795a568de0531a1))
+
 ## [5.0.5](https://github.com/guidebooks/madwizard/compare/5.0.4...5.0.5) (2023-01-31)
 
 ### Bug Fixes
