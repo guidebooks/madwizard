@@ -92,6 +92,10 @@ export class Guide {
     private readonly chalk = options.stdio ? new Chalk({ level: 2 }) : new Chalk()
   ) {}
 
+  public currentlyNeedsCleanup(): boolean {
+    return !!this._currentRunner || this.numOnStackFinallies > 0
+  }
+
   private exitSignalFromUser?: Parameters<Memos["cleanup"]>[0]
   public async onExitSignalFromUser(signal?: Parameters<Memos["cleanup"]>[0]) {
     this.exitSignalFromUser = signal
@@ -128,11 +132,18 @@ export class Guide {
     return Object.values(this._finallies)
   }
 
+  /** Number of on stack finallies */
+  private get numOnStackFinallies() {
+    return this.onStackFinallies.length
+  }
+
+  private get onStackFinallies() {
+    return this.finallies.filter((_) => this.memos.finallyStack.includes(_.graph.isFinallyFor)).reverse()
+  }
+
   /** Run any on-stack finallies */
   private async runOnStackFinallies() {
-    await this.runFinallyTasks(
-      this.finallies.filter((_) => this.memos.finallyStack.includes(_.graph.isFinallyFor)).reverse()
-    )
+    await this.runFinallyTasks(this.onStackFinallies)
   }
 
   /** Remember any finally blocks that we may want to execute on abnormal termination */
@@ -743,7 +754,11 @@ export class Guide {
         }
       }
     } catch (err) {
-      if (!isEarlyExit(err) && !this.hasReceivedExitSignalFromUser) {
+      if (typeof err === "string" && err.length === 0) {
+        // sigh, this is enquirer's bizarre way of indicating the prompt was cancelled
+        process.emit("SIGINT")
+        throw err
+      } else if (!isEarlyExit(err) && !this.hasReceivedExitSignalFromUser) {
         if (this.options.raw) {
           throw err
         } else {
