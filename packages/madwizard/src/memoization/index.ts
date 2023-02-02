@@ -50,6 +50,9 @@ export interface Memos {
   /** Invalidate any memos that make use of the given shell variable */
   invalidate(variable: string): void
 
+  /** Do we have anything to clean up? */
+  currentlyNeedsCleanup(): boolean
+
   /** Cleanup any state, e.g. spawned subprocesses */
   cleanup(signal?: "SIGINT" | "SIGTERM"): void | Promise<void>
 }
@@ -94,6 +97,11 @@ export class Memoizer implements Memos {
         Debug("madwizard/cleanup")("invalidating expansion", variable, pattern, matchingKey)
         delete this.expansionMemo[matchingKey]
       })
+  }
+
+  /** Do we have anything to clean up? */
+  public currentlyNeedsCleanup(): boolean {
+    return this.onExit.length > 0 || this.subprocesses.length > 0
   }
 
   /** Cleanup any state, e.g. spawned subprocesses */

@@ -106,13 +106,20 @@ export default async function guideHandler<Writer extends Writable["write"]>(
     if (!cleanExitPromise) {
       // eslint-disable-next-line no-async-promise-executor
       cleanExitPromise = new Promise(async (resolve) => {
-        try {
-          Debug("madwizard/cleanup")("attempting a clean exit")
-          await Promise.all([memoizer.cleanup(signal), signal ? guide.onExitSignalFromUser(signal) : Promise.resolve()])
-        } catch (err) {
-          console.error(err)
-        } finally {
-          Debug("madwizard/cleanup")("attempting a clean exit... done")
+        if (memoizer.currentlyNeedsCleanup() || guide.currentlyNeedsCleanup()) {
+          console.error(exitMessage)
+
+          try {
+            Debug("madwizard/cleanup")("attempting a clean exit")
+            await Promise.all([
+              memoizer.cleanup(signal),
+              signal ? guide.onExitSignalFromUser(signal) : Promise.resolve(),
+            ])
+          } catch (err) {
+            console.error(err)
+          } finally {
+            Debug("madwizard/cleanup")("attempting a clean exit... done")
+          }
         }
         resolve()
       })
@@ -121,12 +128,11 @@ export default async function guideHandler<Writer extends Writable["write"]>(
   }
   const cleanExitFromSIGINT = async () => {
     Debug("madwizard/cleanup")("Received interrupt")
-    console.error(exitMessage)
     await cleanExit("SIGINT")
+    Debug("madwizard/cleanup")("Received interrupt... done processing handler")
   }
   const cleanExitFromSIGTERM = async () => {
     Debug("madwizard/cleanup")("Received termination request")
-    console.error(exitMessage)
     await cleanExit("SIGTERM")
   }
   process.once("SIGINT", cleanExitFromSIGINT) // catch ctrl-c
@@ -139,9 +145,9 @@ export default async function guideHandler<Writer extends Writable["write"]>(
   try {
     await guide.run()
   } finally {
-    if (options.verbose && task !== "run") {
-      console.error(exitMessage)
-    }
+    //    if (options.verbose && task !== "run") {
+    //      console.error(exitMessage)
+    //    }
     if (!noProfile) {
       if (lastPersistPromise) {
         // wait for the last choice persistence operation to
