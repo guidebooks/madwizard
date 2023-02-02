@@ -1,3 +1,9 @@
+## [5.0.8](https://github.com/guidebooks/madwizard/compare/5.0.7...5.0.8) (2023-02-02)
+
+### Bug Fixes
+
+- ctrl+c while enquirer prompt is active does not invoke cleanup handlers ([2471375](https://github.com/guidebooks/madwizard/commit/2471375f3cfdd84610353deb43c54629455a87d3))
+
 ## [5.0.7](https://github.com/guidebooks/madwizard/compare/5.0.6...5.0.7) (2023-02-02)
 
 ### Bug Fixes
