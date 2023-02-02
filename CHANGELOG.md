@@ -1,3 +1,9 @@
+## [5.0.7](https://github.com/guidebooks/madwizard/compare/5.0.6...5.0.7) (2023-02-02)
+
+### Bug Fixes
+
+- ctrl+c exit emits "Run failed: undefined" ([0a0675d](https://github.com/guidebooks/madwizard/commit/0a0675d316b20a8d615588cd3550f551751a62d8))
+
 ## [5.0.6](https://github.com/guidebooks/madwizard/compare/5.0.5...5.0.6) (2023-02-02)
 
 ### Bug Fixes
