@@ -747,7 +747,9 @@ export class Guide {
         if (this.options.raw) {
           throw err
         } else {
-          throw new Error(this.chalk.red(mainSymbols.cross) + " Run failed" + name + ": " + err.message)
+          throw new Error(
+            this.chalk.red(mainSymbols.cross) + " Run failed" + name + (err.message ? ": " + err.message : "")
+          )
         }
       }
     }
