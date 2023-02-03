@@ -19,6 +19,9 @@ import { MadWizardOptions } from "../MadWizardOptions.js"
 import defaultProfileName from "../../profiles/defaultName.js"
 
 const defaults: MadWizardOptions = {
+  /** Name of the application [default: madwizard] */
+  appName: "madwizard",
+
   /**
    * The default path for guidebooks to store data is determined by
    * `dataPath()`, which uses platform-specific logic.

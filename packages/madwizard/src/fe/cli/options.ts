@@ -90,4 +90,9 @@ export const parserConfiguration: Partial<ParserConfigurationOptions> = {
   "populate--": true,
 }
 
+/** Name of the application */
+export function appName(providedOptions: MadWizardOptions): string {
+  return providedOptions.appName || defaultOptions.appName
+}
+
 export default Opts

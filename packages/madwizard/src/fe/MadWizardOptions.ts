@@ -87,6 +87,9 @@ export interface RunOptions {
 }
 
 export interface DisplayOptions<R extends RawImpl = RawImpl> {
+  /** Name of the application [default: madwizard] */
+  appName: string
+
   /** name to display in log messages */
   name: string
 
