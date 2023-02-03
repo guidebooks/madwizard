@@ -1,3 +1,9 @@
+# [5.1.0](https://github.com/guidebooks/madwizard/compare/5.0.8...5.1.0) (2023-02-03)
+
+### Features
+
+- add `madwizard profile get` command ([e04ac0c](https://github.com/guidebooks/madwizard/commit/e04ac0c426376a46c68d27c5341d9a22d5a339af))
+
 ## [5.0.8](https://github.com/guidebooks/madwizard/compare/5.0.7...5.0.8) (2023-02-02)
 
 ### Bug Fixes
