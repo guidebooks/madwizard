@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-import chalk from "chalk"
-import columnify from "columnify"
-import { ChoiceState } from "../../choices/index.js"
+import restore from "./restore.js"
+import { MadWizardOptions } from "../fe/index.js"
 
-export default function profilesTable(profiles: ChoiceState[]) {
-  return columnify(
-    profiles.map((_) => ({
-      name: _.profile.name,
-      created: new Date(_.profile.creationTime).toLocaleString(),
-      lastModified: new Date(_.profile.lastModifiedTime).toLocaleString(),
-    })),
-    { headingTransform: (_) => chalk.blue(_.toUpperCase()) }
-  )
+/** Get details of a profile */
+export default async function get(options: MadWizardOptions, profileName: string) {
+  const choices = await restore(options, profileName)
+  return choices.profile
 }

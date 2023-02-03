@@ -20,25 +20,34 @@ import Opts from "../options.js"
 import { MadWizardOptions } from "../../MadWizardOptions.js"
 
 type NamedProfileOpts = Opts & {
-  profileName: string
+  profile: string
 }
 
-type NamedProfile2Opts = {
-  profileName2: string
+type SrcProfileOpts = {
+  srcProfile: string
+}
+
+type TargetProfileOpts = {
+  tgtProfile: string
 }
 
 function namedProfileBuilder(yargs: Argv<Opts>): Argv<NamedProfileOpts> {
-  return yargs.positional("profileName", {
+  return yargs.positional("profile", {
     type: "string",
     describe: "Name of a profile",
   })
 }
 
-function srcAndTargetNamedProfileBuilder(yargs: Argv<Opts>): Argv<NamedProfileOpts & NamedProfile2Opts> {
-  return namedProfileBuilder(yargs).positional("profileName2", {
-    type: "string",
-    describe: "Name of target profile",
-  })
+function srcAndTargetNamedProfileBuilder(yargs: Argv<Opts>): Argv<SrcProfileOpts & TargetProfileOpts> {
+  return yargs
+    .positional("srcProfile", {
+      type: "string",
+      describe: "Name of source profile",
+    })
+    .positional("tgtProfile", {
+      type: "string",
+      describe: "Name of target profile",
+    })
 }
 
 export default function profileModule(providedOptions: MadWizardOptions): CommandModule<Opts, Opts> {
@@ -48,8 +57,8 @@ export default function profileModule(providedOptions: MadWizardOptions): Comman
     builder: (yargs) =>
       yargs
         .command({
-          command: "get",
-          describe: "List your named profiles",
+          command: "list",
+          describe: "List your profiles",
           handler: async () => {
             const [ui, profiles] = await Promise.all([
               import("../../profiles/table.js").then((_) => _.default),
@@ -59,12 +68,27 @@ export default function profileModule(providedOptions: MadWizardOptions): Comman
           },
         })
         .command({
-          command: "delete <profile>",
-          describe: "Delete a named profile",
+          command: "get <profile>",
+          describe: "Get the details of a profile",
           builder: namedProfileBuilder,
           handler: async (argv) => {
-            const { profileName } = argv
-            await import("../../../profiles/delete.js").then((_) => _.default(providedOptions, profileName))
+            const [ui, profile] = await Promise.all([
+              import("../../profiles/details.js").then((_) => _.default),
+              import("../../../profiles/get.js").then((_) => _.default(providedOptions, argv.profile)),
+            ])
+            console.log(await ui(profile))
+
+            // TODO:
+            // const chalk = await import('chalk').then(_ => _.default)
+            // console.error("💡 " + "Hint: to update a choice, select one of the choice keys (" + chalk.yellow("yellow text") + ") and issue " + chalk.blue.bold(appName(providedOptions) + " profile edit " + chalk.yellow('<choiceKey>')))
+          },
+        })
+        .command({
+          command: "delete <profile>",
+          describe: "Delete a profile",
+          builder: namedProfileBuilder,
+          handler: async (argv) => {
+            await import("../../../profiles/delete.js").then((_) => _.default(providedOptions, argv.profile))
           },
         })
         .command({
@@ -72,9 +96,8 @@ export default function profileModule(providedOptions: MadWizardOptions): Comman
           describe: "Copy the choices in a source profile to a new destination profile",
           builder: srcAndTargetNamedProfileBuilder,
           handler: async (argv) => {
-            const { profileName, profileName2 } = argv
             await import("../../../profiles/clone.js").then((_) =>
-              _.default(providedOptions, profileName, profileName2)
+              _.default(providedOptions, argv.srcProfile, argv.tgtProfile)
             )
           },
         }),

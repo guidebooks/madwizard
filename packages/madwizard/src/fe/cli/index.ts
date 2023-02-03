@@ -34,7 +34,7 @@ import { MadWizardOptionsWithInput } from "../MadWizardOptions.js"
 
 import strings from "./strings.js"
 import examples from "./examples.js"
-import { globalCommandLineOptions, parserConfiguration } from "./options.js"
+import { appName, globalCommandLineOptions, parserConfiguration } from "./options.js"
 
 function hasCode(err?: Error): err is Error & { code: number | string } {
   return err && typeof (err as unknown as { code: number | string }).code !== undefined
@@ -71,7 +71,7 @@ export async function guide<Writer extends Writable["write"]>(
       .version(version())
       .updateStrings(strings) // pretty-print some of the help output
       .options(globalCommandLineOptions)
-      .scriptName(chalk.bold("madwizard"))
+      .scriptName(chalk.bold(appName(providedOptions)))
       .parserConfiguration(parserConfiguration)
       .command(guideMod("guide", resolve, reject2, providedOptions, write, ui))
       .showHelpOnFail(false, "Specify --help for available options")
@@ -111,7 +111,7 @@ export async function cli<Writer extends Writable["write"]>(
       .version(version())
       .updateStrings(strings) // pretty-print some of the help output
       .options(globalCommandLineOptions)
-      .scriptName(chalk.bold("madwizard"))
+      .scriptName(chalk.bold(appName(providedOptions)))
       .parserConfiguration(parserConfiguration)
       .command(guideMod("guide", resolve, reject2, providedOptions, write, ui))
       .command(profile(providedOptions))
