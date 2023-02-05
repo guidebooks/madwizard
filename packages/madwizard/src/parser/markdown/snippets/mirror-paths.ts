@@ -28,5 +28,6 @@ export function targetPathForMarkdown(guidebook: string, storePrefix = "") {
  * returns the location of the ast model associated with the given source `filepath`.
  */
 export function targetPathForAst(guidebook: string, storePrefix = "") {
-  return basename(targetPathForMarkdown(guidebook, storePrefix), ".md") + "-madwizard.json"
+  const md = targetPathForMarkdown(guidebook, storePrefix)
+  return join(dirname(md), basename(md, ".md") + "-madwizard.json")
 }
