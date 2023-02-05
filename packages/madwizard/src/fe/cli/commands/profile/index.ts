@@ -20,6 +20,7 @@ import Opts from "../../options.js"
 import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
 import getProfile from "./get.js"
+import editProfile from "./edit.js"
 import listProfiles from "./list.js"
 import cloneProfile from "./clone.js"
 import deleteProfile from "./delete.js"
@@ -32,6 +33,7 @@ export default function profileModule(providedOptions: MadWizardOptions): Comman
       yargs
         .command(listProfiles(providedOptions))
         .command(getProfile(providedOptions))
+        .command(editProfile(providedOptions))
         .command(deleteProfile(providedOptions))
         .command(cloneProfile(providedOptions)),
     handler: async () => {
