@@ -23,6 +23,7 @@ import getProfile from "./get.js"
 import editProfile from "./edit.js"
 import listProfiles from "./list.js"
 import cloneProfile from "./clone.js"
+import pruneProfile from "./prune.js"
 import deleteProfile from "./delete.js"
 
 export default function profileModule(providedOptions: MadWizardOptions): CommandModule<Opts, Opts> {
@@ -35,7 +36,8 @@ export default function profileModule(providedOptions: MadWizardOptions): Comman
         .command(getProfile(providedOptions))
         .command(editProfile(providedOptions))
         .command(deleteProfile(providedOptions))
-        .command(cloneProfile(providedOptions)),
+        .command(cloneProfile(providedOptions))
+        .command(pruneProfile(providedOptions)),
     handler: async () => {
       throw new Error("Missing subcommand")
     },

@@ -17,9 +17,16 @@
 import { basename, dirname, join } from "path"
 
 /**
+ * Full path to the given guidebook
+ */
+export function targetPathForMarkdown(guidebook: string, storePrefix = "") {
+  return join(storePrefix, dirname(guidebook), basename(guidebook))
+}
+
+/**
  * We pre-parse the source into the `blocks` model (our AST). This
  * returns the location of the ast model associated with the given source `filepath`.
  */
-export function targetPathForAst(filepath: string, storePrefix = "") {
-  return join(storePrefix, dirname(filepath), basename(filepath, ".md") + "-madwizard.json")
+export function targetPathForAst(guidebook: string, storePrefix = "") {
+  return basename(targetPathForMarkdown(guidebook, storePrefix), ".md") + "-madwizard.json"
 }
