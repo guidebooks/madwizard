@@ -32,7 +32,7 @@ export async function makeMemos(suggestions: ChoiceState, argv: Arguments<Opts>)
   return memos
 }
 
-export async function loadSuggestions(argv: Arguments<Opts>, options: MadWizardOptions): Promise<ChoiceState> {
+export async function loadSuggestions(argv: Pick<Opts, "profile">, options: MadWizardOptions): Promise<ChoiceState> {
   return argv.profile === false
     ? import("../../../choices/index.js").then((_) => _.newChoiceState("ignore"))
     : import("../../../profiles/restore.js").then((_) => _.default(options, options.profile))
