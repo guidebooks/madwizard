@@ -63,35 +63,76 @@ export function loadAssertions(
   return choices
 }
 
-/** @return the block model, either by using a precompiled model from the store, or by parsing the source */
-export async function getBlocksModel(input: string, choices: ChoiceState, options: MadWizardOptionsWithInput) {
-  // check to see if the compiled model exists
-  if (input !== "-") {
-    const [{ access, readFile }, { targetPathForAst }] = await Promise.all([
+/** Check to see if the compiled model exists for the given `input` guidebook */
+async function findAst(input: string, options: MadWizardOptions): Promise<string> {
+  const [{ access }, { targetPathForAst }] = await Promise.all([
+    import("fs/promises"),
+    import("../../../parser/markdown/snippets/mirror-paths.js"),
+  ])
+
+  const ast1 = targetPathForAst(input + "/index.md", options.store)
+  const ast2 = targetPathForAst(input + ".md", options.store)
+  const mightBeAst = !/\.md$/.test(input) && !/^http/.test(options.store)
+  const [exists1, exists2] = await Promise.all([
+    !mightBeAst
+      ? ""
+      : access(ast1)
+          .then(() => ast1)
+          .catch(() => ""),
+    !mightBeAst
+      ? ""
+      : access(ast2)
+          .then(() => ast2)
+          .catch(() => ""),
+  ])
+  return exists1 || exists2
+}
+
+/** Check to see if the plain markdown file exists for the given `input` guidebook */
+async function findMarkdown(input: string, options: MadWizardOptions) {
+  try {
+    const [{ access }, { targetPathForMarkdown }] = await Promise.all([
       import("fs/promises"),
       import("../../../parser/markdown/snippets/mirror-paths.js"),
     ])
 
-    const ast1 = targetPathForAst(input + "/index.md", options.store)
-    const ast2 = targetPathForAst(input + ".md", options.store)
-    const mightBeAst = !/\.md$/.test(input) && !/^http/.test(options.store)
+    const md1 = targetPathForMarkdown(input + "/index.md", options.store)
+    const md2 = targetPathForMarkdown(input + ".md", options.store)
+
     const [exists1, exists2] = await Promise.all([
-      !mightBeAst
-        ? ""
-        : access(ast1)
-            .then(() => ast1)
-            .catch(() => ""),
-      !mightBeAst
-        ? ""
-        : access(ast2)
-            .then(() => ast2)
-            .catch(() => ""),
+      access(md1)
+        .then(() => md1)
+        .catch(() => undefined),
+      access(md2)
+        .then(() => md2)
+        .catch(() => undefined),
     ])
-    if (exists1 || exists2) {
+    return exists1 || exists2
+  } catch (err) {
+    return undefined
+  }
+}
+
+/** Does the given `input` guidebook still exist in the latest store? */
+export async function exists(input: string, options: MadWizardOptions) {
+  return Promise.all([findAst(input, options), findMarkdown(input, options)]).then((_) =>
+    _.find((_) => _ && typeof _ === "string")
+  )
+}
+
+/** @return the block model, either by using a precompiled model from the store, or by parsing the source */
+export async function getBlocksModel(input: string, choices: ChoiceState, options: MadWizardOptionsWithInput) {
+  // check to see if the compiled model exists
+  if (input !== "-") {
+    const astFile = await findAst(input, options)
+    if (astFile) {
       // yes! the pre-parsed ast model exists
-      const { populateAprioris } = await import("../../../choices/groups/index.js")
+      const [{ readFile }, { populateAprioris }] = await Promise.all([
+        import("fs/promises"),
+        import("../../../choices/groups/index.js"),
+      ])
       await populateAprioris(choices, options)
-      return JSON.parse(await readFile(exists1 || exists2).then((_) => _.toString()))
+      return JSON.parse(await readFile(astFile).then((_) => _.toString()))
     } // intentionally fall-through
   }
 
