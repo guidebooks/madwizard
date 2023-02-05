@@ -27,7 +27,7 @@ import json from "./commands/json/index.js"
 import plan from "./commands/plan/index.js"
 // import build from "./commands/build.js"
 import mirror from "./commands/mirror.js"
-import profile from "./commands/profile.js"
+import profile from "./commands/profile/index.js"
 import guideMod, { GuideRet } from "./commands/guide/index.js"
 
 import { MadWizardOptionsWithInput } from "../MadWizardOptions.js"
