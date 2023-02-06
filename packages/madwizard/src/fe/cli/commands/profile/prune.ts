@@ -20,7 +20,7 @@ import { ChoiceState } from "../../../../choices/index.js"
 import { namedProfileBuilder } from "./builder.js"
 import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
-export async function prune(choices: ChoiceState, options: MadWizardOptions) {
+export async function prune(choices: ChoiceState, options: MadWizardOptions, verbose = options.verbose) {
   const [{ exists }] = await Promise.all([import("../util.js")])
 
   const guidebookStillExists = await Promise.all(
@@ -36,7 +36,10 @@ export async function prune(choices: ChoiceState, options: MadWizardOptions) {
   let nRemoved = 0
   for (const { choice, exists } of guidebookStillExists) {
     if (!exists) {
-      console.error(chalk.red("Deleting choice " + choice))
+      if (verbose) {
+        console.error(chalk.red("Deleting choice " + choice))
+      }
+
       choices.removeKey(choice)
       nRemoved++
     }
