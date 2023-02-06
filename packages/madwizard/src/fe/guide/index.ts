@@ -402,12 +402,12 @@ export class Guide {
       return o
     }
 
-    const { Form, MultiSelect, Select } = await import("enquirer")
+    const enquirer = await import("enquirer")
     const prompt = this.isSelect(opts)
-      ? new Select(await withStdout(opts))
+      ? new enquirer.Select(await withStdout(opts))
       : this.isMultiSelect(opts)
-      ? new MultiSelect(await withStdout(opts))
-      : new Form(await withStdout(opts))
+      ? new enquirer.MultiSelect(await withStdout(opts))
+      : new enquirer.Form(await withStdout(opts))
 
     if (isRaw(this.options)) {
       const { ask } = await import("../raw/ask.js")
