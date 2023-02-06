@@ -1,3 +1,14 @@
+# [5.2.0](https://github.com/guidebooks/madwizard/compare/5.1.0...5.2.0) (2023-02-06)
+
+### Bug Fixes
+
+- delay loading enquirer till we need it ([afae7ab](https://github.com/guidebooks/madwizard/commit/afae7ab496e55340ad60798e661196b860c98280))
+
+### Features
+
+- add madwizard profile prune ([91e18df](https://github.com/guidebooks/madwizard/commit/91e18df547379ec6b1dec31ce455fa7b96b69db7))
+- editing of prior choice ([98b9068](https://github.com/guidebooks/madwizard/commit/98b906865466b977a7d0cbb2c318bbcafe8ef544))
+
 # [5.1.0](https://github.com/guidebooks/madwizard/compare/5.0.8...5.1.0) (2023-02-03)
 
 ### Features
