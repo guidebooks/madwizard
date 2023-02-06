@@ -1,3 +1,10 @@
+## [5.2.1](https://github.com/guidebooks/madwizard/compare/5.2.0...5.2.1) (2023-02-06)
+
+### Bug Fixes
+
+- edit command should prune choices ([4ab288b](https://github.com/guidebooks/madwizard/commit/4ab288ba88c2270abe3070c35ecfe2190efe80eb))
+- missing .js extension in handler dynamic import ([c58f576](https://github.com/guidebooks/madwizard/commit/c58f5765667237db48c93304795bb93226f40248))
+
 # [5.2.0](https://github.com/guidebooks/madwizard/compare/5.1.0...5.2.0) (2023-02-06)
 
 ### Bug Fixes
