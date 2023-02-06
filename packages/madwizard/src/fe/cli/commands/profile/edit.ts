@@ -33,7 +33,7 @@ async function selectChoiceToEdit(profile: Profile) {
 }
 
 async function editChoice(choice: string, profile: Profile, providedOptions: MadWizardOptions) {
-  const guide = await import("../guide/handler").then((_) => _.default)
+  const guide = await import("../guide/handler.js").then((_) => _.default)
   await guide("guide", providedOptions, { input: choice, profile: profile.name, _: [], $0: "" })
 }
 
