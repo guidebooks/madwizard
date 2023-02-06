@@ -1,3 +1,9 @@
+## [5.2.4](https://github.com/guidebooks/madwizard/compare/5.2.3...5.2.4) (2023-02-06)
+
+### Bug Fixes
+
+- another... webpack is not happy with enquirer selective dynamic import ([85259e1](https://github.com/guidebooks/madwizard/commit/85259e175d38d409cf484349cf330c9d43cc6a1e))
+
 ## [5.2.3](https://github.com/guidebooks/madwizard/compare/5.2.2...5.2.3) (2023-02-06)
 
 ### Bug Fixes
