@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { prune } from "./prune.js"
 import { Profile } from "../../../../profiles/Profile.js"
 
 import { namedProfileBuilder } from "./builder.js"
@@ -25,6 +26,7 @@ async function selectChoiceToEdit(profile: Profile) {
     message: "Select a choice to edit",
     choices: Object.keys(profile.choices)
       .filter((key) => !/madwizard/.test(key) && !/_/.test(key))
+      .sort()
       .map((name) => ({ name })),
   })
   return prompt.run()
@@ -42,9 +44,14 @@ export default function editProfile(providedOptions: MadWizardOptions) {
     describe: "Edit the choices of a profile",
     builder: namedProfileBuilder,
     handler: async (argv) => {
-      const profile = await import("../../../../profiles/get.js").then((_) => _.default(providedOptions, argv.profile))
-      const choiceToEdit = await selectChoiceToEdit(profile)
-      await editChoice(choiceToEdit, profile, providedOptions)
+      const [choices, { assembleOptions }] = await Promise.all([
+        import("../../../../profiles/restore.js").then((_) => _.default(providedOptions, argv.profile)),
+        import("../../options.js"),
+      ])
+
+      await prune(choices, assembleOptions(providedOptions, argv))
+      const choiceToEdit = await selectChoiceToEdit(choices.profile)
+      await editChoice(choiceToEdit, choices.profile, providedOptions)
     },
   }
 }

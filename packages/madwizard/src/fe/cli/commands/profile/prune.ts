@@ -14,17 +14,14 @@
  * limitations under the License.
  */
 
+import chalk from "chalk"
 import { ChoiceState } from "../../../../choices/index.js"
 
 import { namedProfileBuilder } from "./builder.js"
 import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
-async function prune(choices: ChoiceState, options: MadWizardOptions) {
-  const [chalk, { exists }, { save }] = await Promise.all([
-    import("chalk").then((_) => _.default),
-    import("../util.js"),
-    import("../../../../profiles/persist.js"),
-  ])
+export async function prune(choices: ChoiceState, options: MadWizardOptions) {
+  const [{ exists }] = await Promise.all([import("../util.js")])
 
   const guidebookStillExists = await Promise.all(
     choices
@@ -45,8 +42,15 @@ async function prune(choices: ChoiceState, options: MadWizardOptions) {
     }
   }
 
+  return nRemoved
+}
+
+async function pruneAndSave(choices: ChoiceState, options: MadWizardOptions) {
+  const nRemoved = await prune(choices, options)
+
   if (nRemoved > 0) {
     console.error(chalk.green(`Removed ${nRemoved} obsolete entries from profile ${choices.profile.name}`))
+    const { save } = await import("../../../../profiles/persist.js")
     await save(choices, options)
   } else {
     console.error(chalk.yellow(`Nothing to prune in profile ${choices.profile.name}`))
@@ -64,7 +68,7 @@ export default function pruneProfile(providedOptions: MadWizardOptions) {
         import("../../../../profiles/restore.js").then((_) => _.default(providedOptions, argv.profile)),
         import("../../options.js"),
       ])
-      await prune(profile, assembleOptions(providedOptions, argv))
+      await pruneAndSave(profile, assembleOptions(providedOptions, argv))
     },
   }
 }
