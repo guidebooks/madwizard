@@ -21,8 +21,9 @@ import { namedProfileBuilder } from "./builder.js"
 import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
 async function selectChoiceToEdit(profile: Profile) {
-  const Select = await import("enquirer").then((_) => _.Select)
-  const prompt = new Select({
+  // webpack is not happy if we import just Select rather than default
+  const enquirer = await import("enquirer").then((_) => _.default)
+  const prompt = new enquirer.Select({
     message: "Select a choice to edit",
     choices: Object.keys(profile.choices)
       .filter((key) => !/madwizard/.test(key) && !/_/.test(key))
