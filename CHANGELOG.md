@@ -1,3 +1,9 @@
+## [5.2.2](https://github.com/guidebooks/madwizard/compare/5.2.1...5.2.2) (2023-02-06)
+
+### Bug Fixes
+
+- profile edit should be less verbose about pruning ([421a327](https://github.com/guidebooks/madwizard/commit/421a3272506ed82cd2028e20cd2034ae884b698c))
+
 ## [5.2.1](https://github.com/guidebooks/madwizard/compare/5.2.0...5.2.1) (2023-02-06)
 
 ### Bug Fixes
