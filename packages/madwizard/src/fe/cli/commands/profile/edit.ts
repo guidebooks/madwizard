@@ -49,7 +49,7 @@ export default function editProfile(providedOptions: MadWizardOptions) {
         import("../../options.js"),
       ])
 
-      await prune(choices, assembleOptions(providedOptions, argv))
+      await prune(choices, assembleOptions(providedOptions, argv), false) // false: not verbose
       const choiceToEdit = await selectChoiceToEdit(choices.profile)
       await editChoice(choiceToEdit, choices.profile, providedOptions)
     },
