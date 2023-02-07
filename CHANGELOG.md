@@ -1,3 +1,9 @@
+## [5.2.6](https://github.com/guidebooks/madwizard/compare/5.2.5...5.2.6) (2023-02-07)
+
+### Bug Fixes
+
+- bump make-fetch-happen to pick up security fix ([19c1a2a](https://github.com/guidebooks/madwizard/commit/19c1a2a42449968ca550ad37315e36e56c6133fc))
+
 ## [5.2.5](https://github.com/guidebooks/madwizard/compare/5.2.4...5.2.5) (2023-02-07)
 
 ### Bug Fixes
