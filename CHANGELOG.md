@@ -1,3 +1,9 @@
+## [5.2.5](https://github.com/guidebooks/madwizard/compare/5.2.4...5.2.5) (2023-02-07)
+
+### Bug Fixes
+
+- sigh, another fix for dynamic import of enquirer ([aee20c0](https://github.com/guidebooks/madwizard/commit/aee20c095bcb689e564217a359c6b1f36fa3cb17))
+
 ## [5.2.4](https://github.com/guidebooks/madwizard/compare/5.2.3...5.2.4) (2023-02-06)
 
 ### Bug Fixes
