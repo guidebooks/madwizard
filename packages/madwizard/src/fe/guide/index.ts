@@ -402,7 +402,7 @@ export class Guide {
       return o
     }
 
-    const enquirer = await import("enquirer")
+    const enquirer = await import("enquirer").then((_) => _.default)
     const prompt = this.isSelect(opts)
       ? new enquirer.Select(await withStdout(opts))
       : this.isMultiSelect(opts)
