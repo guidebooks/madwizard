@@ -31,6 +31,7 @@ import { isExecutable } from "../../../codeblock/isCodeBlock.js"
 import { getTipTitle, isTipWithFullTitle } from "../rehype-tip/index.js"
 import isElementWithProperties, {
   hasContentChildren,
+  isElement,
   isInlineContent,
   isParagraph,
   isText,
@@ -185,7 +186,7 @@ export function rehypeCodeIndexer(
       const allocCodeBlockId = (myCodeIdx: number) => `${uuid}-${myCodeIdx}`
 
       visitParents(/* <Element> */ ast, "element", function visitor(node, ancestors) {
-        if (node.tagName === "code") {
+        if (isElement(node) && node.tagName === "code") {
           // react-markdown v6+ places the language in the className
           const match = node.properties.className
             ? /language-({\.)?(\w+)(\.async)?/.exec(node.properties.className.toString())
