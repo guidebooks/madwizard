@@ -16,7 +16,7 @@
 
 import Debug from "debug"
 import { Transformer } from "unified"
-import { Element, ElementContent, Properties } from "hast"
+import { Node, Element, ElementContent, Properties } from "hast"
 
 import { ChoiceState } from "../../../choices/index.js"
 import { MadWizardOptions } from "../../../fe/index.js"
@@ -67,8 +67,8 @@ export function isTabWithProperties(elt: ElementContent): elt is Element {
   return isTab(elt)
 }
 
-export function isTabGroup(elt: Element): boolean {
-  return elt.properties["data-kui-choice-group"] !== undefined
+export function isTabGroup(elt: Node | Element): elt is Element {
+  return isElementWithProperties(elt) && elt.properties["data-kui-choice-group"] !== undefined
 }
 
 export function setTabGroup(elt: Element, group: string) {

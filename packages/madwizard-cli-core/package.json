@@ -22,7 +22,7 @@
     "bin": "./bin"
   },
   "scripts": {
-    "clean": "rm madwizard.min.cjs",
+    "clean": "rm -f madwizard.min.cjs",
     "bundle": "esbuild ./madwizard.js --bundle --platform=node --outfile=./dist/madwizard.min.cjs --external:@guidebooks/store/package.json",
     "build": "npm run bundle -- --minify",
     "watch": "npm run bundle -- --watch",
