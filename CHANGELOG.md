@@ -1,3 +1,9 @@
+## [5.2.7](https://github.com/guidebooks/madwizard/compare/5.2.6...5.2.7) (2023-02-09)
+
+### Bug Fixes
+
+- regexp error for choices that contain ansi control chars ([29b32b8](https://github.com/guidebooks/madwizard/commit/29b32b8f966e2ff9ab4404aa8eba77abe0808c6a))
+
 ## [5.2.6](https://github.com/guidebooks/madwizard/compare/5.2.5...5.2.6) (2023-02-07)
 
 ### Bug Fixes
