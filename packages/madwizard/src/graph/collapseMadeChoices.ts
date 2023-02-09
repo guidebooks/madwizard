@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import stripAnsi from "strip-ansi"
+
 import { ChoiceState, updateContent } from "../choices/index.js"
 
 import { hasKey } from "./nodes/Key.js"
@@ -32,10 +34,10 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
       const pattern = new RegExp(
         // madeChoiceTitle may be JSON in the case of a form, so
         // escape the {} parts; see test/input/26
-        "^" + madeChoiceTitle.replace(/[{}[]]/g, "\\$&") + "$", // $& means the whole matched string,
+        "^" + stripAnsi(madeChoiceTitle).replace(/[{}[]]/g, "\\$&") + "$", // $& means the whole matched string,
         "i"
       )
-      const matchingSubtrees = graph.choices.filter((_) => pattern.test(_.title))
+      const matchingSubtrees = graph.choices.filter((_) => pattern.test(stripAnsi(_.title)))
 
       if (isMulti) {
         try {
