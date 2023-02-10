@@ -1,3 +1,9 @@
+## [5.2.8](https://github.com/guidebooks/madwizard/compare/5.2.7...5.2.8) (2023-02-10)
+
+### Bug Fixes
+
+- early exit (exit code 90) should result in final canceled message ([4df5a09](https://github.com/guidebooks/madwizard/commit/4df5a09102e3f73c76f7e34829b84d9719bcda1d))
+
 ## [5.2.7](https://github.com/guidebooks/madwizard/compare/5.2.6...5.2.7) (2023-02-09)
 
 ### Bug Fixes
