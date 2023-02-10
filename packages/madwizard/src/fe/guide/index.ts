@@ -759,7 +759,9 @@ export class Guide {
         // sigh, this is enquirer's bizarre way of indicating the prompt was cancelled
         process.emit("SIGINT")
         throw err
-      } else if (!isEarlyExit(err) && !this.hasReceivedExitSignalFromUser) {
+      } else if (isEarlyExit(err)) {
+        throw new Error("Canceled by user")
+      } else if (!this.hasReceivedExitSignalFromUser) {
         if (this.options.raw) {
           throw err
         } else {

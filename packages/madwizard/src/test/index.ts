@@ -209,14 +209,19 @@ function testRunTaskWithProgrammaticInput(test: Test, value: string, path: strin
     const { name: profilesPath } = tmpDirSync()
 
     const store = process.cwd()
-    await CLI.cli(["test", "run", "-"], write, {
-      store,
-      vfile,
-      clear: false,
-      profile,
-      profilesPath,
-      profileSaveDelay: 0,
-    })
+    try {
+      await CLI.cli(["test", "run", "-"], write, {
+        store,
+        vfile,
+        clear: false,
+        profile,
+        profilesPath,
+        profileSaveDelay: 0,
+      })
+    } catch (err) {
+      // also test output of error messages
+      write(err.message)
+    }
     assert.equal(stripAnsi(actualOutput.trim()), stripAnsi(expectedOutput.trim()), "tree should match")
   })
 }

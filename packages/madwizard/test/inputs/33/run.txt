@@ -3,3 +3,4 @@ this should be reachable
 echo "stopping here"
 exit 90
 stopping here
+Canceled by user
