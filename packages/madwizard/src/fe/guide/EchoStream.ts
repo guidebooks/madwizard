@@ -19,7 +19,7 @@ import { Writable } from "stream"
 /** This helps implement a `process.stdout` in a browser */
 export default class EchoStream extends Writable {
   _write(chunk, enc, next) {
-    console.log(chunk.toString())
+    process.stdout.write(chunk.toString())
     next()
   }
 }
