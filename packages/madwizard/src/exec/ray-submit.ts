@@ -16,6 +16,7 @@
 
 import Debug from "debug"
 import { join, resolve } from "path"
+import shellEscape from "shell-escape"
 import expandHomeDir from "expand-home-dir"
 import { access, readFile } from "fs/promises"
 
@@ -233,7 +234,7 @@ export default async function raySubmit(
           const inputFile = expand(parsedOptions.entrypoint, memos) || customEnv.MWFILENAME
 
           // arguments after the --
-          const dashDash = parsedOptions["--"] ? parsedOptions["--"].map((_) => expand(_, memos)).join(" ") : ""
+          const dashDash = parsedOptions["--"] ? shellEscape(parsedOptions["--"].map((_) => expand(_, memos))) : ""
 
           // formulate a ray job submit command line; `custom` will
           // assemble ` working directory `$MWDIR` and `$MWFILENAME`
