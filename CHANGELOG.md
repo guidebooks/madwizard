@@ -1,3 +1,10 @@
+## [5.2.9](https://github.com/guidebooks/madwizard/compare/5.2.8...5.2.9) (2023-02-13)
+
+### Bug Fixes
+
+- ray-submit does not shell-escape dashdash part of command line ([fd8ea68](https://github.com/guidebooks/madwizard/commit/fd8ea68a8626b6647c96dc33de25b52d006306fa))
+- ray-submit executor does not protect against all paths of exceptions ([acc841d](https://github.com/guidebooks/madwizard/commit/acc841d35d247b351f1dfae84760f6e6c565505b))
+
 ## [5.2.8](https://github.com/guidebooks/madwizard/compare/5.2.7...5.2.8) (2023-02-10)
 
 ### Bug Fixes
