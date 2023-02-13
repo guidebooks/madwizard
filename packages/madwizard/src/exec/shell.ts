@@ -74,68 +74,72 @@ export default async function shellItOut(
   }
 
   return new Promise((resolve, reject) => {
-    // re: setopts, by default zsh does not do word splitting on
-    // unquoted variable expansions.
-    // https://stackoverflow.com/questions/6715388/variable-expansion-is-different-in-zsh-from-that-in-bash
-    const shell = process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash")
-    const setopts = /zsh/.test(shell) ? "setopt SH_WORD_SPLIT;" : ""
-    const argv = ["-c", process.platform === "win32" ? cmdline.toString() : `set -o pipefail; ${setopts} ${cmdline}`]
-    Debug("madwizard/exec/shell")("shell", shell)
-    Debug("madwizard/exec/shell")("argv", argv)
+    try {
+      // re: setopts, by default zsh does not do word splitting on
+      // unquoted variable expansions.
+      // https://stackoverflow.com/questions/6715388/variable-expansion-is-different-in-zsh-from-that-in-bash
+      const shell = process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash")
+      const setopts = /zsh/.test(shell) ? "setopt SH_WORD_SPLIT;" : ""
+      const argv = ["-c", process.platform === "win32" ? cmdline.toString() : `set -o pipefail; ${setopts} ${cmdline}`]
+      Debug("madwizard/exec/shell")("shell", shell)
+      Debug("madwizard/exec/shell")("argv", argv)
 
-    const child = spawn(shell, argv, {
-      env,
-      detached: async, // see Memoizer.cleanup() for asyncs, we detach and then kill that detached process group
-      stdio,
-      windowsHide: true, // don't pop up a bash.exe window
-    })
+      const child = spawn(shell, argv, {
+        env,
+        detached: async, // see Memoizer.cleanup() for asyncs, we detach and then kill that detached process group
+        stdio,
+        windowsHide: true, // don't pop up a bash.exe window
+      })
 
-    child.on("error", async (err) => {
-      if (onClose) {
-        await onClose()
-      }
-      reject(err)
-    })
+      child.on("error", async (err) => {
+        if (onClose) {
+          await onClose()
+        }
+        reject(err)
+      })
 
-    let err = ""
-    let out = ""
-    child.on("close", async (code) => {
-      if (capture) {
-        opts.capture = out
-      }
+      let err = ""
+      let out = ""
+      child.on("close", async (code) => {
+        if (capture) {
+          opts.capture = out
+        }
 
-      if (onClose) {
-        await onClose()
-      }
+        if (onClose) {
+          await onClose()
+        }
 
-      if (code === 90) {
-        reject(EarlyExit())
-      } else if (code === 0) {
-        resolve("success")
-      } else {
-        reject(new Error(err || `${cmdline} failed`))
-      }
-    })
+        if (code === 90) {
+          reject(EarlyExit())
+        } else if (code === 0) {
+          resolve("success")
+        } else {
+          reject(new Error(err || `${cmdline} failed`))
+        }
+      })
 
-    if (opts.quiet) {
-      child.stderr.on("data", (data) => (err += data.toString()))
-    }
-
-    if (capture) {
-      if (opts.throwErrors) {
+      if (opts.quiet) {
         child.stderr.on("data", (data) => (err += data.toString()))
-      } else if (!opts.ignoreStderr) {
-        child.stderr.on("data", (data) => (out += data.toString()))
       }
-      child.stdout.on("data", (data) => (out += data.toString()))
-    } else if (opts.write) {
-      // sending the stream to a custom consumer, mostly for tests
-      child.stdout.on("data", (data) => opts.write(data.toString()))
-    }
 
-    if (async) {
-      memos.subprocesses.push(child)
-      resolve("success")
+      if (capture) {
+        if (opts.throwErrors) {
+          child.stderr.on("data", (data) => (err += data.toString()))
+        } else if (!opts.ignoreStderr) {
+          child.stderr.on("data", (data) => (out += data.toString()))
+        }
+        child.stdout.on("data", (data) => (out += data.toString()))
+      } else if (opts.write) {
+        // sending the stream to a custom consumer, mostly for tests
+        child.stdout.on("data", (data) => opts.write(data.toString()))
+      }
+
+      if (async) {
+        memos.subprocesses.push(child)
+        resolve("success")
+      }
+    } catch (err) {
+      reject(err)
     }
   })
 }
