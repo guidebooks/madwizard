@@ -98,11 +98,11 @@ async function readRuntimeEnvFromTemplate(parsedOptions, memos: Memos) {
 
 /** express any pip dependencies we have collected */
 async function dependencies(memos: Memos, parsedOptions: ParsedOptions): Promise<RuntimeEnvDependencies> {
-  const pips = new Set(!memos.dependencies || !memos.dependencies.pip ? [] : memos.dependencies.pip)
+  const pips = new Set<string>()
   await addPipsFromTemplate(pips, parsedOptions, memos)
   pips.delete("ray")
 
-  const condas = new Set(!memos.dependencies || !memos.dependencies.conda ? [] : memos.dependencies.conda)
+  const condas = new Set<string>()
 
   if (condas.size === 0 && pips.size === 0) {
     return {}
