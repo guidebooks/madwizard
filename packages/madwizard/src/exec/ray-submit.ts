@@ -28,13 +28,6 @@ import { copyChoices } from "../profiles/index.js"
 
 type ParsedOptions = ReturnType<typeof import("yargs-parser")>
 
-interface RuntimeEnvDependencies {
-  pip?: string[]
-  conda?: {
-    dependencies: (string | { pip: string[] })[]
-  }
-}
-
 /** Wrap the given command line with venv activation */
 function withVenv(cmdline: string) {
   return (
@@ -61,7 +54,7 @@ export function expand(expr: string | number, memos: Memos): string {
 }
 
 /** Maybe the working directory as a requirements.txt? */
-async function addPipsFromTemplate(pips: Set<string>, parsedOptions: ParsedOptions, memos: Memos) {
+async function readPipsFromWorkingDir(parsedOptions: ParsedOptions, memos: Memos) {
   if (parsedOptions["working-dir"]) {
     const workingDirPips = resolve(join(expand(parsedOptions["working-dir"], memos), "requirements.txt"))
     if (
@@ -73,7 +66,7 @@ async function addPipsFromTemplate(pips: Set<string>, parsedOptions: ParsedOptio
         const pipsFromWorkingDir = await readFile(workingDirPips).then((data) =>
           data.toString().split(/\n/).filter(Boolean)
         )
-        pipsFromWorkingDir.forEach((pip) => pips.add(pip))
+        return { pip: pipsFromWorkingDir }
       } catch (err) {
         console.error("Error reading requirements.txt", err)
       }
@@ -82,7 +75,7 @@ async function addPipsFromTemplate(pips: Set<string>, parsedOptions: ParsedOptio
 }
 
 /** Maybe the working directory has a runtime-env.yaml we can use? */
-async function readRuntimeEnvFromTemplate(parsedOptions, memos: Memos) {
+async function readRuntimeEnvFromWorkingDir(parsedOptions, memos: Memos) {
   if (parsedOptions["working-dir"]) {
     const workingDirRuntimeEnv = resolve(join(expand(parsedOptions["working-dir"], memos), "runtime-env.yaml"))
     if (
@@ -92,37 +85,6 @@ async function readRuntimeEnvFromTemplate(parsedOptions, memos: Memos) {
     ) {
       // then the working dir has a runtime env that we can use
       return import("js-yaml").then(async (_) => _.load((await readFile(workingDirRuntimeEnv)).toString()))
-    }
-  }
-}
-
-/** express any pip dependencies we have collected */
-async function dependencies(memos: Memos, parsedOptions: ParsedOptions): Promise<RuntimeEnvDependencies> {
-  const pips = new Set<string>()
-  await addPipsFromTemplate(pips, parsedOptions, memos)
-  pips.delete("ray")
-
-  const condas = new Set<string>()
-
-  if (condas.size === 0 && pips.size === 0) {
-    return {}
-  } else if (condas.size === 0) {
-    return { pip: Array.from(pips) }
-  } else {
-    if (pips.size > 0) {
-      condas.add("pip")
-    }
-
-    const dependencies: RuntimeEnvDependencies["conda"]["dependencies"] = Array.from(condas)
-
-    if (pips.size > 0) {
-      dependencies.push({
-        pip: Array.from(pips),
-      })
-    }
-
-    return {
-      conda: { dependencies },
     }
   }
 }
@@ -140,8 +102,8 @@ async function saveEnvToFile(
 
   const runtimeEnv: Record<string, any> = Object.assign(
     {},
-    await dependencies(memos, parsedOptions),
-    (await readRuntimeEnvFromTemplate(parsedOptions, memos)) || {},
+    await readPipsFromWorkingDir(parsedOptions, memos),
+    (await readRuntimeEnvFromWorkingDir(parsedOptions, memos)) || {},
     {
       env_vars: curatedEnvVars,
       working_dir: customEnv.MWDIR,
