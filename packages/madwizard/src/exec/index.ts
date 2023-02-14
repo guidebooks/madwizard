@@ -22,7 +22,6 @@ import shell from "./shell.js"
 import which from "./which.js"
 import custom from "./custom.js"
 import python from "./python.js"
-import pipShow from "./pip-show.js"
 import raySubmit from "./ray-submit.js"
 import exporter, { isExport } from "./export.js"
 import handledByClient from "./handled-by-client.js"
@@ -57,7 +56,6 @@ export async function shellExec(
     return (
       exporter(cmdline, memos, opts) || // export FOO=3
       which(cmdline) || // which foo
-      pipShow(cmdline, memos) || // optimized pip show
       shell(cmdline, memos, opts, undefined, async) // vanilla shell exec
     )
   } else if (isPythonic(language)) {
