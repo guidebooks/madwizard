@@ -35,9 +35,6 @@ export interface Memos {
   /** Any captured environment variable assignments. For example, a guidebook may want to update via `export FOO=bar` */
   env: typeof process.env
 
-  /** Any collected dependencies that need to be injected into the runtime */
-  dependencies: Record<string, string[]>
-
   /** Any forked subprocesses that we should wait for? */
   subprocesses: ChildProcess[]
 
@@ -69,9 +66,6 @@ export class Memoizer implements Memos {
 
   /** Any captured environment variable assignments. For example, a guidebook may want to update via `export FOO=bar` */
   public readonly env: typeof process.env = {}
-
-  /** Any collected dependencies that need to be injected into the runtime */
-  public readonly dependencies = {}
 
   /** Any forked subprocesses that we should wait for? */
   public readonly subprocesses: ChildProcess[] = []
