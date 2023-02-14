@@ -25,8 +25,6 @@ import python from "./python.js"
 import pipShow from "./pip-show.js"
 import raySubmit from "./ray-submit.js"
 import exporter, { isExport } from "./export.js"
-import addPipDependences from "./pip-install.js"
-import addCondaDependences from "./conda-install.js"
 import handledByClient from "./handled-by-client.js"
 import madwizardFinally from "./finally/exec.js"
 
@@ -49,8 +47,6 @@ export async function shellExec(
   } else if (exec) {
     // then the source has provided a custom executor
     return (
-      addPipDependences(cmdline, memos, exec) ||
-      addCondaDependences(cmdline, memos, exec) ||
       madwizardFinally(cmdline, memos, exec) ||
       (await raySubmit(cmdline, language, memos, opts, exec, async)) ||
       custom(cmdline, memos, opts, exec, async)
