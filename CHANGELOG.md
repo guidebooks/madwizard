@@ -1,3 +1,9 @@
+## [5.2.10](https://github.com/guidebooks/madwizard/compare/5.2.9...5.2.10) (2023-02-14)
+
+### Bug Fixes
+
+- shell escaping in ray-submit can result in '"foo"' double-quoting ([ae24320](https://github.com/guidebooks/madwizard/commit/ae24320ab133a9add459c33f1b18b594693ec4b0))
+
 ## [5.2.9](https://github.com/guidebooks/madwizard/compare/5.2.8...5.2.9) (2023-02-13)
 
 ### Bug Fixes
