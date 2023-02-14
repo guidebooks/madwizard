@@ -1,3 +1,21 @@
+# [6.0.0](https://github.com/guidebooks/madwizard/compare/5.2.10...6.0.0) (2023-02-14)
+
+### Bug Fixes
+
+- small code cleanup in ray-submit for dependence management ([c89d102](https://github.com/guidebooks/madwizard/commit/c89d1021cb955aff251d53f9d3daf8d2925ce68b))
+
+### Features
+
+- remove now-unused `dependencies` field of `Memos` ([7ccc0e0](https://github.com/guidebooks/madwizard/commit/7ccc0e03a5ceac7383a5e72b3d7f394fef6c1086))
+- remove pip-install and conda-install executors ([b83926e](https://github.com/guidebooks/madwizard/commit/b83926e2dbc1f173d77232df09f58d8031e5a238))
+- remove support for `pip-show` executor ([213ff1e](https://github.com/guidebooks/madwizard/commit/213ff1eb159d2be06268d18951114ee1ab4f8c68))
+
+### BREAKING CHANGES
+
+- since this was part of the public Memos interface, this is a breaking change
+- any guidebooks that make use of `exec: pip-show` will need to be ported to pull in dependencies via a requirements.txt in a working directory; see ml/codeflare/training/byoc for an example.
+- any guidebooks with `exec: pip-install` or `exec: conda-install` will need to be ported
+
 ## [5.2.10](https://github.com/guidebooks/madwizard/compare/5.2.9...5.2.10) (2023-02-14)
 
 ### Bug Fixes
