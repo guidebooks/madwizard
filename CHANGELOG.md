@@ -1,3 +1,9 @@
+# [6.1.0](https://github.com/guidebooks/madwizard/compare/6.0.0...6.1.0) (2023-02-15)
+
+### Features
+
+- avoid the use of ray cli (on the client) for submitting jobs ([86f99bb](https://github.com/guidebooks/madwizard/commit/86f99bb0d42158643359cc03e1d46abdaddd4ce5))
+
 # [6.0.0](https://github.com/guidebooks/madwizard/compare/5.2.10...6.0.0) (2023-02-14)
 
 ### Bug Fixes
