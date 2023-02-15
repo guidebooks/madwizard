@@ -98,6 +98,7 @@ export class Guide {
 
   private exitSignalFromUser?: Parameters<Memos["cleanup"]>[0]
   public async onExitSignalFromUser(signal?: Parameters<Memos["cleanup"]>[0]) {
+    this.debug("onExitSignalFromUser", signal)
     this.exitSignalFromUser = signal
 
     if (this._currentRunner) {
@@ -148,6 +149,7 @@ export class Guide {
 
   /** Remember any finally blocks that we may want to execute on abnormal termination */
   private setFinallies(steps: FinallyTaskStep[]) {
+    this.debug("adding finally", steps)
     steps.forEach((_) => (this._finallies[_.graph.isFinallyFor] = _))
     return steps
   }
@@ -165,6 +167,8 @@ export class Guide {
   private async execAndClearFinally(ctx: string) {
     const finallySteps = this.finallies.filter((_) => _.graph.isFinallyFor === ctx)
     await this.runFinallyTasks(finallySteps)
+
+    this.debug("clearing finallies after exec", ctx)
     this.clearFinallies(finallySteps)
   }
 
@@ -616,6 +620,8 @@ export class Guide {
 
   private async runFinallyTasks(taskSteps: FinallyTaskStep[]) {
     try {
+      this.debug("Running finally tasks", taskSteps.length)
+
       return await this.runTasks(
         await Promise.all(
           taskSteps.map(asNormalTaskStep).map(async (_) =>
@@ -724,9 +730,14 @@ export class Guide {
         await this.incorporateAnswers(choices[0], await this.ask(firstQuestion))
         return await this.resolveChoices(iter + 1, choiceIter + 1, wizard)
       }
+    } catch (err) {
+      // make sure to execute any finallies on unexpected error
+      await this.runOnStackFinallies()
+      throw err
     } finally {
       // this shouldn't be necessary, in the absence of bugs;
       // popContext should clear as they come
+      this.debug("clearing finallies after task completion", extractTitle(graph), finallySteps.length)
       await this.clearFinallies(finallySteps)
     }
   }
