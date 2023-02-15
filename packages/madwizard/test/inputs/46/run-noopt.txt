@@ -1,2 +1,4 @@
 echo madwizard_finally_push "test/inputs/46/in"
+echo "final finally"
+final finally
 ✘ Run failed: Unable to run this guidebook, due to 1 unresolved question
