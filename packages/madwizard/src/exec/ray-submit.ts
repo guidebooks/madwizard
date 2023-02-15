@@ -201,7 +201,7 @@ export default async function raySubmit(
       // formulate a ray job submit command line; `custom` will
       // assemble ` working directory `$MWDIR` and `$MWFILENAME`
       const python = language === "python" || /\.py$/.test(inputFile) ? "python3" : "" // FIXME generalize this
-      const systemPart = `ray job submit --working-dir=${remoteWorkingDir} --runtime-env=${remoteRuntimeEnvFilepath} ${extraArgs}`
+      const systemPart = `ray job submit --address=http://localhost:8265 --working-dir=${remoteWorkingDir} --runtime-env=${remoteRuntimeEnvFilepath} ${extraArgs}`
       const appPart = `${python} ${parsedOptions.input === false ? "" : inputFile} ${dashDash}`
       const cmdline = `${systemPart} -- ${appPart}`
       Debug("madwizard/exec/ray-submit")("env", memos.env || {})
