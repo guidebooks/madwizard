@@ -1,3 +1,9 @@
+## [6.1.1](https://github.com/guidebooks/madwizard/compare/6.1.0...6.1.1) (2023-02-15)
+
+### Bug Fixes
+
+- ray job submit should specify --address ([622b6db](https://github.com/guidebooks/madwizard/commit/622b6db166065660ffdc9d9b4e479b828e4c15aa))
+
 # [6.1.0](https://github.com/guidebooks/madwizard/compare/6.0.0...6.1.0) (2023-02-15)
 
 ### Features
