@@ -1,3 +1,9 @@
+## [6.1.2](https://github.com/guidebooks/madwizard/compare/6.1.1...6.1.2) (2023-02-16)
+
+### Bug Fixes
+
+- switch enquirer from git+ssh to https ([4b61527](https://github.com/guidebooks/madwizard/commit/4b61527e4d5b7edda8acb3661ecdd4f9cfa9ceb8))
+
 ## [6.1.1](https://github.com/guidebooks/madwizard/compare/6.1.0...6.1.1) (2023-02-15)
 
 ### Bug Fixes
