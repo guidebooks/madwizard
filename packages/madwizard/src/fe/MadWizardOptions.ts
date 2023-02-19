@@ -25,8 +25,8 @@ export interface RunOptions {
    */
   interactive: boolean
 
-  /** Interactive mode for a given guidebook */
-  ifor: string
+  /** Interactive mode for a given guidebook(s) */
+  ifor: string | string[]
 
   /** Don't actually execute anything, but making choices and
    * validation and expanding lists is ok

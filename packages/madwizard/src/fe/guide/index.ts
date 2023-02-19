@@ -216,7 +216,11 @@ export class Guide {
       // interactive mode always, interactive === true; or c) we were
       // asked to run in interactive mode for the last question, and
       // this is the last question
-      const askIt = !suggestion || this.options.interactive === true || this.options.ifor === choice.groupContext
+      const askIt =
+        !suggestion ||
+        this.options.interactive === true ||
+        (typeof this.options.ifor === "string" && this.options.ifor === choice.groupContext) ||
+        (Array.isArray(this.options.ifor) && this.options.ifor.includes(choice.groupContext))
 
       if (!askIt) {
         if (thisChoiceIsAForm) {
