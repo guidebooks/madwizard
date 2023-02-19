@@ -1,3 +1,9 @@
+# [6.2.0](https://github.com/guidebooks/madwizard/compare/6.1.2...6.2.0) (2023-02-19)
+
+### Features
+
+- allow the --ifor option to be passed more than once ([3bcde37](https://github.com/guidebooks/madwizard/commit/3bcde378d0818bdd9d80ee36847a2eb8174abdbd))
+
 ## [6.1.2](https://github.com/guidebooks/madwizard/compare/6.1.1...6.1.2) (2023-02-16)
 
 ### Bug Fixes
