@@ -1,3 +1,9 @@
+## [6.2.1](https://github.com/guidebooks/madwizard/compare/6.2.0...6.2.1) (2023-02-20)
+
+### Bug Fixes
+
+- add -v alias for --version ([c0fa51b](https://github.com/guidebooks/madwizard/commit/c0fa51b1c4c7e50edf705419def8c7b6b03a46b6))
+
 # [6.2.0](https://github.com/guidebooks/madwizard/compare/6.1.2...6.2.0) (2023-02-19)
 
 ### Features
