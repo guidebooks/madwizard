@@ -69,6 +69,8 @@ export async function guide<Writer extends Writable["write"]>(
       .demandCommand() // fail if yargs doesn't find one of our commands
       .example(examples())
       .version(version())
+      .alias("v", "version")
+      .boolean("v")
       .updateStrings(strings) // pretty-print some of the help output
       .options(globalCommandLineOptions)
       .scriptName(chalk.bold(appName(providedOptions)))
@@ -109,6 +111,8 @@ export async function cli<Writer extends Writable["write"]>(
       .demandCommand() // fail if yargs doesn't find one of our commands
       .example(examples())
       .version(version())
+      .alias("v", "version")
+      .boolean("v")
       .updateStrings(strings) // pretty-print some of the help output
       .options(globalCommandLineOptions)
       .scriptName(chalk.bold(appName(providedOptions)))
