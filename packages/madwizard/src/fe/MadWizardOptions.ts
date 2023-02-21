@@ -90,6 +90,9 @@ export interface DisplayOptions<R extends RawImpl = RawImpl> {
   /** Name of the application [default: madwizard] */
   appName: string
 
+  /** Version of the application [default: use madwizard's version] */
+  appVersion: [number, number, number]
+
   /** name to display in log messages */
   name: string
 
