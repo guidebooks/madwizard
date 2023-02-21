@@ -1,3 +1,9 @@
+## [6.2.2](https://github.com/guidebooks/madwizard/compare/6.2.1...6.2.2) (2023-02-21)
+
+### Bug Fixes
+
+- allow clients to pass in an `appVersion` ([bbbb278](https://github.com/guidebooks/madwizard/commit/bbbb2788f943fa9b696857b67c444174dc17b5d0))
+
 ## [6.2.1](https://github.com/guidebooks/madwizard/compare/6.2.0...6.2.1) (2023-02-20)
 
 ### Bug Fixes
