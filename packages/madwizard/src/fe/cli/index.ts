@@ -68,7 +68,7 @@ export async function guide<Writer extends Writable["write"]>(
       .wrap(null) // no artificial wrapping
       .demandCommand() // fail if yargs doesn't find one of our commands
       .example(examples())
-      .version(version())
+      .version(version(providedOptions.appVersion))
       .alias("v", "version")
       .boolean("v")
       .updateStrings(strings) // pretty-print some of the help output
@@ -110,7 +110,7 @@ export async function cli<Writer extends Writable["write"]>(
       .wrap(null) // no artificial wrapping
       .demandCommand() // fail if yargs doesn't find one of our commands
       .example(examples())
-      .version(version())
+      .version(version(providedOptions.appVersion))
       .alias("v", "version")
       .boolean("v")
       .updateStrings(strings) // pretty-print some of the help output
