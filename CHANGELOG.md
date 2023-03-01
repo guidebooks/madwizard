@@ -1,3 +1,9 @@
+## [6.2.3](https://github.com/guidebooks/madwizard/compare/6.2.2...6.2.3) (2023-03-01)
+
+### Bug Fixes
+
+- another fix for quote preservation in dashdash args ([2bb944c](https://github.com/guidebooks/madwizard/commit/2bb944c9324446e0a909cd64f63b1c58faaa3ab3))
+
 ## [6.2.2](https://github.com/guidebooks/madwizard/compare/6.2.1...6.2.2) (2023-02-21)
 
 ### Bug Fixes
