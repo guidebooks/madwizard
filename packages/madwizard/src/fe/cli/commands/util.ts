@@ -27,7 +27,7 @@ export async function makeMemos(suggestions: ChoiceState, argv: Arguments<Opts>)
   const memos = new Memoizer(suggestions)
 
   // allow guidebooks to selectively inject -- <rest> arguments into shell commands
-  memos.env.GUIDEBOOK_DASHDASH = argv["--"] ? argv["--"].join(" ") : ""
+  memos.cliDashDash = argv["--"]
 
   return memos
 }
