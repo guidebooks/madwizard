@@ -1,3 +1,9 @@
+## [6.2.4](https://github.com/guidebooks/madwizard/compare/6.2.3...6.2.4) (2023-03-01)
+
+### Bug Fixes
+
+- further dashdash improvements for ray submit ([c4ca8b3](https://github.com/guidebooks/madwizard/commit/c4ca8b3c4692f886ee677ac60fdba53200a96752))
+
 ## [6.2.3](https://github.com/guidebooks/madwizard/compare/6.2.2...6.2.3) (2023-03-01)
 
 ### Bug Fixes
