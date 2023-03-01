@@ -185,7 +185,12 @@ export default async function raySubmit(
       const inputFile = expand(parsedOptions.entrypoint, memos)
 
       // arguments after the --
-      const dashDash = parsedOptions["--"] ? shellEscape(parsedOptions["--"].map((_) => expand(_, memos))) : ""
+      const dashDash =
+        (parsedOptions["--"] ? shellEscape(parsedOptions["--"].map((_) => expand(_, memos))) : "") +
+        (memos.cliDashDash || "")
+      Debug("madwizard/exec/ray-submit")("dashdash raw", parsedOptions["--"] || "<no guidebook dashdash>")
+      Debug("madwizard/exec/ray-submit")("dashdash cli", memos.env.GUIDEBOOK_DASHDASH || "<no cli dashdash>")
+      Debug("madwizard/exec/ray-submit")("dashdash pro", dashDash || "<no dashdash>")
 
       // Use `kubectl cp` to transfer the working directory to the head pod
       // ASSUMES: ml/ray/cluster/head has been run (this gives us RAY_HEAD_POD)

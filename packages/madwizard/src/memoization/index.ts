@@ -35,6 +35,9 @@ export interface Memos {
   /** Any captured environment variable assignments. For example, a guidebook may want to update via `export FOO=bar` */
   env: typeof process.env
 
+  /** Any -- dashdash args provided on the command line for this process */
+  cliDashDash?: string[]
+
   /** Any forked subprocesses that we should wait for? */
   subprocesses: ChildProcess[]
 
@@ -66,6 +69,9 @@ export class Memoizer implements Memos {
 
   /** Any captured environment variable assignments. For example, a guidebook may want to update via `export FOO=bar` */
   public readonly env: typeof process.env = {}
+
+  /** Any -- dashdash args provided on the command line for this process */
+  public cliDashDash = undefined
 
   /** Any forked subprocesses that we should wait for? */
   public readonly subprocesses: ChildProcess[] = []
