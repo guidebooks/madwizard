@@ -187,7 +187,7 @@ export default async function raySubmit(
       // arguments after the --
       const dashDash =
         (parsedOptions["--"] ? shellEscape(parsedOptions["--"].map((_) => expand(_, memos))) : "") +
-        (memos.cliDashDash || "")
+        (memos.cliDashDash ? " " + shellEscape(memos.cliDashDash) : "")
       Debug("madwizard/exec/ray-submit")("dashdash raw", parsedOptions["--"] || "<no guidebook dashdash>")
       Debug("madwizard/exec/ray-submit")("dashdash cli", memos.env.GUIDEBOOK_DASHDASH || "<no cli dashdash>")
       Debug("madwizard/exec/ray-submit")("dashdash pro", dashDash || "<no dashdash>")
