@@ -16,7 +16,6 @@
 
 import Debug from "debug"
 import { join, resolve } from "path"
-import shellParse from "shell-parser"
 import shellEscape from "shell-escape"
 import expandHomeDir from "expand-home-dir"
 import { access, readFile } from "fs/promises"
@@ -186,9 +185,7 @@ export default async function raySubmit(
       const inputFile = expand(parsedOptions.entrypoint, memos)
 
       // arguments after the --
-      const dashDash = parsedOptions["--"]
-        ? shellEscape(shellParse(parsedOptions["--"].join(" ")).map((_) => expand(_, memos)))
-        : ""
+      const dashDash = parsedOptions["--"] ? shellEscape(parsedOptions["--"].map((_) => expand(_, memos))) : ""
 
       // Use `kubectl cp` to transfer the working directory to the head pod
       // ASSUMES: ml/ray/cluster/head has been run (this gives us RAY_HEAD_POD)

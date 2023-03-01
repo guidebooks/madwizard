@@ -79,7 +79,6 @@
     "remark-parse": "^10.0.1",
     "remark-rehype": "^10.1.0",
     "shell-escape": "^0.2.0",
-    "shell-parser": "^1.0.0",
     "terminal-link": "^3.0.0",
     "tmp": "^0.2.1",
     "to-vfile": "^7.2.4",
