@@ -27,6 +27,11 @@ export function shellSync(cmdline: string, memos: Memos) {
   execSync(cmdline, { env: Object.assign({}, process.env, memos.env || {}) })
 }
 
+/** Restructure a Record<string,string> into [{name: string, value: string}] */
+function toNameValue(env: Memos["env"]) {
+  return Object.entries(env).map(([name, value]) => ({ name, value }))
+}
+
 /** Shell out the execution of the given `cmdline` */
 export default async function shellItOut(
   _cmdline: string | boolean,
@@ -59,6 +64,7 @@ export default async function shellItOut(
       GUIDEBOOK_GLOBAL_DATA_PATH,
       GUIDEBOOK_PROFILE_DATA_PATH,
       GUIDEBOOK_JOB_DATA_PATH,
+      GUIDEBOOK_ENV: Buffer.from(JSON.stringify(toNameValue(memos.env))).toString("base64"),
     },
     process.env,
     memos.env || {},
