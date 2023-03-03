@@ -1,3 +1,9 @@
+## [6.2.8](https://github.com/guidebooks/madwizard/compare/6.2.7...6.2.8) (2023-03-03)
+
+### Bug Fixes
+
+- ensure that subshells have a TERM ([dd5a79c](https://github.com/guidebooks/madwizard/commit/dd5a79c4a5b8e6e071c8b6cd155262e99fbe05c8))
+
 ## [6.2.7](https://github.com/guidebooks/madwizard/compare/6.2.6...6.2.7) (2023-03-03)
 
 ### Bug Fixes
