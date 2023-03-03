@@ -1,3 +1,10 @@
+## [6.2.6](https://github.com/guidebooks/madwizard/compare/6.2.5...6.2.6) (2023-03-03)
+
+### Bug Fixes
+
+- pass through GUIDEBOOK_DASHDASH again ([c5ac981](https://github.com/guidebooks/madwizard/commit/c5ac981e147c11ce75a9a1defaad1c956017aa85))
+- pass through GUIDEBOOK_ENV as base64-encoded [{name, value}] ([0bff70c](https://github.com/guidebooks/madwizard/commit/0bff70ca1a919ceb2344a88b16247f4e6d8518fe))
+
 ## [6.2.5](https://github.com/guidebooks/madwizard/compare/6.2.4...6.2.5) (2023-03-01)
 
 ### Bug Fixes
