@@ -125,7 +125,8 @@ export default async function shellItOut(
         } else if (code === 0) {
           resolve("success")
         } else {
-          reject(new Error(err || `${cmdline} failed`))
+          const msg = (err || `${cmdline} failed`).split(/\n/)[0]
+          reject(new Error(msg))
         }
       })
 
