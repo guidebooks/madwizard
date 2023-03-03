@@ -15,6 +15,7 @@
  */
 
 import Debug from "debug"
+import shellEscape from "shell-escape"
 import { spawn, execSync, StdioOptions } from "child_process"
 
 import EarlyExit from "./EarlyExit.js"
@@ -63,6 +64,10 @@ export default async function shellItOut(
     memos.env || {},
     extraEnv
   )
+
+  if (memos.cliDashDash) {
+    env.GUIDEBOOK_DASHDASH = shellEscape(memos.cliDashDash)
+  }
 
   const stdio: StdioOptions = opts.quiet
     ? ["inherit", "ignore", "pipe"]
