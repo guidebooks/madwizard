@@ -15,6 +15,7 @@
  */
 
 import Debug from "debug"
+import shellEscape from "shell-escape"
 import { spawn, execSync, StdioOptions } from "child_process"
 
 import EarlyExit from "./EarlyExit.js"
@@ -61,8 +62,15 @@ export default async function shellItOut(
     },
     process.env,
     memos.env || {},
-    extraEnv
+    extraEnv,
+    {
+      GUIDEBOOK_STORE: opts.store,
+    }
   )
+
+  if (memos.cliDashDash) {
+    env.GUIDEBOOK_DASHDASH = shellEscape(memos.cliDashDash)
+  }
 
   const stdio: StdioOptions = opts.quiet
     ? ["inherit", "ignore", "pipe"]
@@ -80,7 +88,10 @@ export default async function shellItOut(
       // https://stackoverflow.com/questions/6715388/variable-expansion-is-different-in-zsh-from-that-in-bash
       const shell = process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash")
       const setopts = /zsh/.test(shell) ? "setopt SH_WORD_SPLIT;" : ""
-      const argv = ["-c", process.platform === "win32" ? cmdline.toString() : `set -o pipefail; ${setopts} ${cmdline}`]
+      const argv = [
+        "-c",
+        process.platform === "win32" ? cmdline.toString() : `set -e; set -o pipefail; ${setopts} ${cmdline}`,
+      ]
       Debug("madwizard/exec/shell")("shell", shell)
       Debug("madwizard/exec/shell")("argv", argv)
 
@@ -109,8 +120,10 @@ export default async function shellItOut(
           await onClose()
         }
 
-        if (code === 90) {
-          reject(EarlyExit())
+        if (code === 90 || code === 130) {
+          // 90 is a guidebook saying to exit early
+          // 130 is SIGINT
+          reject(EarlyExit(code))
         } else if (code === 0) {
           resolve("success")
         } else {
