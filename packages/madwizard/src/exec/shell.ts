@@ -57,6 +57,7 @@ export default async function shellItOut(
 
   const env = Object.assign(
     {
+      TERM: "xterm-256color",
       IBMCLOUD_VERSION_CHECK: "false",
       HOMEBREW_NO_INSTALL_CLEANUP: "1",
       HOMEBREW_NO_INSTALL_UPGRADE: "1",
