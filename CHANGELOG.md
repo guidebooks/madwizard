@@ -1,3 +1,9 @@
+## [6.2.7](https://github.com/guidebooks/madwizard/compare/6.2.6...6.2.7) (2023-03-03)
+
+### Bug Fixes
+
+- on subprocess shell failures, avoid printing out giant scripts ([887f711](https://github.com/guidebooks/madwizard/commit/887f71157f90e2716ca9d31f4da08af316dde119))
+
 ## [6.2.6](https://github.com/guidebooks/madwizard/compare/6.2.5...6.2.6) (2023-03-03)
 
 ### Bug Fixes
