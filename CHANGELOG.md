@@ -1,3 +1,9 @@
+## [6.2.9](https://github.com/guidebooks/madwizard/compare/6.2.8...6.2.9) (2023-03-05)
+
+### Bug Fixes
+
+- form should right-align the first column ([0d81b7f](https://github.com/guidebooks/madwizard/commit/0d81b7fe4770779e36565a6bb8771fcdba9ebd25))
+
 ## [6.2.8](https://github.com/guidebooks/madwizard/compare/6.2.7...6.2.8) (2023-03-03)
 
 ### Bug Fixes
