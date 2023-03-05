@@ -276,7 +276,8 @@ export class Guide {
           initial: thisChoiceIsAForm ? tile.form.defaultValue.toString() : undefined,
           isSuggested,
           message:
-            this.chalk.bold(tile.title) +
+            //this.chalk.bold(tile.title) + <-- would require an update to enquirer to strip ansi
+            tile.title +
             (isSuggested ? this.suggestionHint : "") +
             (!tile.description ? "" : this.chalk.reset(EOL) + this.format(tile.description) + this.chalk.reset(EOL)),
         }
@@ -292,6 +293,7 @@ export class Guide {
 
         return {
           type: "form" as const,
+          align: "right",
           name,
           description,
           message,
