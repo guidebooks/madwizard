@@ -19,6 +19,6 @@ import { MadWizardOptions } from "../fe/index.js"
 
 /** Get details of a profile */
 export default async function get(options: MadWizardOptions, profileName: string) {
-  const choices = await restore(options, profileName)
+  const choices = await restore(options, profileName, false)
   return choices.profile
 }

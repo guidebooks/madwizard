@@ -22,6 +22,10 @@ type NamedProfileOpts = Opts & {
   profile: string
 }
 
+type UriOpts = Opts & {
+  uri: string
+}
+
 type SrcProfileOpts = {
   srcProfile: string
 }
@@ -34,6 +38,13 @@ export function namedProfileBuilder(yargs: Argv<Opts>): Argv<NamedProfileOpts> {
   return yargs.positional("profile", {
     type: "string",
     describe: "Name of a profile",
+  })
+}
+
+export function uriBuilder(yargs: Argv<Opts>): Argv<UriOpts> {
+  return yargs.positional("uri", {
+    type: "string",
+    describe: "URI of profile",
   })
 }
 

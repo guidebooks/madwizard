@@ -30,6 +30,9 @@ export default async function profileDetails(profile: Profile) {
         if (/_/.test(key) || /madwizard/.test(key)) {
           // don't show madwizard-internal "choices"
           return undefined
+        } else if (/secret|key|credential|token/i.test(key) && !/image-pull/i.test(key)) {
+          // obscure secrets
+          return "******"
         } else {
           try {
             return JSON.parse(value)
