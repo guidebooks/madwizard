@@ -101,20 +101,11 @@ export function emptyChoiceState(profileName = "empty"): ChoiceState {
 }
 
 /** Deserialize constructor */
-export function deserialize(serializedProfile: string, profileName: string): ChoiceState {
+export function deserialize(serializedProfile: string): ChoiceState {
   const profile = JSON.parse(serializedProfile)
   if (isProfile(profile)) {
     return new ChoiceStateImpl(profile)
   } else {
-    // upgrade older profile format, which does not have the extra
-    // profile bits (name, timestamps, ...)
-    const now = Date.now()
-    return new ChoiceStateImpl({
-      name: profileName,
-      creationTime: now,
-      lastModifiedTime: now,
-      lastUsedTime: now,
-      choices: profile,
-    })
+    throw new Error("Invalid serialized profile")
   }
 }

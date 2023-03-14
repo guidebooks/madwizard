@@ -22,14 +22,18 @@ import { MadWizardOptions } from "../fe/index.js"
 import { ChoiceState, deserialize, newChoiceState } from "../choices/index.js"
 
 /** Restore the named `profile` */
-export default async function restore(options: MadWizardOptions, profile: string): Promise<ChoiceState> {
+export default async function restore(
+  options: MadWizardOptions,
+  profile: string,
+  createOn404 = true
+): Promise<ChoiceState> {
   const readFile = options.fs?.readFile || (await import("fs").then((_) => _.readFile))
   const filepath = join(await profilesPath(options), profile)
 
   return new Promise((resolve, reject) => {
     readFile(filepath, (err, data) => {
       if (err) {
-        if (err.code == "ENOENT") {
+        if (err.code == "ENOENT" && createOn404) {
           Debug("madwizard/profile")("using fresh profile")
           resolve(newChoiceState(profile))
         } else {
@@ -39,7 +43,7 @@ export default async function restore(options: MadWizardOptions, profile: string
       } else {
         Debug("madwizard/profile")("profile restored from " + filepath)
         try {
-          resolve(deserialize(data.toString(), profile))
+          resolve(deserialize(data.toString()))
         } catch (err) {
           Debug("madwizard/profile")("error parsing profile from " + filepath, err)
           reject(err)
