@@ -1,3 +1,9 @@
+# [6.3.0](https://github.com/guidebooks/madwizard/compare/6.2.9...6.3.0) (2023-03-14)
+
+### Features
+
+- profile import/export ([affa499](https://github.com/guidebooks/madwizard/commit/affa4995651df2aed5c4785b5ba4936ef51a432b))
+
 ## [6.2.9](https://github.com/guidebooks/madwizard/compare/6.2.8...6.2.9) (2023-03-05)
 
 ### Bug Fixes
