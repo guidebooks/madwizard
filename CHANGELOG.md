@@ -1,3 +1,9 @@
+## [6.3.1](https://github.com/guidebooks/madwizard/compare/6.3.0...6.3.1) (2023-03-15)
+
+### Bug Fixes
+
+- prune obsolete choices when exporting a profile ([308d118](https://github.com/guidebooks/madwizard/commit/308d118315d4c0f1039cdc388662e5adebbafb27))
+
 # [6.3.0](https://github.com/guidebooks/madwizard/compare/6.2.9...6.3.0) (2023-03-14)
 
 ### Features
