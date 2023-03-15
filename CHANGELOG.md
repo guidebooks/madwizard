@@ -1,3 +1,9 @@
+## [6.3.2](https://github.com/guidebooks/madwizard/compare/6.3.1...6.3.2) (2023-03-15)
+
+### Bug Fixes
+
+- profile import should not by default overwrite an existing profile ([0b60489](https://github.com/guidebooks/madwizard/commit/0b60489e6fce2632a39aef92931c4b13817cec78))
+
 ## [6.3.1](https://github.com/guidebooks/madwizard/compare/6.3.0...6.3.1) (2023-03-15)
 
 ### Bug Fixes
