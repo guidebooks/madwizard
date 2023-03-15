@@ -138,6 +138,7 @@ export interface FetchOptions {
 type FileSystemOptions = {
   fs: Partial<{
     mkdirp(filepath: string): Promise<void>
+    access?(filepath: string, mode: number | undefined): Promise<void>
     readFile(filepath: string, cb: (err: NodeJS.ErrnoException | null, data: Buffer) => void): void
     writeFile(filepath: string, cb: (err: NodeJS.ErrnoException | null) => void): void
     writeFileAtomic: typeof import("write-file-atomic")

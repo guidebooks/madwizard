@@ -17,6 +17,7 @@
 import { Argv } from "yargs"
 
 import Opts from "../../options.js"
+import { group } from "../../strings.js"
 
 type NamedProfileOpts = Opts & {
   profile: string
@@ -24,6 +25,7 @@ type NamedProfileOpts = Opts & {
 
 type UriOpts = Opts & {
   uri: string
+  force: boolean
 }
 
 type SrcProfileOpts = {
@@ -42,10 +44,26 @@ export function namedProfileBuilder(yargs: Argv<Opts>): Argv<NamedProfileOpts> {
 }
 
 export function uriBuilder(yargs: Argv<Opts>): Argv<UriOpts> {
-  return yargs.positional("uri", {
-    type: "string",
-    describe: "URI of profile",
-  })
+  return yargs
+    .positional("uri", {
+      type: "string",
+      describe: "URI of profile",
+    })
+    .options({
+      name: {
+        alias: "n",
+        type: "string" as const,
+        group: group("Profile Options"),
+        describe: "Save the profile with the given name",
+      },
+      force: {
+        alias: "f",
+        default: false,
+        type: "boolean" as const,
+        group: group("Profile Options"),
+        describe: "Force overwrite an existing profile",
+      },
+    })
 }
 
 export function srcAndTargetNamedProfileBuilder(yargs: Argv<Opts>): Argv<SrcProfileOpts & TargetProfileOpts> {

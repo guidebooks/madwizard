@@ -18,7 +18,8 @@ import { uriBuilder } from "./builder.js"
 import { assembleOptions } from "../../options.js"
 import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
-async function fetch(uri: string) {
+/** Fetch from the given `uri` as a string, but only if it is a URL */
+async function fetchIfUrl(uri: string) {
   if (/^https?:\/\//.test(uri)) {
     const { toRawGithubUserContent } = await import("../../../../parser/markdown/snippets/urls.js")
     const { default: fetch } = await import("make-fetch-happen")
@@ -29,10 +30,12 @@ async function fetch(uri: string) {
     } else {
       return data
     }
-  } else {
-    const { readFile } = await import("fs/promises")
-    return readFile(uri).then((_) => _.toString())
   }
+}
+
+/** Fetch the given `uri` as a string */
+async function fetch(uri: string) {
+  return (await fetchIfUrl(uri)) || import("fs/promises").then((_) => _.readFile(uri).then((_) => _.toString()))
 }
 
 /** madwizard import profile <profileUri> */
@@ -42,11 +45,30 @@ export default function importProfile(providedOptions: MadWizardOptions) {
     describe: "Import a profile from a specified URI",
     builder: uriBuilder,
     handler: async (argv) => {
-      const { deserialize } = await import("../../../../choices/index.js")
+      const [{ default: exists }, { deserialize }, { save }] = await Promise.all([
+        import("../../../../profiles/exists.js"),
+        import("../../../../choices/index.js"),
+        import("../../../../profiles/persist.js"),
+      ])
+
       const opts = assembleOptions(providedOptions, argv)
       const data = await fetch(argv.uri)
       const choices = deserialize(data)
-      await import("../../../../profiles/persist.js").then((_) => _.save(choices, opts))
+
+      if (argv.name) {
+        choices.profile.name = argv.name
+      }
+
+      if (argv.force !== true && (await exists(opts, choices.profile.name))) {
+        const { default: chalk } = await import("chalk")
+        throw new Error(
+          `${chalk.red("Error")}: profile ${choices.profile.name} already exists. Use ${chalk.yellow(
+            "'-f/--force'"
+          )} to overwrite, or ${chalk.yellow("-n/--name")} to use an alternate name.`
+        )
+      } else {
+        await save(choices, opts)
+      }
     },
   }
 }
