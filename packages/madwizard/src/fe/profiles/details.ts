@@ -18,6 +18,30 @@ import chalk from "chalk"
 import prettyMs from "pretty-ms"
 import { Profile } from "../../profiles/Profile.js"
 
+export function serializeAndRedact(choices: Record<string, any>) {
+  return JSON.stringify(
+    choices,
+    (key, value) => {
+      if (/_/.test(key) || /madwizard/.test(key)) {
+        // don't show madwizard-internal "choices"
+        return undefined
+      } else if (/secret|key|credential|token/i.test(key) && !/image-pull/i.test(key)) {
+        // obscure secrets
+        return "******"
+      } else {
+        try {
+          return JSON.parse(value)
+        } catch (err) {
+          // it's ok, this is just a non-json value (is there a better
+          // way to detect this?)
+          return value
+        }
+      }
+    },
+    2
+  )
+}
+
 export default async function profileDetails(profile: Profile) {
   const { dump } = await import("js-yaml")
 
@@ -25,25 +49,7 @@ export default async function profileDetails(profile: Profile) {
     name: profile.name,
     created: prettyMs(Date.now() - profile.creationTime, { compact: true }) + " ago",
     lastModified: prettyMs(Date.now() - profile.lastModifiedTime, { compact: true }) + " ago",
-    choices: JSON.parse(
-      JSON.stringify(profile.choices, (key, value) => {
-        if (/_/.test(key) || /madwizard/.test(key)) {
-          // don't show madwizard-internal "choices"
-          return undefined
-        } else if (/secret|key|credential|token/i.test(key) && !/image-pull/i.test(key)) {
-          // obscure secrets
-          return "******"
-        } else {
-          try {
-            return JSON.parse(value)
-          } catch (err) {
-            // it's ok, this is just a non-json value (is there a better
-            // way to detect this?)
-            return value
-          }
-        }
-      })
-    ),
+    choices: JSON.parse(serializeAndRedact(profile.choices)),
   }
   return dump(model).replace(/^(\s*)([^:]+)(:.*)$/gm, (_, whitespace, key, rest) => {
     const keyColor = !whitespace ? "blue" : whitespace.length === 2 ? "yellow" : "magenta"
