@@ -48,7 +48,7 @@ export async function prune(choices: ChoiceState, options: MadWizardOptions, ver
   return nRemoved
 }
 
-async function pruneAndSave(choices: ChoiceState, options: MadWizardOptions) {
+export async function pruneAndSave(choices: ChoiceState, options: MadWizardOptions) {
   const nRemoved = await prune(choices, options)
 
   if (nRemoved > 0) {

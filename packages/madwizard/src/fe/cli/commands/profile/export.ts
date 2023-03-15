@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { assembleOptions } from "../../options.js"
 import { namedProfileBuilder } from "./builder.js"
 import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
@@ -24,8 +25,15 @@ export default function exportProfile(providedOptions: MadWizardOptions) {
     describe: "Export a profile",
     builder: namedProfileBuilder,
     handler: async (argv) => {
-      const choices = await import("../../../../profiles/get.js").then((_) => _.default(providedOptions, argv.profile))
-      console.log(JSON.stringify(choices, undefined, 2))
+      const [profile, { serializeAndRedact }, { prune }] = await Promise.all([
+        import("../../../../profiles/restore.js").then((_) => _.default(providedOptions, argv.profile)),
+        import("../../../profiles/details.js"),
+        import("./prune.js"),
+      ])
+      const options = assembleOptions(providedOptions, argv)
+      /* const nPruned = */ await prune(profile, options)
+      // console.error(`Pruned ${nPruned} obsolete choices`)
+      console.log(serializeAndRedact(profile.profile))
     },
   }
 }
