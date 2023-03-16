@@ -25,7 +25,7 @@ export default function cloneProfile(providedOptions: MadWizardOptions) {
     builder: srcAndTargetNamedProfileBuilder,
     handler: async (argv) => {
       await import("../../../../profiles/clone.js").then((_) =>
-        _.default(providedOptions, argv.srcProfile, argv.tgtProfile)
+        _.default(providedOptions, argv.srcProfile, argv.dstProfile)
       )
     },
   }
