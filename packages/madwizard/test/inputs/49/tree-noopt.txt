@@ -1,0 +1,7 @@
+Dynamic Expansion with MultiSelect
+├── Checkbox 1: Tab1
+│   └── echo "You selected: Tab1"
+├── Checkbox 2: Tab2
+│   └── echo "You selected: Tab2"
+└── Checkbox 3: Tab3
+    └── echo "You selected: Tab3"

@@ -1,0 +1,84 @@
+[
+  {
+    "graph": {
+      "group": "multi(echo Tab1; echo Tab2; echo Tab3)",
+      "groupContext": "test/inputs/49/in",
+      "title": "Dynamic Expansion with MultiSelect",
+      "source": "placeholder",
+      "provenance": ["test/inputs/49/in"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"You selected: Tab1\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Tab1",
+          "multiselect": true
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"You selected: Tab2\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Tab2",
+          "multiselect": true
+        },
+        {
+          "member": 2,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"You selected: Tab3\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Tab3",
+          "multiselect": true
+        }
+      ]
+    },
+    "step": {
+      "name": "Dynamic Expansion with MultiSelect",
+      "content": [
+        {
+          "title": "Tab1",
+          "group": "multi(echo Tab1; echo Tab2; echo Tab3)",
+          "member": 0,
+          "isFirstChoice": true,
+          "multiselect": true
+        },
+        {
+          "title": "Tab2",
+          "group": "multi(echo Tab1; echo Tab2; echo Tab3)",
+          "member": 1,
+          "isFirstChoice": true,
+          "multiselect": true
+        },
+        {
+          "title": "Tab3",
+          "group": "multi(echo Tab1; echo Tab2; echo Tab3)",
+          "member": 2,
+          "isFirstChoice": true,
+          "multiselect": true
+        }
+      ]
+    }
+  }
+]
