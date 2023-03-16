@@ -1,0 +1,170 @@
+[
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Main Tasks",
+      "title": "Main Tasks",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"You selected: dashy-dash\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Main Tasks"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Main Tasks",
+      "title": "Main Tasks",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "export YOYO=\"$YOYO dashy-dash\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Main Tasks"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Main Tasks",
+      "title": "Main Tasks",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"You selected: mashy-mash-mash\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Main Tasks"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "Main Tasks",
+      "title": "Main Tasks",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "export YOYO=\"$YOYO mashy-mash-mash\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "Main Tasks"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "interlude",
+      "title": "interlude",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"YOYO=|$YOYO|\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "interlude"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "interlude",
+      "title": "interlude",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "for i in $YOYO; do\n    echo \"- $i\"\ndone",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "interlude"
+    }
+  },
+  {
+    "graph": {
+      "group": "expand(echo \"$YOYO\" | tr ' ' '\\n')",
+      "groupContext": "test/inputs/50/single",
+      "title": "single",
+      "source": "placeholder",
+      "provenance": ["test/inputs/50/single"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"You selected2: $choice\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "expand(echo \"$YOYO\" | tr ' ' '\\n')"
+        }
+      ]
+    },
+    "step": {
+      "name": "single",
+      "content": [
+        {
+          "title": "expand(echo \"$YOYO\" | tr ' ' '\\n')",
+          "group": "expand(echo \"$YOYO\" | tr ' ' '\\n')",
+          "member": 0,
+          "isFirstChoice": true
+        }
+      ]
+    }
+  }
+]

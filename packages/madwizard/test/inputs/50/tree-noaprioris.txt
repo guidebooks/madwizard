@@ -1,0 +1,14 @@
+Test dynamic choices with dashes
+├── Main Tasks
+│   ├── echo "You selected: dashy-dash"
+│   ├── export YOYO="$YOYO dashy-dash"
+│   ├── echo "You selected: mashy-mash-mash"
+│   └── export YOYO="$YOYO mashy-mash-mash"
+├── interlude
+│   ├── echo "YOYO=|$YOYO|"
+│   └── for i in $YOYO; do
+│           echo "- $i"
+│       done
+└── single
+    └── Option 1: expand(echo "$YOYO" | tr ' ' '\n')
+        └── echo "You selected2: $choice"

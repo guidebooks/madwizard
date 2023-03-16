@@ -1,0 +1,19 @@
+Test dynamic choices with dashes
+├── Test dynamic choices with dashes
+│   ├── Checkbox 1: dashy-dash
+│   │   ├── echo "You selected: dashy-dash"
+│   │   └── export YOYO="$YOYO dashy-dash"
+│   ├── Checkbox 2: Tab2
+│   │   ├── echo "You selected: Tab2"
+│   │   └── export YOYO="$YOYO Tab2"
+│   └── Checkbox 3: mashy-mash-mash
+│       ├── echo "You selected: mashy-mash-mash"
+│       └── export YOYO="$YOYO mashy-mash-mash"
+├── interlude
+│   ├── echo "YOYO=|$YOYO|"
+│   └── for i in $YOYO; do
+│           echo "- $i"
+│       done
+└── single
+    └── Option 1: expand(echo "$YOYO" | tr ' ' '\n')
+        └── echo "You selected2: $choice"

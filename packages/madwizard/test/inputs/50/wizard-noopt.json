@@ -1,0 +1,177 @@
+[
+  {
+    "graph": {
+      "group": "multi(echo dashy-dash; echo Tab2; echo mashy-mash-mash)",
+      "groupContext": "test/inputs/50/multi",
+      "title": "Test dynamic choices with dashes",
+      "source": "placeholder",
+      "provenance": ["test/inputs/50/multi"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"You selected: dashy-dash\"",
+                "language": "shell",
+                "id": "somekey"
+              },
+              {
+                "body": "export YOYO=\"$YOYO dashy-dash\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "dashy-dash",
+          "multiselect": true
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"You selected: Tab2\"",
+                "language": "shell",
+                "id": "somekey"
+              },
+              {
+                "body": "export YOYO=\"$YOYO Tab2\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Tab2",
+          "multiselect": true
+        },
+        {
+          "member": 2,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"You selected: mashy-mash-mash\"",
+                "language": "shell",
+                "id": "somekey"
+              },
+              {
+                "body": "export YOYO=\"$YOYO mashy-mash-mash\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "mashy-mash-mash",
+          "multiselect": true
+        }
+      ]
+    },
+    "step": {
+      "name": "Test dynamic choices with dashes",
+      "content": [
+        {
+          "title": "dashy-dash",
+          "group": "multi(echo dashy-dash; echo Tab2; echo mashy-mash-mash)",
+          "member": 0,
+          "isFirstChoice": true,
+          "multiselect": true
+        },
+        {
+          "title": "Tab2",
+          "group": "multi(echo dashy-dash; echo Tab2; echo mashy-mash-mash)",
+          "member": 1,
+          "isFirstChoice": true,
+          "multiselect": true
+        },
+        {
+          "title": "mashy-mash-mash",
+          "group": "multi(echo dashy-dash; echo Tab2; echo mashy-mash-mash)",
+          "member": 2,
+          "isFirstChoice": true,
+          "multiselect": true
+        }
+      ]
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "interlude",
+      "title": "interlude",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "echo \"YOYO=|$YOYO|\"",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "interlude"
+    }
+  },
+  {
+    "graph": {
+      "key": "somekey",
+      "group": "interlude",
+      "title": "interlude",
+      "filepath": "",
+      "graph": {
+        "key": "somekey",
+        "sequence": [
+          {
+            "body": "for i in $YOYO; do\n    echo \"- $i\"\ndone",
+            "language": "shell",
+            "id": "somekey"
+          }
+        ]
+      },
+      "source": "placeholder"
+    },
+    "step": {
+      "name": "interlude"
+    }
+  },
+  {
+    "graph": {
+      "group": "expand(echo \"$YOYO\" | tr ' ' '\\n')",
+      "groupContext": "test/inputs/50/single",
+      "source": "placeholder",
+      "provenance": ["test/inputs/50/single"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"You selected2: $choice\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "expand(echo \"$YOYO\" | tr ' ' '\\n')"
+        }
+      ]
+    },
+    "step": {
+      "content": [
+        {
+          "title": "expand(echo \"$YOYO\" | tr ' ' '\\n')",
+          "group": "expand(echo \"$YOYO\" | tr ' ' '\\n')",
+          "member": 0,
+          "isFirstChoice": false
+        }
+      ]
+    }
+  }
+]
