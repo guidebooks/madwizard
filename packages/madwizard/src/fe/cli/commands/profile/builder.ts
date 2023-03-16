@@ -33,7 +33,7 @@ type SrcProfileOpts = {
 }
 
 type TargetProfileOpts = {
-  tgtProfile: string
+  dstProfile: string
 }
 
 export function namedProfileBuilder(yargs: Argv<Opts>): Argv<NamedProfileOpts> {
@@ -72,7 +72,7 @@ export function srcAndTargetNamedProfileBuilder(yargs: Argv<Opts>): Argv<SrcProf
       type: "string",
       describe: "Name of source profile",
     })
-    .positional("tgtProfile", {
+    .positional("dstProfile", {
       type: "string",
       describe: "Name of target profile",
     })

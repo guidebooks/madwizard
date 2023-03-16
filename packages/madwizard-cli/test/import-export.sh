@@ -39,6 +39,13 @@ function exporty {
     fi
 }
 
+function clone {
+    if $(madwizard profile clone "$1" "$2")
+    then printf "profile clone $1 $2: \033[32mPASS\033[0m\n"
+    else (printf "profile clone $1 $2): \033[31mFAIL\033[0m\n" && exit 1)
+    fi
+}
+
 function delete {
     if madwizard profile delete "$1"
     then printf "profile delete $1: \033[32mPASS\033[0m\n"
@@ -65,7 +72,7 @@ function shouldList {
 }
 
 function same {
-    if diff --ignore-space-change <(grep -v $3 "$1") <(grep -v ${4-$3} "$2")
+    if diff --ignore-space-change <(grep -v $3 "$1" | grep -v creationTime | grep -v lastModifiedTime) <(grep -v ${4-$3} "$2" | grep -v creationTime | grep -v lastModifiedTime)
     then printf "profile roundtrip: \033[32mPASS\033[0m\n"
     else (printf "profile roundtrip: \033[31mFAIL\033[0m\n" && exit 1)
     fi
@@ -74,8 +81,9 @@ function same {
 trap cleanup EXIT
 
 P1="$SCRIPTDIR"/profile1.json
-P1Name=___TEST_PROFILE___
-P2Name=__TEST_PROFILE2___
+P1Name=TEST_PROFILE
+P2Name=TEST_PROFILE2
+P3Name=TEST_PROFILE3
 
 # here come the tests
 shouldHave 0
@@ -103,3 +111,11 @@ shouldList $P2Name
 
 exporty $P2Name
 same "$P1" "$out" $P1Name $P2Name
+
+clone $P1Name $P3Name
+shouldHave 3
+shouldList $P1Name
+shouldList $P3Name
+exporty $P3Name
+same "$P1" "$out" $P1Name $P3Name
+

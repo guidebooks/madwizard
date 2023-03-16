@@ -53,6 +53,7 @@ export default async function persist(
   altProfileName?: string
 ) {
   const profileName = altProfileName || choices.profile.name
+  Debug("madwizard/profile")("persisting to " + altProfileName)
 
   // Careful of the order: we want to overlay new choices on top of
   // previous suggestions
