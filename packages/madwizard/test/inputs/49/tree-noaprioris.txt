@@ -1,0 +1,3 @@
+Dynamic Expansion with MultiSelect
+├── echo "You selected: Tab1"
+└── echo "You selected: Tab3"

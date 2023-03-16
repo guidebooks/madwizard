@@ -48,7 +48,8 @@ function expandHomeDir(path: string) {
 
 export function updateContent<Part extends { graph: Graph; description?: string }>(
   part: Part,
-  choiceString = ""
+  choiceString = "",
+  multiselect = false
 ): Part {
   const pattern1 = /\$\{?choice\}?/gi
   const pattern2a = /\${uuid}/gi
@@ -65,6 +66,10 @@ export function updateContent<Part extends { graph: Graph; description?: string 
       .replace(pattern2b, uuid())
 
   blocksUpToChoiceFrontier(part.graph).forEach((_) => {
+    if (multiselect) {
+      _.id += choiceString
+    }
+
     if (typeof _.body === "string") {
       _.body = replace(_.body)
     }
@@ -85,25 +90,28 @@ export function updateContent<Part extends { graph: Graph; description?: string 
   return part
 }
 
-function updatePart(part: ChoicePart, choice: string, member = 0) {
+function updatePart(part: ChoicePart, choice: string, member: number, multiselect: boolean) {
   part.title = choice
   part.member = member
-  return updateContent(part, choice)
+  if (multiselect && !part.multiselect) {
+    part.multiselect = multiselect
+  }
+  return updateContent(part, choice, multiselect)
 }
 
 /** @return the pattern we use to denote a dynamic expansion expression */
 function expansionPattern() {
-  return /expand\((.+)\)/
+  return /(expand|multi)\((.+)\)/
 }
 
 /** @return the pattern we use to denote a dynamic expansion expression with a message to print while expanding */
 function expansionPatternWithMessage() {
-  return /^\s*expand\((.+)\s*,\s*([\w\s]+)\s*\)\s*$/
+  return /^\s*(expand|multi)\((.+)\s*,\s*([\w\s]+)\s*\)\s*$/
 }
 
 /** @return the pattern we use to denote a dynamic expansion expression with a message to print while expanding, and a memoization key */
 function expansionPatternWithMessageAndKey() {
-  return /^\s*expand\((.+)\s*,\s*([\w\s]+)\s*,\s*([\w\s]+)\s*\)\s*$/
+  return /^\s*(expand|multi)\((.+)\s*,\s*([\w\s]+)\s*,\s*([\w\s]+)\s*\)\s*$/
 }
 
 /** Does the given Choice (i.e. a tab group) include a dynamic expansion? */
@@ -111,7 +119,7 @@ export function isExpansionGroup(graph: Choice) {
   return expansionPattern().test(graph.group)
 }
 
-type ExpansionExpression = { expr: string; message?: string; key?: string }
+type ExpansionExpression = { expr: string; multiselect?: boolean; message?: string; key?: string }
 
 /** Is the given Choice member (i.e. a tab) a dynamic expansion? */
 function isExpansion(part: ChoicePart): ExpansionExpression {
@@ -121,17 +129,23 @@ function isExpansion(part: ChoicePart): ExpansionExpression {
     part.title.match(expansionPattern())
   if (match) {
     return {
-      expr: match[1],
-      message: match[2],
-      key: match[3],
+      multiselect: match[1] === "multi",
+      expr: match[2],
+      message: match[3],
+      key: match[4],
     }
   }
 }
 
 /** Replace any expansion parts with their dynamic expansion */
-function expandPart(template: ChoicePart, names: string[]): ChoicePart[] {
+function expandPart(template: ChoicePart, names: string[], multiselect: boolean): ChoicePart[] {
   return names.map((name, idx) =>
-    updatePart(JSON.parse(JSON.stringify(template, (key, value) => (key === "nesting" ? undefined : value))), name, idx)
+    updatePart(
+      JSON.parse(JSON.stringify(template, (key, value) => (key === "nesting" ? undefined : value))),
+      name,
+      idx,
+      multiselect
+    )
   )
 }
 
@@ -222,7 +236,7 @@ async function getOrExpand(
   options.debug(expansionExpr, response, memos.env)
   if (response && response.length > 0) {
     // expand the template, which yields Part -> Part[]
-    return expandPart(part, response)
+    return expandPart(part, response, expansionExpr.multiselect)
   }
 }
 

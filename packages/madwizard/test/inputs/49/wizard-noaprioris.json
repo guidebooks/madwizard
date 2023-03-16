@@ -1,0 +1,24 @@
+[
+  {
+    "graph": {
+      "body": "echo \"You selected: Tab1\"",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\necho \"You selected: Tab1\"\n```"
+    }
+  },
+  {
+    "graph": {
+      "body": "echo \"You selected: Tab3\"",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\necho \"You selected: Tab3\"\n```"
+    }
+  }
+]

@@ -1,0 +1,4 @@
+echo "You selected: Tab1"
+You selected: Tab1
+echo "You selected: Tab3"
+You selected: Tab3
