@@ -1,3 +1,9 @@
+## [6.3.3](https://github.com/guidebooks/madwizard/compare/6.3.2...6.3.3) (2023-03-16)
+
+### Bug Fixes
+
+- profile clone did not actually clone, plus test coverage ([11ea50a](https://github.com/guidebooks/madwizard/commit/11ea50ad8f540c150cbeb6e9b8551a369344a92c))
+
 ## [6.3.2](https://github.com/guidebooks/madwizard/compare/6.3.1...6.3.2) (2023-03-15)
 
 ### Bug Fixes
