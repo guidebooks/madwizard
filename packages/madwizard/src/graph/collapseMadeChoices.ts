@@ -33,8 +33,13 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
       const isMulti = graph.choices.every((_) => _.multiselect) && /^\[.+\]$/.test(madeChoiceTitle)
       const pattern = new RegExp(
         // madeChoiceTitle may be JSON in the case of a form, so
-        // escape the {} parts; see test/input/26
-        "^" + stripAnsi(madeChoiceTitle).replace(/[{}[]]/g, "\\$&") + "$", // $& means the whole matched string,
+        // escape the {} parts; see test/inputs/26
+        // re: the \[\] replace, see test/inputs/50
+        "^" +
+          stripAnsi(madeChoiceTitle)
+            .replace(/([[\]])/g, "\\$1")
+            .replace(/[{}[]]/g, "\\$&") +
+          "$", // $& means the whole matched string,
         "i"
       )
       const matchingSubtrees = graph.choices.filter((_) => pattern.test(stripAnsi(_.title)))

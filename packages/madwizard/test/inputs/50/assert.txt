@@ -1,0 +1,2 @@
+test/inputs/50/multi=["dashy-dash","mashy-mash-mash"]
+test/inputs/50/single=mashy-mash-mash

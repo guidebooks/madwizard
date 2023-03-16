@@ -1,0 +1,15 @@
+echo "You selected: dashy-dash"
+You selected: dashy-dash
+export YOYO="$YOYO dashy-dash"
+echo "You selected: mashy-mash-mash"
+You selected: mashy-mash-mash
+export YOYO="$YOYO mashy-mash-mash"
+echo "YOYO=|$YOYO|"
+YOYO=| dashy-dash mashy-mash-mash|
+for i in $YOYO; do
+    echo "- $i"
+done
+- dashy-dash
+- mashy-mash-mash
+echo "You selected2: mashy-mash-mash"
+You selected2: mashy-mash-mash
