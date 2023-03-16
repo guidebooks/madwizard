@@ -1,3 +1,9 @@
+# [6.4.0](https://github.com/guidebooks/madwizard/compare/6.3.3...6.4.0) (2023-03-16)
+
+### Features
+
+- allow dynamic expansions to be multiselects ([590b0d1](https://github.com/guidebooks/madwizard/commit/590b0d13ac4a6a00295965424fd486b5243301b4))
+
 ## [6.3.3](https://github.com/guidebooks/madwizard/compare/6.3.2...6.3.3) (2023-03-16)
 
 ### Bug Fixes
