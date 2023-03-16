@@ -1,3 +1,9 @@
+## [6.4.1](https://github.com/guidebooks/madwizard/compare/6.4.0...6.4.1) (2023-03-16)
+
+### Bug Fixes
+
+- dynamic multi-select fails when choices have dashes ([7749d6a](https://github.com/guidebooks/madwizard/commit/7749d6a3b8cca58d7cc712ba59ca86a9cf5c9201))
+
 # [6.4.0](https://github.com/guidebooks/madwizard/compare/6.3.3...6.4.0) (2023-03-16)
 
 ### Features
