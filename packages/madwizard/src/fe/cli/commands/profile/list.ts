@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
+import { namedProfileBuilder } from "./builder.js"
 import { MadWizardOptions } from "../../../MadWizardOptions.js"
 
 /** madwizard profile list */
 export default function listProfiles(providedOptions: MadWizardOptions) {
   return {
-    command: "list",
+    command: "list [name]",
     describe: "List your profiles",
-    handler: async () => {
+    builder: namedProfileBuilder,
+    handler: async (argv) => {
       const [ui, profiles] = await Promise.all([
         import("../../../profiles/table.js").then((_) => _.default),
-        import("../../../../profiles/list.js").then((_) => _.default(providedOptions)),
+        import("../../../../profiles/list.js")
+          .then((_) => _.default(providedOptions))
+          .then((_) => _.filter((_) => !argv.name || _.profile.name === argv.name)),
       ])
-      console.log(ui(profiles))
+
+      if (profiles.length > 0) {
+        console.log(ui(profiles))
+      }
     },
   }
 }

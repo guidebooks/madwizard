@@ -14,16 +14,31 @@
  * limitations under the License.
  */
 
+import { Argv } from "yargs"
+
+import Opts from "../../options.js"
+import { group } from "../../strings.js"
 import { assembleOptions } from "../../options.js"
 import { namedProfileBuilder } from "./builder.js"
 import { MadWizardOptions } from "../../../MadWizardOptions.js"
+
+function builder(yargs: Argv<Opts>) {
+  return namedProfileBuilder(yargs).options({
+    prune: {
+      type: "boolean" as const,
+      default: true,
+      describe: "Prune obsolete choices",
+      group: group("Export Options"),
+    },
+  })
+}
 
 /** madwizard export profile <profile> */
 export default function exportProfile(providedOptions: MadWizardOptions) {
   return {
     command: "export <profile>",
     describe: "Export a profile",
-    builder: namedProfileBuilder,
+    builder,
     handler: async (argv) => {
       const [profile, { serializeAndRedact }, { prune }] = await Promise.all([
         import("../../../../profiles/restore.js").then((_) => _.default(providedOptions, argv.profile)),
@@ -31,8 +46,11 @@ export default function exportProfile(providedOptions: MadWizardOptions) {
         import("./prune.js"),
       ])
       const options = assembleOptions(providedOptions, argv)
-      /* const nPruned = */ await prune(profile, options)
-      // console.error(`Pruned ${nPruned} obsolete choices`)
+
+      if (argv.prune) {
+        /* const nPruned = */ await prune(profile, options)
+      }
+
       console.log(serializeAndRedact(profile.profile))
     },
   }

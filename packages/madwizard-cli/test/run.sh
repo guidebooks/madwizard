@@ -19,4 +19,5 @@ function test {
 
 test '--version' $(cd "$SCRIPTDIR"/../../.. && npm view madwizard version) version
 test demo/hello "Hello world"
-# test demo/choice foo
+
+"$SCRIPTDIR"/import-export.sh
