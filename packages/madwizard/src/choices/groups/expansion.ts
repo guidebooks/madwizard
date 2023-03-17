@@ -52,11 +52,13 @@ function expandHomeDir(path: string) {
 export function updateContent<Part extends { graph: Graph; description?: string; form?: ChoicePart["form"] }>(
   part: Part,
   choiceString = "",
-  kind: ExpansionKind = "singleselect"
+  kind: ExpansionKind = "singleselect",
+  choiceIdx = 0
 ): Part {
   const pattern1 = /\$\{?choice\}?/gi
   const pattern2a = /\${uuid}/gi
   const pattern2b = /\$uuid/gi
+  const pattern3 = /\$\{?idx\}?/gi
 
   let _uuid: string
   const uuid = () => _uuid || (_uuid = v4())
@@ -71,9 +73,17 @@ export function updateContent<Part extends { graph: Graph; description?: string;
   blocksUpToChoiceFrontier(part.graph).forEach((_) => {
     if (kind !== "singleselect") {
       _.id += choiceString
+
+      // expand $idx
+      if (typeof _.body === "string") {
+        _.body = _.body.replace(pattern3, choiceIdx.toString())
+      }
     }
 
     if (kind !== "form") {
+      // expand $choice; not while processing dynamic-expansion forms,
+      // because the $choice isn't determined until the user actually
+      // fills out the form
       if (typeof _.body === "string") {
         _.body = replace(_.body)
       }
@@ -112,7 +122,7 @@ function updatePart(part: ChoicePart, choice: string, member: number, expansionE
     }
   }
 
-  return updateContent(part, choice, expansionExpr.kind)
+  return updateContent(part, choice, expansionExpr.kind, part.member)
 }
 
 /** @return the pattern we use to denote a dynamic expansion expression */

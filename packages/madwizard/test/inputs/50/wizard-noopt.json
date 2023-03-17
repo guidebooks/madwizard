@@ -13,7 +13,7 @@
             "key": "somekey",
             "sequence": [
               {
-                "body": "echo \"You selected: dashy-dash\"",
+                "body": "echo \"You selected: dashy-dash 0\"",
                 "language": "shell",
                 "id": "somekey"
               },
@@ -33,7 +33,7 @@
             "key": "somekey",
             "sequence": [
               {
-                "body": "echo \"You selected: Tab2\"",
+                "body": "echo \"You selected: Tab2 1\"",
                 "language": "shell",
                 "id": "somekey"
               },
@@ -53,7 +53,7 @@
             "key": "somekey",
             "sequence": [
               {
-                "body": "echo \"You selected: mashy-mash-mash\"",
+                "body": "echo \"You selected: mashy-mash-mash 2\"",
                 "language": "shell",
                 "id": "somekey"
               },

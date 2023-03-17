@@ -2,7 +2,7 @@
 
 === "form(echo $OPTIONS | tr ' ' '\n', /$choice)"
     ```shell
-    echo "You selected: $choice"
+    echo "You selected: $choice $idx"
     ```
 
     ```shell

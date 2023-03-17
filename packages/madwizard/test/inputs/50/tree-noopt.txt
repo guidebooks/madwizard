@@ -1,13 +1,13 @@
 Test dynamic choices with dashes
 ├── Test dynamic choices with dashes
 │   ├── Checkbox 1: dashy-dash
-│   │   ├── echo "You selected: dashy-dash"
+│   │   ├── echo "You selected: dashy-dash 0"
 │   │   └── export YOYO="$YOYO dashy-dash"
 │   ├── Checkbox 2: Tab2
-│   │   ├── echo "You selected: Tab2"
+│   │   ├── echo "You selected: Tab2 1"
 │   │   └── export YOYO="$YOYO Tab2"
 │   └── Checkbox 3: mashy-mash-mash
-│       ├── echo "You selected: mashy-mash-mash"
+│       ├── echo "You selected: mashy-mash-mash 2"
 │       └── export YOYO="$YOYO mashy-mash-mash"
 ├── interlude
 │   ├── echo "YOYO=|$YOYO|"

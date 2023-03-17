@@ -35,7 +35,7 @@
             "key": "somekey",
             "sequence": [
               {
-                "body": "echo \"You selected: $choice\"",
+                "body": "echo \"You selected: $choice $idx\"",
                 "language": "shell",
                 "id": "somekey"
               },
