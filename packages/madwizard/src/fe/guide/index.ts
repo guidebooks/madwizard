@@ -173,6 +173,20 @@ export class Guide {
   }
 
   /**
+   * If the choice has changed from non-form to form, then trying to
+   * parse the previous asnwer as a form will fail. Hence this bit of
+   * logic.
+   */
+  private tryParseAsSerializedForm(str: string) {
+    try {
+      return JSON.parse(str)
+    } catch (err) {
+      // then the change has occurred, so return an empty form
+      return {}
+    }
+  }
+
+  /**
    * @param iter How many questions have we asked so far?
    * @return the list of remaining questions
    */
@@ -206,10 +220,11 @@ export class Guide {
       // are we dealing with a form? i.e. a set of questions, rather
       // than a singleton question
       const thisChoiceIsAForm = isForm(content)
-      const suggestionForm = !thisChoiceIsAForm || !suggestion ? {} : JSON.parse(suggestion)
+      const suggestionForm = !thisChoiceIsAForm || !suggestion ? {} : this.tryParseAsSerializedForm(suggestion)
 
       // multiselect prior answers?
-      const previouslySelectedOptions = !isMultiSelect(content) || !suggestion ? undefined : JSON.parse(suggestion)
+      const previouslySelectedOptions =
+        !isMultiSelect(content) || !suggestion ? undefined : this.tryParseAsSerializedForm(suggestion)
 
       // should we ask the user to answer/re-answer this question? yes
       // if a) we have no suggestion; or b) we were asked to run in
