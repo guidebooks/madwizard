@@ -102,9 +102,9 @@ export function updateContent<Part extends { graph: Graph; description?: string;
     part.description = replace(part.description)
   }
 
-  //if (part.form && typeof part.form.defaultValue == "string") {
-  //part.form.defaultValue = replace(part.form.defaultValue)
-  //}
+  if (part.form && typeof part.form.defaultValue == "string") {
+    part.form.defaultValue = replace(part.form.defaultValue)
+  }
 
   return part
 }
