@@ -1,0 +1,15 @@
+Sequence
+├── options
+│   └── export OPTIONS="dashy-dash Tab2 mashy-mash-mash"
+├── Mount path
+│   └── Option 1: form(echo $OPTIONS | tr ' ' '\n', /$choice)
+│       ├── echo "You selected: $choice"
+│       └── export YOYO="$YOYO $choice"
+├── interlude
+│   ├── echo "YOYO=|$YOYO|"
+│   └── for i in $YOYO; do
+│           echo "- $i"
+│       done
+└── single
+    └── Option 1: expand(echo "$YOYO" | tr ' ' '\n')
+        └── echo "You selected2: $choice"

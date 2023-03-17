@@ -1,0 +1,20 @@
+export OPTIONS="dashy-dash Tab2 mashy-mash-mash"
+echo "You selected: /foo"
+You selected: /foo
+export YOYO="$YOYO /foo"
+echo "You selected: /bar"
+You selected: /bar
+export YOYO="$YOYO /bar"
+echo "You selected: /gorp"
+You selected: /gorp
+export YOYO="$YOYO /gorp"
+echo "YOYO=|$YOYO|"
+YOYO=| /foo /bar /gorp|
+for i in $YOYO; do
+    echo "- $i"
+done
+- /foo
+- /bar
+- /gorp
+echo "You selected2: /gorp"
+You selected2: /gorp
