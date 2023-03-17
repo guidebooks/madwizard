@@ -37,6 +37,9 @@ import {
 /** Map from `ExpansionExpression.expr` to a list of expanded choices */
 export type ExpansionMap = Record<string, Promise<string[] | null>>
 
+type ExpansionKind = "singleselect" | "multiselect" | "form"
+type ExpansionExpression = { expr: string; kind: ExpansionKind; message?: string; key?: string }
+
 function expandHomeDir(path: string) {
   const homedir = process.env.HOME_FOR_TEST || process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"]
 
@@ -46,10 +49,10 @@ function expandHomeDir(path: string) {
   return join(homedir, path.slice(2))
 }
 
-export function updateContent<Part extends { graph: Graph; description?: string }>(
+export function updateContent<Part extends { graph: Graph; description?: string; form?: ChoicePart["form"] }>(
   part: Part,
   choiceString = "",
-  multiselect = false
+  kind: ExpansionKind = "singleselect"
 ): Part {
   const pattern1 = /\$\{?choice\}?/gi
   const pattern2a = /\${uuid}/gi
@@ -66,20 +69,22 @@ export function updateContent<Part extends { graph: Graph; description?: string 
       .replace(pattern2b, uuid())
 
   blocksUpToChoiceFrontier(part.graph).forEach((_) => {
-    if (multiselect) {
+    if (kind !== "singleselect") {
       _.id += choiceString
     }
 
-    if (typeof _.body === "string") {
-      _.body = replace(_.body)
-    }
+    if (kind !== "form") {
+      if (typeof _.body === "string") {
+        _.body = replace(_.body)
+      }
 
-    if (typeof _.validate === "string") {
-      _.validate = replace(_.validate)
-    }
+      if (typeof _.validate === "string") {
+        _.validate = replace(_.validate)
+      }
 
-    if (typeof _.exec === "string") {
-      _.exec = replace(_.exec)
+      if (typeof _.exec === "string") {
+        _.exec = replace(_.exec)
+      }
     }
   })
 
@@ -87,39 +92,48 @@ export function updateContent<Part extends { graph: Graph; description?: string 
     part.description = replace(part.description)
   }
 
+  //if (part.form && typeof part.form.defaultValue == "string") {
+  //part.form.defaultValue = replace(part.form.defaultValue)
+  //}
+
   return part
 }
 
-function updatePart(part: ChoicePart, choice: string, member: number, multiselect: boolean) {
+function updatePart(part: ChoicePart, choice: string, member: number, expansionExpr: ExpansionExpression) {
   part.title = choice
   part.member = member
-  if (multiselect && !part.multiselect) {
-    part.multiselect = multiselect
+
+  if (expansionExpr.kind === "multiselect" && !part.multiselect) {
+    part.multiselect = true
+  } else if (expansionExpr.kind === "form" && !part.form) {
+    part.form = {
+      type: "string" as const,
+      defaultValue: expansionExpr.message || "",
+    }
   }
-  return updateContent(part, choice, multiselect)
+
+  return updateContent(part, choice, expansionExpr.kind)
 }
 
 /** @return the pattern we use to denote a dynamic expansion expression */
 function expansionPattern() {
-  return /(expand|multi)\((.+)\)/
+  return /(expand|multi|form)\((.+)\)/
 }
 
 /** @return the pattern we use to denote a dynamic expansion expression with a message to print while expanding */
 function expansionPatternWithMessage() {
-  return /^\s*(expand|multi)\((.+)\s*,\s*([\w\s]+)\s*\)\s*$/
+  return /^\s*(expand|multi|form)\((.+)\s*,\s*(.+)\s*\)\s*$/
 }
 
 /** @return the pattern we use to denote a dynamic expansion expression with a message to print while expanding, and a memoization key */
 function expansionPatternWithMessageAndKey() {
-  return /^\s*(expand|multi)\((.+)\s*,\s*([\w\s]+)\s*,\s*([\w\s]+)\s*\)\s*$/
+  return /^\s*(expand|multi|form)\((.+)\s*,\s*([\w\s]+)\s*,\s*([\w\s]+)\s*\)\s*$/
 }
 
 /** Does the given Choice (i.e. a tab group) include a dynamic expansion? */
 export function isExpansionGroup(graph: Choice) {
   return expansionPattern().test(graph.group)
 }
-
-type ExpansionExpression = { expr: string; multiselect?: boolean; message?: string; key?: string }
 
 /** Is the given Choice member (i.e. a tab) a dynamic expansion? */
 function isExpansion(part: ChoicePart): ExpansionExpression {
@@ -129,7 +143,7 @@ function isExpansion(part: ChoicePart): ExpansionExpression {
     part.title.match(expansionPattern())
   if (match) {
     return {
-      multiselect: match[1] === "multi",
+      kind: match[1] === "multi" ? "multiselect" : match[1] === "form" ? "form" : "singleselect",
       expr: match[2],
       message: match[3],
       key: match[4],
@@ -138,13 +152,13 @@ function isExpansion(part: ChoicePart): ExpansionExpression {
 }
 
 /** Replace any expansion parts with their dynamic expansion */
-function expandPart(template: ChoicePart, names: string[], multiselect: boolean): ChoicePart[] {
+function expandPart(template: ChoicePart, names: string[], expansionExpr: ExpansionExpression): ChoicePart[] {
   return names.map((name, idx) =>
     updatePart(
       JSON.parse(JSON.stringify(template, (key, value) => (key === "nesting" ? undefined : value))),
       name,
       idx,
-      multiselect
+      expansionExpr
     )
   )
 }
@@ -236,7 +250,7 @@ async function getOrExpand(
   options.debug(expansionExpr, response, memos.env)
   if (response && response.length > 0) {
     // expand the template, which yields Part -> Part[]
-    return expandPart(part, response, expansionExpr.multiselect)
+    return expandPart(part, response, expansionExpr)
   }
 }
 

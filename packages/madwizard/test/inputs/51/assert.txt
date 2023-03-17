@@ -1,0 +1,2 @@
+test/inputs/51/form={"dashy-dash":"/foo","Tab2":"/bar","mashy-mash-mash":"/gorp"}
+test/inputs/50/single=/gorp
