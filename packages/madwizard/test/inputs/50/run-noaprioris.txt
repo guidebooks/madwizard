@@ -1,8 +1,8 @@
-echo "You selected: dashy-dash"
-You selected: dashy-dash
+echo "You selected: dashy-dash 0"
+You selected: dashy-dash 0
 export YOYO="$YOYO dashy-dash"
-echo "You selected: mashy-mash-mash"
-You selected: mashy-mash-mash
+echo "You selected: mashy-mash-mash 2"
+You selected: mashy-mash-mash 2
 export YOYO="$YOYO mashy-mash-mash"
 echo "YOYO=|$YOYO|"
 YOYO=| dashy-dash mashy-mash-mash|

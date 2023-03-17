@@ -3,7 +3,7 @@ Sequence
 │   └── export OPTIONS="dashy-dash Tab2 mashy-mash-mash"
 ├── Mount path
 │   └── Option 1: form(echo $OPTIONS | tr ' ' '\n', /$choice)
-│       ├── echo "You selected: $choice"
+│       ├── echo "You selected: $choice $idx"
 │       └── export YOYO="$YOYO $choice"
 ├── interlude
 │   ├── echo "YOYO=|$YOYO|"

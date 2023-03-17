@@ -1,8 +1,8 @@
 Test dynamic choices with dashes
 ├── Main Tasks
-│   ├── echo "You selected: dashy-dash"
+│   ├── echo "You selected: dashy-dash 0"
 │   ├── export YOYO="$YOYO dashy-dash"
-│   ├── echo "You selected: mashy-mash-mash"
+│   ├── echo "You selected: mashy-mash-mash 2"
 │   └── export YOYO="$YOYO mashy-mash-mash"
 ├── interlude
 │   ├── echo "YOYO=|$YOYO|"

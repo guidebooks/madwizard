@@ -1,12 +1,12 @@
 export OPTIONS="dashy-dash Tab2 mashy-mash-mash"
-echo "You selected: /foo"
-You selected: /foo
+echo "You selected: /foo 0"
+You selected: /foo 0
 export YOYO="$YOYO /foo"
-echo "You selected: /bar"
-You selected: /bar
+echo "You selected: /bar 1"
+You selected: /bar 1
 export YOYO="$YOYO /bar"
-echo "You selected: /gorp"
-You selected: /gorp
+echo "You selected: /gorp 2"
+You selected: /gorp 2
 export YOYO="$YOYO /gorp"
 echo "YOYO=|$YOYO|"
 YOYO=| /foo /bar /gorp|
