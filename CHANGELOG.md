@@ -1,3 +1,9 @@
+## [6.5.3](https://github.com/guidebooks/madwizard/compare/6.5.2...6.5.3) (2023-03-18)
+
+### Bug Fixes
+
+- forms with number 0 result in missing values e.g. NUM_GPUS=, empty string ([a0a30c8](https://github.com/guidebooks/madwizard/commit/a0a30c8e4853fbeaee1828cc0e568ef9677b08de))
+
 ## [6.5.2](https://github.com/guidebooks/madwizard/compare/6.5.1...6.5.2) (2023-03-18)
 
 ### Bug Fixes
