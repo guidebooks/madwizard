@@ -1,3 +1,16 @@
+# [6.5.0](https://github.com/guidebooks/madwizard/compare/6.4.1...6.5.0) (2023-03-18)
+
+### Bug Fixes
+
+- allow serialized profiles to store form responses as json, rather than serialized json ([e907680](https://github.com/guidebooks/madwizard/commit/e907680702f55befadd78448687f515dfc750ab3))
+- dynamic-expansion forms do not properly expand default values ([6caa08e](https://github.com/guidebooks/madwizard/commit/6caa08efdbb4da4e18160b4a4ba0810f446c6c1c))
+- if choice changed from non-form to form, JSON parse failure ensues ([01aa3a4](https://github.com/guidebooks/madwizard/commit/01aa3a4497a9d09c061caecc8b08298c47542060))
+
+### Features
+
+- dynamic expansion of forms via `=== "form(expr, defaultValue)"` ([c6c75fe](https://github.com/guidebooks/madwizard/commit/c6c75fe56e290dbeb5f36354662d89bcce359adf))
+- for dynamic form expansions, support $idx expansion, to represent index in form ([580d39a](https://github.com/guidebooks/madwizard/commit/580d39aaa6ebd3c331d9727adac8088095abc03d))
+
 ## [6.4.1](https://github.com/guidebooks/madwizard/compare/6.4.0...6.4.1) (2023-03-16)
 
 ### Bug Fixes
