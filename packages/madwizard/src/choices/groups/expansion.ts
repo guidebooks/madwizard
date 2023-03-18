@@ -63,7 +63,7 @@ export function updateContent<Part extends { graph: Graph; description?: string;
   let _uuid: string
   const uuid = () => _uuid || (_uuid = v4())
   const replace = (str: string) =>
-    (choiceString
+    (typeof choiceString !== "string" || choiceString.length > 0
       ? str.replace(pattern1, typeof choiceString === "string" ? expandHomeDir(choiceString) : choiceString)
       : str
     )
@@ -102,7 +102,7 @@ export function updateContent<Part extends { graph: Graph; description?: string;
     part.description = replace(part.description)
   }
 
-  if (part.form && typeof part.form.defaultValue == "string") {
+  if (part.form && typeof part.form.defaultValue === "string") {
     part.form.defaultValue = replace(part.form.defaultValue)
   }
 
