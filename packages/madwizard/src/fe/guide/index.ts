@@ -302,7 +302,7 @@ export class Guide {
         choices.forEach((_) => {
           const suggestion = suggestionForm[_.name]
           if (suggestion) {
-            _.initial = suggestion
+            _.initial = suggestion.toString() // enquirer really wants this to be a string
           }
         })
 
@@ -348,10 +348,12 @@ export class Guide {
           validate: !isMulti ? undefined : (value) => Array.isArray(value) && value.length > 0, // reject no selections for multi
           initial:
             isMulti && Array.isArray(previouslySelectedOptions)
-              ? (previouslySelectedOptions as string[]).filter(
-                  // filter out previously selected options that no longer exist in the latest guidebook
-                  (suggestion) => !!content.find((_) => _.title === suggestion)
-                )
+              ? (previouslySelectedOptions as string[])
+                  .filter(
+                    // filter out previously selected options that no longer exist in the latest guidebook
+                    (suggestion) => !!content.find((_) => _.title === suggestion)
+                  )
+                  .map((_) => _.toString()) // enquirer really wants this to be a string
               : undefined,
         }
       }
