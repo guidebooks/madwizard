@@ -1,3 +1,9 @@
+## [6.5.1](https://github.com/guidebooks/madwizard/compare/6.5.0...6.5.1) (2023-03-18)
+
+### Bug Fixes
+
+- improve support for form choices in profile to store values as numbers ([19a29aa](https://github.com/guidebooks/madwizard/commit/19a29aaf1bc9f293dddaed6bc7ae0730ade3542f))
+
 # [6.5.0](https://github.com/guidebooks/madwizard/compare/6.4.1...6.5.0) (2023-03-18)
 
 ### Bug Fixes
