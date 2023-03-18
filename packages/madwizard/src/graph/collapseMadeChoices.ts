@@ -93,7 +93,7 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
         const form = choices.form(graph)
         if (form) {
           // do we have values for every part?
-          if (graph.choices.every((_) => !!form[_.title])) {
+          if (graph.choices.every((_) => typeof form[_.title] !== "undefined")) {
             // then unwrap the choice
             return sequence(graph.choices.flatMap((_) => updateContent(_, form[_.title]).graph))
           }
