@@ -1,3 +1,9 @@
+## [6.5.2](https://github.com/guidebooks/madwizard/compare/6.5.1...6.5.2) (2023-03-18)
+
+### Bug Fixes
+
+- profiles with form data as numberse can result in infinite loop ([322750d](https://github.com/guidebooks/madwizard/commit/322750d7e380f09db3fdd66c0cf6a506f0ce7505))
+
 ## [6.5.1](https://github.com/guidebooks/madwizard/compare/6.5.0...6.5.1) (2023-03-18)
 
 ### Bug Fixes
