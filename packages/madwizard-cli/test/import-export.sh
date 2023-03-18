@@ -78,44 +78,116 @@ function same {
     fi
 }
 
+function guidebook {
+    local P="$2"
+    local G="$3"
+    local A="$4"
+    local E="$5"
+    MWPROFILES_PATH="$(dirname "$P")" \
+                   madwizard guide --yes -q \
+                   -p "$(basename $P)" \
+                   -s "$(dirname "$G")" \
+                   "$(basename $G)" >& $A
+    if diff "$A" "$E";
+    then printf "guide $1: \033[32mPASS\033[0m\n"
+    else (printf "guide $1: \033[31mFAIL\033[0m\n" && exit 1)
+    fi
+}
+
 trap cleanup EXIT
 
-P1="$SCRIPTDIR"/profile1.json
+P1="$SCRIPTDIR"/inputs/1/profile.json
+G1="$SCRIPTDIR"/inputs/1/guidebook.md
 P1Name=TEST_PROFILE
-P2Name=TEST_PROFILE2
-P3Name=TEST_PROFILE3
+P1bName=TEST_PROFILE1b
+P1cName=TEST_PROFILE1c
 
-# here come the tests
+P2="$SCRIPTDIR"/inputs/2/profile.json
+G2="$SCRIPTDIR"/inputs/2/guidebook.md
+E2="$SCRIPTDIR"/inputs/2/expected.txt
+
+P3="$SCRIPTDIR"/inputs/3/profile.json
+G3="$SCRIPTDIR"/inputs/3/guidebook.md
+E3="$SCRIPTDIR"/inputs/3/expected.txt
+
+# -------------------
+# Here come the tests
+# -------------------
+
+# initially, no profiles
 shouldHave 0
 
+# import P1 and show that one profile
 import "$P1"
 shouldHave 1
 shouldList $P1Name
 
+# delete and show no profiles
 delete $P1Name
 shouldHave 0
 
+# import P1 again, and show that one profile
 import "$P1"
 shouldHave 1
 shouldList $P1Name
 
+# export P1, verify that it survived the import-export roundtrip, and
+# list should show it, still
 exporty $P1Name
 same "$P1" "$out" $P1Name
 shouldHave 1
 shouldList $P1Name
 
-import "$out" --name $P2Name
+# import what we exported (import P1 -> export) using an alternate
+# name P1b
+import "$out" --name $P1bName
 shouldHave 2
 shouldList $P1Name
-shouldList $P2Name
+shouldList $P1bName
 
-exporty $P2Name
-same "$P1" "$out" $P1Name $P2Name
+# export the P1b that we just imported
+exporty $P1bName
+same "$P1" "$out" $P1Name $P1bName
+P1b="$out"
 
-clone $P1Name $P3Name
+# clone P1 as P1c
+clone $P1Name $P1cName
 shouldHave 3
 shouldList $P1Name
-shouldList $P3Name
-exporty $P3Name
-same "$P1" "$out" $P1Name $P3Name
+shouldList $P1cName
+exporty $P1cName
+same "$P1" "$out" $P1Name $P1cName
+P1c="$out"
 
+# do a guide run against the exported P1c
+MWPROFILES_PATH="$(dirname "$P1c")" \
+        madwizard guide --yes \
+        -p "$(basename $P1c)" \
+        -s "$(dirname "$G1")" \
+        "$(basename $G1)"
+
+# verify that we support json values for form in profile
+A2=$(mktemp)
+echo "A2 $A2" # this can help you to update E2 if changes are necessary
+guidebook P2 "$P2" "$G2" "$A2" "$E2"
+
+# this is the same as P2, but where the form is stringified in the profile
+A3=$(mktemp)
+echo "A3 $A3" # this can help you to update E3 if changes are necessary
+guidebook P3 "$P3" "$G3" "$A3" "$E3"
+
+# rerun P2 as a guidebook, but after an import/export round-trip
+import "$P2" --name P2b
+shouldList P2b
+exporty P2b
+P2b="$out" # this is the exported version of P2
+A2b=$(mktemp)
+guidebook P2b "$P2b" "$G2" "$A2b" "$E2" # run against the re-exported P2b profile, expecting the same E2 output
+
+# rerun P3 as a guidebook, but after an import/export round-trip
+import "$P3" --name P3b
+shouldList P3b
+exporty P3b
+P3b="$out" # this is the exported version of P3
+A3b=$(mktemp)
+guidebook P3b "$P3b" "$G3" "$A3b" "$E3" # run against the re-exported P3b profile, expecting the same E3 output
