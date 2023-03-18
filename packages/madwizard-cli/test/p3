@@ -1,0 +1,13 @@
+{
+  "name": "p3",
+  "creationTime": 1679159572078,
+  "lastModifiedTime": 1679159572173,
+  "lastUsedTime": 1679159617950,
+  "choices": {
+    "madwizard/apriori/use-gpu": "don't use gpus",
+    "madwizard/apriori/arch": "x64",
+    "madwizard/apriori/platform": "darwin",
+    "madwizard/apriori/mac-installer": "Homebrew",
+    "madwizard/apriori/in-terminal": "Text"
+  }
+}

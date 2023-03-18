@@ -1,0 +1,7 @@
+ XXX 
+
+ Choice 1  XXX  · {"NNN":1111,"YYY":2222}
+NNN gets 1111
+YYY gets 2222
+
+✨ Guidebook successful

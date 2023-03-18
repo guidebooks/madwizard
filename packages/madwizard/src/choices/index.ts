@@ -104,6 +104,21 @@ export function emptyChoiceState(profileName = "empty"): ChoiceState {
 export function deserialize(serializedProfile: string): ChoiceState {
   const profile = JSON.parse(serializedProfile)
   if (isProfile(profile)) {
+    // This bit of hackery allows profiles to be stored in a nice
+    // format, where forms and multiselects show up as actual JSON
+    // rather than stringified JSON... without us having to refactor
+    // the rest of the code to tolerate theseinternally.
+    //
+    // Such an update is probably worthwhile... at some point, to
+    // avoid this hack.
+    if (typeof profile.choices === "object") {
+      Object.entries(profile.choices).forEach(([key, value]) => {
+        if (typeof value !== "string") {
+          profile.choices[key] = JSON.stringify(value)
+        }
+      })
+    }
+
     return new ChoiceStateImpl(profile)
   } else {
     throw new Error("Invalid serialized profile")
