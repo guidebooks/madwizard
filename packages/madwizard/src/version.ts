@@ -15,5 +15,5 @@
  */
 
 export default function version(semver?: [number, number, number]) {
-  return semver ? `${semver[0]}.${semver[1]}.${semver[2]}` : "6.5.3"
+  return semver ? `${semver[0]}.${semver[1]}.${semver[2]}` : "6.6.0"
 }

@@ -1,3 +1,14 @@
+# [6.6.0](https://github.com/guidebooks/madwizard/compare/6.5.3...6.6.0) (2023-03-19)
+
+### Bug Fixes
+
+- dynamic expansion should remove duplicates ([b966f0d](https://github.com/guidebooks/madwizard/commit/b966f0da75c942bae6c0990e01f470b40d7e649c))
+- handle schema evolution of choice from single-select to multi-select ([acf1a66](https://github.com/guidebooks/madwizard/commit/acf1a66b29a16c7067bd4227c333988857e1d41b))
+
+### Features
+
+- add `midx` or multi-selection index, the index in the selected sublist ([95a20cf](https://github.com/guidebooks/madwizard/commit/95a20cf38220f9aeefba94e1e999c47fc9c88a60))
+
 ## [6.5.3](https://github.com/guidebooks/madwizard/compare/6.5.2...6.5.3) (2023-03-18)
 
 ### Bug Fixes
