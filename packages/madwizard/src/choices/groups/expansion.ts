@@ -173,6 +173,11 @@ function expandPart(template: ChoicePart, names: string[], expansionExpr: Expans
   )
 }
 
+/** Remove duplicates from the given array `A` */
+function removeDuplicates(A: string[]): string[] {
+  return Array.from(new Set(A))
+}
+
 /**
  * Do the actual expansion of the given `expansionExpr`.
  *
@@ -193,7 +198,7 @@ async function doExpand(
     )
 
     // we treat the response as a newline-separated list of names
-    return response.split(/\n/).filter(Boolean)
+    return removeDuplicates(response.split(/\n/).filter(Boolean))
   } catch (err) {
     options.debug(expansionExpr.expr, memos.env, err)
     return null // <-- we use a `null` entry in the memo to indicate a failed expansion
