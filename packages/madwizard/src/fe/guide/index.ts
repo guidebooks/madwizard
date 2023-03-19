@@ -428,10 +428,38 @@ export class Guide {
       }
       return o
     }
+    const withStdoutAutoComplete = async (opts: enquirer.AutoComplete.Question<string>) => {
+      const stdin = this.options.stdio?.stdin
+      const stdout = this.options.stdio?.stdout || (isRaw(this.options) ? await this.echo() : undefined)
+      const o: enquirer.AutoComplete.Question<string> & {
+        stdin?: NodeJS.ReadableStream
+        stdout?: NodeJS.WritableStream
+      } = Object.assign({}, opts)
+      if (stdin) {
+        o.stdin = stdin
+      }
+      if (stdout) {
+        o.stdout = stdout
+      }
+      return o
+    }
 
     const enquirer = await import("enquirer").then((_) => _.default)
+
+    const autoCompleteOpts: enquirer.AutoComplete.Question<string> = {
+      name: opts.name,
+      message: opts.message,
+      choices: opts.choices.map((choice) => ({
+        name: choice.name,
+        message: choice.message,
+        hint: choice.hint,
+        disabled: choice.disabled,
+        value: choice.value,
+      })),
+    }
+
     const prompt = this.isSelect(opts)
-      ? new enquirer.Select(await withStdout(opts))
+      ? new enquirer.AutoComplete(await withStdoutAutoComplete(autoCompleteOpts))
       : this.isMultiSelect(opts)
       ? new enquirer.MultiSelect(await withStdout(opts))
       : new enquirer.Form(await withStdout(opts))
