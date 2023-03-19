@@ -53,12 +53,14 @@ export function updateContent<Part extends { graph: Graph; description?: string;
   part: Part,
   choiceString = "",
   kind: ExpansionKind = "singleselect",
-  choiceIdx = 0
+  choiceIdx = 0,
+  multiSelectionIdx: number = undefined
 ): Part {
   const pattern1 = /\$\{?choice\}?/gi
   const pattern2a = /\${uuid}/gi
   const pattern2b = /\$uuid/gi
-  const pattern3 = /\$\{?idx\}?/gi
+  const pattern3 = /\$\{?(idx|choiceIdx|choiceIndex)\}?/gi
+  const pattern4 = /\$\{?(midx|multiSelectionIdx|multiSelectionIndex)\}?/gi
 
   let _uuid: string
   const uuid = () => _uuid || (_uuid = v4())
@@ -77,6 +79,10 @@ export function updateContent<Part extends { graph: Graph; description?: string;
       // expand $idx
       if (typeof _.body === "string") {
         _.body = _.body.replace(pattern3, choiceIdx.toString())
+      }
+
+      if (kind === "multiselect" && multiSelectionIdx !== undefined) {
+        _.body = _.body.replace(pattern4, multiSelectionIdx.toString())
       }
     }
 
@@ -282,10 +288,10 @@ async function expandOneChoice(
   if (isExpansionGroup(graph)) {
     const newChoices = (
       await Promise.all(
-        graph.choices.map(async (part) => {
+        graph.choices.map(async (part, idx) => {
           const expansionExpr = isExpansion(part)
           if (!expansionExpr) {
-            return updateContent(part)
+            return updateContent(part, undefined, undefined, idx)
           } else {
             return getOrExpand(graph, part, expansionExpr, memos, options)
           }
@@ -299,12 +305,13 @@ async function expandOneChoice(
       graph.choices = newChoices
     }
   } else {
-    graph.choices = graph.choices.map((_) => {
+    graph.choices = graph.choices.map((_, idx) => {
       // form choices are a bit of a special case: the value is
       // supplied by the user at runtime, not by the static structure of the
       // choice (which is given by `_.title`, here)
-      const choiceString = !isPartOfForm(_) ? _.title : undefined
-      return updateContent(_, choiceString)
+      const isFormPart = isPartOfForm(_)
+      const choiceString = !isFormPart ? _.title : undefined
+      return updateContent(_, choiceString, isFormPart ? "form" : undefined, idx)
     })
   }
 }

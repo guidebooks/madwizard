@@ -1,0 +1,15 @@
+Dynamic expansion of form
+├── options
+│   └── export OPTIONS="dashy-dash Tab2 mashy-mash-mash"
+├── Mount path
+│   └── Option 1: form(echo $OPTIONS | tr ' ' '\n', /$choice)
+│       ├── echo "You selected: $choice $idx"
+│       └── export YOYO="$YOYO $choice"
+├── interlude
+│   ├── echo "YOYO=|$YOYO|"
+│   └── for i in $YOYO; do
+│           echo "- $i"
+│       done
+└── multi
+    └── Option 1: multi(echo "$YOYO" | tr ' ' '\n')
+        └── echo "You selected2: $choice |$idx=$choiceIdx=$choiceIndex| ||$midx=$multiSelectionIdx=$multiSelectionIndex||"
