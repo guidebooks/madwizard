@@ -46,7 +46,15 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
 
       if (isMulti) {
         try {
-          const previouslySelected = JSON.parse(madeChoiceTitle) as string[]
+          // we need a bit of care here to handle schema evolution;
+          // e.g. if previously this choice was not a multiselect, but
+          // now is...
+          const previouslySelected = Array.isArray(madeChoiceTitle)
+            ? madeChoiceTitle
+            : typeof madeChoiceTitle === "string"
+            ? (JSON.parse(madeChoiceTitle) as string[])
+            : []
+
           const multiset = isMulti ? new Set(previouslySelected) : undefined
           if (previouslySelected.every((selection) => graph.choices.find((_) => selection === _.title))) {
             // then every selected option in the multiset still exists
