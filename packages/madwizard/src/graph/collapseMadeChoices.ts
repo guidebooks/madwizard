@@ -58,7 +58,11 @@ function collapse(graph: Graph, choices: ChoiceState): Graph {
           const multiset = isMulti ? new Set(previouslySelected) : undefined
           if (previouslySelected.every((selection) => graph.choices.find((_) => selection === _.title))) {
             // then every selected option in the multiset still exists
-            return sequence(graph.choices.filter((_) => multiset.has(_.title)).map((_) => _.graph))
+            return sequence(
+              graph.choices
+                .filter((_) => multiset.has(_.title))
+                .map((_, idx) => updateContent(_, undefined, "multiselect", undefined, idx).graph)
+            )
           }
         } catch (err) {
           console.error("Error processing prior multiset choice", err)
