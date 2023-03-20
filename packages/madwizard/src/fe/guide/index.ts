@@ -428,7 +428,7 @@ export class Guide {
       }
       return o
     }
-    const withStdoutAutoComplete = async (opts: enquirer.AutoComplete.Question<string>) => {
+    const withStdoutAutoComplete = async (opts: enquirer.AutoComplete.Question<string>, multiple = false) => {
       const stdin = this.options.stdio?.stdin
       const stdout = this.options.stdio?.stdout || (isRaw(this.options) ? await this.echo() : undefined)
       const o: enquirer.AutoComplete.Question<string> & {
@@ -441,6 +441,7 @@ export class Guide {
       if (stdout) {
         o.stdout = stdout
       }
+      o.multiple = multiple
       return o
     }
 
@@ -449,11 +450,13 @@ export class Guide {
     const autoCompleteOpts: enquirer.AutoComplete.Question<string> = {
       name: opts.name,
       message: opts.message,
+      initial: opts.initial,
       choices: opts.choices.map((choice) => ({
         name: choice.name,
         message: choice.message,
         hint: choice.hint,
         disabled: choice.disabled,
+        initial: choice.initial,
         value: choice.value,
       })),
     }
@@ -461,7 +464,7 @@ export class Guide {
     const prompt = this.isSelect(opts)
       ? new enquirer.AutoComplete(await withStdoutAutoComplete(autoCompleteOpts))
       : this.isMultiSelect(opts)
-      ? new enquirer.MultiSelect(await withStdout(opts))
+      ? new enquirer.AutoComplete(await withStdoutAutoComplete(autoCompleteOpts, true))
       : new enquirer.Form(await withStdout(opts))
 
     if (isRaw(this.options)) {
