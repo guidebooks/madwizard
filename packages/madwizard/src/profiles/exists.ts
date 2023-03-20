@@ -15,7 +15,6 @@
  */
 
 import { join } from "path"
-import { constants } from "node:fs"
 
 import { profilesPath } from "./paths.js"
 import { MadWizardOptions } from "../fe/index.js"
@@ -25,7 +24,7 @@ export default async function exists(options: MadWizardOptions, profile: string)
   const access = options.fs?.access || (await import("fs/promises").then((_) => _.access))
   const filepath = join(await profilesPath(options), profile)
 
-  return access(filepath, constants.F_OK)
+  return access(filepath, 0 /* require('fs').constants.F_OK */)
     .then(() => true)
     .catch(() => false)
 }
