@@ -1,3 +1,13 @@
+# [6.7.0](https://github.com/guidebooks/madwizard/compare/6.6.0...6.7.0) (2023-03-20)
+
+### Bug Fixes
+
+- bump enquirer to pick up pointer UI update from enquirer ([c0212bd](https://github.com/guidebooks/madwizard/commit/c0212bd9f9846150af046ce6fea17c02f857e80b))
+
+### Features
+
+- enable interactive filter during single select prompt ([e23893a](https://github.com/guidebooks/madwizard/commit/e23893a136787b9d3528767c03f662fc1f7c05aa))
+
 # [6.6.0](https://github.com/guidebooks/madwizard/compare/6.5.3...6.6.0) (2023-03-19)
 
 ### Bug Fixes
