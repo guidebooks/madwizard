@@ -1,3 +1,9 @@
+## [7.0.2](https://github.com/guidebooks/madwizard/compare/7.0.1...7.0.2) (2023-03-20)
+
+### Bug Fixes
+
+- remove yargs-parser dependence, went away with removal of ray-submit ([f3edc9e](https://github.com/guidebooks/madwizard/commit/f3edc9e7791fa6402aa22351fea87c77c3573f02))
+
 ## [7.0.1](https://github.com/guidebooks/madwizard/compare/7.0.0...7.0.1) (2023-03-20)
 
 ### Bug Fixes
