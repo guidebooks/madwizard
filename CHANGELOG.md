@@ -1,3 +1,10 @@
+## [7.0.3](https://github.com/guidebooks/madwizard/compare/7.0.1...7.0.3) (2023-03-20)
+
+### Bug Fixes
+
+- avoid top-level import of fs ([c98b175](https://github.com/guidebooks/madwizard/commit/c98b175a624f6279212a246ed5f88322f53d8f19))
+- remove yargs-parser dependence, went away with removal of ray-submit ([f3edc9e](https://github.com/guidebooks/madwizard/commit/f3edc9e7791fa6402aa22351fea87c77c3573f02))
+
 ## [7.0.2](https://github.com/guidebooks/madwizard/compare/7.0.1...7.0.2) (2023-03-20)
 
 ### Bug Fixes
