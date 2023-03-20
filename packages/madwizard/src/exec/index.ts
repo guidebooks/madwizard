@@ -22,7 +22,6 @@ import shell from "./shell.js"
 import which from "./which.js"
 import custom from "./custom.js"
 import python from "./python.js"
-import raySubmit from "./ray-submit.js"
 import exporter, { isExport } from "./export.js"
 import handledByClient from "./handled-by-client.js"
 import madwizardFinally from "./finally/exec.js"
@@ -45,11 +44,7 @@ export async function shellExec(
     return respFromClient
   } else if (exec) {
     // then the source has provided a custom executor
-    return (
-      madwizardFinally(cmdline, memos, exec) ||
-      (await raySubmit(cmdline, language, memos, opts, exec, async)) ||
-      custom(cmdline, memos, opts, exec, async)
-    )
+    return madwizardFinally(cmdline, memos, exec) || custom(cmdline, memos, opts, exec, async)
   } else if (isShellish(language)) {
     // then the code block has been declared with a `shell` or `bash`
     // or `sh` language
