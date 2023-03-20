@@ -58,7 +58,7 @@
     "chalk": "^5.2.0",
     "columnify": "^1.6.0",
     "debug": "^4.3.4",
-    "enquirer": "https://git@github.com/starpit/enquirer#19b27f10d3304b4a3300b438592a004dc6ee1a7f",
+    "enquirer": "https://git@github.com/starpit/enquirer#bd3538c74c66699e6d51c5b5e355841abb9e4eed",
     "env-paths": "^2.2.1",
     "escalade": "^3.1.1",
     "expand-home-dir": "^0.0.3",
