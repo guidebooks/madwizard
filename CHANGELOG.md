@@ -1,3 +1,9 @@
+## [7.0.1](https://github.com/guidebooks/madwizard/compare/7.0.0...7.0.1) (2023-03-20)
+
+### Bug Fixes
+
+- multiselect should also support autocomplete ([08773fb](https://github.com/guidebooks/madwizard/commit/08773fbd95b35fe68fd1a80ed855516f39aec8f4))
+
 # [7.0.0](https://github.com/guidebooks/madwizard/compare/6.7.0...7.0.0) (2023-03-20)
 
 ### Features
