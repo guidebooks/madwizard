@@ -1,3 +1,13 @@
+# [7.0.0](https://github.com/guidebooks/madwizard/compare/6.7.0...7.0.0) (2023-03-20)
+
+### Features
+
+- remove old ray-submit intrinsic ([aa8647f](https://github.com/guidebooks/madwizard/commit/aa8647fcaa1da9c716c54fb343631f1b54d688ee))
+
+### BREAKING CHANGES
+
+- `exec: ray-submit` is no longer supported
+
 # [6.7.0](https://github.com/guidebooks/madwizard/compare/6.6.0...6.7.0) (2023-03-20)
 
 ### Bug Fixes
