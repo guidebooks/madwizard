@@ -126,7 +126,7 @@ export default async function shellItOut(
         } else if (code === 0) {
           resolve("success")
         } else {
-          const msg = (err || `${cmdline} failed`).split(/\n/)[0]
+          const msg = (err || `${cmdline} failed`).split(/\n/)[0].replace(/^\s*#\s*/, "") // first line, remove comment # prefix
           reject(new Error(msg))
         }
       })
