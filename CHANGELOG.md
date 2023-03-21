@@ -1,3 +1,10 @@
+## [7.0.4](https://github.com/guidebooks/madwizard/compare/7.0.3...7.0.4) (2023-03-21)
+
+### Bug Fixes
+
+- failure message should remove comment prefix from first line ([3aac980](https://github.com/guidebooks/madwizard/commit/3aac9807a4efe6d65f101fb247ac56ed608dc34d))
+- fix an error in prior publish w.r.t. version ([d8191e9](https://github.com/guidebooks/madwizard/commit/d8191e9c2fab4959ffec45bedf7adec7a2dc71a4))
+
 ## [7.0.3](https://github.com/guidebooks/madwizard/compare/7.0.1...7.0.3) (2023-03-20)
 
 ### Bug Fixes
