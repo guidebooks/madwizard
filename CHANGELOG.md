@@ -1,3 +1,5 @@
+## [7.2.1](https://github.com/guidebooks/madwizard/compare/7.1.0...7.2.1) (2023-03-31)
+
 # [7.1.0](https://github.com/guidebooks/madwizard/compare/7.0.4...7.1.0) (2023-03-31)
 
 ### Features
