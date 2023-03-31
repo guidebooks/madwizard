@@ -77,7 +77,14 @@ export default async function shellItOut(
     env.GUIDEBOOK_DASHDASH = shellEscape(memos.cliDashDash)
   }
 
-  const stdin = needsStdin ? "inherit" : "ignore"
+  // unless the code block has a `shell.stdin` or `bash.stdin`, we
+  // will not pass it our stdin; this is to avoid ctrl+z and laptop
+  // suspend/resume from interfering with code block executions in
+  // bizarre ways. NOTE: we pass "pipe" rather than "ignore", because
+  // the latter can break certain applications, such as `websocat`,
+  // which apparently fails silently if it has no stdin
+  const stdin = needsStdin ? "inherit" : "pipe"
+
   const stdio: StdioOptions = opts.quiet
     ? [stdin, "ignore", "pipe"]
     : capture
