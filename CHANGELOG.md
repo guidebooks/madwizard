@@ -1,3 +1,9 @@
+## [8.0.3](https://github.com/guidebooks/madwizard/compare/8.0.2...8.0.3) (2023-03-31)
+
+### Bug Fixes
+
+- pass 'pipe' rather than 'ignore' to code blocks that do not need stdin ([95b8969](https://github.com/guidebooks/madwizard/commit/95b8969e824ff04dfd52b30ee220fd36a1daebae))
+
 ## [8.0.2](https://github.com/guidebooks/madwizard/compare/8.0.1...8.0.2) (2023-03-31)
 
 ## [8.0.1](https://github.com/guidebooks/madwizard/compare/8.0.0...8.0.1) (2023-03-31)
