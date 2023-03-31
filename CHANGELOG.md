@@ -1,3 +1,26 @@
+# [8.0.0](https://github.com/guidebooks/madwizard/compare/7.2.1...8.0.0) (2023-03-31)
+
+### Features
+
+- do not attach stdin by default to code block execs ([cbe022c](https://github.com/guidebooks/madwizard/commit/cbe022cc88ce0c0790d91d061f724e8752631b6a))
+
+### BREAKING CHANGES
+
+- guidebooks that need stdin must now use `bash.stdin` or `shell.stdin` to get a stdin.
+
+This is dangerous, as e.g. putting one's laptop to sleep can send a signal to stdin, which can result in random subprocesses being suspended and never resuming. ctrl+z is another example.
+
+This backs out https://github.com/guidebooks/madwizard/pull/694 which was a poor attempt at addressing this problem (that PR refused to process finally blocks on _any_ signal)
+
+With this change, you must now use `shell.stdin` to get a stdin attachment, as in:
+
+```shell.stdin
+while read line
+do
+  echo "$line"
+done < "${1:-/dev/stdin}"
+```
+
 ## [7.2.1](https://github.com/guidebooks/madwizard/compare/7.1.0...7.2.1) (2023-03-31)
 
 # [7.1.0](https://github.com/guidebooks/madwizard/compare/7.0.4...7.1.0) (2023-03-31)
