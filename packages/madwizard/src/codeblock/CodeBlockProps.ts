@@ -183,6 +183,9 @@ export type CodeBlockProps = Partial<CustomExecutable> &
      * completes.
      */
     async?: boolean
+
+    /** Should we attach stdin to the code block execution [default: false] */
+    stdin?: boolean
   }
 
 export function addNesting(props: CodeBlockProps, nesting: CodeBlockNestingParent, insertIdx?: number) {

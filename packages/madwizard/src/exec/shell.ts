@@ -39,6 +39,7 @@ export default async function shellItOut(
   opts: ExecOptions = { quiet: false },
   extraEnv: Record<string, string> = {},
   async?: boolean /* fire and forget, until this process exits? */,
+  needsStdin?: boolean /* attach stdin? */,
   onClose?: () => void | Promise<void> /* callback when the process exits */
 ): Promise<"success"> {
   const cmdline = typeof _cmdline === "boolean" ? _cmdline : _cmdline.replace(/\\\n/g, " ")
@@ -76,11 +77,12 @@ export default async function shellItOut(
     env.GUIDEBOOK_DASHDASH = shellEscape(memos.cliDashDash)
   }
 
+  const stdin = needsStdin ? "inherit" : "ignore"
   const stdio: StdioOptions = opts.quiet
-    ? ["inherit", "ignore", "pipe"]
+    ? [stdin, "ignore", "pipe"]
     : capture
-    ? ["inherit", "pipe", "pipe"]
-    : ["inherit", "inherit", "inherit"]
+    ? [stdin, "pipe", "pipe"]
+    : [stdin, "inherit", "inherit"]
   if (opts.write) {
     stdio[1] = "pipe"
   }

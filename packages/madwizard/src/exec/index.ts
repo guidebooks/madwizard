@@ -35,7 +35,8 @@ export async function shellExec(
   opts: ExecOptions = { quiet: false },
   language: SupportedLanguage = "shell",
   exec?: CustomExecutable["exec"] /* execute code block with custom exec, rather than `sh` */,
-  async?: boolean /* fire and forget, until this process exits? */
+  async?: boolean /* fire and forget, until this process exits? */,
+  needsStdin?: boolean /* attach stdin? */
 ): Promise<"success"> {
   // maybe the client wants to handle some executions directly?
   const respFromClient = handledByClient(cmdline, memos, opts, exec)
@@ -51,7 +52,7 @@ export async function shellExec(
     return (
       exporter(cmdline, memos, opts) || // export FOO=3
       which(cmdline) || // which foo
-      shell(cmdline, memos, opts, undefined, async) // vanilla shell exec
+      shell(cmdline, memos, opts, undefined, async, needsStdin) // vanilla shell exec
     )
   } else if (isPythonic(language)) {
     // then the code block has been declared with a `python` language

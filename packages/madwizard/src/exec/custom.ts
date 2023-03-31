@@ -82,7 +82,7 @@ export default async function execAsCustom(
                 }
               }
 
-              shellItOut(exec, memos, opts, mwenv, async, myOnClose).then(resolve, reject)
+              shellItOut(exec, memos, opts, mwenv, async, undefined, myOnClose).then(resolve, reject)
             }
           })
         })
