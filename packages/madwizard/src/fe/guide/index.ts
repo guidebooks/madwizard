@@ -105,7 +105,10 @@ export class Guide {
       this._currentRunner.kill()
     }
 
-    await this.runOnStackFinallies()
+    if (!signal) {
+      // only run finally blocks on clean exit, not ctrl+c
+      await this.runOnStackFinallies()
+    }
   }
 
   private get hasReceivedExitSignalFromUser() {
