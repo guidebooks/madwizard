@@ -1,3 +1,9 @@
+# [7.1.0](https://github.com/guidebooks/madwizard/compare/7.0.4...7.1.0) (2023-03-31)
+
+### Features
+
+- do not run finally blocks on ctrl+c ([ba69660](https://github.com/guidebooks/madwizard/commit/ba69660705762adc7fec0f39550b51b8ff4be2a2))
+
 ## [7.0.4](https://github.com/guidebooks/madwizard/compare/7.0.3...7.0.4) (2023-03-21)
 
 ### Bug Fixes
