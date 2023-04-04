@@ -1,0 +1,1 @@
+test/inputs/53/in={"Foo":"    this has surrounding whitespace    ","Bar":"this has \\\\x1b[31mred\\\\x1b[0m text"}

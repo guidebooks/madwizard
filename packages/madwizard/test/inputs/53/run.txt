@@ -1,0 +1,4 @@
+echo "    this has surrounding whitespace    "
+    this has surrounding whitespace    
+echo -e "this has \\x1b[31mred\\x1b[0m text"
+this has [31mred[0m text
