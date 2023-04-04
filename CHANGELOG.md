@@ -1,3 +1,10 @@
+## [8.0.4](https://github.com/guidebooks/madwizard/compare/8.0.3...8.0.4) (2023-04-04)
+
+### Bug Fixes
+
+- strip ansi control characters and trim form responses ([07aa72d](https://github.com/guidebooks/madwizard/commit/07aa72d490d6404b9190f5ae38e4c3f13e22c5a5))
+- trim form responses and strip ansi control characters ([1c96c42](https://github.com/guidebooks/madwizard/commit/1c96c4278a866aa2f73efa3cc78c4ff55096a896))
+
 ## [8.0.3](https://github.com/guidebooks/madwizard/compare/8.0.2...8.0.3) (2023-03-31)
 
 ### Bug Fixes
