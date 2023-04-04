@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import stripAnsi from "strip-ansi"
+
 import { Choice } from "../graph/index.js"
 import ChoiceEventManager from "./events.js"
 import { ChoiceState, ChoicesMap, Key } from "./index.js"
@@ -117,7 +119,10 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
 
   /** State representing form completion */
   public formComplete(choice: Choice, value: string[] | Record<string, string>) {
-    return this.set(choice, JSON.stringify(value))
+    return this.set(
+      choice,
+      JSON.stringify(value, (key, value) => stripAnsi(value))
+    )
   }
 
   /** Extract form responses */
