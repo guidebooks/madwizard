@@ -1,3 +1,9 @@
+## [8.0.9](https://github.com/guidebooks/madwizard/compare/8.0.8...8.0.9) (2023-04-04)
+
+### Bug Fixes
+
+- also pass GUIDEBOOK_ENV_COMMAS as key1=value1,key2=value2 to subshells ([3d7fc4d](https://github.com/guidebooks/madwizard/commit/3d7fc4d6fdb226a2908003a9b4522a63a828ee13))
+
 ## [8.0.8](https://github.com/guidebooks/madwizard/compare/8.0.7...8.0.8) (2023-04-04)
 
 ## [8.0.7](https://github.com/guidebooks/madwizard/compare/8.0.6...8.0.7) (2023-04-04)
