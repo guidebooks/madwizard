@@ -1,3 +1,5 @@
+## [8.0.6](https://github.com/guidebooks/madwizard/compare/8.0.5...8.0.6) (2023-04-04)
+
 ## [8.0.5](https://github.com/guidebooks/madwizard/compare/8.0.4...8.0.5) (2023-04-04)
 
 ## [8.0.4](https://github.com/guidebooks/madwizard/compare/8.0.3...8.0.4) (2023-04-04)
