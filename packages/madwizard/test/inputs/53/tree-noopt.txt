@@ -1,0 +1,5 @@
+Spaces and ansi control characters in form responses
+├── Option 1: Foo
+│   └── echo "$choice"
+└── Option 2: Bar
+    └── echo -e "$choice"

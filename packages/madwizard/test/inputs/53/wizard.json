@@ -1,0 +1,24 @@
+[
+  {
+    "graph": {
+      "body": "echo \"    this has surrounding whitespace    \"",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\necho \"    this has surrounding whitespace    \"\n```"
+    }
+  },
+  {
+    "graph": {
+      "body": "echo -e \"this has \\\\x1b[31mred\\\\x1b[0m text\"",
+      "language": "shell",
+      "id": "somekey"
+    },
+    "step": {
+      "name": "Missing title",
+      "content": "```shell\necho -e \"this has \\\\x1b[31mred\\\\x1b[0m text\"\n```"
+    }
+  }
+]

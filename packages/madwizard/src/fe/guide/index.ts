@@ -831,6 +831,9 @@ export class Guide {
         if (this.options.raw) {
           throw err
         } else {
+          if (process.env.DEBUG) {
+            console.error(err)
+          }
           throw new Error(
             this.chalk.red(mainSymbols.cross) + " Run failed" + name + (err.message ? ": " + err.message : "")
           )

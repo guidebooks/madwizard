@@ -1,0 +1,74 @@
+[
+  {
+    "graph": {
+      "group": "Foo####Bar",
+      "groupContext": "test/inputs/53/in",
+      "title": "Spaces and ansi control characters in form responses",
+      "source": "placeholder",
+      "provenance": ["test/inputs/53/in"],
+      "choices": [
+        {
+          "member": 0,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo \"$choice\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Foo",
+          "form": {
+            "type": "string",
+            "defaultValue": "aaa"
+          }
+        },
+        {
+          "member": 1,
+          "graph": {
+            "key": "somekey",
+            "sequence": [
+              {
+                "body": "echo -e \"$choice\"",
+                "language": "shell",
+                "id": "somekey"
+              }
+            ]
+          },
+          "title": "Bar",
+          "form": {
+            "type": "string",
+            "defaultValue": "bbb"
+          }
+        }
+      ]
+    },
+    "step": {
+      "name": "Spaces and ansi control characters in form responses",
+      "content": [
+        {
+          "title": "Foo",
+          "group": "Foo####Bar",
+          "member": 0,
+          "isFirstChoice": true,
+          "form": {
+            "type": "string",
+            "defaultValue": "aaa"
+          }
+        },
+        {
+          "title": "Bar",
+          "group": "Foo####Bar",
+          "member": 1,
+          "isFirstChoice": true,
+          "form": {
+            "type": "string",
+            "defaultValue": "bbb"
+          }
+        }
+      ]
+    }
+  }
+]

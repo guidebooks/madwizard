@@ -119,9 +119,17 @@ export default class ChoiceStateImpl extends ChoiceEventManager implements Choic
 
   /** State representing form completion */
   public formComplete(choice: Choice, value: string[] | Record<string, string>) {
+    console.error("!!!!!FFF", typeof value, value)
     return this.set(
       choice,
-      JSON.stringify(value, (key, value) => stripAnsi(value))
+      JSON.stringify(value, (key, value) => {
+        if (typeof value !== "string") {
+          console.error("????", value)
+          return value
+        } else {
+          return stripAnsi(value).trim()
+        }
+      })
     )
   }
 
