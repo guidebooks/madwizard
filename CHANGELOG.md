@@ -1,3 +1,9 @@
+## [8.0.12](https://github.com/guidebooks/madwizard/compare/8.0.11...8.0.12) (2023-04-05)
+
+### Bug Fixes
+
+- remove leftover debugging output ([5db0f60](https://github.com/guidebooks/madwizard/commit/5db0f605cf9c5095ef434cebbee8434a7bcecade))
+
 ## [8.0.11](https://github.com/guidebooks/madwizard/compare/8.0.10...8.0.11) (2023-04-05)
 
 ### Bug Fixes
