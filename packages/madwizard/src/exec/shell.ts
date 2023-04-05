@@ -35,7 +35,8 @@ function toNameValue(env: Memos["env"]) {
 /** Restructure a Record<string,string> into [{name: string, value: string}] */
 function toCommaSeparated(env: Memos["env"]) {
   return Object.entries(env)
-    .map(([name, value]) => name + "=" + JSON.stringify(value))
+    .filter(([, value]) => value.length > 0 && !/[= ]/.test(value)) // TORCHX HACK; it has parsing errors with these
+    .map(([name, value]) => name + "=" + shellEscape([value.replace(/^['"]/, "").replace(/['"]$/, "")]))
     .join(",")
 }
 
