@@ -1,3 +1,9 @@
+## [8.0.11](https://github.com/guidebooks/madwizard/compare/8.0.10...8.0.11) (2023-04-05)
+
+### Bug Fixes
+
+- a few workarounds for torchx env parsing issues in GUIDEBOOK_ENV_COMMAS ([397e44b](https://github.com/guidebooks/madwizard/commit/397e44bea8860ca9273f4bd8d6d48e2d63023607))
+
 ## [8.0.10](https://github.com/guidebooks/madwizard/compare/8.0.9...8.0.10) (2023-04-04)
 
 ## [8.0.9](https://github.com/guidebooks/madwizard/compare/8.0.8...8.0.9) (2023-04-04)
