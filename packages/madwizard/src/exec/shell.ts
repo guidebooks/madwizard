@@ -82,6 +82,10 @@ export default async function shellItOut(
     extraEnv
   )
 
+  if (opts.verbose) {
+    env.GUIDEBOOK_VERBOSE = "true"
+  }
+
   if (memos.cliDashDash) {
     env.GUIDEBOOK_DASHDASH = shellEscape(memos.cliDashDash)
   }
