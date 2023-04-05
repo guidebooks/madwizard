@@ -1,3 +1,9 @@
+## [8.0.13](https://github.com/guidebooks/madwizard/compare/8.0.12...8.0.13) (2023-04-05)
+
+### Bug Fixes
+
+- pass GUIDEBOOK_VERBOSE env var when run with -V ([4b464f4](https://github.com/guidebooks/madwizard/commit/4b464f45e6e7378c4104424e643753f85e681ec0))
+
 ## [8.0.12](https://github.com/guidebooks/madwizard/compare/8.0.11...8.0.12) (2023-04-05)
 
 ### Bug Fixes

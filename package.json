@@ -1,6 +1,6 @@
 {
   "name": "madwizard-packages",
-  "version": "8.0.12",
+  "version": "8.0.13",
   "description": "Turn Markdown into Wizards",
   "source": "src/index.ts",
   "main": "packages/madwizard/dist/index.js",
