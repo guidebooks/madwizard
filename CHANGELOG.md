@@ -1,3 +1,5 @@
+- chore: bump dependencies, including to ESM-only (a15da08)
+
 ## [9.0.1](https://github.com/guidebooks/madwizard/compare/9.0.0...9.0.1) (2023-04-11)
 
 # [9.0.0](https://github.com/guidebooks/madwizard/compare/8.0.13...9.0.0) (2023-04-11)
