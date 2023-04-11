@@ -39,7 +39,7 @@ export async function profilesPath(options: MadWizardOptions, mkdir = true) {
   const filepath =
     options.profilesPath || process.env.MWPROFILES_PATH || join(guidebookGlobalDataPath(options), "profiles")
   if (mkdir) {
-    const mkdirp = options.fs?.mkdirp || (await import("mkdirp").then((_) => _.default))
+    const mkdirp = options.fs?.mkdirp || (await import("mkdirp").then((_) => _.mkdirp))
     await mkdirp(filepath)
   }
   return filepath

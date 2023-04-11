@@ -41,7 +41,7 @@ export async function inliner(
   const data = await fetcher(srcFilePath)
   const inlined = await inlineSnippets({ fetcher, madwizardOptions })(data, srcFilePath)
 
-  const mkdirp = (await import("mkdirp")).default
+  const { mkdirp } = await import("mkdirp")
   const targetPath = join(targetDir, srcRelPath)
   await mkdirp(dirname(targetPath))
   await new Promise<void>((resolve, reject) => {
