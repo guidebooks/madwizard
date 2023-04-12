@@ -98,14 +98,23 @@ export class Guide {
 
   private exitSignalFromUser?: Parameters<Memos["cleanup"]>[0]
   public async onExitSignalFromUser(signal?: Parameters<Memos["cleanup"]>[0]) {
-    this.debug("onExitSignalFromUser", signal)
-    this.exitSignalFromUser = signal
+    Debug("madwizard/cleanup")("onExitSignalFromUser", signal)
+    try {
+      this.exitSignalFromUser = signal
 
-    if (this._currentRunner) {
-      this._currentRunner.kill()
+      if (this._currentRunner) {
+        Debug("madwizard/cleanup")("terminating current task")
+        try {
+          this._currentRunner.kill()
+        } finally {
+          Debug("madwizard/cleanup")("terminating current task: done")
+        }
+      }
+
+      await this.runOnStackFinallies()
+    } finally {
+      Debug("madwizard/cleanup")("onExitSignalFromUser: done", signal)
     }
-
-    await this.runOnStackFinallies()
   }
 
   private get hasReceivedExitSignalFromUser() {
@@ -191,7 +200,7 @@ export class Guide {
    * @return the list of remaining questions
    */
   private async questions(choiceIter: number, previous?: Wizard) {
-    const graph = await compile(this.blocks, this.choices, Object.assign({}, this.options, this.memos), this.options)
+    const graph = await compile(this.blocks, this.choices, this.memos, this.options)
     const wizard = await wizardify(graph, this.memos, { previous, choices: this.choices })
 
     const firstChoiceIdx = wizard.findIndex((_) => isChoiceStep(_) && _.status !== "success")

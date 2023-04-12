@@ -41,6 +41,9 @@ export interface Memos {
   /** Any forked subprocesses that we should wait for? */
   subprocesses: ChildProcess[]
 
+  /** Remove a subprocess after it has completed */
+  markDone(child: ChildProcess): void
+
   /** onExit handlers */
   onExit: { name: string; cb: (signal?: "SIGINT" | "SIGTERM") => void | Promise<void> }[]
 
@@ -81,6 +84,14 @@ export class Memoizer implements Memos {
 
   /** Finally block context stack */
   public readonly finallyStack: string[] = []
+
+  /** Remove a subprocess */
+  public markDone(child: ChildProcess) {
+    const idx = this.subprocesses.findIndex((_) => _ === child)
+    if (idx >= 0) {
+      this.subprocesses.splice(idx, 1)
+    }
+  }
 
   /** Invalidate any memos that make use of the given shell variable */
   public invalidate(variable: string): void {
