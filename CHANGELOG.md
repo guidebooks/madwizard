@@ -1,3 +1,9 @@
+## [9.0.3](https://github.com/guidebooks/madwizard/compare/9.0.2...9.0.3) (2023-04-12)
+
+### Bug Fixes
+
+- non-async subprocs are not killed! ([48dce16](https://github.com/guidebooks/madwizard/commit/48dce1665be01b34bdca4f30573e2599ae22e635))
+
 ## [9.0.2](https://github.com/guidebooks/madwizard/compare/9.0.1...9.0.2) (2023-04-11)
 
 - chore: bump dependencies, including to ESM-only (a15da08)
