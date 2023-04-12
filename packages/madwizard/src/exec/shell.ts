@@ -40,8 +40,10 @@ function toCommaSeparated(env: Memos["env"]) {
     .join(",")
 }
 
+type Spawned = { child: ReturnType<typeof spawn>; resultPromise: Promise<"success"> }
+
 /** Shell out the execution of the given `cmdline` */
-export default async function shellItOut(
+function shellItOut(
   _cmdline: string | boolean,
   memos: Memos,
   opts: ExecOptions = { quiet: false },
@@ -49,7 +51,7 @@ export default async function shellItOut(
   async?: boolean /* fire and forget, until this process exits? */,
   needsStdin?: boolean /* attach stdin? */,
   onClose?: () => void | Promise<void> /* callback when the process exits */
-): Promise<"success"> {
+): Spawned {
   const cmdline = typeof _cmdline === "boolean" ? _cmdline : _cmdline.replace(/\\\n/g, " ")
 
   // capture stdout into opts.capture
@@ -107,24 +109,24 @@ export default async function shellItOut(
     stdio[1] = "pipe"
   }
 
-  return new Promise((resolve, reject) => {
+  // re: setopts, by default zsh does not do word splitting on
+  // unquoted variable expansions.
+  // https://stackoverflow.com/questions/6715388/variable-expansion-is-different-in-zsh-from-that-in-bash
+  const shell = process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash")
+  const setopts = /zsh/.test(shell) ? "setopt SH_WORD_SPLIT;" : ""
+  const argv = ["-c", process.platform === "win32" ? cmdline.toString() : `set -o pipefail; ${setopts} ${cmdline}`]
+  Debug("madwizard/exec/shell")("shell", shell)
+  Debug("madwizard/exec/shell")("argv", argv)
+
+  const child = spawn(shell, argv, {
+    env,
+    detached: async, // see Memoizer.cleanup() for asyncs, we detach and then kill that detached process group
+    stdio,
+    windowsHide: true, // don't pop up a bash.exe window
+  })
+
+  const resultPromise = new Promise<"success">((resolve, reject) => {
     try {
-      // re: setopts, by default zsh does not do word splitting on
-      // unquoted variable expansions.
-      // https://stackoverflow.com/questions/6715388/variable-expansion-is-different-in-zsh-from-that-in-bash
-      const shell = process.env.SHELL || (process.platform === "win32" ? "pwsh" : "bash")
-      const setopts = /zsh/.test(shell) ? "setopt SH_WORD_SPLIT;" : ""
-      const argv = ["-c", process.platform === "win32" ? cmdline.toString() : `set -o pipefail; ${setopts} ${cmdline}`]
-      Debug("madwizard/exec/shell")("shell", shell)
-      Debug("madwizard/exec/shell")("argv", argv)
-
-      const child = spawn(shell, argv, {
-        env,
-        detached: async, // see Memoizer.cleanup() for asyncs, we detach and then kill that detached process group
-        stdio,
-        windowsHide: true, // don't pop up a bash.exe window
-      })
-
       child.on("error", async (err) => {
         if (onClose) {
           await onClose()
@@ -135,6 +137,8 @@ export default async function shellItOut(
       let err = ""
       let out = ""
       child.on("close", async (code) => {
+        memos.markDone(child)
+
         if (capture) {
           opts.capture = out
         }
@@ -169,12 +173,28 @@ export default async function shellItOut(
         child.stdout.on("data", (data) => opts.write(data.toString()))
       }
 
+      memos.subprocesses.push(child)
       if (async) {
-        memos.subprocesses.push(child)
         resolve("success")
       }
     } catch (err) {
       reject(err)
     }
   })
+
+  return { child, resultPromise }
+}
+
+/** Shell out the execution of the given `cmdline` */
+export default async function shellItOutWithSuccess(
+  _cmdline: string | boolean,
+  memos: Memos,
+  opts: ExecOptions = { quiet: false },
+  extraEnv: Record<string, string> = {},
+  isAsync?: boolean /* fire and forget, until this process exits? */,
+  needsStdin?: boolean /* attach stdin? */,
+  onClose?: () => void | Promise<void> /* callback when the process exits */
+): Promise<"success"> {
+  const { resultPromise } = shellItOut(_cmdline, memos, opts, extraEnv, isAsync, needsStdin, onClose)
+  return resultPromise.then(() => "success")
 }
