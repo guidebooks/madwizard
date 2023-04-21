@@ -15,8 +15,8 @@
  */
 
 import chalk from "chalk"
-import { v4 } from "uuid"
 import { join } from "path"
+import ShortUniqueId from "short-unique-id"
 
 import { Debug } from "./debug.js"
 import { ChoiceState } from "../index.js"
@@ -39,6 +39,8 @@ export type ExpansionMap = Record<string, Promise<string[] | null>>
 
 type ExpansionKind = "singleselect" | "multiselect" | "form"
 type ExpansionExpression = { expr: string; kind: ExpansionKind; message?: string; key?: string }
+
+const v4 = new ShortUniqueId({ length: 10 })
 
 function expandHomeDir(path: string) {
   const homedir = process.env.HOME_FOR_TEST || process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"]
