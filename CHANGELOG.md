@@ -1,3 +1,9 @@
+## [9.0.4](https://github.com/guidebooks/madwizard/compare/9.0.3...9.0.4) (2023-04-21)
+
+### Bug Fixes
+
+- use shorter uuids for e.g. jobids ([ffeea43](https://github.com/guidebooks/madwizard/commit/ffeea43bcfbe26a5b820a0420a903dbce358a5a8))
+
 ## [9.0.3](https://github.com/guidebooks/madwizard/compare/9.0.2...9.0.3) (2023-04-12)
 
 ### Bug Fixes
