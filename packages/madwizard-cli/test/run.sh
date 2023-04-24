@@ -17,7 +17,7 @@ function test {
     madwizard $TEST | grep -q "$EXPECTED" && printf "$TESTNAME: \033[32mPASS\033[0m\n" || (printf "$TESTNAME: \033[31mFAIL\033[0m\n" && exit 1)
 }
 
-test '--version' $(cd "$SCRIPTDIR"/../../.. && npm view madwizard version) version
+test '--version' $(cat "$SCRIPTDIR"/../../madwizard/src/version.ts | grep 'return semver'| awk '{print $NF}' | sed 's/"//g') version
 test demo/hello "Hello world"
 
 "$SCRIPTDIR"/import-export.sh
