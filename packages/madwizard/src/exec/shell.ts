@@ -32,11 +32,29 @@ function toNameValue(env: Memos["env"]) {
   return Object.entries(env).map(([name, value]) => ({ name, value }))
 }
 
+/**
+ * Keeping this pretty simple for now. The `shell-escape` npm
+ * introduces superfluous single quotes, e.g. foo+bar becomes
+ * 'foo+bar'. Normally, this would not be an issue. Howver, for some
+ * reason, if a guidebook has `torchx run --env
+ * $GUIDEBOOK_ENV_COMMAS`, then the single quotes are not removed,
+ * leading to e.g. python code seeing the single quotes. So... for
+ * now, let's try to side-step that. This needs more
+ * investigation.
+ */
+function shellEscape2(str: string) {
+  if (/\s/.test(str) && !/^['"][^'"]+['"]$/.test(str)) {
+    return `"${str}"`
+  } else {
+    return str
+  }
+}
+
 /** Restructure a Record<string,string> into [{name: string, value: string}] */
 function toCommaSeparated(env: Memos["env"]) {
   return Object.entries(env)
     .filter(([, value]) => value.length > 0 && !/[= ]/.test(value)) // TORCHX HACK; it has parsing errors with these
-    .map(([name, value]) => name + "=" + shellEscape([value.replace(/^['"]/, "").replace(/['"]$/, "")]))
+    .map(([name, value]) => name + "=" + shellEscape2(value))
     .join(",")
 }
 
