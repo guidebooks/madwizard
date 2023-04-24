@@ -1,3 +1,9 @@
+## [9.0.6](https://github.com/guidebooks/madwizard/compare/9.0.5...9.0.6) (2023-04-24)
+
+### Bug Fixes
+
+- workaround for superfluous single-quoting of env vars ([8345bb4](https://github.com/guidebooks/madwizard/commit/8345bb46d82f15d7144597076e8a4d2422806824))
+
 ## [9.0.5](https://github.com/guidebooks/madwizard/compare/9.0.4...9.0.5) (2023-04-21)
 
 ### Bug Fixes
