@@ -15,7 +15,6 @@
  */
 
 import Debug from "debug"
-import shellEscape from "shell-escape"
 import { spawn, execSync, StdioOptions } from "child_process"
 
 import EarlyExit from "./EarlyExit.js"
@@ -42,7 +41,7 @@ function toNameValue(env: Memos["env"]) {
  * now, let's try to side-step that. This needs more
  * investigation.
  */
-function shellEscape2(str: string) {
+function shellEscape(str: string) {
   if (/\s/.test(str) && !/^['"][^'"]+['"]$/.test(str)) {
     return `"${str}"`
   } else {
@@ -54,7 +53,7 @@ function shellEscape2(str: string) {
 function toCommaSeparated(env: Memos["env"]) {
   return Object.entries(env)
     .filter(([, value]) => value.length > 0 && !/[= ]/.test(value)) // TORCHX HACK; it has parsing errors with these
-    .map(([name, value]) => name + "=" + shellEscape2(value))
+    .map(([name, value]) => name + "=" + shellEscape(value))
     .join(",")
 }
 
@@ -107,7 +106,7 @@ function shellItOut(
   }
 
   if (memos.cliDashDash) {
-    env.GUIDEBOOK_DASHDASH = shellEscape(memos.cliDashDash)
+    env.GUIDEBOOK_DASHDASH = memos.cliDashDash.map(shellEscape).join(" ")
   }
 
   // unless the code block has a `shell.stdin` or `bash.stdin`, we
