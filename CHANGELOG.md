@@ -1,3 +1,9 @@
+## [9.0.7](https://github.com/guidebooks/madwizard/compare/9.0.6...9.0.7) (2023-04-27)
+
+### Bug Fixes
+
+- avoid double quoting in dashdash ([81c0496](https://github.com/guidebooks/madwizard/commit/81c049685cd8272b804778ab9c6c459dd47d1145))
+
 ## [9.0.6](https://github.com/guidebooks/madwizard/compare/9.0.5...9.0.6) (2023-04-24)
 
 ### Bug Fixes
